@@ -8,6 +8,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
@@ -51,9 +52,13 @@ fun GraduationProjectTheme(
         else -> LightColorScheme
     }
 
+    CompositionLocalProvider(
+        LocalCustomTypography provides TextStyles
+    ) {
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = MaterialTheme.typography,
         content = content
     )
+    }
 }
