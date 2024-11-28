@@ -17,78 +17,79 @@ val SendFlowers = FontFamily(
 
 object TextStyles {
     val headingExtraLarge = TextStyle(
-    fontFamily = Roboto,
-    fontWeight = FontWeight.SemiBold,
-    fontSize = 28.sp,
-    letterSpacing = 0.sp
+        fontFamily = Roboto,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 28.sp,
+        letterSpacing = 0.sp
     )
     val headingLarge = TextStyle(
-    fontFamily = Roboto,
-    fontWeight = FontWeight.SemiBold,
-    fontSize = 24.sp,
-    letterSpacing = 0.sp
+        fontFamily = Roboto,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 24.sp,
+        letterSpacing = 0.sp
     )
     val headingMedium = TextStyle(
-    fontFamily = Roboto,
-    fontWeight = FontWeight.SemiBold,
-    fontSize = 16.sp,
-    letterSpacing = 0.sp
+        fontFamily = Roboto,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
+        letterSpacing = 0.sp,
     )
 
     val headingSmall = TextStyle(
-    fontFamily = Roboto,
-    fontWeight = FontWeight.SemiBold,
-    fontSize = 14.sp,
-    letterSpacing = 0.sp
+        fontFamily = Roboto,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp,
+        letterSpacing = 0.sp
     )
 
     val body = TextStyle(
-    fontFamily = Roboto,
-    fontWeight = FontWeight.Normal,
-    fontSize = 12.sp,
-    letterSpacing = 0.sp
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        letterSpacing = 0.sp
     )
 
     val bodyLarge = TextStyle(
-    fontFamily = Roboto,
-    fontWeight = FontWeight.Light,
-    fontSize = 16.sp,
-    letterSpacing = 0.sp
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Light,
+        fontSize = 16.sp,
+        letterSpacing = 0.sp
     )
 
     val hint = TextStyle(
-    fontFamily = Roboto,
-    fontWeight = FontWeight.Light,
-    fontSize = 14.sp,
-    letterSpacing = 0.sp
-    )
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Light,
+        fontSize = 14.sp,
+        letterSpacing = 0.sp,
+        color = BlackTertiary
+        )
 
     val caption = TextStyle(
-    fontFamily = Roboto,
-    fontWeight = FontWeight.Normal,
-    fontSize = 12.sp,
-    letterSpacing = 0.sp
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        letterSpacing = 0.sp
     )
 
     val captionExtraSmall = TextStyle(
-    fontFamily = Roboto,
-    fontWeight = FontWeight.Normal,
-    fontSize = 8.sp,
-    letterSpacing = 0.sp
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Normal,
+        fontSize = 8.sp,
+        letterSpacing = 0.sp
     )
 
     val smallCustomTitle = TextStyle(
-    fontFamily = SendFlowers,
-    fontWeight = FontWeight.Normal,
-    fontSize = 14.sp,
-    letterSpacing = 2.sp
+        fontFamily = SendFlowers,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        letterSpacing = 2.sp
     )
 
     val largeCustomTitle = TextStyle(
-    fontFamily = SendFlowers,
-    fontWeight = FontWeight.Normal,
-    fontSize = 24.sp,
-    letterSpacing = 2.sp
+        fontFamily = SendFlowers,
+        fontWeight = FontWeight.Normal,
+        fontSize = 24.sp,
+        letterSpacing = 2.sp
     )
 
 }

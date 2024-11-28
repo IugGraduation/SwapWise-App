@@ -40,6 +40,7 @@ android {
 
 dependencies {
 
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -55,8 +56,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
+    
     implementation(project(":domain"))
+
+    // Tests related
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
     // ViewModel & Lifecycle utilities for Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -67,10 +73,8 @@ dependencies {
 
     // Hilt for Dependency Injection
     implementation(libs.dagger.hilt.android)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose) // Compose support for Hilt
+
 
 }

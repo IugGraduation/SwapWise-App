@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.data"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
@@ -53,6 +53,8 @@ dependencies {
     // Hilt for Dependency Injection
     implementation(libs.dagger.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose) // Compose support for Hilt
+
 
 
 }

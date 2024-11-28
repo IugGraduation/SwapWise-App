@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.example.graduationproject"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.graduationproject"
@@ -68,6 +68,8 @@ dependencies {
     // Hilt for Dependency Injection
     implementation(libs.dagger.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose) // Compose support for Hilt
+
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
