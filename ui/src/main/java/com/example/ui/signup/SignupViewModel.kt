@@ -1,6 +1,7 @@
 package com.example.ui.signup
 
 import androidx.lifecycle.ViewModel
+import com.example.domain.SignupValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,59 +10,48 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(): ViewModel() {
-    private val _fullName = MutableStateFlow("")
-    val fullName = _fullName.asStateFlow()
-
-    private val _phone = MutableStateFlow("")
-    val phone = _phone.asStateFlow()
-
-    private val _password = MutableStateFlow("")
-    val password = _password.asStateFlow()
-
-    private val _confirmPassword = MutableStateFlow("")
-    val confirmPassword = _confirmPassword.asStateFlow()
-
-    private val _isConfirmPasswordVisible = MutableStateFlow(false)
-    val isConfirmPasswordVisible = _isConfirmPasswordVisible.asStateFlow()
-
-    private val _bestBarterSpot = MutableStateFlow("")
-    val bestBarterSpot = _bestBarterSpot.asStateFlow()
-
-    private val _bio = MutableStateFlow("")
-    val bio = _bio.asStateFlow()
-
+    private val _uiState = MutableStateFlow(SignupUIState())
+    val uiState = _uiState.asStateFlow()
 
     fun onFullNameChange(newValue: String) {
-        _fullName.value = newValue
+        _uiState.update { it.copy(fullName = newValue) }
     }
 
     fun onPhoneChange(newValue: String) {
-        _phone.value = newValue
+        _uiState.update { it.copy(phone = newValue) }
     }
 
     fun onPasswordChange(newValue: String) {
-        _password.value = newValue
+        _uiState.update { it.copy(password = newValue) }
     }
 
     fun onConfirmPasswordChange(newValue: String) {
-        _confirmPassword.value = newValue
+        _uiState.update { it.copy(confirmPassword = newValue) }
     }
 
     fun toggleConfirmPasswordVisibility() {
-        _isConfirmPasswordVisible.update { !it }
+        _uiState.update { it.copy(isConfirmPasswordVisible = !it.isConfirmPasswordVisible) }
     }
 
     fun onBestBarterSpotChange(newValue: String) {
-        _bestBarterSpot.value = newValue
+        _uiState.update { it.copy(bestBarterSpot = newValue) }
     }
 
     fun onBioChange(newValue: String) {
-        _bio.value = newValue
+        _uiState.update { it.copy(bio = newValue) }
     }
 
-
-    fun onClickSignup(){
-
+    fun onClickSignup() {
+        validateForm()
     }
+
+    private fun validateForm(): Boolean {
+        val state = uiState.value
+        return SignupValidator.validateFullName(state.fullName) &&
+                SignupValidator.validatePhone(state.phone) &&
+                SignupValidator.validatePassword(state.password) &&
+                SignupValidator.validateConfirmPassword(state.password, state.confirmPassword)
+    }
+
 }
 

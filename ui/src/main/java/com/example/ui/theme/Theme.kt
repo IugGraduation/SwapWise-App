@@ -1,28 +1,26 @@
 package com.example.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = BlackPrimary,
-    secondary = BlackSecondary,
-    tertiary = BlackTertiary,
+    primary = WhitePrimary,
+    secondary = WhiteSecondary,
+    tertiary = WhiteTertiary,
+    background = BackgroundDark,
+    onBackground = OnBackgroundDark,
 
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Primary,
-    secondary = Secondary,
-    tertiary = Tertiary,
-    background = BackgroundLight
+    primary = BlackPrimary,
+    secondary = BlackSecondary,
+    tertiary = BlackTertiary,
+    background = BackgroundLight,
+    onBackground = OnBackgroundLight,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -44,13 +42,9 @@ fun GraduationProjectTheme(
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
-    CompositionLocalProvider(
-        LocalCustomTypography provides TextStyles
-    ) {
     MaterialTheme(
         colorScheme = colorScheme,
         typography = MaterialTheme.typography,
         content = content
     )
-    }
 }

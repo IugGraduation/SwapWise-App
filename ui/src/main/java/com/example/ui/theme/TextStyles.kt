@@ -1,5 +1,7 @@
 package com.example.ui.theme
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -16,18 +18,24 @@ val SendFlowers = FontFamily(
 )
 
 object TextStyles {
-    val headingExtraLarge = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 28.sp,
-        letterSpacing = 0.sp
-    )
-    val headingLarge = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 24.sp,
-        letterSpacing = 0.sp
-    )
+    val headingExtraLarge: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = Roboto,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 28.sp,
+            letterSpacing = 0.sp,
+            color = MaterialTheme.colorScheme.primary,
+        )
+    val headingLarge: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = Roboto,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 24.sp,
+            letterSpacing = 0.sp,
+            color = MaterialTheme.colorScheme.primary,
+        )
     val headingMedium = TextStyle(
         fontFamily = Roboto,
         fontWeight = FontWeight.SemiBold,
@@ -49,19 +57,24 @@ object TextStyles {
         letterSpacing = 0.sp
     )
 
-    val bodyLarge = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.Light,
-        fontSize = 16.sp,
-        letterSpacing = 0.sp
-    )
+    val bodyLarge: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = Roboto,
+            fontWeight = FontWeight.Light,
+            fontSize = 16.sp,
+            letterSpacing = 0.sp,
+            color = MaterialTheme.colorScheme.tertiary
+        )
 
-    val hint = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.Light,
-        fontSize = 14.sp,
-        letterSpacing = 0.sp,
-        color = BlackTertiary
+    val hint: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = Roboto,
+            fontWeight = FontWeight.Light,
+            fontSize = 14.sp,
+            letterSpacing = 0.sp,
+            color = MaterialTheme.colorScheme.tertiary
         )
 
     val caption = TextStyle(

@@ -1,10 +1,8 @@
 package com.example.ui.components.molecules
 
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,7 +15,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomTextField
-import com.example.ui.theme.BlackTertiary
+import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.theme.GraduationProjectTheme
 
 @Composable
@@ -41,15 +39,14 @@ fun PasswordTextField(
             PasswordVisualTransformation()
         },
         leadingIcon = {
-            Icon(
+            CustomTextFieldIcon(
                 painter = painterResource(R.drawable.image_password_lock),
                 contentDescription = stringResource(R.string.password),
-                tint = BlackTertiary
             )
         },
         trailingIcon = {
             IconButton(onClick = { onVisibilityToggle() }) {
-                Icon(
+                CustomTextFieldIcon(
                     painter = painterResource(
                         if (isPasswordVisible) R.drawable.image_eye_closed
                         else R.drawable.image_eye

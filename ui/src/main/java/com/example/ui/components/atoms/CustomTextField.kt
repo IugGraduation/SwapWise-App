@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +27,7 @@ import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing56
-import com.example.ui.theme.typography
+import com.example.ui.theme.TextStyles
 
 @Composable
 fun CustomTextField(
@@ -48,7 +49,7 @@ fun CustomTextField(
         placeholder = {
             Text(
                 text = placeholder,
-                style = typography.hint
+                style = TextStyles.hint
             )
         },
         visualTransformation = visualTransformation,
@@ -67,9 +68,9 @@ fun CustomTextField(
             focusedIndicatorColor = Color.Transparent, // No border when focused
             unfocusedIndicatorColor = Color.Transparent, // No border when not focused
             disabledIndicatorColor = Color.Transparent, // No border when disabled
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
-            disabledContainerColor = Color.White,
+            focusedContainerColor = MaterialTheme.colorScheme.onBackground,
+            unfocusedContainerColor = MaterialTheme.colorScheme.onBackground,
+            disabledContainerColor = MaterialTheme.colorScheme.onBackground,
         ),
     )
 }
@@ -83,10 +84,9 @@ fun PreviewEditText() {
 
         CustomTextField(textState, { textState = it }, "User",
             leadingIcon = {
-                Icon(
+                CustomTextFieldIcon(
                     painter = painterResource(R.drawable.image_user_name), // Use a vector icon or painter
                     contentDescription = "User",
-                    tint = BlackTertiary,
                     modifier = Modifier.padding(vertical = Spacing16)
                 )
             })

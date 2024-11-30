@@ -37,7 +37,7 @@ fun SignupForm(
     onBioChange: (String) -> Unit,
 ) {
     val isPasswordVisible by sharedAuthViewModel.isPasswordVisible.collectAsState()
-    val isConfirmPasswordVisible by signupViewModel.isConfirmPasswordVisible.collectAsState()
+    val signupUIState by signupViewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.fillMaxWidth()) {
         FullNameTextField(fullName, onFullNameChange)
@@ -54,7 +54,7 @@ fun SignupForm(
         PasswordTextField(
             value = confirmPassword,
             onValueChange = onConfirmPasswordChange,
-            isPasswordVisible = isConfirmPasswordVisible,
+            isPasswordVisible = signupUIState.isConfirmPasswordVisible,
             onVisibilityToggle = signupViewModel::toggleConfirmPasswordVisibility,
             placeholder = stringResource(R.string.confirm_password),
         )

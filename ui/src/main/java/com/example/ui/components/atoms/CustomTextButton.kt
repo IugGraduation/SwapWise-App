@@ -14,15 +14,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.ui.theme.typography
+import com.example.ui.theme.Primary
+import com.example.ui.theme.TextStyles
 
 @Composable
 fun CustomTextButton(onClick: () -> Unit, text: String) {
     Box(modifier = Modifier.clickable(onClick = onClick)) {
         Text(
             text,
-            style = typography.headingSmall,
-            color = MaterialTheme.colorScheme.primary,
+            style = TextStyles.headingSmall,
+            color = Primary,
             modifier = Modifier.padding(0.dp),
         )
     }

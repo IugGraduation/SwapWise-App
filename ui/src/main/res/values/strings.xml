@@ -6,8 +6,9 @@
     <string name="phone_number">Phone Number</string>
     <string name="full_name">Full Name</string>
     <string name="bio">Bio (optional)</string>
-    <string name="image_signup">image_signup</string>
-    <string name="image_login">image_login</string>
+    <string name="image_signup">image signup</string>
+    <string name="image_login">image login</string>
+    <string name="image_otp">image OTP</string>
     <string name="sign_up">Sign up</string>
     <string name="signup">Signup</string>
     <string name="confirm_password">Confirm Password</string>
@@ -15,4 +16,7 @@
     <string name="joined_us_before">Joined us before?</string>
     <string name="login">Login</string>
     <string name="don_t_have_an_account">Don’t have an account?</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="an_4_digit_code_has_been_sent_to_your_phone_number">An 4 digit code has been sent to your phone number ...</string>
+    <string name="confirm">Confirm</string>
 </resources>
