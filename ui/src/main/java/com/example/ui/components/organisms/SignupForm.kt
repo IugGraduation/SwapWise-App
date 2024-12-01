@@ -28,15 +28,24 @@ fun SignupForm(
     val isPasswordVisible by sharedAuthViewModel.isPasswordVisible.collectAsState()
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        FullNameTextField(uiState.fullName, signupViewModel::onFullNameChange)
+        FullNameTextField(
+            uiState.fullName,
+            signupViewModel::onFullNameChange,
+            errorMessage = uiState.fullNameError
+        )
         VerticalSpacer(height = Spacing8)
-        PhoneTextField(uiState.phone, signupViewModel::onPhoneChange)
+        PhoneTextField(
+            uiState.phone,
+            signupViewModel::onPhoneChange,
+            errorMessage = uiState.phoneError
+        )
         VerticalSpacer(height = Spacing8)
         PasswordTextField(
             value = uiState.password,
             onValueChange = signupViewModel::onPasswordChange,
             isPasswordVisible = isPasswordVisible,
-            onVisibilityToggle = sharedAuthViewModel::togglePasswordVisibility
+            onVisibilityToggle = sharedAuthViewModel::togglePasswordVisibility,
+            errorMessage = uiState.passwordError
         )
         VerticalSpacer(height = Spacing8)
         PasswordTextField(
@@ -45,11 +54,20 @@ fun SignupForm(
             isPasswordVisible = uiState.isConfirmPasswordVisible,
             onVisibilityToggle = signupViewModel::toggleConfirmPasswordVisibility,
             placeholder = stringResource(R.string.confirm_password),
+            errorMessage = uiState.confirmPasswordError
         )
         VerticalSpacer(height = Spacing8)
-        BestBarterSpotTextField(uiState.bestBarterSpot, signupViewModel::onBestBarterSpotChange)
+        BestBarterSpotTextField(
+            uiState.bestBarterSpot,
+            signupViewModel::onBestBarterSpotChange,
+            errorMessage = uiState.bestBarterSpotError
+        )
         VerticalSpacer(height = Spacing8)
-        BioTextField(uiState.bio, signupViewModel::onBioChange)
+        BioTextField(
+            uiState.bio,
+            signupViewModel::onBioChange,
+            errorMessage = uiState.bioError
+        )
 
     }
 }

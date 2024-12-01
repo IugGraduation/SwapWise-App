@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.domain.LoginValidationUseCase
 import com.example.domain.SignupValidationUseCase
 import com.example.domain.models.SignStatus
+import com.example.ui.login.LoginUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,19 +19,19 @@ class SignupViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun onFullNameChange(newValue: String) {
-        _uiState.update { it.copy(fullName = newValue) }
+        _uiState.update { it.copy(fullName = newValue, fullNameError = null) }
     }
 
     fun onPhoneChange(newValue: String) {
-        _uiState.update { it.copy(phone = newValue) }
+        _uiState.update { it.copy(phone = newValue, phoneError = null) }
     }
 
     fun onPasswordChange(newValue: String) {
-        _uiState.update { it.copy(password = newValue) }
+        _uiState.update { it.copy(password = newValue, passwordError = null) }
     }
 
     fun onConfirmPasswordChange(newValue: String) {
-        _uiState.update { it.copy(confirmPassword = newValue) }
+        _uiState.update { it.copy(confirmPassword = newValue, confirmPasswordError = null) }
     }
 
     fun toggleConfirmPasswordVisibility() {
@@ -38,17 +39,23 @@ class SignupViewModel @Inject constructor(
     }
 
     fun onBestBarterSpotChange(newValue: String) {
-        _uiState.update { it.copy(bestBarterSpot = newValue) }
+        _uiState.update { it.copy(bestBarterSpot = newValue, bestBarterSpotError = null) }
     }
 
     fun onBioChange(newValue: String) {
-        _uiState.update { it.copy(bio = newValue) }
+        _uiState.update { it.copy(bio = newValue, bioError = null) }
     }
 
     fun onClickSignup() {
-        if (signupValidationUseCase(uiState.value.toSignStatus()).isSuccess()) {
+        if (validateForm()) {
             //Signup
         }
+    }
+
+    private fun validateForm(): Boolean{
+        val signStatus = signupValidationUseCase(uiState.value.toSignStatus())
+        _uiState.value = SignupUIState.fromSignStatus(signStatus)
+        return signStatus.isSuccess()
     }
 
 

@@ -8,10 +8,21 @@ data class LoginUIState(
 
     val phoneError: String? = null,
     val passwordError: String? = null,
-){
+) {
     fun toSignStatus() =
         SignStatus(
             phone = phone,
             password = password,
         )
+
+    companion object {
+        fun fromSignStatus(signStatus: SignStatus) =
+            LoginUIState(
+                phone = signStatus.phone,
+                password = signStatus.password,
+
+                phoneError = signStatus.phoneError,
+                passwordError = signStatus.passwordError,
+            )
+    }
 }

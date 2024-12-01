@@ -28,9 +28,15 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onClickLogin() {
-        if(loginValidationUseCase(uiState.value.toSignStatus()).isSuccess()) {
+        if(validateForm()) {
             //login
         }
+    }
+
+    private fun validateForm(): Boolean{
+        val signStatus = loginValidationUseCase(uiState.value.toSignStatus())
+        _uiState.value = LoginUIState.fromSignStatus(signStatus)
+        return signStatus.isSuccess()
     }
 
 }
