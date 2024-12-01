@@ -1,7 +1,9 @@
 package com.example.ui.signup
 
 import androidx.lifecycle.ViewModel
-import com.example.domain.SignupValidator
+import com.example.domain.LoginValidationUseCase
+import com.example.domain.SignupValidationUseCase
+import com.example.domain.models.SignStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,7 +11,9 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class SignupViewModel @Inject constructor(): ViewModel() {
+class SignupViewModel @Inject constructor(
+    private val signupValidationUseCase: SignupValidationUseCase,
+) : ViewModel() {
     private val _uiState = MutableStateFlow(SignupUIState())
     val uiState = _uiState.asStateFlow()
 
@@ -42,16 +46,11 @@ class SignupViewModel @Inject constructor(): ViewModel() {
     }
 
     fun onClickSignup() {
-        validateForm()
+        if (signupValidationUseCase(uiState.value.toSignStatus()).isSuccess()) {
+            //Signup
+        }
     }
 
-    private fun validateForm(): Boolean {
-        val state = uiState.value
-        return SignupValidator.validateFullName(state.fullName) &&
-                SignupValidator.validatePhone(state.phone) &&
-                SignupValidator.validatePassword(state.password) &&
-                SignupValidator.validateConfirmPassword(state.password, state.confirmPassword)
-    }
 
 }
 

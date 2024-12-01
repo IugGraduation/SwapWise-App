@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.theme.GraduationProjectTheme
 
@@ -18,11 +17,13 @@ fun FullNameTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    errorMessage: String? = null,
 ) {
-    CustomTextField(
+    CustomTextFieldWithErrorMsg(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
+        errorMessage = errorMessage,
         placeholder = stringResource(R.string.full_name),
         leadingIcon = {
             CustomTextFieldIcon(

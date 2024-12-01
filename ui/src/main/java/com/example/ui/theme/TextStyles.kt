@@ -50,7 +50,7 @@ object TextStyles {
         letterSpacing = 0.sp
     )
 
-    val body = TextStyle(
+    val bodySmall = TextStyle(
         fontFamily = Roboto,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
@@ -81,6 +81,13 @@ object TextStyles {
         fontFamily = Roboto,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
+        letterSpacing = 0.sp
+    )
+
+    val captionMedium = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp,
         letterSpacing = 0.sp
     )
 

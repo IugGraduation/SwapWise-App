@@ -14,7 +14,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.theme.GraduationProjectTheme
 
@@ -26,12 +25,14 @@ fun PasswordTextField(
     onVisibilityToggle: () -> Unit,
     modifier: Modifier = Modifier,
     placeholder:String = stringResource(R.string.password),
+    errorMessage: String? = null,
 ) {
-    CustomTextField(
+    CustomTextFieldWithErrorMsg(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
         placeholder = placeholder,
+        errorMessage = errorMessage,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = if (isPasswordVisible) {
             VisualTransformation.None

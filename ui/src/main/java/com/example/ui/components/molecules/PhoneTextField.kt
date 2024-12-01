@@ -11,7 +11,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.theme.GraduationProjectTheme
 
@@ -20,11 +19,13 @@ fun PhoneTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    errorMessage: String? = null,
 ) {
-    CustomTextField(
+    CustomTextFieldWithErrorMsg(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
+        errorMessage = errorMessage,
         placeholder = stringResource(R.string.phone_number),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
         leadingIcon = {

@@ -8,7 +8,7 @@ val Tertiary = Color(0xFFE5EFFF)
 
 
 
-val Danger = Color(0x40FF0505)
+val Danger = Color(0xFFEA4335)
 val Warning = Color(0xFFFFD400)
 val Correct = Color(0xFF7EBA18)
 

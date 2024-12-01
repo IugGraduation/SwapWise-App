@@ -13,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
@@ -22,14 +21,18 @@ import com.example.ui.components.atoms.Header
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.organisms.SignupForm
 import com.example.ui.components.templates.PageTemplate
+import com.example.ui.shared.SharedAuthViewModel
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing80
 
 @Composable
-fun SignupPage(viewModel: SignupViewModel = hiltViewModel()) {
-    val uiState by viewModel.uiState.collectAsState()
+fun SignupPage(
+    signupViewModel: SignupViewModel = hiltViewModel(),
+    sharedAuthViewModel: SharedAuthViewModel = hiltViewModel()
+) {
+    val uiState by signupViewModel.uiState.collectAsState()
 
     PageTemplate {
         Column(
@@ -48,22 +51,13 @@ fun SignupPage(viewModel: SignupViewModel = hiltViewModel()) {
             Header(title = stringResource(R.string.sign_up))
             VerticalSpacer(Spacing24)
             SignupForm(
-                fullName = uiState.fullName,
-                onFullNameChange = viewModel::onFullNameChange,
-                phone = uiState.phone,
-                onPhoneChange = viewModel::onPhoneChange,
-                password = uiState.password,
-                onPasswordChange = viewModel::onPasswordChange,
-                confirmPassword = uiState.confirmPassword,
-                onConfirmPasswordChange = viewModel::onConfirmPasswordChange,
-                bestBarterSpot = uiState.bestBarterSpot,
-                onBestBarterSpotChange = viewModel::onBestBarterSpotChange,
-                bio = uiState.bio,
-                onBioChange = viewModel::onBioChange,
+                uiState = uiState,
+                signupViewModel = signupViewModel,
+                sharedAuthViewModel = sharedAuthViewModel,
             )
             VerticalSpacer(Spacing24)
             CustomButton(
-                onClick = viewModel::onClickSignup,
+                onClick = signupViewModel::onClickSignup,
                 text = stringResource(R.string.signup)
             )
             Footer(
@@ -76,13 +70,13 @@ fun SignupPage(viewModel: SignupViewModel = hiltViewModel()) {
     }
 }
 
-@Preview(
-    showSystemUi = false, showBackground = true,
-    device = "spec:width=1080px,height=2790px,dpi=440"
-)
+//@Preview(
+//    showSystemUi = false, showBackground = true,
+//    device = "spec:width=1080px,height=2790px,dpi=440"
+//)
 @Composable
 fun PreviewSignupPage() {
-    GraduationProjectTheme(darkTheme = true) {
+    GraduationProjectTheme(darkTheme = false) {
         SignupPage()
     }
 }
