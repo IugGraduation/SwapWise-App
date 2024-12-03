@@ -41,7 +41,7 @@ fun PasswordTextField(
         },
         leadingIcon = {
             CustomTextFieldIcon(
-                painter = painterResource(R.drawable.image_password_lock),
+                painter = painterResource(R.drawable.ic_password_lock),
                 contentDescription = stringResource(R.string.password),
             )
         },
@@ -49,8 +49,8 @@ fun PasswordTextField(
             IconButton(onClick = { onVisibilityToggle() }) {
                 CustomTextFieldIcon(
                     painter = painterResource(
-                        if (isPasswordVisible) R.drawable.image_eye_closed
-                        else R.drawable.image_eye
+                        if (isPasswordVisible) R.drawable.ic_eye_closed
+                        else R.drawable.ic_eye
                     ),
                     contentDescription = if (isPasswordVisible) {
                         stringResource(R.string.hide_password)

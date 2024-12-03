@@ -27,7 +27,7 @@ fun BestBarterSpotTextField(
         placeholder = stringResource(R.string.best_barter_spot),
         leadingIcon = {
             CustomTextFieldIcon(
-                painter = painterResource(R.drawable.image_best_barter_spot),
+                painter = painterResource(R.drawable.ic_best_barter_spot),
                 contentDescription = stringResource(R.string.best_barter_spot),
             )
         },

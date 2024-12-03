@@ -6,12 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.domain.LoginValidationUseCase
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.molecules.PhoneTextField
 import com.example.ui.login.LoginUIState
 import com.example.ui.shared.SharedAuthViewModel
-import com.example.ui.signup.LoginViewModel
+import com.example.ui.login.LoginViewModel
+import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing8
 
 @Composable
@@ -35,3 +38,11 @@ fun LoginForm(
     }
 }
 
+
+//@Preview(showSystemUi = false, showBackground = true)
+@Composable
+fun PreviewLoginForm() {
+    GraduationProjectTheme {
+//        LoginForm(LoginUIState(), LoginViewModel(), SharedAuthViewModel())
+    }
+}

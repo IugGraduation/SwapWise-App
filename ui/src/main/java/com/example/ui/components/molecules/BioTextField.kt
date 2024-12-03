@@ -27,7 +27,7 @@ fun BioTextField(
         placeholder = stringResource(R.string.bio),
         leadingIcon = {
             CustomTextFieldIcon(
-                painter = painterResource(R.drawable.image_bio),
+                painter = painterResource(R.drawable.ic_bio),
                 contentDescription = stringResource(R.string.bio),
             )
         },

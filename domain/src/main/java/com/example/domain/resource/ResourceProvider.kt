@@ -1,5 +1,5 @@
 package com.example.domain.resource
 
-interface ResourceProvider {
+fun interface ResourceProvider {
     fun getString(resId: Int): String
 }

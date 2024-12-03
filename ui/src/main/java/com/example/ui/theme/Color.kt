@@ -6,11 +6,9 @@ val Primary = Color(0xFF0065FF)
 val Secondary = Color(0xFFB3CBFF)
 val Tertiary = Color(0xFFE5EFFF)
 
-
-
 val Danger = Color(0xFFEA4335)
-val Warning = Color(0xFFFFD400)
 val Correct = Color(0xFF7EBA18)
+val Gray = Color(0xFFEEEEEE)
 
 val PrimaryOverlay = Color(0x330065FF)
 val DangerOverlay = Color(0x3DFF0505)

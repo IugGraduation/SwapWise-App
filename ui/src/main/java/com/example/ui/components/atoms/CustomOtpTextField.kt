@@ -1,6 +1,7 @@
 package com.example.ui.components.atoms
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -39,12 +40,18 @@ fun CustomOtpTextField(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
     ) {
+        val backgroundColor = if (isSystemInDarkTheme()) {
+            MaterialTheme.colorScheme.onBackground
+        }else{
+            Tertiary
+        }
+
         repeat(otpLength) { index ->
             Box(
                 modifier = Modifier
                     .size(width = Spacing56, height = Spacing56)
                     .background(
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = backgroundColor,
                         shape = RoundedCornerShape(RadiusMedium),
                     ),
                 contentAlignment = Alignment.Center,

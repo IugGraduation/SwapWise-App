@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.theme.GraduationProjectTheme
@@ -30,7 +31,7 @@ fun PhoneTextField(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
         leadingIcon = {
             CustomTextFieldIcon(
-                painter = painterResource(R.drawable.image_phone),
+                painter = painterResource(R.drawable.ic_phone),
                 contentDescription = stringResource(R.string.phone_number),
             )
         },

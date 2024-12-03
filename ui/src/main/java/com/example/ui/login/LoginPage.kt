@@ -1,10 +1,8 @@
 package com.example.ui.login
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -13,8 +11,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.domain.LoginValidationUseCase
+import com.example.domain.ValidatePasswordUseCase
+import com.example.domain.ValidatePhoneNumberUseCase
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.Header
@@ -23,7 +23,6 @@ import com.example.ui.components.molecules.Footer
 import com.example.ui.components.organisms.LoginForm
 import com.example.ui.components.templates.PageTemplate
 import com.example.ui.shared.SharedAuthViewModel
-import com.example.ui.signup.LoginViewModel
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -44,13 +43,13 @@ fun LoginPage(
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
             VerticalSpacer(Spacing80)
-            Image(
-                painter = painterResource(R.drawable.image_login),
+
+            Header(
+                title = stringResource(R.string.login),
+                imgPainter = painterResource(R.drawable.img_login),
+                imgPainterDarkTheme = painterResource(R.drawable.img_login_dark),
                 contentDescription = stringResource(R.string.image_login),
-                modifier = Modifier.fillMaxWidth(),
             )
-            VerticalSpacer(Spacing24)
-            Header(title = stringResource(R.string.login))
             VerticalSpacer(Spacing24)
             LoginForm(
                 uiState = uiState,
@@ -72,10 +71,16 @@ fun LoginPage(
     }
 }
 
-@Preview(showSystemUi = false, showBackground = true)
+//@Preview
 @Composable
 fun PreviewLoginPage() {
-    GraduationProjectTheme() {
-        LoginPage()
+    val loginViewModel = LoginViewModel(
+        LoginValidationUseCase(
+            ValidatePhoneNumberUseCase { "" },
+            ValidatePasswordUseCase { "" }
+        )
+    )
+    GraduationProjectTheme {
+        LoginPage(loginViewModel)
     }
 }

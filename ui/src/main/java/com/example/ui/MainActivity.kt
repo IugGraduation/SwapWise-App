@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import com.example.ui.login.LoginPage
+import com.example.ui.signup.SignupPage
 import com.example.ui.theme.GraduationProjectTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,7 +17,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GraduationProjectTheme {
-                LoginPage()
+                SignupPage()
             }
         }
     }

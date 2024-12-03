@@ -27,7 +27,7 @@ fun FullNameTextField(
         placeholder = stringResource(R.string.full_name),
         leadingIcon = {
             CustomTextFieldIcon(
-                painter = painterResource(R.drawable.image_user_name),
+                painter = painterResource(R.drawable.ic_user_name),
                 contentDescription = stringResource(R.string.full_name),
             )
         },

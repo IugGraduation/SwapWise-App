@@ -1,10 +1,7 @@
 package com.example.ui.signup
 
 import androidx.lifecycle.ViewModel
-import com.example.domain.LoginValidationUseCase
 import com.example.domain.SignupValidationUseCase
-import com.example.domain.models.SignStatus
-import com.example.ui.login.LoginUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
