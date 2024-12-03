@@ -1,38 +1,34 @@
 package com.example.ui.otp
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.CustomOtpTextField
 import com.example.ui.components.atoms.Header
-import com.example.ui.components.atoms.HeaderImage
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.templates.PageTemplate
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
-import com.example.ui.theme.Spacing40
 import com.example.ui.theme.Spacing72
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.Spacing80
 import com.example.ui.theme.TextStyles
 
-@Composable
-fun OTPPage(viewModel: OtpViewModel = hiltViewModel()) {
-    val uiState by viewModel.uiState.collectAsState()
 
+@Composable
+fun OtpContent(
+    uiState: OtpUIState,
+    onOtpChange: (String) -> Unit,
+    onClickConfirm: () -> Unit
+) {
     PageTemplate {
         Column(
             modifier = Modifier
@@ -44,7 +40,7 @@ fun OTPPage(viewModel: OtpViewModel = hiltViewModel()) {
                 title = stringResource(R.string.enter_otp),
                 imgPainter = painterResource(R.drawable.img_otp),
                 imgPainterDarkTheme = painterResource(R.drawable.img_otp_dark),
-                contentDescription = stringResource(R.string.image_otp),
+                imgContentDescription = stringResource(R.string.image_otp),
             )
             VerticalSpacer(Spacing8)
             Text(
@@ -54,11 +50,12 @@ fun OTPPage(viewModel: OtpViewModel = hiltViewModel()) {
             VerticalSpacer(Spacing24)
             CustomOtpTextField(
                 otp = uiState.otp,
-                onOtpChanged = viewModel::onOtpChange
+                onOtpChanged = onOtpChange,
+                otpLength = uiState.otpLength
             )
             VerticalSpacer(Spacing72)
             CustomButton(
-                onClick = viewModel::onClickConfirm,
+                onClick = onClickConfirm,
                 text = stringResource(R.string.confirm),
                 enabled = uiState.isConfirmButtonEnabled,
             )
@@ -68,8 +65,12 @@ fun OTPPage(viewModel: OtpViewModel = hiltViewModel()) {
 
 //@Preview(showSystemUi = false, showBackground = true,)
 @Composable
-fun PreviewOTPPage() {
+fun PreviewOtpContent() {
     GraduationProjectTheme {
-        OTPPage()
+        OtpContent(
+            uiState = OtpUIState(),
+            onOtpChange = { },
+            onClickConfirm = { }
+        )
     }
 }

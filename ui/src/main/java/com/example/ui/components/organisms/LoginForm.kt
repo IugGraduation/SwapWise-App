@@ -12,7 +12,6 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.molecules.PhoneTextField
 import com.example.ui.login.LoginUIState
-import com.example.ui.shared.SharedAuthViewModel
 import com.example.ui.login.LoginViewModel
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing8
@@ -20,19 +19,18 @@ import com.example.ui.theme.Spacing8
 @Composable
 fun LoginForm(
     uiState: LoginUIState,
-    loginViewModel: LoginViewModel,
-    sharedAuthViewModel: SharedAuthViewModel,
+    onPhoneChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    togglePasswordVisibility: () -> Unit,
 ) {
-    val isPasswordVisible by sharedAuthViewModel.isPasswordVisible.collectAsState()
-
     Column(modifier = Modifier.fillMaxWidth()) {
-        PhoneTextField(uiState.phone, loginViewModel::onPhoneChange, errorMessage = uiState.phoneError)
+        PhoneTextField(uiState.phone, onPhoneChange, errorMessage = uiState.phoneError)
         VerticalSpacer(height = Spacing8)
         PasswordTextField(
             value = uiState.password,
-            onValueChange = loginViewModel::onPasswordChange,
-            isPasswordVisible = isPasswordVisible,
-            onVisibilityToggle = sharedAuthViewModel::togglePasswordVisibility,
+            onValueChange = onPasswordChange,
+            isPasswordVisible = uiState.isPasswordVisible,
+            onVisibilityToggle = togglePasswordVisibility,
             errorMessage = uiState.passwordError
         )
     }

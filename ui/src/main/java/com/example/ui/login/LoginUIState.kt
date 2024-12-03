@@ -5,6 +5,7 @@ import com.example.domain.models.SignStatus
 data class LoginUIState(
     val phone: String = "",
     val password: String = "",
+    val isPasswordVisible: Boolean = false,
 
     val phoneError: String? = null,
     val passwordError: String? = null,

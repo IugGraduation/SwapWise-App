@@ -14,7 +14,7 @@ import com.example.ui.components.molecules.BioTextField
 import com.example.ui.components.molecules.FullNameTextField
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.molecules.PhoneTextField
-import com.example.ui.shared.SharedAuthViewModel
+import com.example.ui.signup.SignupActions
 import com.example.ui.signup.SignupUIState
 import com.example.ui.signup.SignupViewModel
 import com.example.ui.theme.Spacing8
@@ -22,50 +22,48 @@ import com.example.ui.theme.Spacing8
 @Composable
 fun SignupForm(
     uiState: SignupUIState,
-    sharedAuthViewModel: SharedAuthViewModel,
-    signupViewModel: SignupViewModel,
+    actions: SignupActions,
 ) {
-    val isPasswordVisible by sharedAuthViewModel.isPasswordVisible.collectAsState()
 
     Column(modifier = Modifier.fillMaxWidth()) {
         FullNameTextField(
             uiState.fullName,
-            signupViewModel::onFullNameChange,
+            actions.onFullNameChange,
             errorMessage = uiState.fullNameError
         )
         VerticalSpacer(height = Spacing8)
         PhoneTextField(
             uiState.phone,
-            signupViewModel::onPhoneChange,
+            actions.onPhoneChange,
             errorMessage = uiState.phoneError
         )
         VerticalSpacer(height = Spacing8)
         PasswordTextField(
             value = uiState.password,
-            onValueChange = signupViewModel::onPasswordChange,
-            isPasswordVisible = isPasswordVisible,
-            onVisibilityToggle = sharedAuthViewModel::togglePasswordVisibility,
+            onValueChange = actions.onPasswordChange,
+            isPasswordVisible = uiState.isPasswordVisible,
+            onVisibilityToggle = actions.togglePasswordVisibility,
             errorMessage = uiState.passwordError
         )
         VerticalSpacer(height = Spacing8)
         PasswordTextField(
             value = uiState.confirmPassword,
-            onValueChange = signupViewModel::onConfirmPasswordChange,
+            onValueChange = actions.onConfirmPasswordChange,
             isPasswordVisible = uiState.isConfirmPasswordVisible,
-            onVisibilityToggle = signupViewModel::toggleConfirmPasswordVisibility,
+            onVisibilityToggle = actions.toggleConfirmPasswordVisibility,
             placeholder = stringResource(R.string.confirm_password),
             errorMessage = uiState.confirmPasswordError
         )
         VerticalSpacer(height = Spacing8)
         BestBarterSpotTextField(
             uiState.bestBarterSpot,
-            signupViewModel::onBestBarterSpotChange,
+            actions.onBestBarterSpotChange,
             errorMessage = uiState.bestBarterSpotError
         )
         VerticalSpacer(height = Spacing8)
         BioTextField(
             uiState.bio,
-            signupViewModel::onBioChange,
+            actions.onBioChange,
             errorMessage = uiState.bioError
         )
 

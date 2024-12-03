@@ -68,9 +68,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
 
-    // Navigation
-    implementation(libs.androidx.navigation.compose)
-
     // Hilt for Dependency Injection
     implementation(libs.dagger.hilt.android)
     kapt(libs.hilt.android.compiler)

@@ -6,12 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.domain.LoginValidationUseCase
 import com.example.domain.ValidatePasswordUseCase
 import com.example.domain.ValidatePhoneNumberUseCase
@@ -22,19 +20,21 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.Footer
 import com.example.ui.components.organisms.LoginForm
 import com.example.ui.components.templates.PageTemplate
-import com.example.ui.shared.SharedAuthViewModel
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing80
 
-@Composable
-fun LoginPage(
-    loginViewModel: LoginViewModel = hiltViewModel(),
-    sharedAuthViewModel: SharedAuthViewModel = hiltViewModel()
-) {
-    val uiState by loginViewModel.uiState.collectAsState()
 
+@Composable
+fun LoginContent(
+    uiState: LoginUIState,
+    onClickLogin: () -> Unit,
+    onPhoneChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    togglePasswordVisibility: () -> Unit,
+    onClickGoToSignup: () -> Unit,
+) {
     PageTemplate {
         Column(
             modifier = Modifier
@@ -48,23 +48,24 @@ fun LoginPage(
                 title = stringResource(R.string.login),
                 imgPainter = painterResource(R.drawable.img_login),
                 imgPainterDarkTheme = painterResource(R.drawable.img_login_dark),
-                contentDescription = stringResource(R.string.image_login),
+                imgContentDescription = stringResource(R.string.image_login),
             )
             VerticalSpacer(Spacing24)
             LoginForm(
                 uiState = uiState,
-                loginViewModel = loginViewModel,
-                sharedAuthViewModel = sharedAuthViewModel,
+                onPhoneChange = onPhoneChange,
+                onPasswordChange = onPasswordChange,
+                togglePasswordVisibility = togglePasswordVisibility,
             )
             VerticalSpacer(Spacing24)
             CustomButton(
-                onClick = loginViewModel::onClickLogin,
+                onClick = onClickLogin,
                 text = stringResource(R.string.login)
             )
             Footer(
                 footerText = stringResource(R.string.don_t_have_an_account),
                 buttonText = stringResource(R.string.sign_up),
-                onClickButton = {}
+                onClickButton = onClickGoToSignup
             )
 
         }
@@ -73,14 +74,15 @@ fun LoginPage(
 
 //@Preview
 @Composable
-fun PreviewLoginPage() {
-    val loginViewModel = LoginViewModel(
-        LoginValidationUseCase(
-            ValidatePhoneNumberUseCase { "" },
-            ValidatePasswordUseCase { "" }
-        )
-    )
+fun PreviewLoginContent() {
     GraduationProjectTheme {
-        LoginPage(loginViewModel)
+        LoginContent(
+            uiState = LoginUIState(),
+            onClickLogin = {},
+            onPhoneChange = { },
+            onPasswordChange = { },
+            togglePasswordVisibility = { },
+            onClickGoToSignup = { }
+        )
     }
 }

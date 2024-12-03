@@ -1,6 +1,7 @@
 package com.example.ui.signup
 
 import com.example.domain.models.SignStatus
+import com.example.ui.login.LoginUIState
 
 data class SignupUIState(
     val fullName: String = "",
@@ -9,6 +10,7 @@ data class SignupUIState(
     val confirmPassword: String = "",
     val bestBarterSpot: String = "",
     val bio: String = "",
+    val isPasswordVisible: Boolean = false,
     val isConfirmPasswordVisible: Boolean = false,
 
     val fullNameError: String? = null,
