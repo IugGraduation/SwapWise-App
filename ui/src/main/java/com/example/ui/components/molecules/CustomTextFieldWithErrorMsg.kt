@@ -22,31 +22,11 @@ import com.example.ui.theme.Spacing8
 
 @Composable
 fun CustomTextFieldWithErrorMsg(
-    value: String,
-    onValueChange: (String) -> Unit,
-    placeholder: String,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    leadingIcon: @Composable() (() -> Unit)? = null,
-    trailingIcon: @Composable() (() -> Unit)? = null,
-    modifier: Modifier = Modifier,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    singleLine: Boolean = true,
-    minLines: Int = 1,
     errorMessage: String? = null,
+    customTextField: @Composable () -> Unit
 ) {
     Column {
-        CustomTextField(
-            value = value,
-            onValueChange = onValueChange,
-            placeholder = placeholder,
-            visualTransformation = visualTransformation,
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            modifier = modifier,
-            keyboardOptions = keyboardOptions,
-            singleLine = singleLine,
-            minLines = minLines,
-        )
+        customTextField()
 
         if (!errorMessage.isNullOrEmpty()) {
             VerticalSpacer(Spacing8)
@@ -64,13 +44,17 @@ fun PreviewCustomTextFieldWithErrorMsg() {
     GraduationProjectTheme {
         var textState by remember { mutableStateOf("") }
 
-        CustomTextFieldWithErrorMsg(textState, { textState = it }, "User",
-            leadingIcon = {
-                CustomTextFieldIcon(
-                    painter = painterResource(R.drawable.ic_user_name), // Use a vector icon or painter
-                    contentDescription = "User",
-                    modifier = Modifier.padding(vertical = Spacing16)
-                )
-            })
+        CustomTextFieldWithErrorMsg {
+            CustomTextField(
+                value = textState, onValueChange = { textState = it }, placeholder = "User",
+                leadingIcon = {
+                    CustomTextFieldIcon(
+                        painter = painterResource(R.drawable.ic_user_name), // Use a vector icon or painter
+                        contentDescription = "User",
+                        modifier = Modifier.padding(vertical = Spacing16)
+                    )
+                }
+            )
+        }
     }
 }

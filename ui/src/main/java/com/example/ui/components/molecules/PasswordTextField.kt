@@ -14,6 +14,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.ui.R
+import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.theme.GraduationProjectTheme
 
@@ -24,43 +25,44 @@ fun PasswordTextField(
     isPasswordVisible: Boolean,
     onVisibilityToggle: () -> Unit,
     modifier: Modifier = Modifier,
-    placeholder:String = stringResource(R.string.password),
+    placeholder: String = stringResource(R.string.password),
     errorMessage: String? = null,
 ) {
-    CustomTextFieldWithErrorMsg(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = modifier,
-        placeholder = placeholder,
-        errorMessage = errorMessage,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        visualTransformation = if (isPasswordVisible) {
-            VisualTransformation.None
-        } else {
-            PasswordVisualTransformation()
-        },
-        leadingIcon = {
-            CustomTextFieldIcon(
-                painter = painterResource(R.drawable.ic_password_lock),
-                contentDescription = stringResource(R.string.password),
-            )
-        },
-        trailingIcon = {
-            IconButton(onClick = { onVisibilityToggle() }) {
+    CustomTextFieldWithErrorMsg(errorMessage = errorMessage) {
+        CustomTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = modifier,
+            placeholder = placeholder,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            visualTransformation = if (isPasswordVisible) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
+            leadingIcon = {
                 CustomTextFieldIcon(
-                    painter = painterResource(
-                        if (isPasswordVisible) R.drawable.ic_eye_closed
-                        else R.drawable.ic_eye
-                    ),
-                    contentDescription = if (isPasswordVisible) {
-                        stringResource(R.string.hide_password)
-                    } else {
-                        stringResource(R.string.show_password)
-                    },
+                    painter = painterResource(R.drawable.ic_password_lock),
+                    contentDescription = stringResource(R.string.password),
                 )
+            },
+            trailingIcon = {
+                IconButton(onClick = { onVisibilityToggle() }) {
+                    CustomTextFieldIcon(
+                        painter = painterResource(
+                            if (isPasswordVisible) R.drawable.ic_eye_closed
+                            else R.drawable.ic_eye
+                        ),
+                        contentDescription = if (isPasswordVisible) {
+                            stringResource(R.string.hide_password)
+                        } else {
+                            stringResource(R.string.show_password)
+                        },
+                    )
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 
@@ -69,8 +71,12 @@ fun PasswordTextField(
 fun PreviewPasswordTextField() {
     GraduationProjectTheme {
         var textState by remember { mutableStateOf("") }
-        var isPasswordVisible by  remember { mutableStateOf(false) }
+        var isPasswordVisible by remember { mutableStateOf(false) }
 
-        PasswordTextField(textState, { textState = it }, isPasswordVisible, { isPasswordVisible = !isPasswordVisible})
+        PasswordTextField(
+            textState,
+            { textState = it },
+            isPasswordVisible,
+            { isPasswordVisible = !isPasswordVisible })
     }
 }

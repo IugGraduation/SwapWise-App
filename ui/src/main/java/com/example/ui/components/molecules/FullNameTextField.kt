@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.ui.R
+import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.theme.GraduationProjectTheme
 
@@ -19,19 +20,20 @@ fun FullNameTextField(
     modifier: Modifier = Modifier,
     errorMessage: String? = null,
 ) {
-    CustomTextFieldWithErrorMsg(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = modifier,
-        errorMessage = errorMessage,
-        placeholder = stringResource(R.string.full_name),
-        leadingIcon = {
-            CustomTextFieldIcon(
-                painter = painterResource(R.drawable.ic_user_name),
-                contentDescription = stringResource(R.string.full_name),
-            )
-        },
-    )
+    CustomTextFieldWithErrorMsg(errorMessage = errorMessage) {
+        CustomTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = modifier,
+            placeholder = stringResource(R.string.full_name),
+            leadingIcon = {
+                CustomTextFieldIcon(
+                    painter = painterResource(R.drawable.ic_user_name),
+                    contentDescription = stringResource(R.string.full_name),
+                )
+            },
+        )
+    }
 }
 
 
