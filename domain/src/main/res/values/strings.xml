@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="phone_number_cannot_be_empty">Phone number cannot be empty</string>
     <string name="phone_number_must_be_10_digits_long">Phone number must be 10 digits long</string>
     <string name="password_must_be_at_least_6_characters">Password must be at least 6 characters</string>
+    <string name="full_name_must_be_at_least_3_characters">Full Name must be at least 3 characters</string>
+    <string name="passwords_do_not_match">Passwords does not match</string>
+    <string name="best_barter_spot_must_be_at_least_3_characters">Best Barter Spot must be at least 3 characters</string>
 </resources>
