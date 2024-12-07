@@ -12,10 +12,10 @@ fun LoginScreen(
     navController: NavController,
     loginViewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val uiState by loginViewModel.uiState.collectAsState()
+    val state by loginViewModel.state.collectAsState()
 
     LoginContent(
-        uiState = uiState,
+        state = state,
         onClickLogin = loginViewModel::onClickLogin,
         onPhoneChange = loginViewModel::onPhoneChange,
         onPasswordChange = loginViewModel::onPasswordChange,

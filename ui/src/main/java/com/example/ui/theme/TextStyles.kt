@@ -36,26 +36,33 @@ object TextStyles {
             letterSpacing = 0.sp,
             color = MaterialTheme.colorScheme.primary,
         )
-    val headingMedium = TextStyle(
+    val headingMedium: TextStyle = TextStyle(
         fontFamily = Roboto,
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp,
         letterSpacing = 0.sp,
+        //don't change color here
     )
 
-    val headingSmall = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 14.sp,
-        letterSpacing = 0.sp
-    )
+    val headingSmall: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = Roboto,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp,
+            letterSpacing = 0.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
 
-    val bodySmall = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        letterSpacing = 0.sp
-    )
+    val bodySmall: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = Roboto,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp,
+            letterSpacing = 0.sp,
+            color = MaterialTheme.colorScheme.tertiary
+        )
 
     val bodyLarge: TextStyle
         @Composable
@@ -77,12 +84,15 @@ object TextStyles {
             color = MaterialTheme.colorScheme.tertiary
         )
 
-    val caption = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        letterSpacing = 0.sp
-    )
+    val captionLarge
+        @Composable
+        get() = TextStyle(
+            fontFamily = Roboto,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp,
+            letterSpacing = 0.sp,
+            color = MaterialTheme.colorScheme.tertiary
+        )
 
     val captionMedium = TextStyle(
         fontFamily = Roboto,
@@ -91,25 +101,34 @@ object TextStyles {
         letterSpacing = 0.sp
     )
 
-    val captionExtraSmall = TextStyle(
-        fontFamily = Roboto,
-        fontWeight = FontWeight.Normal,
-        fontSize = 8.sp,
-        letterSpacing = 0.sp
-    )
+    val captionSmall: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = Roboto,
+            fontWeight = FontWeight.Normal,
+            fontSize = 8.sp,
+            letterSpacing = 0.sp,
+            color = MaterialTheme.colorScheme.secondary
+        )
 
-    val smallCustomTitle = TextStyle(
-        fontFamily = SendFlowers,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        letterSpacing = 2.sp
-    )
+    val smallCustomTitle: TextStyle
+        @Composable
+        get() = TextStyle(
+            fontFamily = SendFlowers,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp,
+            letterSpacing = 2.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
 
-    val largeCustomTitle = TextStyle(
+    val largeCustomTitle: TextStyle
+        @Composable
+        get() = TextStyle(
         fontFamily = SendFlowers,
         fontWeight = FontWeight.Normal,
         fontSize = 24.sp,
-        letterSpacing = 2.sp
+        letterSpacing = 2.sp,
+        color = MaterialTheme.colorScheme.primary
     )
 
 }

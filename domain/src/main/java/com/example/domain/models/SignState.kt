@@ -1,7 +1,7 @@
 package com.example.domain.models
 
 
-data class SignStatus(
+data class SignState(
     val fullName: String = "",
     val phone: String = "",
     val password: String = "",

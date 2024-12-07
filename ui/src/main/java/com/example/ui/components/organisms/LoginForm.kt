@@ -3,35 +3,30 @@ package com.example.ui.components.organisms
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.domain.LoginValidationUseCase
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.molecules.PhoneTextField
-import com.example.ui.login.LoginUIState
-import com.example.ui.login.LoginViewModel
+import com.example.ui.login.LoginUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing8
 
 @Composable
 fun LoginForm(
-    uiState: LoginUIState,
+    state: LoginUiState,
     onPhoneChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     togglePasswordVisibility: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        PhoneTextField(uiState.phone, onPhoneChange, errorMessage = uiState.phoneError)
+        PhoneTextField(state.phone, onPhoneChange, errorMessage = state.phoneError)
         VerticalSpacer(height = Spacing8)
         PasswordTextField(
-            value = uiState.password,
+            value = state.password,
             onValueChange = onPasswordChange,
-            isPasswordVisible = uiState.isPasswordVisible,
+            isPasswordVisible = state.isPasswordVisible,
             onVisibilityToggle = togglePasswordVisibility,
-            errorMessage = uiState.passwordError
+            errorMessage = state.passwordError
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.example.ui.otp
+package com.example.ui.confirm_number
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

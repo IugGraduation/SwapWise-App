@@ -1,4 +1,4 @@
-package com.example.ui.otp
+package com.example.ui.confirm_number
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.CustomOtpTextField
@@ -25,7 +26,7 @@ import com.example.ui.theme.TextStyles
 
 @Composable
 fun OtpContent(
-    uiState: OtpUIState,
+    state: ConfirmNumberUiState,
     onOtpChange: (String) -> Unit,
     onClickConfirm: () -> Unit
 ) {
@@ -49,26 +50,26 @@ fun OtpContent(
             )
             VerticalSpacer(Spacing24)
             CustomOtpTextField(
-                otp = uiState.otp,
+                otp = state.otp,
                 onOtpChanged = onOtpChange,
-                otpLength = uiState.otpLength
+                otpLength = state.otpLength
             )
             VerticalSpacer(Spacing72)
             CustomButton(
                 onClick = onClickConfirm,
                 text = stringResource(R.string.confirm),
-                enabled = uiState.isConfirmButtonEnabled,
+                enabled = state.isConfirmButtonEnabled,
             )
         }
     }
 }
 
-//@Preview(showSystemUi = false, showBackground = true,)
+@Preview(showSystemUi = false, showBackground = true,)
 @Composable
 fun PreviewOtpContent() {
     GraduationProjectTheme {
         OtpContent(
-            uiState = OtpUIState(),
+            state = ConfirmNumberUiState(),
             onOtpChange = { },
             onClickConfirm = { }
         )

@@ -12,7 +12,7 @@ fun SignupScreen(
     navController: NavController,
     signupViewModel: SignupViewModel = hiltViewModel(),
 ) {
-    val uiState by signupViewModel.uiState.collectAsState()
+    val state by signupViewModel.state.collectAsState()
     val actions = SignupActions(
         onFullNameChange = signupViewModel::onFullNameChange,
         onPhoneChange = signupViewModel::onPhoneChange,
@@ -27,7 +27,7 @@ fun SignupScreen(
     )
 
     SignupContent(
-        uiState = uiState,
+        state = state,
         actions = actions
     )
 

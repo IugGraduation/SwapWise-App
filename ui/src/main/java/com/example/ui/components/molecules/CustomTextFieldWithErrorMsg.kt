@@ -2,7 +2,6 @@ package com.example.ui.components.molecules
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,7 +9,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.VisualTransformation
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.CustomTextFieldIcon
@@ -49,7 +47,7 @@ fun PreviewCustomTextFieldWithErrorMsg() {
                 value = textState, onValueChange = { textState = it }, placeholder = "User",
                 leadingIcon = {
                     CustomTextFieldIcon(
-                        painter = painterResource(R.drawable.ic_user_name), // Use a vector icon or painter
+                        painter = painterResource(R.drawable.ic_user), // Use a vector icon or painter
                         contentDescription = "User",
                         modifier = Modifier.padding(vertical = Spacing16)
                     )

@@ -1,6 +1,6 @@
 package com.example.domain
 
-import com.example.domain.models.SignStatus
+import com.example.domain.models.SignState
 import javax.inject.Inject
 
 class SignupValidationUseCase @Inject constructor(
@@ -11,15 +11,15 @@ class SignupValidationUseCase @Inject constructor(
     private val validateBestBarterSpotUseCase: ValidateBestBarterSpotUseCase,
 ) {
 
-    operator fun invoke(signStatus: SignStatus): SignStatus {
-        val fullNameResult = validateFullNameUseCase(signStatus.fullName)
-        val phoneResult = validatePhoneNumberUseCase(signStatus.phone)
-        val passwordResult = validatePasswordUseCase(signStatus.password)
+    operator fun invoke(signState: SignState): SignState {
+        val fullNameResult = validateFullNameUseCase(signState.fullName)
+        val phoneResult = validatePhoneNumberUseCase(signState.phone)
+        val passwordResult = validatePasswordUseCase(signState.password)
         val confirmPasswordResult =
-            validateConfirmPasswordUseCase(signStatus.password, signStatus.confirmPassword)
-        val bestBarterSpotResult = validateBestBarterSpotUseCase(signStatus.bestBarterSpot)
+            validateConfirmPasswordUseCase(signState.password, signState.confirmPassword)
+        val bestBarterSpotResult = validateBestBarterSpotUseCase(signState.bestBarterSpot)
 
-        val updatedSign = signStatus.copy(
+        val updatedSign = signState.copy(
             fullNameError = fullNameResult.exceptionOrNull()?.message,
             phoneError = phoneResult.exceptionOrNull()?.message,
             passwordError = passwordResult.exceptionOrNull()?.message,

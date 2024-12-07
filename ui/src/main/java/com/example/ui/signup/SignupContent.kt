@@ -25,7 +25,7 @@ import com.example.ui.theme.Spacing80
 
 @Composable
 fun SignupContent(
-    uiState: SignupUIState,
+    state: SignupUiState,
     actions: SignupActions,
 ) {
     PageTemplate {
@@ -44,7 +44,7 @@ fun SignupContent(
             )
             VerticalSpacer(Spacing24)
             SignupForm(
-                uiState = uiState,
+                state = state,
                 actions = actions,
             )
             VerticalSpacer(Spacing24)
@@ -63,15 +63,15 @@ fun SignupContent(
 }
 
 
-//@Preview(
-//    showSystemUi = false, showBackground = true,
-//    device = "spec:width=1080px,height=2790px,dpi=440",
-//)
+@Preview(
+    showSystemUi = false, showBackground = true,
+    device = "spec:width=1080px,height=2790px,dpi=440",
+)
 @Composable
 fun PreviewSignupContent() {
     GraduationProjectTheme {
         SignupContent(
-            uiState = SignupUIState(),
+            state = SignupUiState(),
             actions = SignupActions(
                 onFullNameChange = { },
                 onPhoneChange = { },

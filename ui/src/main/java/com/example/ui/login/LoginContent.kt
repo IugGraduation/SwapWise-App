@@ -9,10 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.compose.rememberNavController
-import com.example.domain.LoginValidationUseCase
-import com.example.domain.ValidatePasswordUseCase
-import com.example.domain.ValidatePhoneNumberUseCase
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.Header
@@ -28,7 +25,7 @@ import com.example.ui.theme.Spacing80
 
 @Composable
 fun LoginContent(
-    uiState: LoginUIState,
+    state: LoginUiState,
     onClickLogin: () -> Unit,
     onPhoneChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
@@ -52,7 +49,7 @@ fun LoginContent(
             )
             VerticalSpacer(Spacing24)
             LoginForm(
-                uiState = uiState,
+                state = state,
                 onPhoneChange = onPhoneChange,
                 onPasswordChange = onPasswordChange,
                 togglePasswordVisibility = togglePasswordVisibility,
@@ -72,12 +69,12 @@ fun LoginContent(
     }
 }
 
-//@Preview
+@Preview
 @Composable
 fun PreviewLoginContent() {
     GraduationProjectTheme {
         LoginContent(
-            uiState = LoginUIState(),
+            state = LoginUiState(),
             onClickLogin = {},
             onPhoneChange = { },
             onPasswordChange = { },

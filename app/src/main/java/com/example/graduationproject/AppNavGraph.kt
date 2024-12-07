@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.ui.login.loginRoute
-import com.example.ui.otp.otpRoute
+import com.example.ui.confirm_number.otpRoute
+import com.example.ui.home.homeRoute
 import com.example.ui.signup.signupRoute
+import com.example.ui.topic_see_all.topicSeeAllRoute
 
 
 @Composable
@@ -14,5 +16,7 @@ fun AppNavGraph(navController: NavHostController) {
         signupRoute(navController)
         loginRoute(navController)
         otpRoute(navController)
+        homeRoute(navController)
+        topicSeeAllRoute(navController)
     }
 }

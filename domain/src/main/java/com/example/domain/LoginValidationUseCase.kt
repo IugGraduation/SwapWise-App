@@ -1,6 +1,6 @@
 package com.example.domain
 
-import com.example.domain.models.SignStatus
+import com.example.domain.models.SignState
 import javax.inject.Inject
 
 class LoginValidationUseCase @Inject constructor(
@@ -8,11 +8,11 @@ class LoginValidationUseCase @Inject constructor(
     private val validatePasswordUseCase: ValidatePasswordUseCase,
 ) {
 
-    operator fun invoke(signStatus: SignStatus): SignStatus {
-        val phoneResult = validatePhoneNumberUseCase(signStatus.phone)
-        val passwordResult = validatePasswordUseCase(signStatus.password)
+    operator fun invoke(signState: SignState): SignState {
+        val phoneResult = validatePhoneNumberUseCase(signState.phone)
+        val passwordResult = validatePasswordUseCase(signState.password)
 
-        val updatedSign = signStatus.copy(
+        val updatedSign = signState.copy(
             phoneError = phoneResult.exceptionOrNull()?.message,
             passwordError = passwordResult.exceptionOrNull()?.message
         )

@@ -20,4 +20,21 @@
     <string name="enter_otp">Enter OTP</string>
     <string name="an_4_digit_code_has_been_sent_to_your_phone_number">An 4 digit code has been sent to your phone number …</string>
     <string name="confirm">Confirm</string>
+    <string name="user_image">User image</string>
+    <string name="would_you_like_to_trade_anything">Would you like to trade anything?</string>
+    <string name="categories">Categories</string>
+    <string name="see_all">See All</string>
+    <string name="food_and_beverages"><![CDATA[Food & Beverages]]></string>
+    <string name="top_interactive">Top Interactive</string>
+    <string name="make_your_offer">Make Your Offer</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="offers">"Offers"</string>
+    <string name="go_back">Go Back</string>
+    <string name="recent_posts">Recent Posts</string>
+    <string name="home">home</string>
+    <string name="search">Search</string>
+    <string name="notifications">Notifications</string>
+    <string name="profile">Profile</string>
+    <string name="all">All</string>
 </resources>

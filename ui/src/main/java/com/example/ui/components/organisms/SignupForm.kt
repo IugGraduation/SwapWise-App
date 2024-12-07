@@ -3,8 +3,6 @@ package com.example.ui.components.organisms
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.ui.R
@@ -15,56 +13,55 @@ import com.example.ui.components.molecules.FullNameTextField
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.molecules.PhoneTextField
 import com.example.ui.signup.SignupActions
-import com.example.ui.signup.SignupUIState
-import com.example.ui.signup.SignupViewModel
+import com.example.ui.signup.SignupUiState
 import com.example.ui.theme.Spacing8
 
 @Composable
 fun SignupForm(
-    uiState: SignupUIState,
+    state: SignupUiState,
     actions: SignupActions,
 ) {
 
     Column(modifier = Modifier.fillMaxWidth()) {
         FullNameTextField(
-            uiState.fullName,
+            state.fullName,
             actions.onFullNameChange,
-            errorMessage = uiState.fullNameError
+            errorMessage = state.fullNameError
         )
         VerticalSpacer(height = Spacing8)
         PhoneTextField(
-            uiState.phone,
+            state.phone,
             actions.onPhoneChange,
-            errorMessage = uiState.phoneError
+            errorMessage = state.phoneError
         )
         VerticalSpacer(height = Spacing8)
         PasswordTextField(
-            value = uiState.password,
+            value = state.password,
             onValueChange = actions.onPasswordChange,
-            isPasswordVisible = uiState.isPasswordVisible,
+            isPasswordVisible = state.isPasswordVisible,
             onVisibilityToggle = actions.togglePasswordVisibility,
-            errorMessage = uiState.passwordError
+            errorMessage = state.passwordError
         )
         VerticalSpacer(height = Spacing8)
         PasswordTextField(
-            value = uiState.confirmPassword,
+            value = state.confirmPassword,
             onValueChange = actions.onConfirmPasswordChange,
-            isPasswordVisible = uiState.isConfirmPasswordVisible,
+            isPasswordVisible = state.isConfirmPasswordVisible,
             onVisibilityToggle = actions.toggleConfirmPasswordVisibility,
             placeholder = stringResource(R.string.confirm_password),
-            errorMessage = uiState.confirmPasswordError
+            errorMessage = state.confirmPasswordError
         )
         VerticalSpacer(height = Spacing8)
         BestBarterSpotTextField(
-            uiState.bestBarterSpot,
+            state.bestBarterSpot,
             actions.onBestBarterSpotChange,
-            errorMessage = uiState.bestBarterSpotError
+            errorMessage = state.bestBarterSpotError
         )
         VerticalSpacer(height = Spacing8)
         BioTextField(
-            uiState.bio,
+            state.bio,
             actions.onBioChange,
-            errorMessage = uiState.bioError
+            errorMessage = state.bioError
         )
 
     }

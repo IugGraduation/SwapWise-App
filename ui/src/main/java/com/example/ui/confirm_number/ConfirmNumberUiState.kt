@@ -1,6 +1,6 @@
-package com.example.ui.otp
+package com.example.ui.confirm_number
 
-data class OtpUIState(
+data class ConfirmNumberUiState(
     val otp: String = "12",
     val isConfirmButtonEnabled: Boolean = false,
     val otpLength: Int = 4,

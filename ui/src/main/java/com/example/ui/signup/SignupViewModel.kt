@@ -12,39 +12,39 @@ import javax.inject.Inject
 class SignupViewModel @Inject constructor(
     private val signupValidationUseCase: SignupValidationUseCase,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(SignupUIState())
-    val uiState = _uiState.asStateFlow()
+    private val _state = MutableStateFlow(SignupUiState())
+    val state = _state.asStateFlow()
 
     fun onFullNameChange(newValue: String) {
-        _uiState.update { it.copy(fullName = newValue, fullNameError = null) }
+        _state.update { it.copy(fullName = newValue, fullNameError = null) }
     }
 
     fun onPhoneChange(newValue: String) {
-        _uiState.update { it.copy(phone = newValue, phoneError = null) }
+        _state.update { it.copy(phone = newValue, phoneError = null) }
     }
 
     fun onPasswordChange(newValue: String) {
-        _uiState.update { it.copy(password = newValue, passwordError = null) }
+        _state.update { it.copy(password = newValue, passwordError = null) }
     }
 
     fun togglePasswordVisibility() {
-        _uiState.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
+        _state.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
     }
 
     fun onConfirmPasswordChange(newValue: String) {
-        _uiState.update { it.copy(confirmPassword = newValue, confirmPasswordError = null) }
+        _state.update { it.copy(confirmPassword = newValue, confirmPasswordError = null) }
     }
 
     fun toggleConfirmPasswordVisibility() {
-        _uiState.update { it.copy(isConfirmPasswordVisible = !it.isConfirmPasswordVisible) }
+        _state.update { it.copy(isConfirmPasswordVisible = !it.isConfirmPasswordVisible) }
     }
 
     fun onBestBarterSpotChange(newValue: String) {
-        _uiState.update { it.copy(bestBarterSpot = newValue, bestBarterSpotError = null) }
+        _state.update { it.copy(bestBarterSpot = newValue, bestBarterSpotError = null) }
     }
 
     fun onBioChange(newValue: String) {
-        _uiState.update { it.copy(bio = newValue, bioError = null) }
+        _state.update { it.copy(bio = newValue, bioError = null) }
     }
 
     fun onClickSignup() {
@@ -54,8 +54,8 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun validateForm(): Boolean{
-        val signStatus = signupValidationUseCase(uiState.value.toSignStatus())
-        _uiState.value = SignupUIState.fromSignStatus(signStatus)
+        val signStatus = signupValidationUseCase(state.value.toSignState())
+        _state.value = SignupUiState.fromSignState(signStatus)
         return signStatus.isSuccess()
     }
 

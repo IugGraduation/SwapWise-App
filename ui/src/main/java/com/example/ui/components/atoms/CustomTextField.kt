@@ -81,7 +81,7 @@ fun PreviewEditText() {
         CustomTextField(textState, { textState = it }, "User",
             leadingIcon = {
                 CustomTextFieldIcon(
-                    painter = painterResource(R.drawable.ic_user_name), // Use a vector icon or painter
+                    painter = painterResource(R.drawable.ic_user), // Use a vector icon or painter
                     contentDescription = "User",
                     modifier = Modifier.padding(vertical = Spacing16)
                 )
