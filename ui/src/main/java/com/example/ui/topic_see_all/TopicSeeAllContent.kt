@@ -29,7 +29,7 @@ fun TopicSeeAllContent(topic: TopicUiState, onClickGoBack: () -> Unit) {
 }
 
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun PreviewAllTopicsContent() {
     GraduationProjectTheme {

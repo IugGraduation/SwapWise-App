@@ -63,10 +63,10 @@ fun SignupContent(
 }
 
 
-@Preview(
-    showSystemUi = false, showBackground = true,
-    device = "spec:width=1080px,height=2790px,dpi=440",
-)
+//@Preview(
+//    showSystemUi = false, showBackground = true,
+//    device = "spec:width=1080px,height=2790px,dpi=440",
+//)
 @Composable
 fun PreviewSignupContent() {
     GraduationProjectTheme {

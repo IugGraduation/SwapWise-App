@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.ui.R
 import com.example.domain.models.PostItem
+import com.example.ui.theme.Primary
 import com.example.ui.theme.Spacing2
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing6
@@ -29,7 +30,8 @@ fun OffersCountBox(postItem: PostItem) {
             Icon(
                 painter = painterResource(R.drawable.ic_offer),
                 contentDescription = "",
-                modifier = Modifier.size(12.dp)
+                modifier = Modifier.size(12.dp),
+                tint = MaterialTheme.colorScheme.secondary
             )
             HorizontalSpacer(Spacing4)
             Text(

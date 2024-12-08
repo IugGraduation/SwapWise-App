@@ -1,6 +1,7 @@
 package com.example.ui.components.molecules
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,9 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.domain.models.User
+import com.example.ui.theme.BackgroundLight
 import com.example.ui.theme.IconSizeSmall
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
@@ -38,7 +41,7 @@ fun PostHeaderRow(isOpen: Boolean, user: User) {
             Text(
                 text = user.name,
                 style = TextStyles.headingSmall,
-                color = MaterialTheme.colorScheme.background
+                color = BackgroundLight
             )
         }
         BoxStatus(isOpen = isOpen)

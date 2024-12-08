@@ -24,9 +24,8 @@ fun BoxRounded(
     content: @Composable BoxScope.() -> Unit = {}
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(RadiusLarge))
-            .then(modifier)
             .background(color = color),
         contentAlignment = contentAlignment
     ) {

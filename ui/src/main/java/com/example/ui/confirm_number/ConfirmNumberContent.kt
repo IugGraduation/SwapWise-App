@@ -64,7 +64,7 @@ fun OtpContent(
     }
 }
 
-@Preview(showSystemUi = false, showBackground = true,)
+//@Preview(showSystemUi = false, showBackground = true,)
 @Composable
 fun PreviewOtpContent() {
     GraduationProjectTheme {

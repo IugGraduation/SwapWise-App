@@ -27,15 +27,15 @@ class TopicSeeAllViewModel @Inject constructor(
         var items: List<TopicItem> = listOf()
         when (args.topicType) {
             TopicType.Categories.name -> {
-                items = GetCategoriesUseCase().invoke()
+                items = GetCategoriesUseCase()()
             }
             TopicType.TopInteractive.name -> {
                 type = TopicType.TopInteractive
-                items = GetPostsUseCase().invoke()
+                items = GetPostsUseCase()()
             }
             TopicType.RecentPosts.name -> {
                 type = TopicType.RecentPosts
-                items = GetPostsUseCase().invoke()
+                items = GetPostsUseCase()()
             }
         }
 

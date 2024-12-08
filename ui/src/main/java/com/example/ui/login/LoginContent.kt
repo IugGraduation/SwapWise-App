@@ -69,7 +69,7 @@ fun LoginContent(
     }
 }
 
-@Preview
+//@Preview
 @Composable
 fun PreviewLoginContent() {
     GraduationProjectTheme {
