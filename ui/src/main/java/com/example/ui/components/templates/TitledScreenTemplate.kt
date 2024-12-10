@@ -1,6 +1,7 @@
 package com.example.ui.components.templates
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -13,12 +14,14 @@ import com.example.ui.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopicSeeAllTemplate(
+fun TitledScreenTemplate(
     title: String,
     onClickGoBack: () -> Unit,
+    floatingActionButton: @Composable () -> Unit = {},
+    floatingActionButtonPosition: FabPosition = FabPosition.Center,
     content: @Composable () -> Unit
 ) {
-    PageTemplate(
+    ScreenTemplate(
         topBar = {
             TopAppBar(
                 title = { Text(text = title) },
@@ -31,7 +34,9 @@ fun TopicSeeAllTemplate(
                     }
                 }
             )
-        }
+        },
+        floatingActionButton = floatingActionButton,
+        floatingActionButtonPosition = floatingActionButtonPosition,
     ) {
         content()
     }

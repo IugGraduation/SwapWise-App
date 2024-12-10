@@ -15,7 +15,7 @@ fun Header(
     imgPainterDarkTheme: Painter = imgPainter,
     modifier: Modifier = Modifier
 ) {
-    ImageWithMaxSize(
+    ImageWithMaxWidth(
         painter = imgPainter,
         painterDarkTheme = imgPainterDarkTheme,
         contentDescription = imgContentDescription,

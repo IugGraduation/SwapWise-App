@@ -8,13 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.CustomOtpTextField
 import com.example.ui.components.atoms.Header
 import com.example.ui.components.atoms.VerticalSpacer
-import com.example.ui.components.templates.PageTemplate
+import com.example.ui.components.templates.ScreenTemplate
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -30,7 +29,7 @@ fun OtpContent(
     onOtpChange: (String) -> Unit,
     onClickConfirm: () -> Unit
 ) {
-    PageTemplate {
+    ScreenTemplate {
         Column(
             modifier = Modifier
                 .fillMaxSize()

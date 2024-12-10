@@ -15,7 +15,7 @@ import com.example.ui.theme.Spacing8
 
 @Composable
 fun TextStatus(isOpen: Boolean, modifier: Modifier = Modifier) {
-    val text = if (isOpen) stringResource(R.string.open) else stringResource(R.string.close)
+    val text = if (isOpen) stringResource(R.string.open) else stringResource(R.string.closed)
     val color = if (isOpen) Correct else Danger
     Text(
         text = text,

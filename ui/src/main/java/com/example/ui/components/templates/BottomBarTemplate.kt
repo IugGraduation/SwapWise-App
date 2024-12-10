@@ -10,7 +10,7 @@ fun BottomBarTemplate(
     topBar: @Composable () -> Unit = {},
     content: @Composable () -> Unit
 ) {
-    PageTemplate(
+    ScreenTemplate(
         topBar = topBar,
         bottomBar = {
             CustomBottomNavigationBar(

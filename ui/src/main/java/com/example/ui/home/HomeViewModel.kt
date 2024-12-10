@@ -1,6 +1,8 @@
 package com.example.ui.home
 
 import androidx.lifecycle.ViewModel
+import com.example.domain.GetCategoriesUseCase
+import com.example.domain.GetPostsUseCase
 import com.example.ui.R
 import com.example.domain.models.CategoryItem
 import com.example.ui.models.Orientation
@@ -51,29 +53,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     private fun getMockData(type: TopicType): List<TopicItem> {
         if (type == TopicType.Categories) {
-            val categoryItem = CategoryItem(
-                "food_and_beverages",
-                R.drawable.img_food_and_beverages,
-                ""
-            )
-            return listOf(categoryItem, categoryItem, categoryItem, categoryItem, categoryItem)
+            return GetCategoriesUseCase()()
         } else {
-            val postItem = PostItem(
-                imgResId = R.drawable.img_top_interactive,
-                imgContentDescription = "",
-                user = User(
-                    name = "Jane Cooper",
-                    imgResId = R.drawable.img_user_fake,
-                    imgContentDescription = ""
-                ),
-                title = "10kg of Sugar Up for 10kg of Rice ...",
-                details = "Looking for a sweet deal? I have 10 kilograms of high-quality sugar that I’d like to exchange for something useful ...",
-                onClickMakeOffer = { },
-                isOpen = true,
-                offersCount = 4
-            )
-
-            return listOf(postItem, postItem, postItem, postItem)
+            return GetPostsUseCase()()
         }
     }
 

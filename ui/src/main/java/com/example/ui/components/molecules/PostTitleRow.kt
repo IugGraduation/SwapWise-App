@@ -9,16 +9,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import com.example.ui.components.atoms.OffersCountBox
+import com.example.domain.models.OfferItem
 import com.example.domain.models.PostItem
+import com.example.ui.components.atoms.OverlayBoxWithImage
+import com.example.ui.R
 import com.example.ui.theme.Spacing2
 import com.example.ui.theme.Spacing4
+import com.example.ui.theme.Spacing6
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun PostTitleRow(postItem: PostItem){
+fun PostTitleRow(item: OfferItem) {
     Row(
         modifier = Modifier
             .padding(vertical = Spacing8)
@@ -28,7 +32,7 @@ fun PostTitleRow(postItem: PostItem){
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = postItem.title,
+            text = item.title,
             style = TextStyles.headingMedium,
             color = MaterialTheme.colorScheme.primary,
             maxLines = 1,
@@ -37,6 +41,13 @@ fun PostTitleRow(postItem: PostItem){
                 .weight(1f)
                 .padding(end = Spacing4)
         )
-        OffersCountBox(postItem = postItem)
+        if (item is PostItem) {
+            OverlayBoxWithImage(
+                overlayColor = MaterialTheme.colorScheme.background,
+                imgResId = R.drawable.ic_offer,
+                text = item.offers.size.toString() + " " + stringResource(R.string.offers),
+                modifier = Modifier.padding(vertical = Spacing2, horizontal = Spacing6),
+            )
+        }
     }
 }

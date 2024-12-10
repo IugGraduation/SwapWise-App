@@ -1,17 +1,12 @@
 package com.example.ui.home
 
-import android.content.res.Configuration
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.domain.GetCategoriesUseCase
 import com.example.domain.GetPostsUseCase
 import com.example.domain.GetUserUseCase
@@ -21,7 +16,7 @@ import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.TopicsListHeader
 import com.example.ui.components.organisms.CustomLazyLayoutWithHeader
-import com.example.ui.components.organisms.PostCard
+import com.example.ui.components.organisms.TopicCard
 import com.example.ui.components.templates.HomeTemplate
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.Orientation
@@ -66,8 +61,8 @@ fun HomeContent(
             }
 
             items(state.topicsList.last().items){
-                PostCard(
-                    postItem = it as PostItem,
+                TopicCard(
+                    item = it as PostItem,
                     orientation = Orientation.Vertical,
                     modifier = Modifier.padding(horizontal = Spacing16)
                 )
@@ -78,9 +73,9 @@ fun HomeContent(
 }
 
 
-@Preview(showBackground = true, showSystemUi = false,
-    device = "spec:width=1080px,height=3040px,dpi=440",
-)
+//@Preview(showBackground = true, showSystemUi = false,
+//    device = "spec:width=1080px,height=3040px,dpi=440",
+//)
 @Composable
 fun PreviewHomeContent() {
     val categoryItemsList = GetCategoriesUseCase()()

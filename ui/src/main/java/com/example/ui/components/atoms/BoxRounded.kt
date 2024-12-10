@@ -27,7 +27,7 @@ fun BoxRounded(
         modifier = modifier
             .clip(RoundedCornerShape(RadiusLarge))
             .background(color = color),
-        contentAlignment = contentAlignment
+        contentAlignment = contentAlignment,
     ) {
         content()
     }

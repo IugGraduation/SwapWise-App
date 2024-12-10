@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import com.example.ui.login.loginRoute
 import com.example.ui.confirm_number.otpRoute
 import com.example.ui.home.homeRoute
+import com.example.ui.post_details.postDetailsRoute
 import com.example.ui.signup.signupRoute
 import com.example.ui.topic_see_all.topicSeeAllRoute
 
@@ -18,5 +19,6 @@ fun AppNavGraph(navController: NavHostController) {
         otpRoute(navController)
         homeRoute(navController)
         topicSeeAllRoute(navController)
+        postDetailsRoute(navController)
     }
 }

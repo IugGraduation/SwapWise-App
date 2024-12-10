@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 
 @Composable
-fun ImageWithMaxSize(
+fun ImageWithMaxWidth(
     painter: Painter,
     contentDescription: String?,
     painterDarkTheme: Painter = painter,

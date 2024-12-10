@@ -7,7 +7,7 @@ import com.example.domain.models.CategoryItem
 import com.example.domain.models.PostItem
 import com.example.domain.models.TopicItem
 import com.example.ui.components.molecules.CategoryCard
-import com.example.ui.components.organisms.PostCard
+import com.example.ui.components.organisms.TopicCard
 import com.example.ui.models.Orientation
 import com.example.ui.models.TopicType
 import com.example.ui.models.TopicUiState
@@ -41,8 +41,8 @@ private fun getCard(
             )
         }
         TopicType.TopInteractive, TopicType.RecentPosts -> { item ->
-            PostCard(
-                postItem = item as PostItem,
+            TopicCard(
+                item = item as PostItem,
                 orientation = orientation
             )
         }

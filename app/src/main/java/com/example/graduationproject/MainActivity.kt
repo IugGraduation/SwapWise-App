@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.example.ui.home.navigateToHome
+import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.theme.GraduationProjectTheme
 import dagger.hilt.android.AndroidEntryPoint
 

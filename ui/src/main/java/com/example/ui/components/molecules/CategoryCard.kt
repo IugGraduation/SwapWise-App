@@ -12,7 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.CardText
-import com.example.ui.components.atoms.ImageWithMaxSize
+import com.example.ui.components.atoms.ImageWithMaxWidth
 import com.example.domain.models.CategoryItem
 import com.example.ui.models.Orientation
 import com.example.ui.theme.TextStyles
@@ -29,7 +29,7 @@ fun CategoryCard(
     }
 
     BoxRounded(modifier = myModifier, contentAlignment = Alignment.Center) {
-        ImageWithMaxSize(
+        ImageWithMaxWidth(
             painter = painterResource(categoryItem.imgResId),
             contentDescription = categoryItem.imgContentDescription,
             contentScale = ContentScale.Crop

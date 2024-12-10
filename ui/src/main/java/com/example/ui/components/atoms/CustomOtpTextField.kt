@@ -78,6 +78,7 @@ fun CustomOtpTextField(
 }
 
 
+//@Preview
 //@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewCustomOtpTextField() {

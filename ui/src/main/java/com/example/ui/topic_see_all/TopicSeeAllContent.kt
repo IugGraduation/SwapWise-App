@@ -2,10 +2,9 @@ package com.example.ui.topic_see_all
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomLazyLayout
-import com.example.ui.components.templates.TopicSeeAllTemplate
+import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.domain.models.CategoryItem
 import com.example.ui.models.Orientation
 import com.example.ui.models.TopicType
@@ -20,7 +19,7 @@ fun TopicSeeAllContent(topic: TopicUiState, onClickGoBack: () -> Unit) {
         if (topic.type == TopicType.Categories) stringResource(R.string.all) + " " + topic.type.getName()
         else topic.type.getName()
 
-    TopicSeeAllTemplate(
+    TitledScreenTemplate(
         title = title,
         onClickGoBack = onClickGoBack
     ) {

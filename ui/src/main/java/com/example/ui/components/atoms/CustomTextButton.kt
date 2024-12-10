@@ -30,6 +30,7 @@ fun CustomTextButton(onClick: () -> Unit, text: String) {
 }
 
 
+//@Preview
 //@Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewCustomTextButton() {
