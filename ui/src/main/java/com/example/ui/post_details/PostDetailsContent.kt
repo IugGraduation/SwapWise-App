@@ -1,5 +1,6 @@
 package com.example.ui.post_details
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -73,7 +74,9 @@ fun PostDetailsContent(state: PostItem, onClickMakeOffer: () -> Unit, onClickGoB
                 TopicCard(
                     offer,
                     Orientation.Vertical,
-                    modifier = Modifier.padding(horizontal = Spacing16)
+                    modifier = Modifier
+                        .padding(horizontal = Spacing16)
+                        .padding(bottom = Spacing8)
                 )
             }
         }
@@ -82,7 +85,9 @@ fun PostDetailsContent(state: PostItem, onClickMakeOffer: () -> Unit, onClickGoB
 }
 
 
-@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440")
+@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440",
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
