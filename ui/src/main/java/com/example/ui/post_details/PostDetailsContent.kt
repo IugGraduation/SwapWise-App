@@ -1,6 +1,5 @@
 package com.example.ui.post_details
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,14 +8,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.domain.GetPostsUseCase
 import com.example.domain.models.PostItem
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.PostDetailsBody
 import com.example.ui.components.atoms.VerticalSpacer
-import com.example.ui.components.molecules.PostDetailsImage
+import com.example.ui.components.molecules.DetailsPageImage
 import com.example.ui.components.molecules.PostDetailsStatusRow
 import com.example.ui.components.molecules.PostDetailsUserHeader
 import com.example.ui.components.molecules.TitledChipsList
@@ -31,21 +29,22 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun PostDetailsContent(state: PostItem, onClickMakeOffer: () -> Unit, onClickGoBack: () -> Unit) {
+fun PostDetailsContent(state: PostItem, onClickAddOffer: () -> Unit, onClickGoBack: () -> Unit) {
     TitledScreenTemplate(
         title = stringResource(R.string.post_details),
         onClickGoBack = onClickGoBack,
         floatingActionButton = {
             CustomButton(
-                onClick = onClickMakeOffer,
-                text = "Make Offer",
+                onClick = onClickAddOffer,
+                text = stringResource(R.string.add_offer),
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
         }
     ) {
         LazyColumn {
             item {
-                PostDetailsImage(state.imgResId)
+                //todo: view image correctly here
+                DetailsPageImage(null)
                 VerticalSpacer(Spacing16)
                 PostDetailsUserHeader(user = state.user, date = state.date)
                 VerticalSpacer(Spacing24)
@@ -85,15 +84,13 @@ fun PostDetailsContent(state: PostItem, onClickMakeOffer: () -> Unit, onClickGoB
 }
 
 
-@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440",
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-)
+//@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440",)
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         PostDetailsContent(
             state = GetPostsUseCase()()[0],
-            onClickMakeOffer = {},
+            onClickAddOffer = {},
             onClickGoBack = {},
         )
     }

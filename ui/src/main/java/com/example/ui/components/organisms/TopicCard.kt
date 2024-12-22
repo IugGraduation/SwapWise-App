@@ -16,33 +16,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.domain.GetOffersUseCase
 import com.example.domain.GetPostsUseCase
-import com.example.domain.models.OfferItem
+import com.example.domain.models.IOffer
 import com.example.domain.models.PostItem
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.ButtonMakeOfferBottom
 import com.example.ui.components.atoms.ImageWithMaxWidth
+import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PostHeaderRow
 import com.example.ui.components.molecules.PostTitleRow
 import com.example.ui.models.Orientation
 import com.example.ui.theme.GraduationProjectTheme
+import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
 
 @Composable
 fun TopicCard(
-    item: OfferItem,
+    item: IOffer,
     orientation: Orientation,
     modifier: Modifier = Modifier,
 ) {
-    var myModifier = modifier.height(272.dp)
+    var myModifier = modifier
     myModifier = when (orientation) {
         Orientation.Horizontal -> myModifier.width(width = 248.dp)
         Orientation.Vertical -> myModifier.fillMaxWidth()
     }
-    if(item is PostItem){
+    if (item is PostItem) {
         item.onClickGoToDetails?.let {
             myModifier = myModifier.clickable { it() }
         }
@@ -51,7 +55,7 @@ fun TopicCard(
         color = MaterialTheme.colorScheme.onBackground,
         modifier = myModifier
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             TopHalfBox(item = item)
             BottomHalf(item = item)
         }
@@ -60,20 +64,20 @@ fun TopicCard(
 
 
 @Composable
-private fun TopHalfBox(item: OfferItem) {
+private fun TopHalfBox(item: IOffer) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.54f)
+            .height(146.dp)
     ) {
         ImageWithMaxWidth(
-            painter = painterResource(item.imgResId),
+            painter = painterResource(item.imgResId!!),
             contentDescription = item.imgContentDescription,
             contentScale = ContentScale.Crop
         )
         var isOpen = true
         var isOfferItem = true
-        if(item is PostItem){
+        if (item is PostItem) {
             isOpen = item.isOpen
             isOfferItem = false
         }
@@ -87,7 +91,7 @@ private fun TopHalfBox(item: OfferItem) {
 }
 
 @Composable
-private fun BottomHalf(item: OfferItem) {
+private fun BottomHalf(item: IOffer) {
     PostTitleRow(item = item)
     Text(
         item.details,
@@ -96,17 +100,16 @@ private fun BottomHalf(item: OfferItem) {
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.padding(horizontal = Spacing8)
     )
-    var onClickMakeOffer = {}
-    if (item is PostItem){
-        onClickMakeOffer = item.onClickMakeOffer
+    VerticalSpacer(Spacing24)
+    if (item is PostItem) {
+        ButtonMakeOfferBottom(onClick = item.onClickMakeOffer)
     }
-    ButtonMakeOfferBottom(onClick = onClickMakeOffer)
 
 }
 
-//@Preview(showBackground = true, showSystemUi = false, backgroundColor = 0xFFA41515)
+@Preview(showBackground = true, showSystemUi = false, backgroundColor = 0xFFA41515)
 @Composable
-fun PreviewPostCard() {
+fun PreviewTopicCard() {
     GraduationProjectTheme {
         TopicCard(
             item = GetPostsUseCase()()[0],

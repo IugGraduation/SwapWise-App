@@ -25,33 +25,31 @@ import com.example.ui.theme.TextStyles
 
 @Composable
 fun ButtonMakeOfferBottom(onClick: () -> Unit) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
-        Box(
+    Box(
+        modifier = Modifier
+            .background(color = PrimaryOverlay)
+            .clickable(onClick = onClick)
+    ) {
+        Row(
             modifier = Modifier
-                .background(color = PrimaryOverlay)
-                .clickable(onClick = onClick)
+                .fillMaxWidth()
+                .padding(vertical = Spacing4),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = Spacing4),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_offer),
-                    contentDescription = "",
-                    modifier = Modifier.size(IconSizeSmall),
-                    tint = Primary
+            Icon(
+                painter = painterResource(R.drawable.ic_offer),
+                contentDescription = "",
+                modifier = Modifier.size(IconSizeSmall),
+                tint = Primary
 //                  todo: draw stroke with smth like: drawStyle = Stroke(width = 1.2f, join = StrokeJoin.Round)
-                )
-                HorizontalSpacer(Spacing4)
-                Text(
-                    stringResource(R.string.make_your_offer),
-                    style = TextStyles.captionMedium,
-                    color = Primary
-                )
-            }
+            )
+            HorizontalSpacer(Spacing4)
+            Text(
+                stringResource(R.string.make_your_offer),
+                style = TextStyles.captionMedium,
+                color = Primary
+            )
         }
     }
 }

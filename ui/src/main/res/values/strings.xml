@@ -42,4 +42,11 @@
     <string name="closed">Closed</string>
     <string name="post_details">Post Details</string>
     <string name="favorite_categories">Favorite Categories</string>
+    <string name="add_offer">Add Offer</string>
+    <string name="offer_info">Offer Info</string>
+    <string name="image">Image</string>
+    <string name="offer_title">Offer Title</string>
+    <string name="your_place">Your Place</string>
+    <string name="details">Details</string>
+    <string name="category_of_the_offer">Category of The Offer</string>
 </resources>

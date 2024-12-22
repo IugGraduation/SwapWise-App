@@ -6,42 +6,36 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import com.example.ui.R
 import com.example.ui.components.atoms.CustomTextField
-import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.theme.GraduationProjectTheme
 
 @Composable
-fun BestBarterSpotTextField(
+fun SimpleCustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
+    placeholder: String = "",
+    leadingIcon: @Composable (() -> Unit)? = null,
     errorMessage: String? = null,
+    modifier: Modifier = Modifier,
 ) {
     CustomTextFieldWithErrorMsg(errorMessage = errorMessage) {
         CustomTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = modifier,
-            placeholder = stringResource(R.string.best_barter_spot),
-            leadingIcon = {
-                CustomTextFieldIcon(
-                    painter = painterResource(R.drawable.ic_location),
-                    contentDescription = stringResource(R.string.best_barter_spot),
-                )
-            },
+            placeholder = placeholder,
+            leadingIcon = leadingIcon,
         )
     }
 }
 
+
 //@Preview(showSystemUi = true)
 @Composable
-fun PreviewBestSpotTextField() {
+fun PreviewSimpleCustomTextField() {
     GraduationProjectTheme {
         var textState by remember { mutableStateOf("") }
 
-        BestBarterSpotTextField(textState, { textState = it })
+        SimpleCustomTextField(textState, { textState = it })
     }
 }

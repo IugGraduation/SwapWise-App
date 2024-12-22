@@ -3,6 +3,7 @@ package com.example.graduationproject
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.example.ui.add_offer.addOfferRoute
 import com.example.ui.login.loginRoute
 import com.example.ui.confirm_number.otpRoute
 import com.example.ui.home.homeRoute
@@ -20,5 +21,6 @@ fun AppNavGraph(navController: NavHostController) {
         homeRoute(navController)
         topicSeeAllRoute(navController)
         postDetailsRoute(navController)
+        addOfferRoute(navController)
     }
 }

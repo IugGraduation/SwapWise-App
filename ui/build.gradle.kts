@@ -73,6 +73,10 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose) // Compose support for Hilt
 
+    // Coil lib
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
 
 
 }

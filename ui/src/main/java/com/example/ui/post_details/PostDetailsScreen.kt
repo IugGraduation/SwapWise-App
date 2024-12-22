@@ -9,7 +9,7 @@ import com.example.domain.GetPostsUseCase
 fun PostDetailsScreen(navController: NavController, viewModel: PostDetailsViewModel = hiltViewModel()) {
     PostDetailsContent(
         state = GetPostsUseCase()()[0],
-        onClickMakeOffer = {},
+        onClickAddOffer = {},
         onClickGoBack = {navController.navigateUp()},
     )
 }

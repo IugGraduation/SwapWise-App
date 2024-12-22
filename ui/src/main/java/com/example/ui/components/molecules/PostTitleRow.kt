@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import com.example.domain.models.OfferItem
+import com.example.domain.models.IOffer
 import com.example.domain.models.PostItem
 import com.example.ui.components.atoms.OverlayBoxWithImage
 import com.example.ui.R
@@ -22,7 +22,7 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun PostTitleRow(item: OfferItem) {
+fun PostTitleRow(item: IOffer) {
     Row(
         modifier = Modifier
             .padding(vertical = Spacing8)

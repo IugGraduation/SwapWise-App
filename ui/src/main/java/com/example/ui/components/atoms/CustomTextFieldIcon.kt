@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.painter.Painter
 @Composable
 fun CustomTextFieldIcon(
     painter: Painter,
-    contentDescription: String?,
+    contentDescription: String? = null,
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.tertiary
 ) {
