@@ -14,10 +14,10 @@ import com.example.ui.R
 import com.example.ui.components.atoms.CustomTextButton
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.models.TopicUiState
-import com.example.ui.models.getName
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.util.getName
 
 @Composable
 fun TopicsListHeader(

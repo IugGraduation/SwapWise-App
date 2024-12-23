@@ -1,6 +1,6 @@
 package com.example.ui.models
 
-import com.example.domain.models.CategoryItem
+import com.example.domain.model.CategoryItem
 
 data class Chip(val text: String, val onClick: () -> Unit, val selected: Boolean) {
     companion object{

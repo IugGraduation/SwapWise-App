@@ -1,6 +1,6 @@
 package com.example.domain
 
-import com.example.domain.models.SignState
+import com.example.domain.model.SignState
 import javax.inject.Inject
 
 class LoginValidationUseCase @Inject constructor(

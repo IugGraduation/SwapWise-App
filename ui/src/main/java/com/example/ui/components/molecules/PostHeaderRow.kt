@@ -2,7 +2,7 @@ package com.example.ui.components.molecules
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.domain.models.User
+import com.example.domain.model.User
 import com.example.ui.components.atoms.HeaderRow
 import com.example.ui.components.atoms.UserHeader
 

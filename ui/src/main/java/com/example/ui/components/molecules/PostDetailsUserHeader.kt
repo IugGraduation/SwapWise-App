@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.domain.models.User
+import com.example.domain.model.User
 import com.example.ui.R
 import com.example.ui.components.atoms.HeaderRow
 import com.example.ui.components.atoms.OverlayBoxWithImage

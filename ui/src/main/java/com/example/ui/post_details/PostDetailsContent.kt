@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.domain.GetPostsUseCase
-import com.example.domain.models.PostItem
+import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.PostDetailsBody

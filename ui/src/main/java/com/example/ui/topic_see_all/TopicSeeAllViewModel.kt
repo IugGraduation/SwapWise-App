@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.domain.GetCategoriesUseCase
 import com.example.domain.GetPostsUseCase
-import com.example.domain.models.TopicItem
+import com.example.domain.model.TopicItem
 import com.example.ui.models.TopicType
 import com.example.ui.models.TopicUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,6 +1,6 @@
 package com.example.ui.login
 
-import com.example.domain.models.SignState
+import com.example.domain.model.SignState
 
 data class LoginUiState(
     val phone: String = "",

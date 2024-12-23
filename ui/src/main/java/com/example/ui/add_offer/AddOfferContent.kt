@@ -130,7 +130,7 @@ fun AddOfferContent(
 }
 
 
-@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
+//@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {

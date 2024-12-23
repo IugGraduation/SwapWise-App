@@ -3,9 +3,9 @@ package com.example.ui.components.atoms
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import com.example.domain.models.CategoryItem
-import com.example.domain.models.PostItem
-import com.example.domain.models.TopicItem
+import com.example.domain.model.CategoryItem
+import com.example.domain.model.PostItem
+import com.example.domain.model.TopicItem
 import com.example.ui.components.molecules.CategoryCard
 import com.example.ui.components.organisms.TopicCard
 import com.example.ui.models.Orientation

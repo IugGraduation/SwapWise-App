@@ -5,12 +5,12 @@ import androidx.compose.ui.res.stringResource
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.templates.TitledScreenTemplate
-import com.example.domain.models.CategoryItem
+import com.example.domain.model.CategoryItem
 import com.example.ui.models.Orientation
 import com.example.ui.models.TopicType
 import com.example.ui.models.TopicUiState
-import com.example.ui.models.getName
 import com.example.ui.theme.GraduationProjectTheme
+import com.example.ui.util.getName
 
 @Composable
 fun TopicSeeAllContent(topic: TopicUiState, onClickGoBack: () -> Unit) {
@@ -34,7 +34,7 @@ fun PreviewAllTopicsContent() {
     GraduationProjectTheme {
         val categoryItem = CategoryItem(
             stringResource(R.string.food_and_beverages),
-            R.drawable.img_food_and_beverages,
+            R.drawable.img_food_and_beverages.toString(),
             ""
         )
         val categoryItemsList =

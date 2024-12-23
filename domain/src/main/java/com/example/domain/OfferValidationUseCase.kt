@@ -1,7 +1,6 @@
 package com.example.domain
 
-import com.example.domain.models.OfferItem
-import com.example.domain.models.SignState
+import com.example.domain.model.OfferItem
 import com.example.domain.resource.ResourceProvider
 import javax.inject.Inject
 

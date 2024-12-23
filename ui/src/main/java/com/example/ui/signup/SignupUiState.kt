@@ -1,6 +1,6 @@
 package com.example.ui.signup
 
-import com.example.domain.models.SignState
+import com.example.domain.model.SignState
 
 data class SignupUiState(
     val fullName: String = "",

@@ -1,7 +1,8 @@
-package com.example.domain.models
+package com.example.domain.model
 
 data class OfferItem(
-    override val imgResId: Int? = null,
+    override val uuid: String = "",
+    override val image: String = "",
     override val imgContentDescription: String = "",
     override val user: User = User(),
     override val title: String = "",

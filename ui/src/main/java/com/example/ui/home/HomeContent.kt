@@ -7,10 +7,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.domain.GetCategoriesUseCase
 import com.example.domain.GetPostsUseCase
 import com.example.domain.GetUserUseCase
-import com.example.domain.models.PostItem
+import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.VerticalSpacer

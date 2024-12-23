@@ -1,12 +1,13 @@
 package com.example.ui.add_offer
 
 import android.net.Uri
-import com.example.domain.models.IOffer
-import com.example.domain.models.OfferItem
-import com.example.domain.models.User
+import com.example.domain.model.IOffer
+import com.example.domain.model.OfferItem
+import com.example.domain.model.User
 
 data class OfferUiState(
-    override val imgResId: Int? = null,
+    override val uuid: String = "",
+    override val image: String = "",
     override val imgContentDescription: String = "",
     override val user: User = User(),
     override val title: String = "",
@@ -25,7 +26,7 @@ data class OfferUiState(
 
     fun toOfferItem() =
         OfferItem(
-            imgResId = imgResId,
+            image = image,
             imgContentDescription = imgContentDescription,
             user = user,
             title = title,

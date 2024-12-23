@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil3.compose.rememberAsyncImagePainter
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.CardText
 import com.example.ui.components.atoms.ImageWithMaxWidth
-import com.example.domain.models.CategoryItem
+import com.example.domain.model.CategoryItem
 import com.example.ui.models.Orientation
 import com.example.ui.theme.TextStyles
 
@@ -30,7 +30,7 @@ fun CategoryCard(
 
     BoxRounded(modifier = myModifier, contentAlignment = Alignment.Center) {
         ImageWithMaxWidth(
-            painter = painterResource(categoryItem.imgResId),
+            painter = rememberAsyncImagePainter(categoryItem.image),
             contentDescription = categoryItem.imgContentDescription,
             contentScale = ContentScale.Crop
         )
