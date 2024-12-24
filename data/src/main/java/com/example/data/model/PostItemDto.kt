@@ -9,7 +9,7 @@ data class PostItemDto(
     @SerializedName("num_offers")
     val numOffers: Int? = null,
     @SerializedName("offers")
-    val offers: List<OfferDto?>? = null,
+    val offers: List<OfferItemDto?>? = null,
     @SerializedName("post_details")
     val postDetails: String? = null,
     @SerializedName("post_image")

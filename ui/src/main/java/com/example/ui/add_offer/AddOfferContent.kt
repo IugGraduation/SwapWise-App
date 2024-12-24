@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.domain.model.OfferItem
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
@@ -28,7 +29,7 @@ import com.example.ui.theme.TextStyles
 
 @Composable
 fun AddOfferContent(
-    state: OfferUiState,
+    state: OfferItem,
     onTitleChange: (String) -> Unit,
     onPlaceChange: (String) -> Unit,
     onDetailsChange: (String) -> Unit,
@@ -47,7 +48,7 @@ fun AddOfferContent(
             )
         }
     ) {
-        DetailsPageImage(state.selectedImageUri, onClick = onClickAddImage)
+        DetailsPageImage(state.image, onClick = onClickAddImage)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -135,7 +136,7 @@ fun AddOfferContent(
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         AddOfferContent(
-            state = OfferUiState(category = "Category"),
+            state = OfferItem(category = "Category"),
             onClickAddOffer = { },
             onClickGoBack = { },
             onTitleChange = { },

@@ -23,14 +23,14 @@ import com.example.ui.theme.RadiusLarge
 
 @Composable
 fun DetailsPageImage(
-    imgUri: Uri?,
+    image: String?,
     contentScale: ContentScale = ContentScale.Crop,
     onClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
-    var imgPainter: Painter = rememberAsyncImagePainter(imgUri)
+    var imgPainter: Painter = rememberAsyncImagePainter(image)
     var myContentScale = contentScale
-    if (imgUri == null) {
+    if (image.isNullOrEmpty()) {
         imgPainter = painterResource(R.drawable.ic_add_image)
         myContentScale = ContentScale.Inside
     }

@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
             GraduationProjectTheme {
                 val navController = rememberNavController()
                 AppNavGraph(navController)
-                navController.navigateToHome()
+                navController.navigateToAddOffer("d")
             }
         }
     }

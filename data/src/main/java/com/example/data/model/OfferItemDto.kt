@@ -3,7 +3,7 @@ package com.example.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class OfferDto(
+data class OfferItemDto(
     @SerializedName("details")
     val details: String? = null,
     @SerializedName("image")

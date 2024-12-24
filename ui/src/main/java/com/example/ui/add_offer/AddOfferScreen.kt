@@ -33,7 +33,8 @@ fun AddOfferScreen(navController: NavController, viewModel: AddOfferViewModel = 
         onPlaceChange = viewModel::onPlaceChange,
         onDetailsChange = viewModel::onDetailsChange,
         onClickAddOffer = viewModel::onClickAddOffer,
-        onClickAddImage = captureImageFromCameraWithPermissions { viewModel.onSelectedImageChange(it) },
+        onClickAddImage = pickImageFromGallery,
+//        onClickAddImage = captureImageFromCameraWithPermissions { viewModel.onSelectedImageChange(it) },
         onClickGoBack = { navController.navigateUp() },
     )
 }

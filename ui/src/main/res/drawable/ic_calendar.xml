@@ -9,27 +9,23 @@
     <path
         android:strokeWidth="1"
         android:pathData="M1,6C1,4.114 1,3.172 1.586,2.586C2.172,2 3.114,2 5,2H7C8.886,2 9.828,2 10.414,2.586C11,3.172 11,4.114 11,6V7C11,8.886 11,9.828 10.414,10.414C9.828,11 8.886,11 7,11H5C3.114,11 2.172,11 1.586,10.414C1,9.828 1,8.886 1,7V6Z"
-        android:strokeAlpha="0.48"
         android:fillColor="#00000000"
         android:strokeColor="#000000"/>
     <path
         android:strokeWidth="1"
         android:pathData="M3.5,2V1.25"
-        android:strokeAlpha="0.48"
         android:fillColor="#00000000"
         android:strokeColor="#000000"
         android:strokeLineCap="round"/>
     <path
         android:strokeWidth="1"
         android:pathData="M8.5,2V1.25"
-        android:strokeAlpha="0.48"
         android:fillColor="#00000000"
         android:strokeColor="#000000"
         android:strokeLineCap="round"/>
     <path
         android:strokeWidth="1"
         android:pathData="M1.25,4.5H10.5"
-        android:strokeAlpha="0.48"
         android:fillColor="#00000000"
         android:strokeColor="#000000"
         android:strokeLineCap="round"/>

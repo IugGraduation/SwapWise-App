@@ -9,8 +9,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.ui.R
+import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing4
@@ -42,6 +44,11 @@ fun BioTextField(
                     )
 
                 }
+            },
+            leadingIcon = {
+                CustomTextFieldIcon(
+                    painter = painterResource(R.drawable.ic_bio)
+                )
             },
             modifier = modifier
         )

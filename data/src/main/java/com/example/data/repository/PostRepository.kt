@@ -10,5 +10,5 @@ class PostRepository(
     private val fakePostLocalDataSource: FakePostLocalDataSource,
 ) {
     suspend fun getPostDetails(uuid: String): Flow<StateDto<PostItemDto?>> =
-        wrapWithFlow(fakePostLocalDataSource::getPostDetails)
+        wrapWithFlow(fakePostLocalDataSource::getPostDetails, uuid)
 }

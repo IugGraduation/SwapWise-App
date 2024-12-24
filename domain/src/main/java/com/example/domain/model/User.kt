@@ -7,6 +7,7 @@ data class User(
     val name: String = "",
     val image: String = "",
     val imgContentDescription: String = "",
+    val phone: String = "",
 ){
     companion object{
         fun fromUserDto(userDto: UserDto?): User{

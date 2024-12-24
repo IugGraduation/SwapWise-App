@@ -4,6 +4,7 @@
     <string name="show_password">Show password</string>
     <string name="hide_password">Hide password</string>
     <string name="phone_number">Phone Number</string>
+    <string name="phone">Phone</string>
     <string name="full_name">Full Name</string>
     <string name="bio">Bio</string>
     <string name="optional">(optional)</string>
@@ -49,4 +50,7 @@
     <string name="your_place">Your Place</string>
     <string name="details">Details</string>
     <string name="category_of_the_offer">Category of The Offer</string>
+    <string name="offer_details">Offer Details</string>
+    <string name="message">Message</string>
+    <string name="what_s_up_app">What\'s up app</string>
 </resources>

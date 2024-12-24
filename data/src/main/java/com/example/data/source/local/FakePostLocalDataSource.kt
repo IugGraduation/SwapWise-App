@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class FakePostLocalDataSource @Inject constructor() {
 
-    suspend fun getPostDetails(): Response<PostItemDto> {
+    suspend fun getPostDetails(uuid: String): Response<PostItemDto> {
         val jsonData = "{\n"+
                 "    \"status\": true,\n"+
                 "    \"message\": \"Done\",\n"+

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.domain.OfferValidationUseCase
+import com.example.domain.model.OfferItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +16,7 @@ class AddOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val offerValidationUseCase: OfferValidationUseCase,
 ) : ViewModel() {
-    private val _state = MutableStateFlow(OfferUiState())
+    private val _state = MutableStateFlow(OfferItem())
     val state = _state.asStateFlow()
 
     val args = AddOfferArgs(savedStateHandle)
@@ -33,7 +34,7 @@ class AddOfferViewModel @Inject constructor(
     }
 
     fun onSelectedImageChange(selectedImageUri: Uri) {
-        _state.update { it.copy(selectedImageUri = selectedImageUri) }
+        _state.update { it.copy(image = selectedImageUri.toString()) }
     }
 
     fun onClickAddOffer() {
@@ -43,13 +44,9 @@ class AddOfferViewModel @Inject constructor(
     }
 
     private fun validateForm(): Boolean {
-        val offerState = offerValidationUseCase(state.value.toOfferItem())
-        _state.value = OfferUiState.fromIOffer(offerState)
-        return offerState.isSuccess()
-    }
-
-    fun onClickAddImage() {
-
+        val newOfferState = offerValidationUseCase(state.value)
+        _state.value = newOfferState
+        return newOfferState.isSuccess()
     }
 
 

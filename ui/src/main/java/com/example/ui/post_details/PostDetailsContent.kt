@@ -43,8 +43,7 @@ fun PostDetailsContent(state: PostItem, onClickAddOffer: () -> Unit, onClickGoBa
     ) {
         LazyColumn {
             item {
-                //todo: view image correctly here
-                DetailsPageImage(null)
+                DetailsPageImage(state.image)
                 VerticalSpacer(Spacing16)
                 PostDetailsUserHeader(user = state.user, date = state.date)
                 VerticalSpacer(Spacing24)
