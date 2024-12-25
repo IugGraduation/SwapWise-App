@@ -1,11 +1,14 @@
-package com.example.ui.add_offer
+package com.example.ui.edit_offer
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.AddOfferUseCase
+import com.example.domain.DeleteOfferUseCase
+import com.example.domain.EditOfferUseCase
 import com.example.domain.GetCategoriesNamesUseCase
+import com.example.domain.GetOfferDetailsUseCase
 import com.example.domain.OfferValidationUseCase
 import com.example.domain.model.OfferItem
 import com.example.domain.model.State
@@ -17,21 +20,34 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddOfferViewModel @Inject constructor(
+class EditOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val getOfferDetailsUseCase: GetOfferDetailsUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
     private val offerValidationUseCase: OfferValidationUseCase,
-    private val addOfferUseCase: AddOfferUseCase,
+    private val editOfferUseCase: EditOfferUseCase,
+    private val deleteOfferUseCase: DeleteOfferUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow(OfferItem())
     val state = _state.asStateFlow()
 
-    val args = AddOfferArgs(savedStateHandle)
+    val args = EditOfferArgs(savedStateHandle)
 
 
     init {
         viewModelScope.launch {
+            getOfferDetails()
             getAllCategories()
+        }
+    }
+
+    private suspend fun getOfferDetails(){
+        getOfferDetailsUseCase(args.offerId).collect { state ->
+            _state.value = when (state) {
+                is State.Loading -> OfferItem(isLoading = true)
+                is State.Success -> state.data
+                is State.Error -> OfferItem(error = state.message)
+            }
         }
     }
 
@@ -57,11 +73,16 @@ class AddOfferViewModel @Inject constructor(
         _state.update { it.copy(image = selectedImageUri.toString()) }
     }
 
-    fun onClickAddOffer() {
+    fun onCategoryChange(category: String) {
+        _state.update { it.copy(category = category, categoryError = null) }
+    }
+
+
+    fun onClickSave() {
         viewModelScope.launch {
             if (validateForm()) {
-                if(addOfferUseCase(args.postId, state.value)){
-                //todo: change page and go back
+                if(editOfferUseCase(state.value)){
+                    //todo: change page and go back
                 }else{
                     _state.update { it.copy(error = "Error while adding Offer") }
                 }
@@ -74,6 +95,18 @@ class AddOfferViewModel @Inject constructor(
         _state.value = newOfferState
         return newOfferState.isSuccess()
     }
+
+
+    fun onClickDelete() {
+        viewModelScope.launch {
+            if(deleteOfferUseCase(state.value.uuid)){
+                //todo: change page and go back
+            }else{
+                _state.update { it.copy(error = "Error while deleting Offer") }
+            }
+        }
+    }
+
 
 
 }

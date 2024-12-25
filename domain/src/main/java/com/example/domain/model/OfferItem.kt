@@ -1,7 +1,6 @@
 package com.example.domain.model
 
 import com.example.data.model.OfferItemDto
-import com.example.data.model.PostItemDto
 
 data class OfferItem(
     override val uuid: String = "",
@@ -12,6 +11,7 @@ data class OfferItem(
     override val details: String = "",
     override val place: String = "",
     override val category: String = "",
+    override val allCategories: List<String> = listOf(),
     override val date: String = "",
 
     override val isLoading: Boolean = false,
@@ -30,6 +30,23 @@ data class OfferItem(
                 detailsError.isNullOrEmpty() && categoryError.isNullOrEmpty())
     }
 
+    fun toOfferItemDto(): OfferItemDto {
+        return OfferItemDto(
+            uuid = uuid,
+            userName = user.name,
+            userImage = user.image,
+            image = image,
+            title = title,
+            details = details,
+//                place = "",
+//                category = "",
+//                date = "",
+//                favoriteCategories ="",
+//                rate = "",
+//                offers = "",
+        )
+    }
+
     companion object {
         fun fromOfferItemDto(offerItemDto: OfferItemDto): OfferItem {
             return OfferItem(
@@ -43,13 +60,10 @@ data class OfferItem(
                 details = offerItemDto.details.toString(),
 //                place = "",
 //                category = "",
-//                onClickMakeOffer = "",
-//                onClickGoToDetails = "",
 //                date = "",
 //                favoriteCategories ="",
 //                rate = "",
 //                offers = "",
-
             )
         }
     }

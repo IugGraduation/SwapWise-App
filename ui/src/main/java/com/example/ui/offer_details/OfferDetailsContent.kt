@@ -57,7 +57,7 @@ fun OfferDetailsContent(state: OfferItem, onClickGoBack: () -> Unit) {
 }
 
 
-@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440")
+//@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {

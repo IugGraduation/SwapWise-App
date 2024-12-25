@@ -11,24 +11,24 @@ import androidx.navigation.navArgument
 
 private const val ROUTE = "offer_details"
 
-fun NavController.navigateToOfferDetails(uuid: String) {
-    navigate("$ROUTE/$uuid")
+fun NavController.navigateToOfferDetails(offerId: String) {
+    navigate("$ROUTE/$offerId")
 }
 
 fun NavGraphBuilder.offerDetailsRoute(navController: NavHostController) {
     composable(
-        route = "$ROUTE/{${OfferDetailsArgs.UUID_ARG}}",
+        route = "$ROUTE/{${OfferDetailsArgs.OFFER_ID_ARG}}",
         arguments = listOf(
-            navArgument(OfferDetailsArgs.UUID_ARG) { NavType.StringType },
+            navArgument(OfferDetailsArgs.OFFER_ID_ARG) { NavType.StringType },
         )
     ) { OfferDetailsScreen(navController) }
 }
 
 
 class OfferDetailsArgs(savedStateHandle: SavedStateHandle) {
-    val uuid: String = checkNotNull(savedStateHandle[UUID_ARG])
+    val offerId: String = checkNotNull(savedStateHandle[OFFER_ID_ARG])
 
     companion object {
-        const val UUID_ARG = "uuid"
+        const val OFFER_ID_ARG = "offer_id"
     }
 }

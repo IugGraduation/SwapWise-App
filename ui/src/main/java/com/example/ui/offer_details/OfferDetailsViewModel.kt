@@ -25,7 +25,7 @@ class OfferDetailsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getOfferDetailsUseCase(args.uuid).collect { state ->
+            getOfferDetailsUseCase(args.offerId).collect { state ->
                 _state.value = when (state) {
                     is State.Loading -> OfferItem(isLoading = true)
                     is State.Success -> state.data

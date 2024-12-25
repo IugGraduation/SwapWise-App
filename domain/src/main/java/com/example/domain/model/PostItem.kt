@@ -14,6 +14,8 @@ data class PostItem(
     override val place: String = "",
     override val details: String = "",
     override val category: String = "",
+    override val allCategories: List<String> = listOf(),
+
     override val date: String = "",
     val onClickMakeOffer: () -> Unit = {},
     var onClickGoToDetails: (() -> Unit)? = null,

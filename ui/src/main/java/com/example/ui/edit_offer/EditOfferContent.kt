@@ -1,4 +1,4 @@
-package com.example.ui.add_offer
+package com.example.ui.edit_offer
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.domain.model.OfferItem
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
+import com.example.ui.components.atoms.CustomOutlinedButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.DetailsPageImage
@@ -27,25 +29,34 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun AddOfferContent(
+fun EditOfferContent(
     state: OfferItem,
     onTitleChange: (String) -> Unit,
     onPlaceChange: (String) -> Unit,
     onDetailsChange: (String) -> Unit,
     onCategoryChange: (String) -> Unit,
-    onClickAddOffer: () -> Unit,
+    onClickSave: () -> Unit,
+    onClickDelete: () -> Unit,
     onClickAddImage: () -> Unit,
     onClickGoBack: () -> Unit
 ) {
     TitledScreenTemplate(
-        title = stringResource(R.string.add_offer),
+        title = stringResource(R.string.edit_offer),
         onClickGoBack = onClickGoBack,
         floatingActionButton = {
-            CustomButton(
-                onClick = onClickAddOffer,
-                text = stringResource(R.string.add_offer),
-                modifier = Modifier.padding(horizontal = Spacing16)
-            )
+            Column {
+                CustomButton(
+                    onClick = onClickSave,
+                    text = stringResource(R.string.save),
+                    modifier = Modifier.padding(horizontal = Spacing16)
+                )
+                VerticalSpacer(Spacing8)
+                CustomOutlinedButton(
+                    onClick = onClickDelete,
+                    text = stringResource(R.string.delete),
+                    modifier = Modifier.padding(horizontal = Spacing16)
+                )
+            }
         }
     ) {
         DetailsPageImage(state.image, onClick = onClickAddImage)
@@ -72,18 +83,7 @@ fun AddOfferContent(
                 errorMessage = state.titleError,
             )
             VerticalSpacer(Spacing8)
-//            SimpleCustomTextField(
-//                value = state.phone,
-//                onValueChange = onPhoneChange,
-//                placeholder = stringResource(R.string.phone_number),
-//                leadingIcon = {
-//                    CustomTextFieldIcon(
-//                        painter = painterResource(R.drawable.ic_phone)
-//                    )
-//                },
-//                errorMessage = state.phoneError,
-//            )
-//            VerticalSpacer(Spacing8)
+
             SimpleCustomTextField(
                 value = state.place,
                 onValueChange = onPlaceChange,
@@ -126,13 +126,14 @@ fun AddOfferContent(
 }
 
 
-//@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
+@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
-        AddOfferContent(
-            state = OfferItem(category = "Category"),
-            onClickAddOffer = { },
+        EditOfferContent(
+            state = OfferItem(category = "Category", allCategories = listOf("Category", "no")),
+            onClickSave = { },
+            onClickDelete = { },
             onClickGoBack = { },
             onTitleChange = { },
             onPlaceChange = { },

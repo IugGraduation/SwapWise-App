@@ -53,4 +53,7 @@
     <string name="offer_details">Offer Details</string>
     <string name="message">Message</string>
     <string name="what_s_up_app">What\'s up app</string>
+    <string name="edit_offer">Edit Offer</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
 </resources>

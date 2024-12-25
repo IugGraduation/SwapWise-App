@@ -5,6 +5,7 @@ interface IOffer : TopicItem {
     val place: String
     val details: String
     val category: String
+    val allCategories: List<String>
     val date:String
 
     val imgResIdError: String?
