@@ -13,15 +13,16 @@ import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.util.getName
 
 @Composable
-fun TopicSeeAllContent(topic: TopicUiState, onClickGoBack: () -> Unit) {
-    val myTopic = topic.copy(orientation = Orientation.Vertical)
+fun TopicSeeAllContent(state: TopicUiState, onClickGoBack: () -> Unit) {
+    val myTopic = state.copy(orientation = Orientation.Vertical)
     val title =
-        if (topic.type == TopicType.Categories) stringResource(R.string.all) + " " + topic.type.getName()
-        else topic.type.getName()
+        if (state.type == TopicType.Categories) stringResource(R.string.all) + " " + state.type.getName()
+        else state.type.getName()
 
     TitledScreenTemplate(
         title = title,
-        onClickGoBack = onClickGoBack
+        onClickGoBack = onClickGoBack,
+        contentState = state,
     ) {
         CustomLazyLayout(topic = myTopic)
     }
@@ -46,7 +47,7 @@ fun PreviewAllTopicsContent() {
             orientation = Orientation.Horizontal,
             onClickSeeAll = { },
         )
-        TopicSeeAllContent(topic = category, onClickGoBack = { })
+        TopicSeeAllContent(state = category, onClickGoBack = { })
 
     }
 }

@@ -6,10 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.model.PostItem
-import com.example.ui.components.atoms.ShowContentWithState
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.post_details.navigateToPostDetails
-import com.example.ui.shared.MainViewModel
+import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.signup.navigateToSignup
 import com.example.ui.topic_see_all.navigateToTopicSeeAll
 
@@ -17,7 +16,7 @@ import com.example.ui.topic_see_all.navigateToTopicSeeAll
 fun HomeScreen(
     navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    mainViewModel: MainViewModel = hiltViewModel()
+    mainViewModel: BottomNavigationViewModel = hiltViewModel()
 ) {
     val state by homeViewModel.state.collectAsState()
     val selectedItem by mainViewModel.selectedItem.collectAsState()
@@ -38,11 +37,9 @@ fun HomeScreen(
         navigateToProfile = { navController.navigateToHome() },
     )
 
-    ShowContentWithState(state) {
-        HomeContent(
-            state = state,
-            bottomBarState = bottomBarState,
-            onNewPostFieldChange = homeViewModel::onNewPostFieldChange
-        )
-    }
+    HomeContent(
+        state = state,
+        bottomBarState = bottomBarState,
+        onNewPostFieldChange = homeViewModel::onNewPostFieldChange
+    )
 }

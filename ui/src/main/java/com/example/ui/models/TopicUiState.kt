@@ -1,5 +1,6 @@
 package com.example.ui.models
 
+import com.example.domain.model.ContentState
 import com.example.domain.model.Topic
 import com.example.domain.model.TopicItem
 
@@ -9,8 +10,11 @@ data class TopicUiState(
     val orientation: Orientation = Orientation.Horizontal,
     var onClickSeeAll: () -> Unit = {},
     val url: String = "",
-){
-    companion object{
+
+    override val isLoading: Boolean = false,
+    override val error: String? = null,
+) : ContentState {
+    companion object {
         fun fromTopic(topic: Topic): TopicUiState {
             val type = TopicType.valueOf(topic.title.replace(" ", ""))
             return TopicUiState(

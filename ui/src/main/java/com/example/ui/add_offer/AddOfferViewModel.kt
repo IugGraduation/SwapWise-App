@@ -35,8 +35,8 @@ class AddOfferViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getAllCategories(){
-        _state.update { it.copy(isLoading = true)}
+    private suspend fun getAllCategories() {
+        _state.update { it.copy(isLoading = true) }
         _state.update { it.copy(allCategories = getCategoriesNamesUseCase(), isLoading = false) }
     }
 
@@ -57,13 +57,23 @@ class AddOfferViewModel @Inject constructor(
         _state.update { it.copy(image = selectedImageUri.toString()) }
     }
 
+    fun onCategoryChange(category: String) {
+        _state.update { it.copy(category = category, categoryError = null) }
+    }
+
+
     fun onClickAddOffer() {
         viewModelScope.launch {
             if (validateForm()) {
-                if(addOfferUseCase(args.postId, state.value)){
-                //todo: change page and go back
-                }else{
-                    _state.update { it.copy(error = "Error while adding Offer") }
+                addOfferUseCase(args.postId, state.value).collect { apiState ->
+                    when (apiState) {
+                        is State.Error -> _state.update { it.copy(error = apiState.message) }
+                        State.Loading -> _state.update { it.copy(isLoading = true) }
+                        is State.Success -> {
+                            _state.update { it.copy(isLoading = false) }
+                            //todo: change page and go back
+                        }
+                    }
                 }
             }
         }

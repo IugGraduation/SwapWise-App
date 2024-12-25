@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.AddOfferUseCase
 import com.example.domain.DeleteOfferUseCase
 import com.example.domain.EditOfferUseCase
 import com.example.domain.GetCategoriesNamesUseCase
@@ -41,7 +40,7 @@ class EditOfferViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getOfferDetails(){
+    private suspend fun getOfferDetails() {
         getOfferDetailsUseCase(args.offerId).collect { state ->
             _state.value = when (state) {
                 is State.Loading -> OfferItem(isLoading = true)
@@ -51,8 +50,8 @@ class EditOfferViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getAllCategories(){
-        _state.update { it.copy(isLoading = true)}
+    private suspend fun getAllCategories() {
+        _state.update { it.copy(isLoading = true) }
         _state.update { it.copy(allCategories = getCategoriesNamesUseCase(), isLoading = false) }
     }
 
@@ -81,10 +80,15 @@ class EditOfferViewModel @Inject constructor(
     fun onClickSave() {
         viewModelScope.launch {
             if (validateForm()) {
-                if(editOfferUseCase(state.value)){
-                    //todo: change page and go back
-                }else{
-                    _state.update { it.copy(error = "Error while adding Offer") }
+                editOfferUseCase(state.value).collect { apiState ->
+                    when (apiState) {
+                        is State.Error -> _state.update { it.copy(error = apiState.message) }
+                        State.Loading -> _state.update { it.copy(isLoading = true) }
+                        is State.Success -> {
+                            _state.update { it.copy(isLoading = false) }
+                            //todo: change page and go back
+                        }
+                    }
                 }
             }
         }
@@ -99,14 +103,18 @@ class EditOfferViewModel @Inject constructor(
 
     fun onClickDelete() {
         viewModelScope.launch {
-            if(deleteOfferUseCase(state.value.uuid)){
-                //todo: change page and go back
-            }else{
-                _state.update { it.copy(error = "Error while deleting Offer") }
+            deleteOfferUseCase(state.value.uuid).collect { apiState ->
+                when (apiState) {
+                    is State.Error -> _state.update { it.copy(error = apiState.message) }
+                    State.Loading -> _state.update { it.copy(isLoading = true) }
+                    is State.Success -> {
+                        _state.update { it.copy(isLoading = false) }
+                        //todo: change page and go back
+                    }
+                }
             }
         }
     }
-
 
 
 }

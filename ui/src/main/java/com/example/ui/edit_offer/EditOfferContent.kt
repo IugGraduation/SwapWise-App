@@ -10,6 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.domain.GetCategoriesNamesUseCase
+import com.example.domain.GetCategoriesUseCase
+import com.example.domain.GetOffersUseCase
 import com.example.domain.model.OfferItem
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
@@ -57,7 +60,8 @@ fun EditOfferContent(
                     modifier = Modifier.padding(horizontal = Spacing16)
                 )
             }
-        }
+        },
+        contentState = state
     ) {
         DetailsPageImage(state.image, onClick = onClickAddImage)
         Column(
@@ -126,12 +130,17 @@ fun EditOfferContent(
 }
 
 
-@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
+//@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         EditOfferContent(
-            state = OfferItem(category = "Category", allCategories = listOf("Category", "no")),
+            state = GetOffersUseCase()()[0].copy(
+                allCategories = GetCategoriesNamesUseCase(
+                    GetCategoriesUseCase()
+                ).getFakeData(),
+                category = "Food and beverages0",
+            ),
             onClickSave = { },
             onClickDelete = { },
             onClickGoBack = { },

@@ -1,6 +1,7 @@
 package com.example.ui.components.templates
 
 import androidx.compose.runtime.Composable
+import com.example.domain.model.ContentState
 import com.example.ui.components.atoms.CustomBottomNavigationBar
 import com.example.ui.models.BottomBarUiState
 
@@ -8,7 +9,11 @@ import com.example.ui.models.BottomBarUiState
 fun BottomBarTemplate(
     bottomBarState: BottomBarUiState,
     topBar: @Composable () -> Unit = {},
-    content: @Composable () -> Unit
+    contentState: ContentState = object : ContentState {
+        override val isLoading: Boolean = false
+        override val error: String? = null
+    },
+    content: @Composable () -> Unit,
 ) {
     ScreenTemplate(
         topBar = topBar,
@@ -25,7 +30,8 @@ fun BottomBarTemplate(
                     }
                 }
             )
-        }
+        },
+        contentState = contentState,
     ) {
         content()
     }

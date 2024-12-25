@@ -4,8 +4,8 @@ import com.example.data.model.HomeDto
 
 
 data class Home(
-    val topicsList: List<Topic>,
-    val user: User
+    val topicsList: List<Topic> = listOf(),
+    val user: User = User()
 ) {
     companion object {
         fun fromHomeDto(homeDto: HomeDto): Home {

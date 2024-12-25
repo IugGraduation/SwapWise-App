@@ -29,7 +29,7 @@ fun OtpContent(
     onOtpChange: (String) -> Unit,
     onClickConfirm: () -> Unit
 ) {
-    ScreenTemplate {
+    ScreenTemplate(contentState = state) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

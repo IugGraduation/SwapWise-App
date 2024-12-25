@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor() : ViewModel() {
+class BottomNavigationViewModel @Inject constructor() : ViewModel() {
     private val _selectedItem = MutableStateFlow(0)
     val selectedItem = _selectedItem.asStateFlow()
 

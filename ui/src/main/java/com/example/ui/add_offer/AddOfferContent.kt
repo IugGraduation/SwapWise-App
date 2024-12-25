@@ -46,7 +46,8 @@ fun AddOfferContent(
                 text = stringResource(R.string.add_offer),
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
-        }
+        },
+        contentState = state
     ) {
         DetailsPageImage(state.image, onClick = onClickAddImage)
         Column(

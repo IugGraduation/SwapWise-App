@@ -28,7 +28,7 @@ fun SignupContent(
     state: SignupUiState,
     actions: SignupActions,
 ) {
-    ScreenTemplate {
+    ScreenTemplate(contentState = state,) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -32,7 +32,7 @@ fun LoginContent(
     togglePasswordVisibility: () -> Unit,
     onClickGoToSignup: () -> Unit,
 ) {
-    ScreenTemplate {
+    ScreenTemplate(contentState = state,) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

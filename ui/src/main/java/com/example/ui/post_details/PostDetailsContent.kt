@@ -39,7 +39,8 @@ fun PostDetailsContent(state: PostItem, onClickAddOffer: () -> Unit, onClickGoBa
                 text = stringResource(R.string.add_offer),
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
-        }
+        },
+        contentState = state,
     ) {
         LazyColumn {
             item {

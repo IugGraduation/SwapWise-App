@@ -32,6 +32,7 @@ fun AddOfferScreen(navController: NavController, viewModel: AddOfferViewModel = 
         onTitleChange = viewModel::onTitleChange,
         onPlaceChange = viewModel::onPlaceChange,
         onDetailsChange = viewModel::onDetailsChange,
+        onCategoryChange = viewModel::onCategoryChange,
         onClickAddOffer = viewModel::onClickAddOffer,
         onClickAddImage = pickImageFromGallery,
 //        onClickAddImage = captureImageFromCameraWithPermissions { viewModel.onSelectedImageChange(it) },

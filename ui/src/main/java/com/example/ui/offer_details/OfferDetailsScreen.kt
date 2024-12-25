@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.ui.components.atoms.ShowContentWithState
 
 @Composable
 fun OfferDetailsScreen(
@@ -13,11 +12,8 @@ fun OfferDetailsScreen(
     viewModel: OfferDetailsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    ShowContentWithState(state) {
-        OfferDetailsContent(
-            state = state,
-            onClickGoBack = { navController.navigateUp() },
-        )
-    }
-
+    OfferDetailsContent(
+        state = state,
+        onClickGoBack = { navController.navigateUp() },
+    )
 }

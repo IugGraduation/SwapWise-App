@@ -1,5 +1,6 @@
 package com.example.ui.signup
 
+import com.example.domain.model.ContentState
 import com.example.domain.model.SignState
 
 data class SignupUiState(
@@ -12,13 +13,16 @@ data class SignupUiState(
     val isPasswordVisible: Boolean = false,
     val isConfirmPasswordVisible: Boolean = false,
 
+    override val isLoading: Boolean = false,
+    override val error: String? = null,
+
     val fullNameError: String? = null,
     val phoneError: String? = null,
     val passwordError: String? = null,
     val confirmPasswordError: String? = null,
     val bestBarterSpotError: String? = null,
     val bioError: String? = null,
-) {
+): ContentState {
 
     fun toSignState() =
         SignState(

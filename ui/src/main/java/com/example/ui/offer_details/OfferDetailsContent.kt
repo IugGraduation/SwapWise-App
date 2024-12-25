@@ -30,6 +30,7 @@ fun OfferDetailsContent(state: OfferItem, onClickGoBack: () -> Unit) {
     TitledScreenTemplate(
         title = stringResource(R.string.offer_details),
         onClickGoBack = onClickGoBack,
+        contentState = state,
     ) {
         Column {
             DetailsPageImage(state.image)

@@ -15,7 +15,7 @@ fun TopicSeeAllScreen(
     val state by topicSeeAllViewModel.state.collectAsState()
 
     TopicSeeAllContent(
-        topic = state,
+        state = state,
         onClickGoBack = { navController.navigateUp() }
     )
 }
