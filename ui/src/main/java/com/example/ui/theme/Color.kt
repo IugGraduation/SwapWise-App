@@ -1,5 +1,6 @@
 package com.example.ui.theme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val Primary = Color(0xFF0065FF)
@@ -14,7 +15,7 @@ val PrimaryOverlay = Color(0x330065FF)
 val DangerOverlay = Color(0x3DFF0505)
 val CorrectOverlay = Color(0x3D7EBA18)
 
-val purple = Color(0xFF800080)
+val Purple = Color(0xFF9000FF)
 
 
 // Light mode
@@ -35,3 +36,5 @@ val WhitePrimary = Color(0xE0FFFFFF)
 val WhiteSecondary = Color(0xADFFFFFF)
 val WhiteTertiary = Color(0x7AFFFFFF)
 val WhiteFourth = Color(0x33FFFFFF)
+
+val GradientBackground = Brush.verticalGradient(colors = listOf(Purple, Primary))

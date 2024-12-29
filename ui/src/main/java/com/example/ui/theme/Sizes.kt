@@ -8,7 +8,7 @@ val IconSizeSmall = 16.dp
 val IconSizeMedium = 24.dp
 val IconSizeLarge = 32.dp
 
-// Border Radius Sizes
+//Border Radius Sizes
 val RadiusSmall = 4.dp
 val RadiusMedium = 8.dp
 val RadiusLarge = 16.dp
@@ -28,3 +28,9 @@ val Spacing56 = 56.dp
 val Spacing64 = 64.dp
 val Spacing72 = 72.dp
 val Spacing80 = 80.dp
+
+//Image Sizes
+val ImageSize120 = 120.dp
+
+//Border Sizes
+val Border1 = 1.dp
