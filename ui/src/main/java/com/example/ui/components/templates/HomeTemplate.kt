@@ -2,7 +2,7 @@ package com.example.ui.components.templates
 
 import androidx.compose.runtime.Composable
 import coil3.compose.rememberAsyncImagePainter
-import com.example.domain.model.ContentState
+import com.example.domain.model.UiState
 import com.example.ui.components.molecules.HomeTopBar
 import com.example.ui.models.BottomBarUiState
 import com.example.domain.model.User
@@ -11,7 +11,7 @@ import com.example.domain.model.User
 fun HomeTemplate(
     user: User,
     bottomBarState: BottomBarUiState,
-    contentState: ContentState = object : ContentState {
+    contentState: UiState = object : UiState {
         override val isLoading: Boolean = false
         override val error: String? = null
     },

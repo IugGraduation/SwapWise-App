@@ -65,6 +65,10 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
     // Hilt for Dependency Injection
     implementation(libs.dagger.hilt.android)
     kapt(libs.hilt.android.compiler)

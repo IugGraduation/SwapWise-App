@@ -27,6 +27,10 @@ fun AddOfferScreen(navController: NavController, viewModel: AddOfferViewModel = 
 //    val captureImageFromCamera =
 //        captureImageFromCameraWithPermissions { viewModel.onSelectedImageChange(it) }
 
+    LaunchedEffect(state.shouldNavigateUp) {
+        if (state.shouldNavigateUp) navController.navigateUp()
+    }
+
     AddOfferContent(
         state = state,
         onTitleChange = viewModel::onTitleChange,

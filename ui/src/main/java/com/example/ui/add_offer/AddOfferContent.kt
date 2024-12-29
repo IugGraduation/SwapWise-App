@@ -20,6 +20,7 @@ import com.example.ui.components.molecules.SimpleCustomTextField
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.Chip
+import com.example.ui.models.OfferItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -28,7 +29,7 @@ import com.example.ui.theme.TextStyles
 
 @Composable
 fun AddOfferContent(
-    state: OfferItem,
+    state: OfferItemUiState,
     onTitleChange: (String) -> Unit,
     onPlaceChange: (String) -> Unit,
     onDetailsChange: (String) -> Unit,
@@ -49,7 +50,7 @@ fun AddOfferContent(
         },
         contentState = state
     ) {
-        DetailsPageImage(state.image, onClick = onClickAddImage)
+        DetailsPageImage(state.offerItem.image, onClick = onClickAddImage)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -62,7 +63,7 @@ fun AddOfferContent(
             )
             VerticalSpacer(Spacing8)
             SimpleCustomTextField(
-                value = state.title,
+                value = state.offerItem.title,
                 onValueChange = onTitleChange,
                 placeholder = stringResource(R.string.offer_title),
                 leadingIcon = {
@@ -70,11 +71,11 @@ fun AddOfferContent(
                         painter = painterResource(R.drawable.ic_title)
                     )
                 },
-                errorMessage = state.titleError,
+                errorMessage = state.offerItem.titleError,
             )
             VerticalSpacer(Spacing8)
 //            SimpleCustomTextField(
-//                value = state.phone,
+//                value = state.offerItem.phone,
 //                onValueChange = onPhoneChange,
 //                placeholder = stringResource(R.string.phone_number),
 //                leadingIcon = {
@@ -82,11 +83,11 @@ fun AddOfferContent(
 //                        painter = painterResource(R.drawable.ic_phone)
 //                    )
 //                },
-//                errorMessage = state.phoneError,
+//                errorMessage = state.offerItem.phoneError,
 //            )
 //            VerticalSpacer(Spacing8)
             SimpleCustomTextField(
-                value = state.place,
+                value = state.offerItem.place,
                 onValueChange = onPlaceChange,
                 placeholder = stringResource(R.string.your_place),
                 leadingIcon = {
@@ -94,11 +95,11 @@ fun AddOfferContent(
                         painter = painterResource(R.drawable.ic_location)
                     )
                 },
-                errorMessage = state.placeError,
+                errorMessage = state.offerItem.placeError,
             )
             VerticalSpacer(Spacing8)
             SimpleCustomMultilineTextField(
-                value = state.details,
+                value = state.offerItem.details,
                 onValueChange = onDetailsChange,
                 placeholder = stringResource(R.string.details),
                 leadingIcon = {
@@ -106,17 +107,17 @@ fun AddOfferContent(
                         painter = painterResource(R.drawable.ic_details)
                     )
                 },
-                errorMessage = state.detailsError,
+                errorMessage = state.offerItem.detailsError,
             )
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.allCategories.map {
+                chipsList = state.offerItem.allCategories.map {
                     Chip(
                         text = it,
                         onClick = onCategoryChange,
-                        selected = it == state.category
+                        selected = it == state.offerItem.category
                     )
                 },
             )
@@ -132,7 +133,7 @@ fun AddOfferContent(
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         AddOfferContent(
-            state = OfferItem(category = "Category"),
+            state = OfferItemUiState(offerItem = OfferItem(category = "Category")),
             onClickAddOffer = { },
             onClickGoBack = { },
             onTitleChange = { },

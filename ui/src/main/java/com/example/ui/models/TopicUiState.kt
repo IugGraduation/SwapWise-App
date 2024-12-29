@@ -1,6 +1,6 @@
 package com.example.ui.models
 
-import com.example.domain.model.ContentState
+import com.example.domain.model.UiState
 import com.example.domain.model.Topic
 import com.example.domain.model.TopicItem
 
@@ -13,7 +13,7 @@ data class TopicUiState(
 
     override val isLoading: Boolean = false,
     override val error: String? = null,
-) : ContentState {
+) : UiState {
     companion object {
         fun fromTopic(topic: Topic): TopicUiState {
             val type = TopicType.valueOf(topic.title.replace(" ", ""))

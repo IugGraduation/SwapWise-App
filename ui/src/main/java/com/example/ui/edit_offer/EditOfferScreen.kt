@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,6 +14,10 @@ import androidx.navigation.NavController
 fun EditOfferScreen(navController: NavController, viewModel: EditOfferViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val pickImageFromGallery = pickImageFromGallery { viewModel.onSelectedImageChange(it) }
+
+    LaunchedEffect(state.shouldNavigateUp) {
+        if (state.shouldNavigateUp) navController.navigateUp()
+    }
 
     EditOfferContent(
         state = state,

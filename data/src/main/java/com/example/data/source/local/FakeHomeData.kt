@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import retrofit2.Response
 import javax.inject.Inject
 
-class FakeHomeLocalDataSource @Inject constructor() {
+class FakeHomeData @Inject constructor() {
 
     suspend fun getHomeData(): Response<HomeDto> {
         val jsonData = "{\n" +

@@ -34,7 +34,7 @@ data class PostItem(
     override val placeError: String? = null,
     override val detailsError: String? = null,
     override val categoryError: String? = null,
-) : IOffer, ContentState {
+) : IOffer, UiState {
 
     companion object {
         fun fromTopicItemDto(topicItemDto: TopicItemDto): TopicItem {

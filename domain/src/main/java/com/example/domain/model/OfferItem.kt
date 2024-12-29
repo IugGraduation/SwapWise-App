@@ -14,16 +14,13 @@ data class OfferItem(
     override val allCategories: List<String> = listOf(),
     override val date: String = "",
 
-    override val isLoading: Boolean = false,
-    override val error: String? = null,
-
     override val imgResIdError: String? = null,
     override val imgContentDescriptionError: String? = null,
     override val titleError: String? = null,
     override val placeError: String? = null,
     override val detailsError: String? = null,
     override val categoryError: String? = null,
-) : IOffer, ContentState {
+) : IOffer {
     fun isSuccess(): Boolean {
         return (imgResIdError.isNullOrEmpty() && imgContentDescriptionError.isNullOrEmpty() &&
                 titleError.isNullOrEmpty() && placeError.isNullOrEmpty() &&

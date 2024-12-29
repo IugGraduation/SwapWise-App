@@ -3,8 +3,8 @@ package com.example.graduationproject.di
 import com.example.data.repository.HomeRepository
 import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
-import com.example.data.source.local.FakeHomeLocalDataSource
-import com.example.data.source.local.FakePostLocalDataSource
+import com.example.data.source.local.FakeHomeData
+import com.example.data.source.local.FakePostData
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,14 +15,14 @@ import dagger.hilt.components.SingletonComponent
 object RepositoryModule {
     @Provides
     fun provideHomeRepository(
-        fakeHomeLocalDataSource: FakeHomeLocalDataSource
+        fakeHomeLocalDataSource: FakeHomeData
     ): HomeRepository {
         return HomeRepository(fakeHomeLocalDataSource)
     }
 
     @Provides
     fun providePostRepository(
-        fakePostLocalDataSource: FakePostLocalDataSource
+        fakePostLocalDataSource: FakePostData
     ): PostRepository {
         return PostRepository(fakePostLocalDataSource)
     }
