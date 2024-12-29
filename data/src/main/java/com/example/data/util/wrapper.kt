@@ -36,14 +36,14 @@ fun <T> wrapWithFlow(function: suspend () -> Response<T>): Flow<StateDto<T?>> {
 }
 
 
-fun <T> wrapWithFlow(
-    function: suspend (String) -> Response<T>,
-    uuid: String?
+fun <T, B> wrapWithFlow(
+    function: suspend (body: B) -> Response<T>,
+    body: B,
 ): Flow<StateDto<T?>> {
     return flow {
         emit(StateDto.Loading)
         try {
-            val result = function(uuid ?: "")
+            val result = function(body)
             if (result.isSuccessful) {
                 emit(StateDto.Success(result.body()))
             } else {
@@ -56,26 +56,3 @@ fun <T> wrapWithFlow(
         }
     }
 }
-
-
-//fun <T> wrapWithFlow(
-//    function: suspend (id: Int, body: ProductResponse) -> Response<T>,
-//    value: Int? = -1,
-//    body: ProductResponse,
-//): Flow<State<T?>> {
-//    return flow {
-//        emit(State.Loading)
-//        try {
-//            val result = function(value ?: -1, body)
-//            if (result.isSuccessful) {
-//                emit(State.Success(result.body()))
-//            } else {
-//                emit(State.Error(result.message()))
-//                Log.e("TAG", "Api Error result: ${result.message()}")
-//            }
-//        } catch (e: Exception) {
-//            emit(State.Error(e.message.toString()))
-//            Log.e("TAG", "Api Error e: ${e.message}")
-//        }
-//    }
-//}

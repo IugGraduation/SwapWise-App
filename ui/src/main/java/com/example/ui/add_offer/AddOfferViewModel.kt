@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.AddOfferUseCase
 import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.OfferValidationUseCase
+import com.example.domain.IOfferValidationUseCase
 import com.example.domain.model.OfferItem
 import com.example.domain.model.State
 import com.example.ui.models.OfferItemUiState
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class AddOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
-    private val offerValidationUseCase: OfferValidationUseCase,
+    private val offerValidationUseCase: IOfferValidationUseCase,
     private val addOfferUseCase: AddOfferUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow(OfferItemUiState())
@@ -86,7 +86,7 @@ class AddOfferViewModel @Inject constructor(
 
     private fun validateForm(): Boolean {
         val newOfferState = offerValidationUseCase(state.value.offerItem)
-        _state.value = OfferItemUiState(offerItem = newOfferState)
+        _state.value = OfferItemUiState(offerItem = newOfferState as OfferItem)
         return newOfferState.isSuccess()
     }
 

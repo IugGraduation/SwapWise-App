@@ -1,8 +1,9 @@
 package com.example.domain
 
 import com.example.domain.model.OfferItem
+import javax.inject.Inject
 
-class GetOffersUseCase{
+class GetOffersUseCase @Inject constructor(){
     operator fun invoke(): List<OfferItem> {
         val offerItem = OfferItem(
             image = R.drawable.img_top_interactive.toString(),

@@ -4,10 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.GetPostDetailsUseCase
-import com.example.domain.GetPostsUseCase
-import com.example.domain.model.PostItem
 import com.example.domain.model.State
-import com.example.ui.home.HomeUiState
 import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

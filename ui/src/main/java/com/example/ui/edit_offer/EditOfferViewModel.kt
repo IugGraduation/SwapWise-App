@@ -8,7 +8,8 @@ import com.example.domain.DeleteOfferUseCase
 import com.example.domain.EditOfferUseCase
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetOfferDetailsUseCase
-import com.example.domain.OfferValidationUseCase
+import com.example.domain.IOfferValidationUseCase
+import com.example.domain.model.OfferItem
 import com.example.domain.model.State
 import com.example.ui.models.OfferItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +24,7 @@ class EditOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getOfferDetailsUseCase: GetOfferDetailsUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
-    private val offerValidationUseCase: OfferValidationUseCase,
+    private val offerValidationUseCase: IOfferValidationUseCase,
     private val editOfferUseCase: EditOfferUseCase,
     private val deleteOfferUseCase: DeleteOfferUseCase,
 ) : ViewModel() {
@@ -100,7 +101,7 @@ class EditOfferViewModel @Inject constructor(
 
     private fun validateForm(): Boolean {
         val newOfferState = offerValidationUseCase(state.value.offerItem)
-        _state.value =  OfferItemUiState(offerItem = newOfferState)
+        _state.value =  OfferItemUiState(offerItem = newOfferState as OfferItem)
         return newOfferState.isSuccess()
     }
 

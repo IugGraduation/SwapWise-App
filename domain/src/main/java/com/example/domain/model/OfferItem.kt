@@ -21,12 +21,6 @@ data class OfferItem(
     override val detailsError: String? = null,
     override val categoryError: String? = null,
 ) : IOffer {
-    fun isSuccess(): Boolean {
-        return (imgResIdError.isNullOrEmpty() && imgContentDescriptionError.isNullOrEmpty() &&
-                titleError.isNullOrEmpty() && placeError.isNullOrEmpty() &&
-                detailsError.isNullOrEmpty() && categoryError.isNullOrEmpty())
-    }
-
     fun toOfferItemDto(): OfferItemDto {
         return OfferItemDto(
             uuid = uuid,

@@ -2,7 +2,9 @@ package com.example.ui.topic_see_all
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetCategoriesUseCase
+import com.example.domain.GetOffersUseCase
 import com.example.domain.GetPostsUseCase
 import com.example.domain.model.TopicItem
 import com.example.ui.models.TopicType
@@ -31,11 +33,11 @@ class TopicSeeAllViewModel @Inject constructor(
             }
             TopicType.TopInteractive.name -> {
                 type = TopicType.TopInteractive
-                items = GetPostsUseCase()()
+                items = GetPostsUseCase(GetCategoriesNamesUseCase(GetCategoriesUseCase()), GetOffersUseCase()).getFakeData()
             }
             TopicType.RecentPosts.name -> {
                 type = TopicType.RecentPosts
-                items = GetPostsUseCase()()
+                items = GetPostsUseCase(GetCategoriesNamesUseCase(GetCategoriesUseCase()), GetOffersUseCase()).getFakeData()
             }
         }
 

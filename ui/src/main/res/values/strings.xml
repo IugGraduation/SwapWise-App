@@ -56,4 +56,10 @@
     <string name="edit_offer">Edit Offer</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="add_post">Add Post</string>
+    <string name="post">Post</string>
+    <string name="post_info">Post Info</string>
+    <string name="post_title">Post Title</string>
+    <string name="categories_of_your_post">Categories Of Your Post</string>
+    <string name="categories_you_like">Categories You Like</string>
 </resources>

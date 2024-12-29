@@ -1,7 +1,7 @@
 package com.example.domain.model
 
 
-interface TopicItem {
+interface TopicItem{
     val uuid: String
     val title: String
     val image: String

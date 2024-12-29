@@ -8,7 +8,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetCategoriesUseCase
+import com.example.domain.GetOffersUseCase
 import com.example.domain.GetPostsUseCase
 import com.example.domain.GetUserUseCase
 import com.example.domain.model.PostItem
@@ -88,7 +90,7 @@ fun PreviewHomeContent() {
         items = categoryItemsList,
     )
 
-    val postsItemsList = GetPostsUseCase()()
+    val postsItemsList = GetPostsUseCase(GetCategoriesNamesUseCase(GetCategoriesUseCase()), GetOffersUseCase()).getFakeData()
 
     val topInteractive = TopicUiState(
         type = TopicType.TopInteractive,

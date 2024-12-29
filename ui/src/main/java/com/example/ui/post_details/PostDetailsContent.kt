@@ -8,6 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.example.domain.GetCategoriesNamesUseCase
+import com.example.domain.GetCategoriesUseCase
+import com.example.domain.GetOffersUseCase
 import com.example.domain.GetPostsUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.R
@@ -63,7 +66,12 @@ fun PostDetailsContent(
                 VerticalSpacer(Spacing24)
                 TitledChipsList(
                     title = stringResource(R.string.favorite_categories),
-                    chipsList = Chip.fromCategories(state.postItem.favoriteCategories, true)
+                    chipsList = state.postItem.favoriteCategories.map {
+                        Chip(
+                            text = it,
+                            selected = state.postItem.favoriteCategories.contains(it),
+                            onClick = {})
+                    }
                 )
                 VerticalSpacer(Spacing24)
                 Text(
@@ -94,7 +102,11 @@ fun PostDetailsContent(
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         PostDetailsContent(
-            state = PostItemUiState(postItem = GetPostsUseCase()()[0]),
+            state = PostItemUiState(postItem = GetPostsUseCase(
+                GetCategoriesNamesUseCase(
+                    GetCategoriesUseCase()
+                ), GetOffersUseCase()
+            ).getFakeData()[0]),
             onClickAddOffer = {},
             onClickGoBack = {},
         )
