@@ -5,6 +5,13 @@ import javax.inject.Inject
 
 class GetOffersUseCase @Inject constructor(){
     operator fun invoke(): List<OfferItem> {
+       return GetFakeOffersUseCase()()
+    }
+}
+
+
+class GetFakeOffersUseCase{
+    operator fun invoke(): List<OfferItem> {
         val offerItem = OfferItem(
             image = R.drawable.img_top_interactive.toString(),
             user = GetUserUseCase()(),

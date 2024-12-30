@@ -8,10 +8,13 @@ class GetPostsUseCase @Inject constructor(
     private val getOffersUseCase: GetOffersUseCase,
 ){
     suspend operator fun invoke(): List<PostItem> {
-        return getFakeData()
+        return GetFakePostsUseCase()()
     }
+}
 
-    fun getFakeData(): List<PostItem> {
+
+class GetFakePostsUseCase(){
+    operator fun invoke(): List<PostItem> {
         val postItem = PostItem(
             image = R.drawable.img_top_interactive.toString(),
             user = GetUserUseCase()(),
@@ -21,8 +24,8 @@ class GetPostsUseCase @Inject constructor(
             onClickMakeOffer = { },
             isOpen = true,
             date = "Wed, Nov 20",
-            offers = getOffersUseCase(),
-            favoriteCategories = getCategoriesNamesUseCase.getFakeData().toMutableList(),
+            offers = GetFakeOffersUseCase()(),
+            favoriteCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
             rate = 4.8f,
         )
         return listOf(postItem, postItem, postItem, postItem, postItem)

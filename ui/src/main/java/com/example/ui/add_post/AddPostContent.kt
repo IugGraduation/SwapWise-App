@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetCategoriesUseCase
+import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
@@ -140,12 +141,8 @@ fun PreviewPostDetailsContent() {
             state = PostItemUiState(
                 postItem = PostItem(
                     category = "Category",
-                    favoriteCategories = GetCategoriesNamesUseCase(
-                        GetCategoriesUseCase()
-                    ).getFakeData().toMutableList(),
-                    allCategories = GetCategoriesNamesUseCase(
-                        GetCategoriesUseCase()
-                    ).getFakeData().toMutableList()
+                    favoriteCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
+                    allCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
                 )
             ),
             onClickAddPost = { },

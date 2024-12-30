@@ -13,13 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.GetCategoriesUseCase
-import com.example.domain.GetOffersUseCase
-import com.example.domain.GetPostsUseCase
+import com.example.domain.GetFakePostsUseCase
 import com.example.domain.model.IOffer
 import com.example.domain.model.PostItem
 import com.example.ui.components.atoms.BoxRounded
@@ -112,7 +108,7 @@ private fun BottomHalf(item: IOffer) {
 fun PreviewTopicCard() {
     GraduationProjectTheme {
         TopicCard(
-            item = GetPostsUseCase(GetCategoriesNamesUseCase(GetCategoriesUseCase()), GetOffersUseCase()).getFakeData()[0],
+            item = GetFakePostsUseCase()()[0],
             orientation = Orientation.Vertical,
         )
     }

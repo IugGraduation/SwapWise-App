@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.domain.GetFakeOffersUseCase
 import com.example.domain.GetOffersUseCase
 import com.example.domain.model.OfferItem
 import com.example.ui.R
@@ -64,7 +65,7 @@ fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         OfferDetailsContent(
-            state = OfferItemUiState(offerItem = GetOffersUseCase()()[0]),
+            state = OfferItemUiState(offerItem = GetFakeOffersUseCase()()[0]),
             onClickGoBack = {},
         )
     }

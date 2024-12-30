@@ -12,6 +12,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetCategoriesUseCase
+import com.example.domain.GetFakeCategoriesNamesUseCase
+import com.example.domain.GetFakeOffersUseCase
 import com.example.domain.GetOffersUseCase
 import com.example.domain.model.OfferItem
 import com.example.ui.R
@@ -136,10 +138,8 @@ fun EditOfferContent(
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         EditOfferContent(
-            state = OfferItemUiState(offerItem = GetOffersUseCase()()[0].copy(
-                allCategories = GetCategoriesNamesUseCase(
-                    GetCategoriesUseCase()
-                ).getFakeData(),
+            state = OfferItemUiState(offerItem = GetFakeOffersUseCase()()[0].copy(
+                allCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
                 category = "Food and beverages0",
             )),
             onClickSave = { },

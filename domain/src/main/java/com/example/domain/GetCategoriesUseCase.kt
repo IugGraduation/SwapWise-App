@@ -5,10 +5,13 @@ import javax.inject.Inject
 
 class GetCategoriesUseCase @Inject constructor() {
     operator fun invoke(): List<CategoryItem> {
-        return getFakeData()
+        return GetFakeCategoriesUseCase()()
     }
+}
 
-    fun getFakeData(): List<CategoryItem> {
+
+class GetFakeCategoriesUseCase{
+    operator fun invoke(): List<CategoryItem> {
         val categoryItem = CategoryItem(
             title = "Food and beverages",
             image = R.drawable.img_food_and_beverages.toString(),

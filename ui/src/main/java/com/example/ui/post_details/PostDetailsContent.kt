@@ -8,11 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.GetCategoriesUseCase
-import com.example.domain.GetOffersUseCase
-import com.example.domain.GetPostsUseCase
-import com.example.domain.model.PostItem
+import com.example.domain.GetFakePostsUseCase
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.PostDetailsBody
@@ -102,11 +98,7 @@ fun PostDetailsContent(
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         PostDetailsContent(
-            state = PostItemUiState(postItem = GetPostsUseCase(
-                GetCategoriesNamesUseCase(
-                    GetCategoriesUseCase()
-                ), GetOffersUseCase()
-            ).getFakeData()[0]),
+            state = PostItemUiState(postItem = GetFakePostsUseCase()()[0]),
             onClickAddOffer = {},
             onClickGoBack = {},
         )
