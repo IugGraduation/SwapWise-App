@@ -34,14 +34,7 @@ fun ShowContentWithState(state: UiState, content: @Composable () -> Unit) {
         }
 
         state.error != null -> {
-//            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-//                Text(
-//                    text = "Error: ${state.error}",
-//                    style = TextStyles.headingSmall,
-//                    modifier = Modifier.padding(Spacing16)
-//                )
-//            }
-            Toast.makeText(LocalContext.current, "state.error", Toast.LENGTH_LONG).show()
+            Toast.makeText(LocalContext.current, "${state.error}", Toast.LENGTH_LONG).show()
             content()
         }
 

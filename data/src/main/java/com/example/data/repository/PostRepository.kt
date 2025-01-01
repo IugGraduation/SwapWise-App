@@ -14,16 +14,24 @@ class PostRepository(
 ) {
     suspend fun getPostDetails(uuid: String): Flow<StateDto<PostItemDto?>> =
         wrapWithFlow(fakePostData::getPostDetails, uuid)
+//        wrapWithFlow(storeApiService::getPost, uuid)
 
 
     suspend fun addPost(postItemDto: PostItemDto): Flow<StateDto<Boolean?>> =
-        wrapWithFlow(storeApiService::addPost, postItemDto)
-
-
-    suspend fun editPost(postItemDto: PostItemDto): Flow<StateDto<Boolean>> =
         fakeWrapWithFlow(true)
+//        wrapWithFlow(storeApiService::addPost, postItemDto)
 
 
-    suspend fun deletePost(postId: String): Flow<StateDto<Boolean>> =
+    suspend fun updatePost(postItemDto: PostItemDto): Flow<StateDto<Boolean?>> =
         fakeWrapWithFlow(true)
+//        wrapWithFlow(storeApiService::updatePost, postItemDto)
+
+
+    suspend fun deletePost(postId: String): Flow<StateDto<Boolean?>> =
+        fakeWrapWithFlow(true)
+//        wrapWithFlow(storeApiService::deletePost, postId)
+
+
+    suspend fun searchPosts(searchValue: String): Flow<StateDto<List<PostItemDto?>?>> =
+        fakeWrapWithFlow(listOf(fakePostData.getPostDetails("").body(), fakePostData.getPostDetails("").body()))
 }

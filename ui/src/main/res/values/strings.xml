@@ -62,4 +62,7 @@
     <string name="post_title">Post Title</string>
     <string name="categories_of_your_post">Categories Of Your Post</string>
     <string name="categories_you_like">Categories You Like</string>
+    <string name="searching">Searching</string>
+    <string name="nothing_found">Nothing found.</string>
+    <string name="try_again">Try again!</string>
 </resources>

@@ -20,7 +20,7 @@ import com.example.ui.R
 import com.example.ui.theme.Primary
 
 @Composable
-fun CustomBottomNavigationBar(selectedItem: Int = 1, onClickItem: (itemNum: Int) -> Unit) {
+fun CustomBottomNavigationBar(selectedItem: Int = 2, onClickItem: (itemNum: Int) -> Unit) {
     val navigationBarItemColors = NavigationBarItemDefaults.colors().copy(
         selectedIconColor = MaterialTheme.colorScheme.onBackground,
         selectedTextColor = Primary,

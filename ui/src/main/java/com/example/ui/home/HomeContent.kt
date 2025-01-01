@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.domain.GetCategoriesUseCase
+import com.example.domain.GetFakeCategoriesUseCase
 import com.example.domain.GetFakePostsUseCase
 import com.example.domain.GetUserUseCase
 import com.example.domain.model.PostItem
@@ -80,7 +81,7 @@ fun HomeContent(
 //)
 @Composable
 fun PreviewHomeContent() {
-    val categoryItemsList = GetCategoriesUseCase()()
+    val categoryItemsList = GetFakeCategoriesUseCase()()
 
     val category = TopicUiState(
         type = TopicType.Categories,

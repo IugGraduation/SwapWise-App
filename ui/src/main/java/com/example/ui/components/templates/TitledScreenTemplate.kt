@@ -11,6 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.domain.model.UiState
 import com.example.ui.R
+import com.example.ui.theme.TextStyles
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +30,7 @@ fun TitledScreenTemplate(
     ScreenTemplate(
         topBar = {
             TopAppBar(
-                title = { Text(text = title) },
+                title = { Text(text = title,  style = TextStyles.headingExtraLarge) },
                 navigationIcon = {
                     IconButton(onClick = onClickGoBack) {
                         Icon(

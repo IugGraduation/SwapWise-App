@@ -4,7 +4,7 @@ import com.example.domain.model.CategoryItem
 import javax.inject.Inject
 
 class GetCategoriesUseCase @Inject constructor() {
-    operator fun invoke(): List<CategoryItem> {
+    suspend operator fun invoke(): List<CategoryItem> {
         return GetFakeCategoriesUseCase()()
     }
 }

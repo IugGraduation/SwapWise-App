@@ -16,7 +16,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideResourceProvider(): StoreApiService {
-        val BASE_URL = "https://fakestoreapi.com/"
+        val BASE_URL = "http://127.0.0.1:8080"
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

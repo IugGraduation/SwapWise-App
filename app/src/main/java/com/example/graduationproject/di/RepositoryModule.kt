@@ -5,6 +5,7 @@ import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
 import com.example.data.source.local.FakeHomeData
 import com.example.data.source.local.FakePostData
+import com.example.data.source.remote.StoreApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,9 +23,10 @@ object RepositoryModule {
 
     @Provides
     fun providePostRepository(
-        fakePostLocalDataSource: FakePostData
+        fakePostLocalDataSource: FakePostData,
+        storeApiService: StoreApiService,
     ): PostRepository {
-        return PostRepository(fakePostLocalDataSource)
+        return PostRepository(fakePostLocalDataSource, storeApiService)
     }
 
     @Provides
