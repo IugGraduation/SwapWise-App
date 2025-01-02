@@ -118,12 +118,8 @@ fun EditOfferContent(
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.offerItem.allCategories.map {
-                    Chip(
-                        text = it,
-                        onClick = onCategoryChange,
-                        selected = it == state.offerItem.category
-                    )
+                chipsList = state.chipsList.onEach {
+                    it.selected = it.text == state.offerItem.category
                 },
             )
 
@@ -139,7 +135,6 @@ fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         EditOfferContent(
             state = OfferItemUiState(offerItem = GetFakeOffersUseCase()()[0].copy(
-                allCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
                 category = "Food and beverages0",
             )),
             onClickSave = { },

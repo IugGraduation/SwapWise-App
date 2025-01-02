@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetSearchResultUseCase
 import com.example.domain.model.State
+import com.example.ui.models.Chip
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,21 +22,17 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase
-) :
-    ViewModel() {
+) : ViewModel() {
     private val _state = MutableStateFlow(SearchUiState())
     val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
             val categoriesNames = getCategoriesNamesUseCase()
-            _state.value.filterChipsList.forEachIndexed { index, chip ->
-                chip.text = categoriesNames[index]
-                chip.selected = false
-                chip.onClick = {
-                    chip.selected = !chip.selected
-                    search()
-                }
+            _state.update {
+                it.copy(filterChipsList = List(categoriesNames.size) { index ->
+                    Chip(text = categoriesNames[index], selected = false, onClick = { search() })
+                })
             }
 
             _state.map { it.search }.debounce(500L).distinctUntilChanged()
@@ -45,33 +42,30 @@ class SearchViewModel @Inject constructor(
 
     private fun search() {
         viewModelScope.launch {
-            getSearchResultUseCase(_state.value.search).collect { searchResult ->
-                when (searchResult) {
-                    is State.Loading -> _state.update {
-                        it.copy(
-                            isLoading = true,
-                            topicsList = listOf(),
-                            error = null
-                        )
-                    }
+            val filterCategories = _state.value.filterChipsList.map { it.text }
+                getSearchResultUseCase(_state.value.search, filterCategories).collect { searchResult ->
+                    when (searchResult) {
+                        is State.Loading -> _state.update {
+                            it.copy(
+                                isLoading = true, topicsList = listOf(), error = null
+                            )
+                        }
 
-                    is State.Success -> _state.update {
-                        it.copy(
-                            isLoading = false,
-                            topicsList = searchResult.data,
-                            error = null
-                        )
-                    }
+                        is State.Success -> _state.update {
+                            it.copy(
+                                isLoading = false, topicsList = searchResult.data, error = null
+                            )
+                        }
 
-                    is State.Error -> _state.update {
-                        it.copy(
-                            isLoading = false,
-                            topicsList = listOf(),
-                            error = searchResult.message
-                        )
+                        is State.Error -> _state.update {
+                            it.copy(
+                                isLoading = false,
+                                topicsList = listOf(),
+                                error = searchResult.message
+                            )
+                        }
                     }
                 }
-            }
         }
     }
 

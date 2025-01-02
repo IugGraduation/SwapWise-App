@@ -5,7 +5,6 @@ interface IOffer : TopicItem {
     val place: String
     val details: String
     val category: String
-    val allCategories: List<String>
     val date: String
 
     val imgResIdError: String?
@@ -16,14 +15,14 @@ interface IOffer : TopicItem {
     val categoryError: String?
 
 
-    public fun isSuccess(): Boolean {
+    fun isSuccess(): Boolean {
         return (imgResIdError.isNullOrEmpty() && imgContentDescriptionError.isNullOrEmpty() &&
                 titleError.isNullOrEmpty() && placeError.isNullOrEmpty() &&
                 detailsError.isNullOrEmpty() && categoryError.isNullOrEmpty())
     }
 
 
-    public fun customCopy(
+    fun customCopy(
         uuid: String = this.uuid,
         title: String = this.title,
         image: String = this.image,
@@ -32,7 +31,6 @@ interface IOffer : TopicItem {
         place: String = this.place,
         details: String = this.details,
         category: String = this.category,
-        allCategories: List<String> = this.allCategories,
         date: String = this.date,
 
         imgResIdError: String? = this.imgResIdError,
@@ -47,7 +45,6 @@ interface IOffer : TopicItem {
             override val place: String = place
             override val details: String = details
             override val category: String = category
-            override val allCategories: List<String> = allCategories
             override val date: String = date
             override val imgResIdError: String? = imgResIdError
             override val imgContentDescriptionError: String? = imgContentDescriptionError

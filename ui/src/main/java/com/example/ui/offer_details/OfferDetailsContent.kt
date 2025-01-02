@@ -43,7 +43,7 @@ fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
-                chipsList = listOf(Chip(state.offerItem.category, {}, true))
+                chipsList = listOf(Chip(text = state.offerItem.category, selected = true, clickable = false))
             )
             VerticalSpacer(Spacing24)
             Text(

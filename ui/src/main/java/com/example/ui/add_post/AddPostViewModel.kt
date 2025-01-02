@@ -8,6 +8,7 @@ import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.IOfferValidationUseCase
 import com.example.domain.model.PostItem
 import com.example.domain.model.State
+import com.example.ui.models.Chip
 import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,12 +34,15 @@ class AddPostViewModel @Inject constructor(
     }
 
     private suspend fun getAllCategories() {
-        _state.update { it.copy(isLoading = true) }
+        val categoriesNames = getCategoriesNamesUseCase()
         _state.update {
-            it.copy(
-                postItem = _state.value.postItem.copy(allCategories = getCategoriesNamesUseCase()),
-                isLoading = false
-            )
+            it.copy(chipsList = List(categoriesNames.size) { index ->
+                Chip(
+                    text = categoriesNames[index],
+                    selected = false,
+                    onClick = ::onCategoryChange
+                )
+            })
         }
     }
 

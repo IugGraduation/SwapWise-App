@@ -11,6 +11,7 @@ import com.example.domain.GetOfferDetailsUseCase
 import com.example.domain.IOfferValidationUseCase
 import com.example.domain.model.OfferItem
 import com.example.domain.model.State
+import com.example.ui.models.Chip
 import com.example.ui.models.OfferItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,26 +53,47 @@ class EditOfferViewModel @Inject constructor(
     }
 
     private suspend fun getAllCategories() {
-        _state.update { it.copy(isLoading = true) }
+        val categoriesNames = getCategoriesNamesUseCase()
         _state.update {
-            it.copy(
-                offerItem = _state.value.offerItem.copy(allCategories = getCategoriesNamesUseCase()),
-                isLoading = false
-            )
+            it.copy(chipsList = List(categoriesNames.size) { index ->
+                Chip(
+                    text = categoriesNames[index],
+                    selected = categoriesNames[index] == state.value.offerItem.category,
+                    onClick = ::onCategoryChange
+                )
+            })
         }
     }
 
 
     fun onTitleChange(title: String) {
-        _state.update { it.copy(offerItem = _state.value.offerItem.copy(title = title, titleError = null)) }
+        _state.update {
+            it.copy(
+                offerItem = _state.value.offerItem.copy(
+                    title = title, titleError = null
+                )
+            )
+        }
     }
 
     fun onDetailsChange(details: String) {
-        _state.update { it.copy(offerItem = _state.value.offerItem.copy(details = details, detailsError = null)) }
+        _state.update {
+            it.copy(
+                offerItem = _state.value.offerItem.copy(
+                    details = details, detailsError = null
+                )
+            )
+        }
     }
 
     fun onPlaceChange(place: String) {
-        _state.update { it.copy(offerItem = _state.value.offerItem.copy(place = place, placeError = null)) }
+        _state.update {
+            it.copy(
+                offerItem = _state.value.offerItem.copy(
+                    place = place, placeError = null
+                )
+            )
+        }
     }
 
     fun onSelectedImageChange(selectedImageUri: Uri) {
@@ -79,7 +101,13 @@ class EditOfferViewModel @Inject constructor(
     }
 
     fun onCategoryChange(category: String) {
-        _state.update { it.copy(offerItem = _state.value.offerItem.copy(category = category, categoryError = null)) }
+        _state.update {
+            it.copy(
+                offerItem = _state.value.offerItem.copy(
+                    category = category, categoryError = null
+                )
+            )
+        }
     }
 
 
@@ -101,7 +129,7 @@ class EditOfferViewModel @Inject constructor(
 
     private fun validateForm(): Boolean {
         val newOfferState = offerValidationUseCase(state.value.offerItem)
-        _state.value =  OfferItemUiState(offerItem = newOfferState as OfferItem)
+        _state.value = OfferItemUiState(offerItem = newOfferState as OfferItem)
         return newOfferState.isSuccess()
     }
 

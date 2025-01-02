@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.domain.GetFakePostsUseCase
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
@@ -93,7 +94,7 @@ fun PostDetailsContent(
 }
 
 
-//@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440",)
+@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440",)
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {

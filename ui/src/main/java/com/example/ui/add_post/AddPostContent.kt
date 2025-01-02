@@ -10,8 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.GetCategoriesUseCase
 import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.R
@@ -104,26 +102,19 @@ fun AddPostContent(
             )
             VerticalSpacer(Spacing24)
             TitledChipsList(
-                title = stringResource(R.string.categories_of_your_post),
+                title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.postItem.allCategories.map {
-                    Chip(
-                        text = it,
-                        onClick = onCategoryChange,
-                        selected = it == state.postItem.category
-                    )
+                chipsList = state.chipsList.onEach {
+                    it.selected = it.text == state.postItem.category
                 },
             )
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.postItem.allCategories.map {
-                    Chip(
-                        text = it,
-                        onClick = onFavoriteCategoryChange,
-                        selected = it == state.postItem.category
-                    )
+                chipsList = state.chipsList.onEach {
+                    it.selected = state.postItem.favoriteCategories.contains(it.text)
+                    it.onClick = onFavoriteCategoryChange
                 },
             )
 
@@ -133,16 +124,17 @@ fun AddPostContent(
 }
 
 
-@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
+//@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         AddPostContent(
             state = PostItemUiState(
+                chipsList = GetFakeCategoriesNamesUseCase()().map { title ->
+                    Chip(text = title)
+                },
                 postItem = PostItem(
                     category = "Category",
-                    favoriteCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
-                    allCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
                 )
             ),
             onClickAddPost = { },

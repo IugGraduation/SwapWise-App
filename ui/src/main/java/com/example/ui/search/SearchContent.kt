@@ -128,7 +128,7 @@ private fun EmptyContent(onClickTryAgain: () -> Unit) {
 }
 
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun PreviewAllTopicsContent() {
     GraduationProjectTheme {

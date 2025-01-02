@@ -31,7 +31,10 @@ fun CustomChip(chip: Chip, modifier: Modifier = Modifier) {
         if (chip.selected && isSystemInDarkTheme()) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.secondary
 
     BoxRounded(
-        modifier = myModifier.clickable { chip.onClick(chip.text) },
+        modifier = myModifier.clickable(enabled = chip.clickable) {
+            chip.selected = !chip.selected
+            chip.onClick(chip.text)
+        },
         color = backgroundColor,
     ) {
         Text(

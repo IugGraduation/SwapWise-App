@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetSearchResultUseCase @Inject constructor(private val postRepository: PostRepository) {
-    suspend operator fun invoke(searchValue: String): Flow<State<List<PostItem>>> {
-        return postRepository.searchPosts(searchValue).map { state ->
+    suspend operator fun invoke(searchValue: String, filterCategories: List<String>): Flow<State<List<PostItem>>> {
+        return postRepository.searchPosts(searchValue, filterCategories).map { state ->
             when (state) {
                 is StateDto.Success -> {
                     state.data?.let { postItemDtoList ->
