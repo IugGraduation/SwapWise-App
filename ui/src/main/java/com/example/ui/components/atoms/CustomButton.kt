@@ -21,7 +21,7 @@ import com.example.ui.theme.TextStyles
 
 
 @Composable
-fun CustomButton(
+fun SwapWiseFilledButton(
     onClick: () -> Unit,
     text: String,
     modifier: Modifier = Modifier,
@@ -49,9 +49,9 @@ fun CustomButton(
 
 //@Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun PreviewCustomButton() {
+fun PreviewSwapWiseFilledButton() {
     GraduationProjectTheme {
-        CustomButton(
+        SwapWiseFilledButton(
             onClick = {
 
             },

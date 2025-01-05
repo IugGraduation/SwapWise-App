@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.domain.model.OfferItem
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomButton
+import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.DetailsPageImage
@@ -42,7 +42,7 @@ fun AddOfferContent(
         title = stringResource(R.string.add_offer),
         onClickGoBack = onClickGoBack,
         floatingActionButton = {
-            CustomButton(
+            SwapWiseFilledButton(
                 onClick = onClickAddOffer,
                 text = stringResource(R.string.add_offer),
                 modifier = Modifier.padding(horizontal = Spacing16)

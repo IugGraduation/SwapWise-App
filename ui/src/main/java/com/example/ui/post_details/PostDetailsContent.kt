@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.domain.GetFakePostsUseCase
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomButton
+import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.PostDetailsBody
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.DetailsPageImage
@@ -38,7 +38,7 @@ fun PostDetailsContent(
         title = stringResource(R.string.post_details),
         onClickGoBack = onClickGoBack,
         floatingActionButton = {
-            CustomButton(
+            SwapWiseFilledButton(
                 onClick = onClickAddOffer,
                 text = stringResource(R.string.add_offer),
                 modifier = Modifier.padding(horizontal = Spacing16)

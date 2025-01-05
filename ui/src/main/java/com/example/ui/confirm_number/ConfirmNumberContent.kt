@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomButton
+import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.CustomOtpTextField
 import com.example.ui.components.atoms.Header
 import com.example.ui.components.atoms.VerticalSpacer
@@ -54,7 +54,7 @@ fun OtpContent(
                 otpLength = state.otpLength
             )
             VerticalSpacer(Spacing72)
-            CustomButton(
+            SwapWiseFilledButton(
                 onClick = onClickConfirm,
                 text = stringResource(R.string.confirm),
                 enabled = state.isConfirmButtonEnabled,
