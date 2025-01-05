@@ -2,7 +2,12 @@ package com.example.ui.topic_see_all
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetCategoriesUseCase
+import com.example.domain.GetFakePostsUseCase
+import com.example.domain.GetOffersUseCase
 import com.example.domain.GetPostsUseCase
 import com.example.domain.model.TopicItem
 import com.example.ui.models.TopicType
@@ -11,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,17 +31,21 @@ class TopicSeeAllViewModel @Inject constructor(
     init {
         var type: TopicType = TopicType.Categories
         var items: List<TopicItem> = listOf()
-        when (args.topicType) {
-            TopicType.Categories.name -> {
-                items = GetCategoriesUseCase()()
-            }
-            TopicType.TopInteractive.name -> {
-                type = TopicType.TopInteractive
-                items = GetPostsUseCase()()
-            }
-            TopicType.RecentPosts.name -> {
-                type = TopicType.RecentPosts
-                items = GetPostsUseCase()()
+        viewModelScope.launch {
+            when (args.topicType) {
+                TopicType.Categories.name -> {
+                    items = GetCategoriesUseCase()()
+                }
+
+                TopicType.TopInteractive.name -> {
+                    type = TopicType.TopInteractive
+                    items = GetFakePostsUseCase()()
+                }
+
+                TopicType.RecentPosts.name -> {
+                    type = TopicType.RecentPosts
+                    items = GetFakePostsUseCase()()
+                }
             }
         }
 

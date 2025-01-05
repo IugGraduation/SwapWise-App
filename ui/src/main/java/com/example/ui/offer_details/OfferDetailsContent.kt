@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.domain.GetFakeOffersUseCase
 import com.example.domain.GetOffersUseCase
 import com.example.domain.model.OfferItem
 import com.example.ui.R
@@ -19,6 +20,7 @@ import com.example.ui.components.molecules.PostDetailsUserHeader
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.Chip
+import com.example.ui.models.OfferItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -26,22 +28,22 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun OfferDetailsContent(state: OfferItem, onClickGoBack: () -> Unit) {
+fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
     TitledScreenTemplate(
         title = stringResource(R.string.offer_details),
         onClickGoBack = onClickGoBack,
         contentState = state,
     ) {
         Column {
-            DetailsPageImage(state.image)
+            DetailsPageImage(state.offerItem.image)
             VerticalSpacer(Spacing16)
-            PostDetailsUserHeader(user = state.user, date = state.date)
+            PostDetailsUserHeader(user = state.offerItem.user, date = state.offerItem.date)
             VerticalSpacer(Spacing24)
-            PostDetailsBody(state.title, state.details)
+            PostDetailsBody(state.offerItem.title, state.offerItem.details)
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
-                chipsList = listOf(Chip(state.category, {}, true))
+                chipsList = listOf(Chip(state.offerItem.category, {}, true))
             )
             VerticalSpacer(Spacing24)
             Text(
@@ -51,7 +53,7 @@ fun OfferDetailsContent(state: OfferItem, onClickGoBack: () -> Unit) {
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
             VerticalSpacer(Spacing8)
-            PhoneRow(state)
+            PhoneRow(state.offerItem)
         }
 
     }
@@ -63,7 +65,7 @@ fun OfferDetailsContent(state: OfferItem, onClickGoBack: () -> Unit) {
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         OfferDetailsContent(
-            state = GetOffersUseCase()()[0],
+            state = OfferItemUiState(offerItem = GetFakeOffersUseCase()()[0]),
             onClickGoBack = {},
         )
     }

@@ -1,15 +1,17 @@
 package com.example.ui.components.templates
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.model.UiState
-import com.example.ui.components.molecules.HomeTopBar
 import com.example.ui.models.BottomBarUiState
-import com.example.domain.model.User
+import com.example.ui.theme.TextStyles
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTemplate(
-    user: User,
+fun MainTitledScreenTemplate(
+    title: String,
     bottomBarState: BottomBarUiState,
     contentState: UiState = object : UiState {
         override val isLoading: Boolean = false
@@ -19,11 +21,7 @@ fun HomeTemplate(
 ) {
     BottomBarTemplate(
         topBar = {
-            HomeTopBar(
-                title = "Good Morning \uD83D\uDC4B",
-                subtitle = user.name,
-                imagePainter = rememberAsyncImagePainter(user.image),
-            )
+            TopAppBar(title = { Text(text = title, style = TextStyles.headingExtraLarge) },)
         },
         bottomBarState = bottomBarState,
         contentState = contentState,

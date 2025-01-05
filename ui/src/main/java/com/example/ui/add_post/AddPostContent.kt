@@ -1,4 +1,4 @@
-package com.example.ui.add_offer
+package com.example.ui.add_post
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.domain.model.OfferItem
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.domain.GetCategoriesNamesUseCase
+import com.example.domain.GetCategoriesUseCase
+import com.example.domain.GetFakeCategoriesNamesUseCase
+import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
@@ -20,7 +24,7 @@ import com.example.ui.components.molecules.SimpleCustomTextField
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.Chip
-import com.example.ui.models.OfferItemUiState
+import com.example.ui.models.PostItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -28,66 +32,55 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun AddOfferContent(
-    state: OfferItemUiState,
+fun AddPostContent(
+    state: PostItemUiState,
     onTitleChange: (String) -> Unit,
     onPlaceChange: (String) -> Unit,
     onDetailsChange: (String) -> Unit,
     onCategoryChange: (String) -> Unit,
-    onClickAddOffer: () -> Unit,
+    onFavoriteCategoryChange: (String) -> Unit,
+    onClickAddPost: () -> Unit,
     onClickAddImage: () -> Unit,
     onClickGoBack: () -> Unit
 ) {
     TitledScreenTemplate(
-        title = stringResource(R.string.add_offer),
+        title = stringResource(R.string.add_post),
         onClickGoBack = onClickGoBack,
         floatingActionButton = {
             CustomButton(
-                onClick = onClickAddOffer,
-                text = stringResource(R.string.add_offer),
+                onClick = onClickAddPost,
+                text = stringResource(R.string.post),
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
         },
         contentState = state
     ) {
-        DetailsPageImage(state.offerItem.image, onClick = onClickAddImage)
+        DetailsPageImage(state.postItem.image, onClick = onClickAddImage)
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(Spacing16)
         ) {
             Text(
-                stringResource(R.string.offer_info),
+                text = stringResource(R.string.post_info),
                 style = TextStyles.headingLarge,
                 color = MaterialTheme.colorScheme.primary
             )
             VerticalSpacer(Spacing8)
             SimpleCustomTextField(
-                value = state.offerItem.title,
+                value = state.postItem.title,
                 onValueChange = onTitleChange,
-                placeholder = stringResource(R.string.offer_title),
+                placeholder = stringResource(R.string.post_title),
                 leadingIcon = {
                     CustomTextFieldIcon(
                         painter = painterResource(R.drawable.ic_title)
                     )
                 },
-                errorMessage = state.offerItem.titleError,
+                errorMessage = state.postItem.titleError,
             )
             VerticalSpacer(Spacing8)
-//            SimpleCustomTextField(
-//                value = state.offerItem.phone,
-//                onValueChange = onPhoneChange,
-//                placeholder = stringResource(R.string.phone_number),
-//                leadingIcon = {
-//                    CustomTextFieldIcon(
-//                        painter = painterResource(R.drawable.ic_phone)
-//                    )
-//                },
-//                errorMessage = state.offerItem.phoneError,
-//            )
-//            VerticalSpacer(Spacing8)
             SimpleCustomTextField(
-                value = state.offerItem.place,
+                value = state.postItem.place,
                 onValueChange = onPlaceChange,
                 placeholder = stringResource(R.string.your_place),
                 leadingIcon = {
@@ -95,11 +88,11 @@ fun AddOfferContent(
                         painter = painterResource(R.drawable.ic_location)
                     )
                 },
-                errorMessage = state.offerItem.placeError,
+                errorMessage = state.postItem.placeError,
             )
             VerticalSpacer(Spacing8)
             SimpleCustomMultilineTextField(
-                value = state.offerItem.details,
+                value = state.postItem.details,
                 onValueChange = onDetailsChange,
                 placeholder = stringResource(R.string.details),
                 leadingIcon = {
@@ -107,17 +100,29 @@ fun AddOfferContent(
                         painter = painterResource(R.drawable.ic_details)
                     )
                 },
-                errorMessage = state.offerItem.detailsError,
+                errorMessage = state.postItem.detailsError,
             )
             VerticalSpacer(Spacing24)
             TitledChipsList(
-                title = stringResource(R.string.category_of_the_offer),
+                title = stringResource(R.string.categories_of_your_post),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.offerItem.allCategories.map {
+                chipsList = state.postItem.allCategories.map {
                     Chip(
                         text = it,
                         onClick = onCategoryChange,
-                        selected = it == state.offerItem.category
+                        selected = it == state.postItem.category
+                    )
+                },
+            )
+            VerticalSpacer(Spacing24)
+            TitledChipsList(
+                title = stringResource(R.string.categories_you_like),
+                textStyle = TextStyles.headingLarge,
+                chipsList = state.postItem.allCategories.map {
+                    Chip(
+                        text = it,
+                        onClick = onFavoriteCategoryChange,
+                        selected = it == state.postItem.category
                     )
                 },
             )
@@ -128,19 +133,26 @@ fun AddOfferContent(
 }
 
 
-//@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
+@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
-        AddOfferContent(
-            state = OfferItemUiState(offerItem = OfferItem(category = "Category")),
-            onClickAddOffer = { },
+        AddPostContent(
+            state = PostItemUiState(
+                postItem = PostItem(
+                    category = "Category",
+                    favoriteCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
+                    allCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
+                )
+            ),
+            onClickAddPost = { },
             onClickGoBack = { },
             onTitleChange = { },
             onPlaceChange = { },
             onDetailsChange = { },
             onClickAddImage = { },
             onCategoryChange = { },
+            onFavoriteCategoryChange = { },
         )
     }
 }

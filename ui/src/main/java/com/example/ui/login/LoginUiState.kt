@@ -1,6 +1,6 @@
 package com.example.ui.login
 
-import com.example.domain.model.ContentState
+import com.example.domain.model.UiState
 import com.example.domain.model.SignState
 
 data class LoginUiState(
@@ -13,7 +13,7 @@ data class LoginUiState(
 
     val phoneError: String? = null,
     val passwordError: String? = null,
-): ContentState {
+): UiState {
     fun toSignState() =
         SignState(
             phone = phone,

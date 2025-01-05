@@ -19,7 +19,7 @@ data class PostItem(
     override val date: String = "",
     val onClickMakeOffer: () -> Unit = {},
     var onClickGoToDetails: (() -> Unit)? = null,
-    val favoriteCategories: List<CategoryItem> = listOf(),
+    val favoriteCategories: MutableList<String> = mutableListOf(),
     val isOpen: Boolean = true,
     val rate: Float = 0f,
     val offers: List<IOffer> = listOf(),
@@ -34,7 +34,7 @@ data class PostItem(
     override val placeError: String? = null,
     override val detailsError: String? = null,
     override val categoryError: String? = null,
-) : IOffer, ContentState {
+) : IOffer, UiState {
 
     companion object {
         fun fromTopicItemDto(topicItemDto: TopicItemDto): TopicItem {
@@ -84,6 +84,29 @@ data class PostItem(
 
             )
         }
+    }
+
+
+    fun toPostItemDto(): PostItemDto {
+        return PostItemDto(
+            uuid = uuid,
+            userImage = user.image,
+            userName = user.name,
+            userUuid = user.uuid,
+            postImage = image,
+            postName = title,
+            status = if(isOpen) "Active" else "Closed",
+            postDetails = details,
+//                place = "",
+//                category = "",
+//                onClickMakeOffer = "",
+//                onClickGoToDetails = "",
+//                date = "",
+//                favoriteCategories ="",
+//                rate = "",
+//                offers = "",
+
+        )
     }
 }
 

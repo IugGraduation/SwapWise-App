@@ -1,4 +1,4 @@
-package com.example.ui.edit_offer
+package com.example.ui.add_post
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -11,7 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 @Composable
-fun EditOfferScreen(navController: NavController, viewModel: EditOfferViewModel = hiltViewModel()) {
+fun AddPostScreen(navController: NavController, viewModel: AddPostViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val pickImageFromGallery = pickImageFromGallery { viewModel.onSelectedImageChange(it) }
 
@@ -19,14 +19,14 @@ fun EditOfferScreen(navController: NavController, viewModel: EditOfferViewModel 
         if (state.shouldNavigateUp) navController.navigateUp()
     }
 
-    EditOfferContent(
+    AddPostContent(
         state = state,
         onTitleChange = viewModel::onTitleChange,
         onPlaceChange = viewModel::onPlaceChange,
         onDetailsChange = viewModel::onDetailsChange,
         onCategoryChange = viewModel::onCategoryChange,
-        onClickSave = viewModel::onClickSave,
-        onClickDelete = viewModel::onClickDelete,
+        onFavoriteCategoryChange = viewModel::onFavoriteCategoryChange,
+        onClickAddPost = viewModel::onClickAddPost,
         onClickAddImage = pickImageFromGallery,
         onClickGoBack = { navController.navigateUp() },
     )

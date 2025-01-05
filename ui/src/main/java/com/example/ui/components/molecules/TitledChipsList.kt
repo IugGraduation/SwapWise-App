@@ -20,14 +20,20 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun TitledChipsList(title: String, textStyle: TextStyle =  TextStyles.headingMedium, chipsList: List<Chip>) {
-    Text(
-        text = title,
-        style = textStyle,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(horizontal = Spacing16)
-    )
-    VerticalSpacer(Spacing8)
+fun TitledChipsList(
+    title: String? = null,
+    textStyle: TextStyle = TextStyles.headingMedium,
+    chipsList: List<Chip>
+) {
+    if (title != null) {
+        Text(
+            text = title,
+            style = textStyle,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(horizontal = Spacing16)
+        )
+        VerticalSpacer(Spacing8)
+    }
     LazyRow(
         contentPadding = PaddingValues(horizontal = Spacing16),
         modifier = Modifier.fillMaxWidth(),

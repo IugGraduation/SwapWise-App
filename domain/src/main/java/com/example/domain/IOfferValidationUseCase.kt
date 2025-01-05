@@ -1,17 +1,17 @@
 package com.example.domain
 
-import com.example.domain.model.OfferItem
+import com.example.domain.model.IOffer
 import com.example.domain.resource.ResourceProvider
 import javax.inject.Inject
 
-class OfferValidationUseCase @Inject constructor(
+class IOfferValidationUseCase @Inject constructor(
     private val resourceProvider: ResourceProvider,
     private val validateTitleUseCase: ValidateAtLeast3CharacterUseCase,
     private val validatePlaceUseCase: ValidateAtLeast3CharacterUseCase,
     private val validateDetailsUseCase: ValidateAtLeast3CharacterUseCase,
 ) {
 
-    operator fun invoke(offer: OfferItem): OfferItem {
+    operator fun invoke(offer: IOffer): IOffer {
         val titleResult = validateTitleUseCase(
             offer.title, resourceProvider.getString(R.string.title)
         )
@@ -22,7 +22,7 @@ class OfferValidationUseCase @Inject constructor(
             offer.details, resourceProvider.getString(R.string.details)
         )
 
-        val updatedOffer = offer.copy(
+        val updatedOffer = offer.customCopy(
             titleError = titleResult.exceptionOrNull()?.message,
             placeError = placeResult.exceptionOrNull()?.message,
             detailsError = detailsResult.exceptionOrNull()?.message,

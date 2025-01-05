@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-interface ContentState{
+interface UiState{
     val isLoading: Boolean
     val error: String?
 }

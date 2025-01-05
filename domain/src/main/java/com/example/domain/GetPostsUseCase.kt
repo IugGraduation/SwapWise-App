@@ -1,8 +1,19 @@
 package com.example.domain
 
 import com.example.domain.model.PostItem
+import javax.inject.Inject
 
-class GetPostsUseCase{
+class GetPostsUseCase @Inject constructor(
+    private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
+    private val getOffersUseCase: GetOffersUseCase,
+){
+    suspend operator fun invoke(): List<PostItem> {
+        return GetFakePostsUseCase()()
+    }
+}
+
+
+class GetFakePostsUseCase(){
     operator fun invoke(): List<PostItem> {
         val postItem = PostItem(
             image = R.drawable.img_top_interactive.toString(),
@@ -13,8 +24,8 @@ class GetPostsUseCase{
             onClickMakeOffer = { },
             isOpen = true,
             date = "Wed, Nov 20",
-            offers = GetOffersUseCase()(),
-            favoriteCategories = GetCategoriesUseCase()(),
+            offers = GetFakeOffersUseCase()(),
+            favoriteCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
             rate = 4.8f,
         )
         return listOf(postItem, postItem, postItem, postItem, postItem)

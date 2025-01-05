@@ -1,6 +1,6 @@
 package com.example.ui.confirm_number
 
-import com.example.domain.model.ContentState
+import com.example.domain.model.UiState
 
 data class ConfirmNumberUiState(
     val otp: String = "12",
@@ -9,4 +9,4 @@ data class ConfirmNumberUiState(
 
     override val isLoading: Boolean = false,
     override val error: String? = null,
-) : ContentState
+) : UiState

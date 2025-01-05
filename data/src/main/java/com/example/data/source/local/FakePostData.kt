@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import retrofit2.Response
 import javax.inject.Inject
 
-class FakePostLocalDataSource @Inject constructor() {
+class FakePostData @Inject constructor() {
 
     suspend fun getPostDetails(uuid: String): Response<PostItemDto> {
         val jsonData = "{\n"+

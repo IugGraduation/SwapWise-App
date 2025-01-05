@@ -8,9 +8,11 @@ class GetCategoriesNamesUseCase @Inject constructor(
     suspend operator fun invoke(): List<String> {
         return getCategoriesUseCase().map { it.title }
     }
+}
 
 
-    fun getFakeData(): List<String> {
-        return getCategoriesUseCase.getFakeData().map { it.title }
+class GetFakeCategoriesNamesUseCase(){
+    operator fun invoke(): List<String> {
+        return GetFakeCategoriesUseCase()().map { it.title }
     }
 }

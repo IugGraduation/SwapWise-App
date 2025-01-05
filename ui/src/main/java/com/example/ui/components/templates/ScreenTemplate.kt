@@ -9,9 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.domain.model.ContentState
+import com.example.domain.model.UiState
 import com.example.ui.components.atoms.ShowContentWithState
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 @Composable
 fun ScreenTemplate(
@@ -19,7 +18,7 @@ fun ScreenTemplate(
     bottomBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
-    contentState: ContentState = object : ContentState {
+    contentState: UiState = object : UiState {
         override val isLoading: Boolean = false
         override val error: String? = null
     },

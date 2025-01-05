@@ -8,8 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.example.domain.GetPostsUseCase
-import com.example.domain.model.PostItem
+import com.example.domain.GetFakePostsUseCase
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.PostDetailsBody
@@ -22,6 +21,7 @@ import com.example.ui.components.organisms.TopicCard
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.Chip
 import com.example.ui.models.Orientation
+import com.example.ui.models.PostItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -29,7 +29,11 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun PostDetailsContent(state: PostItem, onClickAddOffer: () -> Unit, onClickGoBack: () -> Unit) {
+fun PostDetailsContent(
+    state: PostItemUiState,
+    onClickAddOffer: () -> Unit,
+    onClickGoBack: () -> Unit
+) {
     TitledScreenTemplate(
         title = stringResource(R.string.post_details),
         onClickGoBack = onClickGoBack,
@@ -44,21 +48,26 @@ fun PostDetailsContent(state: PostItem, onClickAddOffer: () -> Unit, onClickGoBa
     ) {
         LazyColumn {
             item {
-                DetailsPageImage(state.image)
+                DetailsPageImage(state.postItem.image)
                 VerticalSpacer(Spacing16)
-                PostDetailsUserHeader(user = state.user, date = state.date)
+                PostDetailsUserHeader(user = state.postItem.user, date = state.postItem.date)
                 VerticalSpacer(Spacing24)
                 PostDetailsStatusRow(
-                    rate = state.rate,
-                    offersCount = state.offers.size,
-                    isOpen = state.isOpen
+                    rate = state.postItem.rate,
+                    offersCount = state.postItem.offers.size,
+                    isOpen = state.postItem.isOpen
                 )
                 VerticalSpacer(Spacing24)
-                PostDetailsBody(state.title, state.details)
+                PostDetailsBody(state.postItem.title, state.postItem.details)
                 VerticalSpacer(Spacing24)
                 TitledChipsList(
                     title = stringResource(R.string.favorite_categories),
-                    chipsList = Chip.fromCategories(state.favoriteCategories, true)
+                    chipsList = state.postItem.favoriteCategories.map {
+                        Chip(
+                            text = it,
+                            selected = state.postItem.favoriteCategories.contains(it),
+                            onClick = {})
+                    }
                 )
                 VerticalSpacer(Spacing24)
                 Text(
@@ -69,7 +78,7 @@ fun PostDetailsContent(state: PostItem, onClickAddOffer: () -> Unit, onClickGoBa
                 )
                 VerticalSpacer(Spacing8)
             }
-            items(state.offers) { offer ->
+            items(state.postItem.offers) { offer ->
                 TopicCard(
                     offer,
                     Orientation.Vertical,
@@ -89,7 +98,7 @@ fun PostDetailsContent(state: PostItem, onClickAddOffer: () -> Unit, onClickGoBa
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         PostDetailsContent(
-            state = GetPostsUseCase()()[0],
+            state = PostItemUiState(postItem = GetFakePostsUseCase()()[0]),
             onClickAddOffer = {},
             onClickGoBack = {},
         )
