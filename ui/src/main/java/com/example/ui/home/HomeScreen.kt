@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.model.PostItem
 import com.example.ui.models.BottomBarUiState
+import com.example.ui.notifications.navigateToNotifications
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.search.navigateToSearch
 import com.example.ui.shared.BottomNavigationViewModel
@@ -34,7 +35,7 @@ fun HomeScreen(
         onItemSelected = mainViewModel::onItemSelected,
         navigateToHome = { navController.navigateToHome() },
         navigateToSearch = { navController.navigateToSearch() },
-        navigateToNotifications = { navController.navigateToHome() },
+        navigateToNotifications = { navController.navigateToNotifications() },
         navigateToProfile = { navController.navigateToHome() },
     )
 
