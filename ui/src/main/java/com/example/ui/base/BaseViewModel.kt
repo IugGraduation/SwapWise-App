@@ -2,11 +2,6 @@ package com.example.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.exception.EmptyDataException
-import com.example.domain.exception.NetworkException
-import com.example.domain.exception.ServerException
-import com.example.domain.exception.SwapWiseException
-import com.example.domain.exception.UnAuthorizedException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,40 +16,43 @@ abstract class BaseViewModel<STATE>(initialState: STATE) : ViewModel() {
 
     fun <T> tryToExecute(
         call: suspend () -> T,
-        onSuccess: (T) -> Unit,
-        onError: (Throwable) -> Unit,
+        onSuccess: (T) -> Unit = {},
+        onError: (Throwable) -> Unit = ::onActionFail,
         dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
         viewModelScope.launch(dispatcher) {
+            isActionLoading(true)
             try {
                 call().also(onSuccess)
+                isActionLoading(false)
             } catch (throwable: Throwable) {
+                isActionLoading(false)
                 onError(throwable)
             }
         }
     }
 
 
-    protected fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
+    private fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
 //        _state.update {
 //            it.copy(baseUiState = it.baseUiState.update())
 //        }
     }
 
-    protected fun onActionLoading() {
-//        updateBaseUiState { copy(isLoading = true) }
+    protected fun isActionLoading(isLoading: Boolean = true) {
+        updateBaseUiState { copy(isLoading = isLoading) }
     }
 
     protected fun onActionFail(throwable: Throwable) {
-//        updateBaseUiState { copy(isLoading = false, errorMessage = throwable.message ?: "") }
+        updateBaseUiState { copy(errorMessage = throwable.message ?: "") }
     }
 
-    protected fun onActionFail(errorMessage: String) {
-//        updateBaseUiState { copy(isLoading = false, errorMessage = errorMessage) }
+    protected fun onActionFail(errorMessage: String = "") {
+        updateBaseUiState { copy(errorMessage = errorMessage) }
     }
 
     protected fun onActionSuccess(shouldNavigateUp: Boolean = false) {
-//        updateBaseUiState { copy(isLoading = false, shouldNavigateUp = shouldNavigateUp) }
+        updateBaseUiState { copy(shouldNavigateUp = shouldNavigateUp) }
     }
 
 }

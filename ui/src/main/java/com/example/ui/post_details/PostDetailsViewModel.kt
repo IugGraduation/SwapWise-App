@@ -25,11 +25,9 @@ class PostDetailsViewModel @Inject constructor(
     }
 
     private fun getPostDetails() {
-        onActionLoading()
         tryToExecute(
             call = { getPostDetailsUseCase(args.postId) },
             onSuccess = ::onGetOfferDetailsSuccess,
-            onError = ::onActionFail
         )
     }
 

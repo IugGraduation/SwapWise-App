@@ -36,23 +36,31 @@ fun <T> wrapWithFlow(function: suspend () -> Response<T>): Flow<StateDto<T?>> {
 }
 
 
-fun <T, B> wrapWithFlow(
-    function: suspend (body: B) -> Response<T>,
-    body: B,
-): Flow<StateDto<T?>> {
-    return flow {
-        emit(StateDto.Loading)
-        try {
-            val result = function(body)
-            if (result.isSuccessful) {
-                emit(StateDto.Success(result.body()))
-            } else {
-                emit(StateDto.Error(result.message()))
-                Log.e("TAG", "Api Error result: ${result.message()}")
-            }
-        } catch (e: Exception) {
-            emit(StateDto.Error(e.message.toString()))
-            Log.e("TAG", "Api Error e: ${e.message}")
+suspend fun <T> fakeCheckResponse(value: T): T? {
+    delay(1000)
+    return value
+}
+
+suspend fun <T> checkResponse(function: suspend () -> Response<T>): T? {
+    try {
+        val result = function()
+        when {
+            result.isSuccessful -> return result.body()
+            else -> throw Exception(result.message())
         }
+    } catch (e: Exception) {
+        throw e
+    }
+}
+
+suspend fun <T, B> checkResponse(function: suspend (body: B) -> Response<T>, body: B): T? {
+    try {
+        val result = function(body)
+        when {
+            result.isSuccessful -> return result.body()
+            else -> throw Exception(result.message())
+        }
+    } catch (e: Exception) {
+        throw e
     }
 }

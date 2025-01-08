@@ -38,7 +38,6 @@ class AddPostViewModel @Inject constructor(
         tryToExecute(
             call = { getCategoriesNamesUseCase() },
             onSuccess = ::onGetChipsDataSuccess,
-            onError = ::onActionFail
         )
     }
 
@@ -113,7 +112,6 @@ class AddPostViewModel @Inject constructor(
 
 
     override fun onClickAdd() {
-        onActionLoading()
         tryToExecute(
             call = {
                 postValidationUseCase(

@@ -44,11 +44,9 @@ class EditPostViewModel @Inject constructor(
     }
 
     private fun getPostDetails() {
-        onActionLoading()
         tryToExecute(
             call = { getPostDetailsUseCase(args.postId) },
             onSuccess = ::onGetOfferDetailsSuccess,
-            onError = ::onActionFail
         )
     }
 
@@ -61,7 +59,6 @@ class EditPostViewModel @Inject constructor(
         tryToExecute(
             call = { getCategoriesNamesUseCase() },
             onSuccess = ::onGetChipsDataSuccess,
-            onError = ::onActionFail
         )
     }
 
@@ -126,7 +123,6 @@ class EditPostViewModel @Inject constructor(
 
 
     override fun onClickSave() {
-        onActionLoading()
         tryToExecute(
             call = {
                 postValidationUseCase(
@@ -176,13 +172,11 @@ class EditPostViewModel @Inject constructor(
 
 
     override fun onClickDelete() {
-        onActionLoading()
         tryToExecute(
             call = {
                 deletePostUseCase(state.value.postItem.uuid)
             },
             onSuccess = { onActionSuccess(true) },
-            onError = ::onActionFail
         )
     }
 

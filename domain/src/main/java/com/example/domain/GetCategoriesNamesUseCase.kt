@@ -11,7 +11,7 @@ class GetCategoriesNamesUseCase @Inject constructor(
 }
 
 
-class GetFakeCategoriesNamesUseCase(){
+class GetFakeCategoriesNamesUseCase{
     operator fun invoke(): List<String> {
         return GetFakeCategoriesUseCase()().map { it.title }
     }

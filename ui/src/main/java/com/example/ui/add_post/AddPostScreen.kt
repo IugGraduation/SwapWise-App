@@ -49,7 +49,6 @@ fun AddPostScreen(navController: NavController, viewModel: AddPostViewModel = hi
 }
 
 
-
 @Composable
 fun AddPostContent(
     state: PostItemUiState,

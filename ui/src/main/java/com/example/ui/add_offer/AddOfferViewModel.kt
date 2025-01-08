@@ -41,9 +41,8 @@ class AddOfferViewModel @Inject constructor(
 
     private fun prepareChipsList() {
         tryToExecute(
-            call = { getCategoriesNamesUseCase() },
+            call = {  getCategoriesNamesUseCase() },
             onSuccess = ::onGetChipsDataSuccess,
-            onError = ::onActionFail
         )
     }
 
@@ -105,16 +104,17 @@ class AddOfferViewModel @Inject constructor(
 
 
     override fun onClickAdd() {
-        onActionLoading()
+        isActionLoading()
         tryToExecute(
             call = {
                 offerValidationUseCase(
                     title = state.value.offerItem.title,
                     place = state.value.offerItem.place,
                     details = state.value.offerItem.details
-                ).also { addOfferUseCase(args.postId, state.value.offerItem) }
+                )
+                addOfferUseCase(args.postId, state.value.offerItem)
             },
-            onSuccess = { onActionSuccess() },
+            onSuccess = ::onActionSuccess,
             onError = ::onAddPostFail
         )
     }
