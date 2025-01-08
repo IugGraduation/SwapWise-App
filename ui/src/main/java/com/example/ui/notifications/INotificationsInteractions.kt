@@ -1,5 +1,5 @@
 package com.example.ui.notifications
 
-interface NotificationsInteractions {
+interface INotificationsInteractions {
     fun onDismiss (id: String)
 }

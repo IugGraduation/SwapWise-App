@@ -13,7 +13,6 @@ import androidx.navigation.NavController
 @Composable
 fun EditOfferScreen(navController: NavController, viewModel: EditOfferViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
-    val pickImageFromGallery = pickImageFromGallery { viewModel.onSelectedImageChange(it) }
 
     LaunchedEffect(state.shouldNavigateUp) {
         if (state.shouldNavigateUp) navController.navigateUp()
@@ -24,22 +23,10 @@ fun EditOfferScreen(navController: NavController, viewModel: EditOfferViewModel 
         onTitleChange = viewModel::onTitleChange,
         onPlaceChange = viewModel::onPlaceChange,
         onDetailsChange = viewModel::onDetailsChange,
-        onCategoryChange = viewModel::onCategoryChange,
+        onSelectedImageChange = viewModel::onSelectedImageChange,
         onClickSave = viewModel::onClickSave,
         onClickDelete = viewModel::onClickDelete,
-        onClickAddImage = pickImageFromGallery,
         onClickGoBack = { navController.navigateUp() },
     )
-}
-
-
-@Composable
-fun pickImageFromGallery(onImagePicked: (Uri) -> Unit): () -> Unit {
-    val galleryLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let { onImagePicked(it) }
-        }
-
-    return { galleryLauncher.launch("image/*") }
 }
 

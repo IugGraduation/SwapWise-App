@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class NotificationsViewModel @Inject constructor(private val getNotificationsUseCase: GetNotificationsUseCase) : ViewModel(), NotificationsInteractions {
+class NotificationsViewModel @Inject constructor(private val getNotificationsUseCase: GetNotificationsUseCase) : ViewModel(), INotificationsInteractions {
     private val _state = MutableStateFlow(NotificationUIState())
     val state = _state.asStateFlow()
 

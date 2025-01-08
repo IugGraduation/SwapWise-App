@@ -1,5 +1,6 @@
 package com.example.ui.add_post
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,14 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.VerticalSpacer
-import com.example.ui.components.molecules.DetailsPageImage
+import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.SimpleCustomMultilineTextField
 import com.example.ui.components.molecules.SimpleCustomTextField
 import com.example.ui.components.molecules.TitledChipsList
@@ -35,10 +35,8 @@ fun AddPostContent(
     onTitleChange: (String) -> Unit,
     onPlaceChange: (String) -> Unit,
     onDetailsChange: (String) -> Unit,
-    onCategoryChange: (String) -> Unit,
-    onFavoriteCategoryChange: (String) -> Unit,
+    onSelectedImageChange: (Uri) -> Unit,
     onClickAddPost: () -> Unit,
-    onClickAddImage: () -> Unit,
     onClickGoBack: () -> Unit
 ) {
     TitledScreenTemplate(
@@ -53,7 +51,7 @@ fun AddPostContent(
         },
         contentState = state
     ) {
-        DetailsPageImage(state.postItem.image, onClick = onClickAddImage)
+        ProductImage(state.postItem.image, onImagePicked = onSelectedImageChange)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -112,9 +110,8 @@ fun AddPostContent(
             TitledChipsList(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.chipsList.onEach {
+                chipsList = state.favoriteChipsList.onEach {
                     it.selected = state.postItem.favoriteCategories.contains(it.text)
-                    it.onClick = onFavoriteCategoryChange
                 },
             )
 
@@ -142,9 +139,7 @@ fun PreviewPostDetailsContent() {
             onTitleChange = { },
             onPlaceChange = { },
             onDetailsChange = { },
-            onClickAddImage = { },
-            onCategoryChange = { },
-            onFavoriteCategoryChange = { },
+            onSelectedImageChange = { },
         )
     }
 }

@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.model.Notification
 import com.example.ui.R
-import com.example.ui.notifications.DismissDirection
 import com.example.ui.theme.BackgroundLight
 import com.example.ui.theme.Danger
 import com.example.ui.theme.GraduationProjectTheme

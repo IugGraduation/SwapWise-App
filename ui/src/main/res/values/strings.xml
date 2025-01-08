@@ -60,10 +60,11 @@
     <string name="post">Post</string>
     <string name="post_info">Post Info</string>
     <string name="post_title">Post Title</string>
-    <string name="category_of_your_post">Category Of Your Post</string>
+    <string name="category_of_your_post">Category of Your Post</string>
     <string name="categories_you_like">Categories You Like</string>
     <string name="searching">Searching</string>
     <string name="nothing_found">Nothing found.</string>
     <string name="try_again">Try again!</string>
     <string name="remove_notification">Remove notification</string>
+    <string name="edit_post">Edit Post</string>
 </resources>

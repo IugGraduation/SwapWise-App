@@ -62,7 +62,7 @@ fun NotificationsScreen(
 fun NotificationsContent(
     state: NotificationUIState,
     bottomBarState: BottomBarUiState,
-    notificationsInteractions: NotificationsInteractions
+    notificationsInteractions: INotificationsInteractions
 ) {
     MainTitledScreenTemplate(
         title = stringResource(R.string.notifications),
@@ -109,7 +109,7 @@ fun PreviewNotificationContent() {
         NotificationsContent(
             state = notificationUIState,
             bottomBarState = BottomBarUiState(selectedItem = 2),
-            notificationsInteractions = object :NotificationsInteractions{
+            notificationsInteractions = object :INotificationsInteractions{
                 override fun onDismiss(id: String) { }
             },
         )

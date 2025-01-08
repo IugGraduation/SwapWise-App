@@ -14,7 +14,7 @@ import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.PostDetailsBody
 import com.example.ui.components.atoms.VerticalSpacer
-import com.example.ui.components.molecules.DetailsPageImage
+import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.PostDetailsStatusRow
 import com.example.ui.components.molecules.PostDetailsUserHeader
 import com.example.ui.components.molecules.TitledChipsList
@@ -49,7 +49,7 @@ fun PostDetailsContent(
     ) {
         LazyColumn {
             item {
-                DetailsPageImage(state.postItem.image)
+                ProductImage(state.postItem.image)
                 VerticalSpacer(Spacing16)
                 PostDetailsUserHeader(user = state.postItem.user, date = state.postItem.date)
                 VerticalSpacer(Spacing24)

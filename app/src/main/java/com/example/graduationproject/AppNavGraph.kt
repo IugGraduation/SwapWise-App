@@ -8,6 +8,7 @@ import com.example.ui.add_post.addPostRoute
 import com.example.ui.login.loginRoute
 import com.example.ui.confirm_number.otpRoute
 import com.example.ui.edit_offer.editOfferRoute
+import com.example.ui.edit_post.editPostRoute
 import com.example.ui.home.homeRoute
 import com.example.ui.notifications.notificationsRoute
 import com.example.ui.offer_details.offerDetailsRoute
@@ -32,5 +33,6 @@ fun AppNavGraph(navController: NavHostController) {
         addPostRoute(navController)
         searchRoute(navController)
         notificationsRoute(navController)
+        editPostRoute(navController)
     }
 }

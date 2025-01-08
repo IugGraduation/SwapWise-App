@@ -1,5 +1,6 @@
 package com.example.ui.edit_offer
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,24 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.GetCategoriesUseCase
-import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.domain.GetFakeOffersUseCase
-import com.example.domain.GetOffersUseCase
-import com.example.domain.model.OfferItem
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.CustomOutlinedButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.VerticalSpacer
-import com.example.ui.components.molecules.DetailsPageImage
+import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.SimpleCustomMultilineTextField
 import com.example.ui.components.molecules.SimpleCustomTextField
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
-import com.example.ui.models.Chip
 import com.example.ui.models.OfferItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
@@ -40,10 +34,9 @@ fun EditOfferContent(
     onTitleChange: (String) -> Unit,
     onPlaceChange: (String) -> Unit,
     onDetailsChange: (String) -> Unit,
-    onCategoryChange: (String) -> Unit,
+    onSelectedImageChange: (Uri) -> Unit,
     onClickSave: () -> Unit,
     onClickDelete: () -> Unit,
-    onClickAddImage: () -> Unit,
     onClickGoBack: () -> Unit
 ) {
     TitledScreenTemplate(
@@ -66,7 +59,7 @@ fun EditOfferContent(
         },
         contentState = state
     ) {
-        DetailsPageImage(state.offerItem.image, onClick = onClickAddImage)
+        ProductImage(state.offerItem.image, onImagePicked = onSelectedImageChange)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -143,8 +136,7 @@ fun PreviewPostDetailsContent() {
             onTitleChange = { },
             onPlaceChange = { },
             onDetailsChange = { },
-            onClickAddImage = { },
-            onCategoryChange = { },
+            onSelectedImageChange = { },
         )
     }
 }

@@ -40,22 +40,66 @@ interface IOffer : TopicItem {
         detailsError: String? = this.detailsError,
         categoryError: String? = this.categoryError,
     ): IOffer {
-        return object : IOffer {
-            override val user: User = user
-            override val place: String = place
-            override val details: String = details
-            override val category: String = category
-            override val date: String = date
-            override val imgResIdError: String? = imgResIdError
-            override val imgContentDescriptionError: String? = imgContentDescriptionError
-            override val titleError: String? = titleError
-            override val placeError: String? = placeError
-            override val detailsError: String? = detailsError
-            override val categoryError: String? = categoryError
-            override val uuid: String = uuid
-            override val title: String = title
-            override val image: String = image
-            override val imgContentDescription: String = imgContentDescription
+        return when (this) {
+            is OfferItem -> {
+                this.copy(
+                    user = user,
+                    place = place,
+                    details = details,
+                    category = category,
+                    date = date,
+                    imgResIdError = imgResIdError,
+                    imgContentDescriptionError = imgContentDescriptionError,
+                    titleError = titleError,
+                    placeError = placeError,
+                    detailsError = detailsError,
+                    categoryError = categoryError,
+                    uuid = uuid,
+                    title = title,
+                    image = image,
+                    imgContentDescription = imgContentDescription,
+                )
+            }
+
+            is PostItem -> {
+                this.copy(
+                    user = user,
+                    place = place,
+                    details = details,
+                    category = category,
+                    date = date,
+                    imgResIdError = imgResIdError,
+                    imgContentDescriptionError = imgContentDescriptionError,
+                    titleError = titleError,
+                    placeError = placeError,
+                    detailsError = detailsError,
+                    categoryError = categoryError,
+                    uuid = uuid,
+                    title = title,
+                    image = image,
+                    imgContentDescription = imgContentDescription,
+                )
+            }
+
+            else -> {
+                return object : IOffer {
+                    override val user: User = user
+                    override val place: String = place
+                    override val details: String = details
+                    override val category: String = category
+                    override val date: String = date
+                    override val imgResIdError: String? = imgResIdError
+                    override val imgContentDescriptionError: String? = imgContentDescriptionError
+                    override val titleError: String? = titleError
+                    override val placeError: String? = placeError
+                    override val detailsError: String? = detailsError
+                    override val categoryError: String? = categoryError
+                    override val uuid: String = uuid
+                    override val title: String = title
+                    override val image: String = image
+                    override val imgContentDescription: String = imgContentDescription
+                }
+            }
         }
     }
 }
