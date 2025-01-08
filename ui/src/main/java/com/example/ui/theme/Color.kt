@@ -13,7 +13,7 @@ val Gray = Color(0xFFEEEEEE)
 
 val PrimaryOverlay = Color(0x330065FF)
 val DangerOverlay = Color(0x3DFF0505)
-val CorrectOverlay = Color(0x3D7EBA18)
+val CorrectOverlay = Color(0x3E8FE300)
 
 val Purple = Color(0xFF9000FF)
 
@@ -32,9 +32,9 @@ val BlackFourth = Color(0x33000000)
 val BackgroundDark = Color(0xFF111111)
 val OnBackgroundDark = Color(0xFF0D0D0D)
 
-val WhitePrimary = Color(0xE0FFFFFF)
+val WhitePrimary = Color(0xFFFFFFFF)
 val WhiteSecondary = Color(0xADFFFFFF)
 val WhiteTertiary = Color(0x7AFFFFFF)
 val WhiteFourth = Color(0x33FFFFFF)
 
-val GradientBackground = Brush.verticalGradient(colors = listOf(Purple, Primary))
+val GradientBrush = Brush.horizontalGradient(listOf(Purple, Primary))

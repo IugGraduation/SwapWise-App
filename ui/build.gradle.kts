@@ -41,6 +41,7 @@ android {
 dependencies {
 
     implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.foundation.android)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
