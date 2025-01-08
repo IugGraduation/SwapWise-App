@@ -3,17 +3,20 @@ package com.example.ui.theme
 import androidx.compose.ui.unit.dp
 
 
-// Icon Sizes
+//region Icon Sizes
 val IconSizeSmall = 16.dp
 val IconSizeMedium = 24.dp
 val IconSizeLarge = 32.dp
+//endregion
 
-//Border Radius Sizes
+//region Border Radius Sizes
 val RadiusSmall = 4.dp
 val RadiusMedium = 8.dp
 val RadiusLarge = 16.dp
+val RadiusExtraLarge = 24.dp
+//endregion
 
-// Spacing
+// region Spacing
 val Spacing2 = 2.dp
 val Spacing4 = 4.dp
 val Spacing6 = 6.dp //self added
@@ -28,9 +31,36 @@ val Spacing56 = 56.dp
 val Spacing64 = 64.dp
 val Spacing72 = 72.dp
 val Spacing80 = 80.dp
+//endregion
 
 //Image Sizes
 val ImageSize120 = 120.dp
+val ImageSize16 = 16.dp
 
-//Border Sizes
-val Border1 = 1.dp
+//region Border Sizes
+val BorderWidth2 = 2.dp
+val BorderHeight24 = 24.dp
+//endregion
+
+//region Icon ButtonSizes
+val IconButtonSize40 = 40.dp
+val IconButtonSize32 = 32.dp
+//endregion
+
+//region Min Text field Height
+val OneLineEditTextHeight = 56.dp
+val MultiLineEditTextHeight = 120.dp
+//endregion
+
+val CardHeight = 272.dp
+
+val NormalButtonHeight = 56.dp
+
+val ButtonSize32 = 32.dp
+val ZeroDp = 0.dp
+
+val GradientCircleBackgroundSize = 124.dp
+
+val ProfileToggleHeight = 52.dp
+
+
