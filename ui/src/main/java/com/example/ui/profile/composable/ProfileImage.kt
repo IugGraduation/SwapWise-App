@@ -1,112 +1,125 @@
 package com.example.ui.profile.composable
 
+import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import coil3.ImageLoader
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
+import coil3.request.error
+import coil3.request.placeholder
 import coil3.request.transformations
 import coil3.transform.CircleCropTransformation
 import com.example.ui.R
 import com.example.ui.profile.ProfileUiState
-import com.example.ui.theme.Border1
-import com.example.ui.theme.IconSizeLarge
+import com.example.ui.theme.BorderWidth2
+import com.example.ui.theme.IconButtonSize32
 import com.example.ui.theme.IconSizeMedium
 import com.example.ui.theme.ImageSize120
 import com.example.ui.theme.Primary
-import com.example.ui.theme.Spacing4
 import com.example.ui.theme.WhitePrimary
+import com.example.ui.theme.ZeroDp
 
 @Composable
-fun ProfileImage(state: ProfileUiState, onImageChangeClick: (newUri: Uri) -> Unit) {
+fun ProfileImage(
+    modifier: Modifier = Modifier,
+    state: ProfileUiState,
+    onImageChangeClick: (newUri: Uri) -> Unit
+) {
     val context = LocalContext.current
-    LaunchedEffect(key1 = state.imageUrl, ){
-        Log.i("IMAGE",state.imageUrl)
-    }
-    val launcher = rememberLauncherForActivityResult(
+
+    val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
-    ){ uri: Uri? ->
-        uri?.let {
-            onImageChangeClick(it)
-        }
+    ) { uri: Uri? ->
+        uri?.let(onImageChangeClick)
     }
 
-    Box(Modifier.height(ImageSize120)) {
-        Box(
+    Box(modifier = modifier) {
+        ProfileImageContent(
+            imageUrl = state.profileInformationUiState.imageUrl,
+            context = context,
             modifier = Modifier
                 .size(ImageSize120)
-                .clip(CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            val imageRequest = ImageRequest.Builder(context)
-                .data(state.imageUrl)
-                .diskCachePolicy(CachePolicy.ENABLED)
-                .memoryCachePolicy(CachePolicy.ENABLED)
-                .transformations(CircleCropTransformation())
-                .build()
-            val imageLoader =
-                ImageLoader.Builder(context)
-                    .diskCachePolicy(CachePolicy.ENABLED)
-                    .build()
-
-            Image(
-                modifier = Modifier
-                    .size(ImageSize120)
-                    .clip(CircleShape),
-                painter = rememberAsyncImagePainter(imageRequest, imageLoader),
-                contentDescription = null
-            )
-        }
-        IconButton(
-            onClick = { launcher.launch("image/*") },
-            modifier = Modifier
-                .size(IconSizeLarge)
+                .border(BorderWidth2, WhitePrimary, CircleShape)
                 .clip(CircleShape)
+        )
+
+        ImageChangeButton(
+            onClick = { imagePickerLauncher.launch("image/*") },
+            modifier = Modifier
+                .size(IconButtonSize32)
                 .align(Alignment.BottomEnd)
-                .border(Border1, WhitePrimary, CircleShape),
-            colors = IconButtonDefaults.iconButtonColors(Primary)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_camera),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(IconSizeMedium)
-                    .padding(Spacing4),
-                tint = Primary
-            )
-        }
+        )
     }
 }
 
-@Preview
 @Composable
-private fun ProfileImagePreview() {
-    ProfileImage(ProfileUiState() ,{})
+private fun ProfileImageContent(
+    imageUrl: String?,
+    context: Context,
+    modifier: Modifier = Modifier
+) {
+    @DrawableRes
+    val placeholderRes = R.drawable.placeholder_profile
+
+    val imageRequest = ImageRequest.Builder(context)
+        .data(imageUrl?.ifEmpty { null })
+        .diskCachePolicy(CachePolicy.ENABLED)
+        .memoryCachePolicy(CachePolicy.ENABLED)
+        .transformations(CircleCropTransformation())
+        .placeholder(placeholderRes)
+        .error(placeholderRes)
+        .build()
+
+    val imageLoader = ImageLoader.Builder(context)
+        .diskCachePolicy(CachePolicy.ENABLED)
+        .build()
+
+    Image(
+        modifier = modifier,
+        contentScale = ContentScale.Crop,
+        painter = rememberAsyncImagePainter(imageRequest, imageLoader),
+        contentDescription = null ,
+    )
 }
+
+@Composable
+private fun ImageChangeButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        shape = CircleShape,
+        colors = ButtonDefaults.buttonColors(containerColor = Primary),
+        contentPadding = PaddingValues(ZeroDp)
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_camera),
+            contentDescription = null,
+            modifier = Modifier.size(IconSizeMedium),
+            tint = WhitePrimary
+        )
+    }
+}
+
