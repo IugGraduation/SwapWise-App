@@ -17,7 +17,7 @@ import com.example.domain.GetFakeOffersUseCase
 import com.example.domain.GetOffersUseCase
 import com.example.domain.model.OfferItem
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomButton
+import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.CustomOutlinedButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.VerticalSpacer
@@ -51,7 +51,7 @@ fun EditOfferContent(
         onClickGoBack = onClickGoBack,
         floatingActionButton = {
             Column {
-                CustomButton(
+                SwapWiseFilledButton(
                     onClick = onClickSave,
                     text = stringResource(R.string.save),
                     modifier = Modifier.padding(horizontal = Spacing16)

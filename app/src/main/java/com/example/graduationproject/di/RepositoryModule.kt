@@ -3,6 +3,7 @@ package com.example.graduationproject.di
 import com.example.data.repository.HomeRepository
 import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
+import com.example.data.repository.UserRepository
 import com.example.data.source.local.FakeHomeData
 import com.example.data.source.local.FakePostData
 import com.example.data.source.remote.StoreApiService
@@ -34,5 +35,11 @@ object RepositoryModule {
 //        fakePostLocalDataSource: FakePostLocalDataSource
     ): OfferRepository {
         return OfferRepository()
+    }
+
+    @Provides
+    fun provideUserRepository(
+    ): UserRepository {
+        return UserRepository()
     }
 }

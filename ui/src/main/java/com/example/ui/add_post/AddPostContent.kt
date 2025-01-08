@@ -15,8 +15,8 @@ import com.example.domain.GetCategoriesUseCase
 import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
+import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.DetailsPageImage
 import com.example.ui.components.molecules.SimpleCustomMultilineTextField
@@ -47,7 +47,7 @@ fun AddPostContent(
         title = stringResource(R.string.add_post),
         onClickGoBack = onClickGoBack,
         floatingActionButton = {
-            CustomButton(
+            SwapWiseFilledButton(
                 onClick = onClickAddPost,
                 text = stringResource(R.string.post),
                 modifier = Modifier.padding(horizontal = Spacing16)

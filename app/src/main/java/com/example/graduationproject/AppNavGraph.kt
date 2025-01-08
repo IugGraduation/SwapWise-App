@@ -14,6 +14,7 @@ import com.example.ui.home.HomeScreen
 import com.example.ui.home.homeRoute
 import com.example.ui.offer_details.offerDetailsRoute
 import com.example.ui.post_details.postDetailsRoute
+import com.example.ui.profile.profileRoute
 import com.example.ui.search.searchRoute
 import com.example.ui.signup.signupRoute
 import com.example.ui.topic_see_all.topicSeeAllRoute
@@ -33,5 +34,6 @@ fun AppNavGraph(navController: NavHostController) {
         editOfferRoute(navController)
         addPostRoute(navController)
         searchRoute(navController)
+        profileRoute(navController)
     }
 }

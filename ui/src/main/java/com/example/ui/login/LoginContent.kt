@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomButton
+import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.Header
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.Footer
@@ -55,7 +55,7 @@ fun LoginContent(
                 togglePasswordVisibility = togglePasswordVisibility,
             )
             VerticalSpacer(Spacing24)
-            CustomButton(
+            SwapWiseFilledButton(
                 onClick = onClickLogin,
                 text = stringResource(R.string.login)
             )

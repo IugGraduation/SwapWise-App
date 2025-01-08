@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import com.example.domain.model.PostItem
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.post_details.navigateToPostDetails
+import com.example.ui.profile.navigateToProfile
 import com.example.ui.search.navigateToSearch
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.signup.navigateToSignup
@@ -35,7 +36,7 @@ fun HomeScreen(
         navigateToHome = { navController.navigateToHome() },
         navigateToSearch = { navController.navigateToSearch() },
         navigateToNotifications = { navController.navigateToHome() },
-        navigateToProfile = { navController.navigateToHome() },
+        navigateToProfile = { navController.navigateToProfile() },
     )
 
     HomeContent(
