@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.ui.R
+import com.example.ui.theme.ButtonSize32
 import com.example.ui.theme.IconSizeSmall
 import com.example.ui.theme.Primary
 import com.example.ui.theme.PrimaryOverlay
@@ -24,15 +25,16 @@ import com.example.ui.theme.Spacing4
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun ButtonMakeOfferBottom(onClick: () -> Unit) {
+fun ButtonMakeOfferBottom(modifier: Modifier = Modifier,  onClick: () -> Unit) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(color = PrimaryOverlay)
+            .height(ButtonSize32)
             .clickable(onClick = onClick)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(vertical = Spacing4),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
