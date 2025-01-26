@@ -1,5 +1,6 @@
 package com.example.ui.add_offer
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,12 +15,11 @@ import com.example.ui.R
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.VerticalSpacer
-import com.example.ui.components.molecules.DetailsPageImage
+import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.SimpleCustomMultilineTextField
 import com.example.ui.components.molecules.SimpleCustomTextField
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
-import com.example.ui.models.Chip
 import com.example.ui.models.OfferItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
@@ -33,9 +33,8 @@ fun AddOfferContent(
     onTitleChange: (String) -> Unit,
     onPlaceChange: (String) -> Unit,
     onDetailsChange: (String) -> Unit,
-    onCategoryChange: (String) -> Unit,
+    onSelectedImageChange: (Uri) -> Unit,
     onClickAddOffer: () -> Unit,
-    onClickAddImage: () -> Unit,
     onClickGoBack: () -> Unit
 ) {
     TitledScreenTemplate(
@@ -50,7 +49,7 @@ fun AddOfferContent(
         },
         contentState = state
     ) {
-        DetailsPageImage(state.offerItem.image, onClick = onClickAddImage)
+        ProductImage(state.offerItem.image, onImagePicked = onSelectedImageChange)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -113,12 +112,8 @@ fun AddOfferContent(
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.offerItem.allCategories.map {
-                    Chip(
-                        text = it,
-                        onClick = onCategoryChange,
-                        selected = it == state.offerItem.category
-                    )
+                chipsList = state.chipsList.onEach {
+                    it.selected = it.text == state.offerItem.category
                 },
             )
 
@@ -139,8 +134,7 @@ fun PreviewPostDetailsContent() {
             onTitleChange = { },
             onPlaceChange = { },
             onDetailsChange = { },
-            onClickAddImage = { },
-            onCategoryChange = { },
+            onSelectedImageChange = { },
         )
     }
 }

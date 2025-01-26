@@ -32,6 +32,6 @@ class PostRepository(
 //        wrapWithFlow(storeApiService::deletePost, postId)
 
 
-    suspend fun searchPosts(searchValue: String): Flow<StateDto<List<PostItemDto?>?>> =
+    suspend fun searchPosts(searchValue: String, filterCategories: List<String>): Flow<StateDto<List<PostItemDto?>?>> =
         fakeWrapWithFlow(listOf(fakePostData.getPostDetails("").body(), fakePostData.getPostDetails("").body()))
 }

@@ -1,10 +1,13 @@
-package com.example.ui.add_post
+package com.example.ui.edit_post
 
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.AddPostUseCase
+import com.example.domain.DeletePostUseCase
+import com.example.domain.EditPostUseCase
 import com.example.domain.GetCategoriesNamesUseCase
+import com.example.domain.GetPostDetailsUseCase
 import com.example.domain.IOfferValidationUseCase
 import com.example.domain.model.PostItem
 import com.example.domain.model.State
@@ -18,20 +21,37 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddPostViewModel @Inject constructor(
+class EditPostViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val getPostDetailsUseCase: GetPostDetailsUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
     private val postValidationUseCase: IOfferValidationUseCase,
-    private val addPostUseCase: AddPostUseCase,
-) : ViewModel() {
+    private val editPostUseCase: EditPostUseCase,
+    private val deletePostUseCase: DeletePostUseCase,
+) : ViewModel(), IEditPostInteractions {
     private val _state = MutableStateFlow(PostItemUiState())
     val state = _state.asStateFlow()
+
+    val args = EditPostArgs(savedStateHandle)
 
 
     init {
         viewModelScope.launch {
+            getOfferDetails()
             prepareChipsList()
         }
     }
+
+    private suspend fun getOfferDetails() {
+        getPostDetailsUseCase(args.postId).collect { state ->
+            _state.value = when (state) {
+                is State.Loading -> PostItemUiState(isLoading = true)
+                is State.Success -> PostItemUiState(postItem = state.data)
+                is State.Error -> PostItemUiState(error = state.message)
+            }
+        }
+    }
+
 
     private suspend fun prepareChipsList() {
         val categoriesNames = getCategoriesNamesUseCase()
@@ -51,40 +71,43 @@ class AddPostViewModel @Inject constructor(
     }
 
 
-    fun onTitleChange(title: String) {
+    override fun onTitleChange(title: String) {
         _state.update {
             it.copy(
                 postItem = _state.value.postItem.copy(
-                    title = title,
-                    titleError = null
+                    title = title, titleError = null
                 )
             )
         }
     }
 
-    fun onDetailsChange(details: String) {
+    override fun onDetailsChange(details: String) {
         _state.update {
             it.copy(
                 postItem = _state.value.postItem.copy(
-                    details = details,
-                    detailsError = null
+                    details = details, detailsError = null
                 )
             )
         }
     }
 
-    fun onPlaceChange(place: String) {
+    override fun onIsOpenChange(isOpen: Boolean) {
+        _state.update {
+            it.copy(postItem = _state.value.postItem.copy(isOpen = isOpen))
+        }
+    }
+
+    override fun onPlaceChange(place: String) {
         _state.update {
             it.copy(
                 postItem = _state.value.postItem.copy(
-                    place = place,
-                    placeError = null
+                    place = place, placeError = null
                 )
             )
         }
     }
 
-    fun onSelectedImageChange(selectedImageUri: Uri) {
+    override fun onSelectedImageChange(selectedImageUri: Uri) {
         _state.update { it.copy(postItem = _state.value.postItem.copy(image = selectedImageUri.toString())) }
     }
 
@@ -92,8 +115,7 @@ class AddPostViewModel @Inject constructor(
         _state.update {
             it.copy(
                 postItem = _state.value.postItem.copy(
-                    category = category,
-                    categoryError = null
+                    category = category, categoryError = null
                 )
             )
         }
@@ -116,10 +138,10 @@ class AddPostViewModel @Inject constructor(
     }
 
 
-    fun onClickAddPost() {
+    override fun onClickSave() {
         viewModelScope.launch {
             if (validateForm()) {
-                addPostUseCase(state.value.postItem).collect { apiState ->
+                editPostUseCase(state.value.postItem).collect { apiState ->
                     when (apiState) {
                         is State.Error -> _state.update { it.copy(error = apiState.message) }
                         State.Loading -> _state.update { it.copy(isLoading = true) }
@@ -133,9 +155,24 @@ class AddPostViewModel @Inject constructor(
     }
 
     private fun validateForm(): Boolean {
-        val newPostState = postValidationUseCase(state.value.postItem)
-        _state.value = PostItemUiState(postItem = newPostState as PostItem)
-        return newPostState.isSuccess()
+        val newOfferState = postValidationUseCase(state.value.postItem)
+        _state.value = PostItemUiState(postItem = newOfferState as PostItem)
+        return newOfferState.isSuccess()
+    }
+
+
+    override fun onClickDelete() {
+        viewModelScope.launch {
+            deletePostUseCase(state.value.postItem.uuid).collect { apiState ->
+                when (apiState) {
+                    is State.Error -> _state.update { it.copy(error = apiState.message) }
+                    State.Loading -> _state.update { it.copy(isLoading = true) }
+                    is State.Success -> {
+                        _state.update { it.copy(isLoading = false, shouldNavigateUp = true) }
+                    }
+                }
+            }
+        }
     }
 
 

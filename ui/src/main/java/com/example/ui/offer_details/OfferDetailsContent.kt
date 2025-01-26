@@ -7,14 +7,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.domain.GetFakeOffersUseCase
-import com.example.domain.GetOffersUseCase
-import com.example.domain.model.OfferItem
 import com.example.ui.R
 import com.example.ui.components.atoms.PostDetailsBody
 import com.example.ui.components.atoms.VerticalSpacer
-import com.example.ui.components.molecules.DetailsPageImage
+import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.PhoneRow
 import com.example.ui.components.molecules.PostDetailsUserHeader
 import com.example.ui.components.molecules.TitledChipsList
@@ -35,7 +32,7 @@ fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
         contentState = state,
     ) {
         Column {
-            DetailsPageImage(state.offerItem.image)
+            ProductImage(state.offerItem.image)
             VerticalSpacer(Spacing16)
             PostDetailsUserHeader(user = state.offerItem.user, date = state.offerItem.date)
             VerticalSpacer(Spacing24)
@@ -43,7 +40,7 @@ fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
-                chipsList = listOf(Chip(state.offerItem.category, {}, true))
+                chipsList = listOf(Chip(text = state.offerItem.category, selected = true, clickable = false))
             )
             VerticalSpacer(Spacing24)
             Text(

@@ -8,12 +8,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.domain.GetFakePostsUseCase
 import com.example.ui.R
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.PostDetailsBody
 import com.example.ui.components.atoms.VerticalSpacer
-import com.example.ui.components.molecules.DetailsPageImage
+import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.PostDetailsStatusRow
 import com.example.ui.components.molecules.PostDetailsUserHeader
 import com.example.ui.components.molecules.TitledChipsList
@@ -48,7 +49,7 @@ fun PostDetailsContent(
     ) {
         LazyColumn {
             item {
-                DetailsPageImage(state.postItem.image)
+                ProductImage(state.postItem.image)
                 VerticalSpacer(Spacing16)
                 PostDetailsUserHeader(user = state.postItem.user, date = state.postItem.date)
                 VerticalSpacer(Spacing24)
@@ -93,7 +94,7 @@ fun PostDetailsContent(
 }
 
 
-//@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440",)
+@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440",)
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {

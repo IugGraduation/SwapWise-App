@@ -11,7 +11,6 @@ data class OfferItem(
     override val details: String = "",
     override val place: String = "",
     override val category: String = "",
-    override val allCategories: List<String> = listOf(),
     override val date: String = "",
 
     override val imgResIdError: String? = null,

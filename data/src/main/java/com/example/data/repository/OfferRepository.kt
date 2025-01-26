@@ -13,7 +13,7 @@ class OfferRepository(
 //    private val fakePostLocalDataSource: FakePostLocalDataSource,
 ) {
     suspend fun getOfferDetails(offerId: String): Flow<StateDto<OfferItemDto?>> =
-        wrapWithFlow { Response.success(OfferItemDto()) }
+        fakeWrapWithFlow (OfferItemDto())
 
 
     suspend fun addOffer(postId: String, offerItemDto: OfferItemDto): Flow<StateDto<Boolean>> =
