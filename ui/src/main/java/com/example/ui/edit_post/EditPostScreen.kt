@@ -33,9 +33,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakePostsUseCase
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomButton
 import com.example.ui.components.atoms.CustomOutlinedButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
+import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.SimpleCustomMultilineTextField
@@ -76,7 +76,7 @@ fun EditOfferContent(
     TitledScreenTemplate(
         title = stringResource(R.string.edit_post),
         onClickGoBack = onClickGoBack,
-        contentState = state
+//        contentState = state
     ) {
         ProductImage(
             state.postItem.image, onImagePicked = editInteractions::onSelectedImageChange
@@ -229,7 +229,7 @@ fun EditOfferContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
-                CustomButton(
+                SwapWiseFilledButton(
                     onClick = editInteractions::onClickSave,
                     text = stringResource(R.string.save),
                 )

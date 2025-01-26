@@ -8,6 +8,7 @@ import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.IOfferValidationUseCase
 import com.example.domain.model.PostItem
 import com.example.domain.model.State
+import com.example.ui.base.BaseUiState
 import com.example.ui.models.Chip
 import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -121,11 +122,9 @@ class AddPostViewModel @Inject constructor(
             if (validateForm()) {
                 addPostUseCase(state.value.postItem).collect { apiState ->
                     when (apiState) {
-                        is State.Error -> _state.update { it.copy(error = apiState.message) }
-                        State.Loading -> _state.update { it.copy(isLoading = true) }
-                        is State.Success -> {
-                            _state.update { it.copy(isLoading = false, shouldNavigateUp = true) }
-                        }
+                        is State.Error -> onActionError(apiState.message)
+                        State.Loading -> onActionLoading()
+                        is State.Success -> onActionSuccess()
                     }
                 }
             }
@@ -136,6 +135,25 @@ class AddPostViewModel @Inject constructor(
         val newPostState = postValidationUseCase(state.value.postItem)
         _state.value = PostItemUiState(postItem = newPostState as PostItem)
         return newPostState.isSuccess()
+    }
+
+    private fun onActionError(errorMessage: String) {
+        updateBaseUiState { copy(isLoading = false, errorMessage = errorMessage) }
+    }
+
+    private fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
+        _state.update {
+            it.copy(baseUiState = it.baseUiState.update())
+        }
+    }
+
+    private fun onActionLoading() {
+        updateBaseUiState { copy(isLoading = true) }
+    }
+
+    private fun onActionSuccess() {
+        updateBaseUiState { copy(isLoading = false) }
+        _state.update { it.copy(shouldNavigateUp = true) }
     }
 
 

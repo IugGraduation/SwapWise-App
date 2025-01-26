@@ -49,7 +49,7 @@ fun AddPostContent(
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
         },
-        contentState = state
+//        contentState = state
     ) {
         ProductImage(state.postItem.image, onImagePicked = onSelectedImageChange)
         Column(

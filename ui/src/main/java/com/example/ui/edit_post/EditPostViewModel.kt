@@ -11,6 +11,7 @@ import com.example.domain.GetPostDetailsUseCase
 import com.example.domain.IOfferValidationUseCase
 import com.example.domain.model.PostItem
 import com.example.domain.model.State
+import com.example.ui.base.BaseUiState
 import com.example.ui.models.Chip
 import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,9 +46,9 @@ class EditPostViewModel @Inject constructor(
     private suspend fun getOfferDetails() {
         getPostDetailsUseCase(args.postId).collect { state ->
             _state.value = when (state) {
-                is State.Loading -> PostItemUiState(isLoading = true)
+                is State.Loading -> PostItemUiState(baseUiState = BaseUiState(isLoading = true))
                 is State.Success -> PostItemUiState(postItem = state.data)
-                is State.Error -> PostItemUiState(error = state.message)
+                is State.Error -> PostItemUiState(baseUiState = BaseUiState(errorMessage = state.message))
             }
         }
     }
@@ -143,11 +144,9 @@ class EditPostViewModel @Inject constructor(
             if (validateForm()) {
                 editPostUseCase(state.value.postItem).collect { apiState ->
                     when (apiState) {
-                        is State.Error -> _state.update { it.copy(error = apiState.message) }
-                        State.Loading -> _state.update { it.copy(isLoading = true) }
-                        is State.Success -> {
-                            _state.update { it.copy(isLoading = false, shouldNavigateUp = true) }
-                        }
+                        is State.Error -> onActionError(apiState.message)
+                        State.Loading -> onActionLoading()
+                        is State.Success -> onActionSuccess()
                     }
                 }
             }
@@ -160,16 +159,33 @@ class EditPostViewModel @Inject constructor(
         return newOfferState.isSuccess()
     }
 
+    private fun onActionError(errorMessage: String) {
+        updateBaseUiState { copy(isLoading = false, errorMessage = errorMessage) }
+    }
+
+    private fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
+        _state.update {
+            it.copy(baseUiState = it.baseUiState.update())
+        }
+    }
+
+    private fun onActionLoading() {
+        updateBaseUiState { copy(isLoading = true) }
+    }
+
+    private fun onActionSuccess() {
+        updateBaseUiState { copy(isLoading = false) }
+        _state.update { it.copy(shouldNavigateUp = true) }
+    }
+
 
     override fun onClickDelete() {
         viewModelScope.launch {
             deletePostUseCase(state.value.postItem.uuid).collect { apiState ->
                 when (apiState) {
-                    is State.Error -> _state.update { it.copy(error = apiState.message) }
-                    State.Loading -> _state.update { it.copy(isLoading = true) }
-                    is State.Success -> {
-                        _state.update { it.copy(isLoading = false, shouldNavigateUp = true) }
-                    }
+                    is State.Error -> onActionError(apiState.message)
+                    State.Loading -> onActionLoading()
+                    is State.Success -> onActionSuccess()
                 }
             }
         }

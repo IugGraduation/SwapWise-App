@@ -45,7 +45,7 @@ fun PostDetailsContent(
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
         },
-        contentState = state,
+//        contentState = state,
     ) {
         LazyColumn {
             item {

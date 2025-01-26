@@ -1,7 +1,7 @@
 package com.example.ui.models
 
 import com.example.domain.model.PostItem
-import com.example.domain.model.UiState
+import com.example.ui.base.BaseUiState
 
 data class PostItemUiState(
     val postItem: PostItem = PostItem(),
@@ -9,6 +9,5 @@ data class PostItemUiState(
     val chipsList: List<Chip> = listOf(),
     val favoriteChipsList: List<Chip> = listOf(),
 
-    override val isLoading: Boolean = false,
-    override val error: String? = null,
-) : UiState
+    val baseUiState: BaseUiState = BaseUiState()
+)
