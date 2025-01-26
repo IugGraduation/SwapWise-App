@@ -3,16 +3,15 @@ package com.example.ui.notifications
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.domain.model.Notification
-import com.example.domain.model.UiState
+import com.example.ui.base.BaseUiState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 data class NotificationUIState(
     val notifications: List<Notification> = listOf(),
 
-    override val isLoading: Boolean = false,
-    override val error: String? = null
-) : UiState {
+    val baseUiState: BaseUiState = BaseUiState()
+){
     @RequiresApi(Build.VERSION_CODES.O)
     fun groupNotifications(): List<NotificationGroup> {
         return notifications.groupBy { notification ->

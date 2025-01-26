@@ -24,6 +24,7 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.templates.MainTitledScreenTemplate
 import com.example.ui.home.navigateToHome
 import com.example.ui.models.BottomBarUiState
+import com.example.ui.profile.navigateToProfile
 import com.example.ui.search.navigateToSearch
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GraduationProjectTheme
@@ -46,7 +47,7 @@ fun NotificationsScreen(
         navigateToHome = { navController.navigateToHome() },
         navigateToSearch = { navController.navigateToSearch() },
         navigateToNotifications = { navController.navigateToNotifications() },
-        navigateToProfile = { navController.navigateToHome() },
+        navigateToProfile = { navController.navigateToProfile() },
     )
 
     NotificationsContent(

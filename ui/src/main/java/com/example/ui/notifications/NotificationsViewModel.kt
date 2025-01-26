@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
 import com.example.domain.GetNotificationsUseCase
 import com.example.domain.model.State
+import com.example.ui.base.BaseUiState
 import com.example.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -24,9 +25,9 @@ class NotificationsViewModel @Inject constructor(private val getNotificationsUse
         viewModelScope.launch {
             getNotificationsUseCase().collect { state ->
                 _state.value = when (state) {
-                    is State.Loading -> NotificationUIState(isLoading = true)
+                    is State.Loading -> NotificationUIState(baseUiState = BaseUiState(isLoading = true))
                     is State.Success -> NotificationUIState(notifications = state.data)
-                    is State.Error -> NotificationUIState(error = state.message)
+                    is State.Error -> NotificationUIState(baseUiState = BaseUiState(errorMessage = state.message))
                 }
             }
         }
