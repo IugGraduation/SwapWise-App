@@ -33,13 +33,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakePostsUseCase
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomOutlinedButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.SwapWiseFilledButton
+import com.example.ui.components.atoms.SwapWiseOutlineButton
+import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.ProductImage
-import com.example.ui.components.molecules.SimpleCustomMultilineTextField
-import com.example.ui.components.molecules.SimpleCustomTextField
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.PostItemUiState
@@ -117,7 +116,6 @@ fun EditOfferContent(
 
                                 closedContainerColor.animateTo(onBackgroundColor)
                                 closedContentColor.animateTo(secondaryColor)
-
                             }
 
                             false -> {
@@ -169,7 +167,7 @@ fun EditOfferContent(
             }
 
             VerticalSpacer(Spacing8)
-            SimpleCustomTextField(
+            SwapWiseTextField(
                 value = state.postItem.title,
                 onValueChange = editInteractions::onTitleChange,
                 placeholder = stringResource(R.string.post_title),
@@ -182,7 +180,7 @@ fun EditOfferContent(
             )
             VerticalSpacer(Spacing8)
 
-            SimpleCustomTextField(
+            SwapWiseTextField(
                 value = state.postItem.place,
                 onValueChange = editInteractions::onPlaceChange,
                 placeholder = stringResource(R.string.your_place),
@@ -194,7 +192,7 @@ fun EditOfferContent(
                 errorMessage = state.postError.placeError,
             )
             VerticalSpacer(Spacing8)
-            SimpleCustomMultilineTextField(
+            SwapWiseTextField(
                 value = state.postItem.details,
                 onValueChange = editInteractions::onDetailsChange,
                 placeholder = stringResource(R.string.details),
@@ -204,6 +202,7 @@ fun EditOfferContent(
                     )
                 },
                 errorMessage = state.postError.detailsError,
+                isMultiline = true,
             )
             VerticalSpacer(Spacing24)
             TitledChipsList(
@@ -234,7 +233,7 @@ fun EditOfferContent(
                     text = stringResource(R.string.save),
                 )
                 VerticalSpacer(Spacing8)
-                CustomOutlinedButton(
+                SwapWiseOutlineButton (
                     onClick = editInteractions::onClickDelete,
                     text = stringResource(R.string.delete),
                 )

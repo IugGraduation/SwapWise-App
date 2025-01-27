@@ -18,9 +18,9 @@ import com.example.ui.theme.WhitePrimary
 
 @Composable
 fun SwapWiseOutlineButton(
+    onClick: () -> Unit,
+    text: String,
     modifier: Modifier = Modifier,
-    title: String,
-    onClick: () -> Unit
 ) {
     OutlinedButton(
         modifier = modifier
@@ -32,7 +32,7 @@ fun SwapWiseOutlineButton(
         onClick = { onClick() }
     ) {
         Text(
-            text = title,
+            text = text,
             style = TextStyles.headingMedium
         )
     }

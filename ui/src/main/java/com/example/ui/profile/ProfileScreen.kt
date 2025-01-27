@@ -241,7 +241,7 @@ private fun UserInformationSection(
                 )
 
                 SwapWiseOutlineButton(
-                    title = stringResource(R.string.cancel),
+                    text = stringResource(R.string.cancel),
                     onClick = profileInteraction::onCancelButtonClicked
                 )
             }
