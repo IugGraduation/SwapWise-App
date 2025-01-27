@@ -5,14 +5,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.model.PostItem
 import com.example.ui.home.navigateToHome
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.notifications.navigateToNotifications
 import com.example.ui.post_details.navigateToPostDetails
+import com.example.ui.profile.navigateToProfile
 import com.example.ui.shared.BottomNavigationViewModel
-import com.example.ui.signup.navigateToSignup
-import com.example.ui.topic_see_all.navigateToTopicSeeAll
 
 @Composable
 fun SearchScreen(
@@ -31,7 +29,7 @@ fun SearchScreen(
         navigateToHome = { navController.navigateToHome() },
         navigateToSearch = { navController.navigateToSearch() },
         navigateToNotifications = { navController.navigateToNotifications() },
-        navigateToProfile = { navController.navigateToHome() },
+        navigateToProfile = { navController.navigateToProfile() },
     )
 
     SearchContent(

@@ -122,7 +122,7 @@ class AddPostViewModel @Inject constructor(
             if (validateForm()) {
                 addPostUseCase(state.value.postItem).collect { apiState ->
                     when (apiState) {
-                        is State.Error -> onActionError(apiState.message)
+                        is State.Error -> onActionFail(apiState.message)
                         State.Loading -> onActionLoading()
                         is State.Success -> onActionSuccess()
                     }
@@ -137,7 +137,7 @@ class AddPostViewModel @Inject constructor(
         return newPostState.isSuccess()
     }
 
-    private fun onActionError(errorMessage: String) {
+    private fun onActionFail(errorMessage: String) {
         updateBaseUiState { copy(isLoading = false, errorMessage = errorMessage) }
     }
 

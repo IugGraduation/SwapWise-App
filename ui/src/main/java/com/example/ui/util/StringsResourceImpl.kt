@@ -25,10 +25,10 @@ class StringsResourceImpl @Inject constructor(
         getString(R.string.enter_a_valid_email_address)
 
     override val invalidEmailOrPassword: String = getString(R.string.invalid_email_or_password)
-    
+
     override val failedEmailWhenEmpty: String =
         getString(R.string.the_email_shouldn_t_be_empty)
-    
+
     override val failedFullNameWhenEmpty: String =
         getString(R.string.the_full_name_shouldn_t_be_empty)
 
@@ -37,6 +37,11 @@ class StringsResourceImpl @Inject constructor(
     override val passwordMismatch: String = getString(R.string.password_mismatch)
     override val invalidLocation: String = getString(R.string.invalid_location)
     override val invalidPhoneNumber: String = getString(R.string.invalid_phone_number)
+    override val invalidTitle: String = getString(R.string.invalid_phone_number)
+    override val invalidPlace: String = getString(R.string.invalid_phone_number)
+    override val invalidDetails: String = getString(R.string.invalid_phone_number)
+
+
     private fun getString(@androidx.annotation.StringRes stringsRes: Int): String {
         return context.getString(stringsRes)
     }

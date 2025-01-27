@@ -178,7 +178,7 @@ fun EditOfferContent(
                         painter = painterResource(R.drawable.ic_title)
                     )
                 },
-                errorMessage = state.postItem.titleError,
+                errorMessage = state.postError.titleError,
             )
             VerticalSpacer(Spacing8)
 
@@ -191,7 +191,7 @@ fun EditOfferContent(
                         painter = painterResource(R.drawable.ic_location)
                     )
                 },
-                errorMessage = state.postItem.placeError,
+                errorMessage = state.postError.placeError,
             )
             VerticalSpacer(Spacing8)
             SimpleCustomMultilineTextField(
@@ -203,7 +203,7 @@ fun EditOfferContent(
                         painter = painterResource(R.drawable.ic_details)
                     )
                 },
-                errorMessage = state.postItem.detailsError,
+                errorMessage = state.postError.detailsError,
             )
             VerticalSpacer(Spacing24)
             TitledChipsList(

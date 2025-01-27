@@ -23,17 +23,13 @@ data class PostItem(
     val rate: Float = 0f,
     val offers: List<IOffer> = listOf(),
 
-    override val isLoading: Boolean = false,
-    override val error: String? = null,
-
-
     override val imgResIdError: String? = null,
     override val imgContentDescriptionError: String? = null,
     override val titleError: String? = null,
     override val placeError: String? = null,
     override val detailsError: String? = null,
     override val categoryError: String? = null,
-) : IOffer, UiState {
+) : IOffer {
 
     companion object {
         fun fromTopicItemDto(topicItemDto: TopicItemDto): TopicItem {

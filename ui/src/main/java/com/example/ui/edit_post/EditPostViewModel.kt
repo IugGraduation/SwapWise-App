@@ -2,21 +2,24 @@ package com.example.ui.edit_post
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.DeletePostUseCase
 import com.example.domain.EditPostUseCase
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetPostDetailsUseCase
-import com.example.domain.IOfferValidationUseCase
+import com.example.domain.PostValidationUseCase
+import com.example.domain.exception.InvalidDetailsException
+import com.example.domain.exception.InvalidPlaceException
+import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.PostItem
-import com.example.domain.model.State
 import com.example.ui.base.BaseUiState
+import com.example.ui.base.BaseViewModel
+import com.example.ui.base.StringsResource
 import com.example.ui.models.Chip
+import com.example.ui.models.PostErrorUiState
 import com.example.ui.models.PostItemUiState
+import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,43 +27,63 @@ import javax.inject.Inject
 @HiltViewModel
 class EditPostViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val stringsResource: StringsResource,
     private val getPostDetailsUseCase: GetPostDetailsUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
-    private val postValidationUseCase: IOfferValidationUseCase,
+    private val postValidationUseCase: PostValidationUseCase,
     private val editPostUseCase: EditPostUseCase,
     private val deletePostUseCase: DeletePostUseCase,
-) : ViewModel(), IEditPostInteractions {
-    private val _state = MutableStateFlow(PostItemUiState())
-    val state = _state.asStateFlow()
-
+) : BaseViewModel<PostItemUiState>(PostItemUiState()), IEditPostInteractions {
     val args = EditPostArgs(savedStateHandle)
 
 
     init {
         viewModelScope.launch {
-            getOfferDetails()
+            getPostDetails()
             prepareChipsList()
         }
     }
 
-    private suspend fun getOfferDetails() {
-        getPostDetailsUseCase(args.postId).collect { state ->
-            _state.value = when (state) {
-                is State.Loading -> PostItemUiState(baseUiState = BaseUiState(isLoading = true))
-                is State.Success -> PostItemUiState(postItem = state.data)
-                is State.Error -> PostItemUiState(baseUiState = BaseUiState(errorMessage = state.message))
-            }
+    private fun getPostDetails() {
+        onActionLoading()
+        tryToExecute(
+            call = { getPostDetailsUseCase(args.postId) },
+            onSuccess = ::onGetOfferDetailsSuccess,
+            onError = ::onActionFail
+        )
+    }
+
+    private fun onActionLoading() {
+        updateBaseUiState { copy(isLoading = true) }
+    }
+
+    private fun onGetOfferDetailsSuccess(data: PostItem) {
+        _state.value = PostItemUiState(postItem = data)
+    }
+
+    private fun onActionFail(throwable: Throwable) {
+        updateBaseUiState { copy(isLoading = false, errorMessage = throwable.message ?: "") }
+    }
+
+    private fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
+        _state.update {
+            it.copy(baseUiState = it.baseUiState.update())
         }
     }
 
 
-    private suspend fun prepareChipsList() {
-        val categoriesNames = getCategoriesNamesUseCase()
+    private fun prepareChipsList() {
+        tryToExecute(
+            call = { getCategoriesNamesUseCase() },
+            onSuccess = ::onGetChipsDataSuccess,
+            onError = ::onActionFail
+        )
+    }
+
+    private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
         val chipsList = List(categoriesNames.size) { index ->
             Chip(
-                text = categoriesNames[index],
-                selected = false,
-                onClick = ::onCategoryChange
+                text = categoriesNames[index], selected = false, onClick = ::onCategoryChange
             )
         }
         val favoriteChipsList = chipsList.map { it.copy() }.onEach {
@@ -72,105 +95,98 @@ class EditPostViewModel @Inject constructor(
     }
 
 
-    override fun onTitleChange(title: String) {
+    private fun updatePostItem(update: PostItem.() -> PostItem) {
         _state.update {
-            it.copy(
-                postItem = _state.value.postItem.copy(
-                    title = title, titleError = null
-                )
-            )
+            it.copy(postItem = it.postItem.update())
         }
+    }
+
+    override fun onTitleChange(title: String) {
+        updateFieldError()
+        updatePostItem { copy(title = title) }
     }
 
     override fun onDetailsChange(details: String) {
-        _state.update {
-            it.copy(
-                postItem = _state.value.postItem.copy(
-                    details = details, detailsError = null
-                )
-            )
-        }
+        updateFieldError()
+        updatePostItem { copy(details = details) }
     }
 
     override fun onIsOpenChange(isOpen: Boolean) {
-        _state.update {
-            it.copy(postItem = _state.value.postItem.copy(isOpen = isOpen))
-        }
+        updatePostItem { copy(isOpen = isOpen) }
     }
 
     override fun onPlaceChange(place: String) {
-        _state.update {
-            it.copy(
-                postItem = _state.value.postItem.copy(
-                    place = place, placeError = null
-                )
-            )
-        }
+        updateFieldError()
+        updatePostItem { copy(place = place) }
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
-        _state.update { it.copy(postItem = _state.value.postItem.copy(image = selectedImageUri.toString())) }
+        updatePostItem { copy(image = selectedImageUri.toString()) }
     }
 
     fun onCategoryChange(category: String) {
-        _state.update {
-            it.copy(
-                postItem = _state.value.postItem.copy(
-                    category = category, categoryError = null
-                )
-            )
-        }
+        updateFieldError()
+        updatePostItem { copy(category = category) }
     }
 
     fun onFavoriteCategoryChange(category: String) {
-        val newFavoriteChipList =
-            if (state.value.postItem.favoriteCategories.contains(category)) {
-                _state.value.postItem.favoriteCategories - category
-            } else {
-                _state.value.postItem.favoriteCategories + category
-            }
-        _state.update {
-            it.copy(
-                postItem = it.postItem.copy(
-                    favoriteCategories = newFavoriteChipList.toMutableList()
-                )
-            )
+        val newFavoriteChipList = if (state.value.postItem.favoriteCategories.contains(category)) {
+            _state.value.postItem.favoriteCategories - category
+        } else {
+            _state.value.postItem.favoriteCategories + category
         }
+
+        updatePostItem { copy(favoriteCategories = newFavoriteChipList.toMutableList()) }
     }
 
 
     override fun onClickSave() {
-        viewModelScope.launch {
-            if (validateForm()) {
-                editPostUseCase(state.value.postItem).collect { apiState ->
-                    when (apiState) {
-                        is State.Error -> onActionError(apiState.message)
-                        State.Loading -> onActionLoading()
-                        is State.Success -> onActionSuccess()
-                    }
-                }
+        onActionLoading()
+        tryToExecute(
+            call = {
+                postValidationUseCase(
+                    title = state.value.postItem.title,
+                    place = state.value.postItem.place,
+                    details = state.value.postItem.details
+                ).also { editPostUseCase(state.value.postItem) }
+            },
+            onSuccess = { onActionSuccess() },
+            onError = ::onSavePostFail
+        )
+    }
+
+    private fun onSavePostFail(throwable: Throwable) {
+        when (throwable) {
+            is InvalidTitleException -> {
+                updateFieldError(titleError = stringsResource.invalidTitle)
             }
+
+            is InvalidPlaceException -> {
+                updateFieldError(placeError = stringsResource.invalidPlace)
+            }
+
+            is InvalidDetailsException -> {
+                updateFieldError(detailsError = stringsResource.invalidDetails)
+            }
+
+            else -> onActionFail(throwable)
         }
     }
 
-    private fun validateForm(): Boolean {
-        val newOfferState = postValidationUseCase(state.value.postItem)
-        _state.value = PostItemUiState(postItem = newOfferState as PostItem)
-        return newOfferState.isSuccess()
-    }
-
-    private fun onActionError(errorMessage: String) {
-        updateBaseUiState { copy(isLoading = false, errorMessage = errorMessage) }
-    }
-
-    private fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
+    private fun updateFieldError(
+        titleError: String = String.empty(),
+        placeError: String = String.empty(),
+        detailsError: String = String.empty(),
+    ) {
         _state.update {
-            it.copy(baseUiState = it.baseUiState.update())
+            it.copy(
+                postError = PostErrorUiState(
+                    titleError = titleError,
+                    placeError = placeError,
+                    detailsError = detailsError,
+                )
+            )
         }
-    }
-
-    private fun onActionLoading() {
-        updateBaseUiState { copy(isLoading = true) }
     }
 
     private fun onActionSuccess() {
@@ -180,15 +196,14 @@ class EditPostViewModel @Inject constructor(
 
 
     override fun onClickDelete() {
-        viewModelScope.launch {
-            deletePostUseCase(state.value.postItem.uuid).collect { apiState ->
-                when (apiState) {
-                    is State.Error -> onActionError(apiState.message)
-                    State.Loading -> onActionLoading()
-                    is State.Success -> onActionSuccess()
-                }
-            }
-        }
+        onActionLoading()
+        tryToExecute(
+            call = {
+                deletePostUseCase(state.value.postItem.uuid)
+            },
+            onSuccess = { onActionSuccess() },
+            onError = ::onActionFail
+        )
     }
 
 

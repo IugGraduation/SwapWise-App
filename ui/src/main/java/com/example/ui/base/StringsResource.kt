@@ -15,4 +15,7 @@ interface StringsResource {
     val invalidUsername: String
     val invalidEmail: String
     val passwordMismatch: String
+    val invalidTitle: String
+    val invalidPlace: String
+    val invalidDetails: String
 }

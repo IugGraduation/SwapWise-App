@@ -26,7 +26,7 @@ fun NavGraphBuilder.postDetailsRoute(navController: NavHostController) {
 
 
 class PostDetailsArgs(savedStateHandle: SavedStateHandle) {
-    val uuid: String = checkNotNull(savedStateHandle[UUID_ARG])
+    val postId: String = checkNotNull(savedStateHandle[UUID_ARG])
 
     companion object {
         const val UUID_ARG = "uuid"
