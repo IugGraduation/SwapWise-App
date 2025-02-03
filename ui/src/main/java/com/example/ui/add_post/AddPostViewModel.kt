@@ -1,19 +1,16 @@
 package com.example.ui.add_post
 
 import android.net.Uri
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.AddPostUseCase
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.IOfferValidationUseCase
 import com.example.domain.model.PostItem
 import com.example.domain.model.State
-import com.example.ui.base.BaseUiState
+import com.example.ui.base.BaseViewModel
 import com.example.ui.models.Chip
 import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,11 +20,7 @@ class AddPostViewModel @Inject constructor(
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
     private val postValidationUseCase: IOfferValidationUseCase,
     private val addPostUseCase: AddPostUseCase,
-) : ViewModel() {
-    private val _state = MutableStateFlow(PostItemUiState())
-    val state = _state.asStateFlow()
-
-
+) : BaseViewModel<PostItemUiState>(PostItemUiState()) {
     init {
         viewModelScope.launch {
             prepareChipsList()
@@ -124,7 +117,7 @@ class AddPostViewModel @Inject constructor(
                     when (apiState) {
                         is State.Error -> onActionFail(apiState.message)
                         State.Loading -> onActionLoading()
-                        is State.Success -> onActionSuccess()
+                        is State.Success -> onActionSuccess(true)
                     }
                 }
             }
@@ -136,25 +129,5 @@ class AddPostViewModel @Inject constructor(
         _state.value = PostItemUiState(postItem = newPostState as PostItem)
         return newPostState.isSuccess()
     }
-
-    private fun onActionFail(errorMessage: String) {
-        updateBaseUiState { copy(isLoading = false, errorMessage = errorMessage) }
-    }
-
-    private fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
-        _state.update {
-            it.copy(baseUiState = it.baseUiState.update())
-        }
-    }
-
-    private fun onActionLoading() {
-        updateBaseUiState { copy(isLoading = true) }
-    }
-
-    private fun onActionSuccess() {
-        updateBaseUiState { copy(isLoading = false) }
-        _state.update { it.copy(shouldNavigateUp = true) }
-    }
-
 
 }

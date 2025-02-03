@@ -12,7 +12,6 @@ import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.PostItem
-import com.example.ui.base.BaseUiState
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
 import com.example.ui.models.Chip
@@ -53,22 +52,8 @@ class EditPostViewModel @Inject constructor(
         )
     }
 
-    private fun onActionLoading() {
-        updateBaseUiState { copy(isLoading = true) }
-    }
-
     private fun onGetOfferDetailsSuccess(data: PostItem) {
         _state.value = PostItemUiState(postItem = data)
-    }
-
-    private fun onActionFail(throwable: Throwable) {
-        updateBaseUiState { copy(isLoading = false, errorMessage = throwable.message ?: "") }
-    }
-
-    private fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
-        _state.update {
-            it.copy(baseUiState = it.baseUiState.update())
-        }
     }
 
 
@@ -189,11 +174,6 @@ class EditPostViewModel @Inject constructor(
         }
     }
 
-    private fun onActionSuccess() {
-        updateBaseUiState { copy(isLoading = false) }
-        _state.update { it.copy(shouldNavigateUp = true) }
-    }
-
 
     override fun onClickDelete() {
         onActionLoading()
@@ -201,7 +181,7 @@ class EditPostViewModel @Inject constructor(
             call = {
                 deletePostUseCase(state.value.postItem.uuid)
             },
-            onSuccess = { onActionSuccess() },
+            onSuccess = { onActionSuccess(true) },
             onError = ::onActionFail
         )
     }

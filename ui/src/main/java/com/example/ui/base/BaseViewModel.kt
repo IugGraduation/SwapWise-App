@@ -44,4 +44,27 @@ abstract class BaseViewModel<STATE>(initialState: STATE) : ViewModel() {
         }
     }
 
+
+    protected fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
+//        _state.update {
+//            it.copy(baseUiState = it.baseUiState.update())
+//        }
+    }
+
+    protected fun onActionLoading() {
+//        updateBaseUiState { copy(isLoading = true) }
+    }
+
+    protected fun onActionFail(throwable: Throwable) {
+//        updateBaseUiState { copy(isLoading = false, errorMessage = throwable.message ?: "") }
+    }
+
+    protected fun onActionFail(errorMessage: String) {
+//        updateBaseUiState { copy(isLoading = false, errorMessage = errorMessage) }
+    }
+
+    protected fun onActionSuccess(shouldNavigateUp: Boolean = false) {
+//        updateBaseUiState { copy(isLoading = false, shouldNavigateUp = shouldNavigateUp) }
+    }
+
 }
