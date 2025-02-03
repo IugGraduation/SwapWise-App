@@ -20,7 +20,7 @@ import com.example.ui.theme.Spacing4
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun PostDetailsUserHeader(user: User, date: String) {
+fun DetailsScreenUserHeader(user: User, date: String) {
     HeaderRow(modifier = Modifier.padding(horizontal = Spacing16)) {
         UserHeader(
             user = user,

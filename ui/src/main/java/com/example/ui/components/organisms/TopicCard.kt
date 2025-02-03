@@ -67,7 +67,7 @@ private fun TopHalfBox(item: IOffer) {
             .height(146.dp)
     ) {
         ImageWithMaxWidth(
-            painter = rememberAsyncImagePainter(item.image),
+            painter = rememberAsyncImagePainter(item.imageLink),
             contentDescription = item.imgContentDescription,
             contentScale = ContentScale.Crop
         )

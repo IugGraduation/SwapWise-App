@@ -25,7 +25,7 @@ interface IOffer : TopicItem {
     fun customCopy(
         uuid: String = this.uuid,
         title: String = this.title,
-        image: String = this.image,
+        image: String = this.imageLink,
         imgContentDescription: String = this.imgContentDescription,
         user: User = this.user,
         place: String = this.place,
@@ -56,7 +56,7 @@ interface IOffer : TopicItem {
                     categoryError = categoryError,
                     uuid = uuid,
                     title = title,
-                    image = image,
+                    imageLink = image,
                     imgContentDescription = imgContentDescription,
                 )
             }
@@ -76,7 +76,7 @@ interface IOffer : TopicItem {
                     categoryError = categoryError,
                     uuid = uuid,
                     title = title,
-                    image = image,
+                    imageLink = image,
                     imgContentDescription = imgContentDescription,
                 )
             }
@@ -96,7 +96,7 @@ interface IOffer : TopicItem {
                     override val categoryError: String? = categoryError
                     override val uuid: String = uuid
                     override val title: String = title
-                    override val image: String = image
+                    override val imageLink: String = image
                     override val imgContentDescription: String = imgContentDescription
                 }
             }

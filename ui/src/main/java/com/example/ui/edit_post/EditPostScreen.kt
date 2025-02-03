@@ -78,7 +78,7 @@ fun EditOfferContent(
 //        contentState = state
     ) {
         ProductImage(
-            state.postItem.image, onImagePicked = editInteractions::onSelectedImageChange
+            state.postItem.imageLink, onImagePicked = editInteractions::onSelectedImageChange
         )
         val scrollState = rememberScrollState()
         Column(

@@ -30,7 +30,7 @@ fun CategoryCard(
 
     BoxRounded(modifier = myModifier, contentAlignment = Alignment.Center) {
         ImageWithMaxWidth(
-            painter = rememberAsyncImagePainter(categoryItem.image),
+            painter = rememberAsyncImagePainter(categoryItem.imageLink),
             contentDescription = categoryItem.imgContentDescription,
             contentScale = ContentScale.Crop
         )

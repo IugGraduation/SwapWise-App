@@ -22,7 +22,7 @@ fun HomeTemplate(
             HomeTopBar(
                 title = "Good Morning \uD83D\uDC4B",
                 subtitle = user.name,
-                imagePainter = rememberAsyncImagePainter(user.image),
+                imagePainter = rememberAsyncImagePainter(user.imageLink),
             )
         },
         bottomBarState = bottomBarState,

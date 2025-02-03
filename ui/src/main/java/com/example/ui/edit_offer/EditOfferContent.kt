@@ -59,7 +59,7 @@ fun EditOfferContent(
         },
         contentState = state
     ) {
-        ProductImage(state.offerItem.image, onImagePicked = onSelectedImageChange)
+        ProductImage(state.offerItem.imageLink, onImagePicked = onSelectedImageChange)
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -68,7 +68,7 @@ fun AddPostContent(
         },
 //        contentState = state
     ) {
-        ProductImage(state.postItem.image, onImagePicked = addInteractions::onSelectedImageChange)
+        ProductImage(state.postItem.imageLink, onImagePicked = addInteractions::onSelectedImageChange)
         Column(
             modifier = Modifier
                 .fillMaxSize()

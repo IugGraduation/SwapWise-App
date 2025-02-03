@@ -26,7 +26,7 @@ fun UserHeader(
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
-            painter = rememberAsyncImagePainter(user.image),
+            painter = rememberAsyncImagePainter(user.imageLink),
             contentDescription = user.imgContentDescription,
             modifier = Modifier.size(imgSize)
         )

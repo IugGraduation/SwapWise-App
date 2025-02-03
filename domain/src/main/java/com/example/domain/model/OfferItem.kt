@@ -4,7 +4,7 @@ import com.example.data.model.OfferItemDto
 
 data class OfferItem(
     override val uuid: String = "",
-    override val image: String = "",
+    override val imageLink: String = "",
     override val imgContentDescription: String = "",
     override val user: User = User(),
     override val title: String = "",
@@ -24,8 +24,8 @@ data class OfferItem(
         return OfferItemDto(
             uuid = uuid,
             userName = user.name,
-            userImage = user.image,
-            image = image,
+            userImage = user.imageLink,
+            image = imageLink,
             title = title,
             details = details,
 //                place = "",
@@ -43,9 +43,9 @@ data class OfferItem(
                 uuid = offerItemDto.uuid.toString(),
                 user = User(
                     name = offerItemDto.userName.toString(),
-                    image = offerItemDto.userImage.toString(),
+                    imageLink = offerItemDto.userImage.toString(),
                 ),
-                image = offerItemDto.image.toString(),
+                imageLink = offerItemDto.image.toString(),
                 title = offerItemDto.title.toString(),
                 details = offerItemDto.details.toString(),
 //                place = "",

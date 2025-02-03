@@ -65,7 +65,7 @@ class AddOfferViewModel @Inject constructor(
     }
 
     fun onSelectedImageChange(selectedImageUri: Uri) {
-        _state.update { it.copy(offerItem = _state.value.offerItem.copy(image = selectedImageUri.toString())) }
+        _state.update { it.copy(offerItem = _state.value.offerItem.copy(imageLink = selectedImageUri.toString())) }
     }
 
     fun onCategoryChange(category: String) {

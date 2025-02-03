@@ -9,11 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.domain.GetFakeOffersUseCase
 import com.example.ui.R
-import com.example.ui.components.atoms.PostDetailsBody
+import com.example.ui.components.atoms.DetailsScreenBody
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.PhoneRow
-import com.example.ui.components.molecules.PostDetailsUserHeader
+import com.example.ui.components.molecules.DetailsScreenUserHeader
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.Chip
@@ -32,11 +32,11 @@ fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
         contentState = state,
     ) {
         Column {
-            ProductImage(state.offerItem.image)
+            ProductImage(state.offerItem.imageLink)
             VerticalSpacer(Spacing16)
-            PostDetailsUserHeader(user = state.offerItem.user, date = state.offerItem.date)
+            DetailsScreenUserHeader(user = state.offerItem.user, date = state.offerItem.date)
             VerticalSpacer(Spacing24)
-            PostDetailsBody(state.offerItem.title, state.offerItem.details)
+            DetailsScreenBody(state.offerItem.title, state.offerItem.details)
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),

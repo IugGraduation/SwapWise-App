@@ -9,7 +9,6 @@ import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.PostItem
-import com.example.domain.model.State
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
 import com.example.ui.models.Chip
@@ -96,7 +95,7 @@ class AddPostViewModel @Inject constructor(
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
-        updatePostItem { copy(image = selectedImageUri.toString()) }
+        updatePostItem { copy(imageLink = selectedImageUri.toString()) }
     }
 
     fun onCategoryChange(category: String) {

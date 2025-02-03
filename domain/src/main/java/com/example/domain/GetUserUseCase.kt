@@ -6,7 +6,7 @@ class GetUserUseCase{
     operator fun invoke(): User {
         return User(
             name = "Cameron Williamson",
-            image = R.drawable.img_user_fake.toString(),
+            imageLink = R.drawable.img_user_fake.toString(),
             phone = "1231231231"
         )
     }

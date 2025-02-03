@@ -12,7 +12,7 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
 @Composable
-fun PostDetailsBody(title: String, body: String, modifier: Modifier = Modifier) {
+fun DetailsScreenBody(title: String, body: String, modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(start = Spacing16, end = Spacing32)) {
         Text(
             text = title,

@@ -106,7 +106,7 @@ class EditPostViewModel @Inject constructor(
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
-        updatePostItem { copy(image = selectedImageUri.toString()) }
+        updatePostItem { copy(imageLink = selectedImageUri.toString()) }
     }
 
     fun onCategoryChange(category: String) {

@@ -7,7 +7,7 @@ import com.example.domain.GetUserUseCase
 
 data class PostItem(
     override val uuid: String = "",
-    override val image: String = "",
+    override val imageLink: String = "",
     override val imgContentDescription: String = "",
     override val user: User = GetUserUseCase()(),
     override val title: String = "",
@@ -38,9 +38,9 @@ data class PostItem(
                 user = User(
                     uuid = topicItemDto.userUuid.toString(),
                     name = topicItemDto.userName.toString(),
-                    image = topicItemDto.userImage.toString(),
+                    imageLink = topicItemDto.userImage.toString(),
                 ),
-                image = topicItemDto.postImage.toString(),
+                imageLink = topicItemDto.postImage.toString(),
                 title = topicItemDto.postName.toString(),
                 isOpen = topicItemDto.status.toString() == "Active",
                 details = topicItemDto.postDetails.toString(),
@@ -62,9 +62,9 @@ data class PostItem(
                 user = User(
                     uuid = postItemDto.userUuid.toString(),
                     name = postItemDto.userName.toString(),
-                    image = postItemDto.userImage.toString(),
+                    imageLink = postItemDto.userImage.toString(),
                 ),
-                image = postItemDto.postImage.toString(),
+                imageLink = postItemDto.postImage.toString(),
                 title = postItemDto.postName.toString(),
                 isOpen = postItemDto.status.toString() == "Active",
                 details = postItemDto.postDetails.toString(),
@@ -85,10 +85,10 @@ data class PostItem(
     fun toPostItemDto(): PostItemDto {
         return PostItemDto(
             uuid = uuid,
-            userImage = user.image,
+            userImage = user.imageLink,
             userName = user.name,
             userUuid = user.uuid,
-            postImage = image,
+            postImage = imageLink,
             postName = title,
             status = if(isOpen) "Active" else "Closed",
             postDetails = details,

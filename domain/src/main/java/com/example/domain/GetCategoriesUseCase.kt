@@ -14,7 +14,7 @@ class GetFakeCategoriesUseCase{
     operator fun invoke(): List<CategoryItem> {
         val categoryItem = CategoryItem(
             title = "Food and beverages",
-            image = R.drawable.img_food_and_beverages.toString(),
+            imageLink = R.drawable.img_food_and_beverages.toString(),
         )
 
         return listOf(
