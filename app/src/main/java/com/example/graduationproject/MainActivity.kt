@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
-import com.example.ui.profile.navigateToProfile
+import com.example.ui.home.navigateToHome
 import com.example.ui.theme.GraduationProjectTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
             GraduationProjectTheme {
                 val navController = rememberNavController()
                 AppNavGraph(navController)
-                navController.navigateToProfile()
+                navController.navigateToHome()
             }
         }
     }

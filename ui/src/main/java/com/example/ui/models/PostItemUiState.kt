@@ -13,8 +13,7 @@ data class PostItemUiState(
 )
 
 data class PostErrorUiState(
-    val imgResIdError: String = "",
-    val imgContentDescriptionError: String = "",
+    val imageError: String = "",
     val titleError: String = "",
     val placeError: String = "",
     val detailsError: String = "",
