@@ -28,16 +28,6 @@ abstract class BaseViewModel<STATE>(initialState: STATE) : ViewModel() {
         viewModelScope.launch(dispatcher) {
             try {
                 call().also(onSuccess)
-            } catch (e: ServerException) {
-                onError(e)
-            } catch (e: NetworkException) {
-                onError(e)
-            } catch (e: UnAuthorizedException) {
-                onError(e)
-            } catch (e: EmptyDataException) {
-                onError(e)
-            } catch (e: SwapWiseException) {
-                onError(e)
             } catch (throwable: Throwable) {
                 onError(throwable)
             }
