@@ -9,8 +9,10 @@ import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.IOfferValidationUseCase
 import com.example.domain.model.OfferItem
 import com.example.domain.model.State
+import com.example.ui.base.BaseViewModel
 import com.example.ui.models.Chip
 import com.example.ui.models.OfferItemUiState
+import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,9 +26,7 @@ class AddOfferViewModel @Inject constructor(
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
     private val offerValidationUseCase: IOfferValidationUseCase,
     private val addOfferUseCase: AddOfferUseCase,
-) : ViewModel() {
-    private val _state = MutableStateFlow(OfferItemUiState())
-    val state = _state.asStateFlow()
+) : BaseViewModel<OfferItemUiState>(OfferItemUiState())  {
 
     val args = AddOfferArgs(savedStateHandle)
 

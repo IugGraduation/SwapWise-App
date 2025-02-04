@@ -37,8 +37,8 @@ import com.example.ui.theme.TextStyles
 fun AddPostScreen(navController: NavController, viewModel: AddPostViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(state.shouldNavigateUp) {
-        if (state.shouldNavigateUp) navController.navigateUp()
+    LaunchedEffect(state.baseUiState.shouldNavigateUp) {
+        if (state.baseUiState.shouldNavigateUp) navController.navigateUp()
     }
 
     AddPostContent(
