@@ -129,7 +129,8 @@ class EditPostViewModel @Inject constructor(
                     title = state.value.postItem.title,
                     place = state.value.postItem.place,
                     details = state.value.postItem.details
-                ).also { editPostUseCase(state.value.postItem) }
+                )
+                editPostUseCase(state.value.postItem)
             },
             onError = ::onSavePostFail
         )

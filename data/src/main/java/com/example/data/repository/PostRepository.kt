@@ -5,8 +5,8 @@ import com.example.data.model.StateDto
 import com.example.data.source.local.FakePostData
 import com.example.data.source.remote.StoreApiService
 import com.example.data.util.checkResponse
+import com.example.data.util.fakeCheckResponse
 import com.example.data.util.fakeWrapWithFlow
-import com.example.data.util.wrapWithFlow
 import kotlinx.coroutines.flow.Flow
 
 class PostRepository(
@@ -18,18 +18,18 @@ class PostRepository(
 //        wrapWithFlow(storeApiService::getPost, uuid)
 
 
-    suspend fun addPost(postItemDto: PostItemDto): Flow<StateDto<Boolean?>> =
-        fakeWrapWithFlow(true)
+    suspend fun addPost(postItemDto: PostItemDto) =
+        fakeCheckResponse(true)
 //        wrapWithFlow(storeApiService::addPost, postItemDto)
 
 
-    suspend fun updatePost(postItemDto: PostItemDto): Flow<StateDto<Boolean?>> =
-        fakeWrapWithFlow(true)
+    suspend fun updatePost(postItemDto: PostItemDto) =
+        fakeCheckResponse(true)
 //        wrapWithFlow(storeApiService::updatePost, postItemDto)
 
 
-    suspend fun deletePost(postId: String): Flow<StateDto<Boolean?>> =
-        fakeWrapWithFlow(true)
+    suspend fun deletePost(postId: String) =
+        fakeCheckResponse(true)
 //        wrapWithFlow(storeApiService::deletePost, postId)
 
 

@@ -118,9 +118,9 @@ class AddPostViewModel @Inject constructor(
                     title = state.value.postItem.title,
                     place = state.value.postItem.place,
                     details = state.value.postItem.details
-                ).also { addPostUseCase(state.value.postItem) }
+                )
+                addPostUseCase(state.value.postItem)
             },
-            onSuccess = { onActionSuccess() },
             onError = ::onAddPostFail
         )
     }
