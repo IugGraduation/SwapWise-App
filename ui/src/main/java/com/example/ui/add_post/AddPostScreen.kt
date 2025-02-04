@@ -61,7 +61,7 @@ fun AddPostContent(
         onClickGoBack = onClickGoBack,
         floatingActionButton = {
             SwapWiseFilledButton(
-                onClick = addInteractions::onClickAddPost,
+                onClick = addInteractions::onClickAdd,
                 text = stringResource(R.string.post),
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
@@ -158,7 +158,7 @@ fun PreviewPostDetailsContent() {
                 override fun onPlaceChange(place: String) {}
                 override fun onDetailsChange(details: String) {}
                 override fun onSelectedImageChange(selectedImageUri: Uri) {}
-                override fun onClickAddPost() {}
+                override fun onClickAdd() {}
             },
         )
     }

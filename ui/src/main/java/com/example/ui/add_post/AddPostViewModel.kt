@@ -44,9 +44,7 @@ class AddPostViewModel @Inject constructor(
 
     private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
         val chipsList = List(categoriesNames.size) { index ->
-            Chip(
-                text = categoriesNames[index], selected = false, onClick = ::onCategoryChange
-            )
+            Chip(text = categoriesNames[index], selected = false, onClick = ::onCategoryChange)
         }
         val favoriteChipsList = chipsList.map { it.copy() }.onEach {
             it.onClick = ::onFavoriteCategoryChange
@@ -114,7 +112,7 @@ class AddPostViewModel @Inject constructor(
     }
 
 
-    override fun onClickAddPost() {
+    override fun onClickAdd() {
         onActionLoading()
         tryToExecute(
             call = {

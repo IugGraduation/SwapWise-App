@@ -7,5 +7,5 @@ interface IAddPostInteractions {
     fun onPlaceChange(place: String)
     fun onDetailsChange(details: String)
     fun onSelectedImageChange(selectedImageUri: Uri)
-    fun onClickAddPost()
+    fun onClickAdd()
 }
