@@ -114,7 +114,6 @@ class AddOfferViewModel @Inject constructor(
                 )
                 addOfferUseCase(args.postId, state.value.offerItem)
             },
-            onSuccess = ::onActionSuccess,
             onError = ::onAddPostFail
         )
     }

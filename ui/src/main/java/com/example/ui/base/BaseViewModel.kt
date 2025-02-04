@@ -51,8 +51,8 @@ abstract class BaseViewModel<STATE>(initialState: STATE) : ViewModel() {
         updateBaseUiState { copy(errorMessage = errorMessage) }
     }
 
-    protected fun onActionSuccess(shouldNavigateUp: Boolean = false) {
-        updateBaseUiState { copy(shouldNavigateUp = shouldNavigateUp) }
+    protected fun navigateUp() {
+        updateBaseUiState { copy(shouldNavigateUp = true) }
     }
 
 }

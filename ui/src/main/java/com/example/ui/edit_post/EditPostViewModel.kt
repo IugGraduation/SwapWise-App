@@ -131,7 +131,6 @@ class EditPostViewModel @Inject constructor(
                     details = state.value.postItem.details
                 ).also { editPostUseCase(state.value.postItem) }
             },
-            onSuccess = { onActionSuccess() },
             onError = ::onSavePostFail
         )
     }
@@ -176,7 +175,7 @@ class EditPostViewModel @Inject constructor(
             call = {
                 deletePostUseCase(state.value.postItem.uuid)
             },
-            onSuccess = { onActionSuccess(true) },
+            onSuccess = { navigateUp() },
         )
     }
 
