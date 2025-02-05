@@ -17,7 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.GetFakeNotificationsUseCase
+import com.example.domain.notifications.GetFakeNotificationsUseCase
+import com.example.domain.notifications.GroupNotificationsUseCase
+import com.example.domain.model.NotificationGroup
 import com.example.ui.R
 import com.example.ui.components.atoms.SwipeableNotificationCard
 import com.example.ui.components.atoms.VerticalSpacer
@@ -69,7 +71,7 @@ fun NotificationsContent(
         title = stringResource(R.string.notifications),
         bottomBarState = bottomBarState,
     ) {
-        val groupedNotifications = state.groupNotifications()
+        val groupedNotifications = notificationsInteractions.getGroupedNotifications()
 
         LazyColumn(
             modifier = Modifier.padding(top = Spacing16),
@@ -110,8 +112,11 @@ fun PreviewNotificationContent() {
         NotificationsContent(
             state = notificationUIState,
             bottomBarState = BottomBarUiState(selectedItem = 2),
-            notificationsInteractions = object :INotificationsInteractions{
-                override fun onDismiss(id: String) { }
+            notificationsInteractions = object : INotificationsInteractions {
+                override fun onDismiss(id: String) {}
+                override fun getGroupedNotifications(): List<NotificationGroup> {
+                    return GroupNotificationsUseCase()(GetFakeNotificationsUseCase()())
+                }
             },
         )
     }

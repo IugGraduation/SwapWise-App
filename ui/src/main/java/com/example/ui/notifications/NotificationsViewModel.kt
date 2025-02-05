@@ -2,19 +2,21 @@ package com.example.ui.notifications
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.viewModelScope
-import com.example.domain.GetNotificationsUseCase
-import com.example.domain.model.State
-import com.example.ui.base.BaseUiState
+import com.example.domain.notifications.GetNotificationsUseCase
+import com.example.domain.notifications.GroupNotificationsUseCase
+import com.example.domain.model.Notification
+import com.example.domain.model.NotificationGroup
 import com.example.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class NotificationsViewModel @Inject constructor(private val getNotificationsUseCase: GetNotificationsUseCase) :
+class NotificationsViewModel @Inject constructor(
+    private val getNotificationsUseCase: GetNotificationsUseCase,
+    private val groupNotificationsUseCase: GroupNotificationsUseCase
+) :
     BaseViewModel<NotificationUIState>(NotificationUIState()), INotificationsInteractions {
 
     init {
@@ -22,21 +24,26 @@ class NotificationsViewModel @Inject constructor(private val getNotificationsUse
     }
 
     private fun getNotifications() {
-        viewModelScope.launch {
-            getNotificationsUseCase().collect { state ->
-                _state.value = when (state) {
-                    is State.Loading -> NotificationUIState(baseUiState = BaseUiState(isLoading = true))
-                    is State.Success -> NotificationUIState(notifications = state.data)
-                    is State.Error -> NotificationUIState(baseUiState = BaseUiState(errorMessage = state.message))
-                }
-            }
-        }
+        tryToExecute(
+            call = { getNotificationsUseCase() },
+            onSuccess = ::onGetNotificationsSuccess,
+
+            )
+    }
+
+    private fun onGetNotificationsSuccess(data: List<Notification>) {
+        _state.value = NotificationUIState(notifications = data)
     }
 
 
     override fun onDismiss(id: String) {
         _state.update { it.copy(notifications = it.notifications.filterNot { it.id == id }) }
         //todo: tell api/use-case to delete the notification
+    }
+
+
+    override fun getGroupedNotifications(): List<NotificationGroup> {
+        return groupNotificationsUseCase(_state.value.notifications)
     }
 
 
