@@ -1,13 +1,10 @@
 package com.example.data.repository
 
 import com.example.data.model.PostItemDto
-import com.example.data.model.StateDto
 import com.example.data.source.local.FakePostData
 import com.example.data.source.remote.StoreApiService
 import com.example.data.util.checkResponse
 import com.example.data.util.fakeCheckResponse
-import com.example.data.util.fakeWrapWithFlow
-import kotlinx.coroutines.flow.Flow
 
 class PostRepository(
     private val fakePostData: FakePostData,
@@ -33,6 +30,8 @@ class PostRepository(
 //        wrapWithFlow(storeApiService::deletePost, postId)
 
 
-    suspend fun searchPosts(searchValue: String, filterCategories: List<String>): Flow<StateDto<List<PostItemDto?>?>> =
-        fakeWrapWithFlow(listOf(fakePostData.getPostDetails("").body(), fakePostData.getPostDetails("").body()))
+    suspend fun searchPosts(searchValue: String, filterCategories: List<String>) =
+        fakeCheckResponse(
+            listOf(fakePostData.getPostDetails("").body(), fakePostData.getPostDetails("").body())
+        )
 }
