@@ -33,7 +33,7 @@ class EditPostViewModel @Inject constructor(
     private val editPostUseCase: EditPostUseCase,
     private val deletePostUseCase: DeletePostUseCase,
 ) : BaseViewModel<PostItemUiState>(PostItemUiState()), IEditPostInteractions {
-    val args = EditPostArgs(savedStateHandle)
+    private val args = EditPostArgs(savedStateHandle)
 
 
     init {
