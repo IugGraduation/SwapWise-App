@@ -27,11 +27,11 @@ class PostDetailsViewModel @Inject constructor(
     private fun getPostDetails() {
         tryToExecute(
             call = { getPostDetailsUseCase(args.postId) },
-            onSuccess = ::onGetOfferDetailsSuccess,
+            onSuccess = ::onGetPostDetailsSuccess,
         )
     }
 
-    private fun onGetOfferDetailsSuccess(data: PostItem) {
+    private fun onGetPostDetailsSuccess(data: PostItem) {
         _state.value = PostItemUiState(postItem = data)
     }
 

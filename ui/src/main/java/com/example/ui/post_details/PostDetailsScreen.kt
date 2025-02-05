@@ -26,8 +26,8 @@ import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.GetFakePostsUseCase
 import com.example.ui.R
 import com.example.ui.add_offer.navigateToAddOffer
-import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.components.atoms.DetailsScreenBody
+import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.components.atoms.PostDetailsStatusItem
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.VerticalSpacer
@@ -35,10 +35,8 @@ import com.example.ui.components.molecules.DetailsScreenUserHeader
 import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
-import com.example.ui.components.organisms.TopicCard
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.Chip
-import com.example.ui.models.Orientation
 import com.example.ui.models.PostItemUiState
 import com.example.ui.offer_details.navigateToOfferDetails
 import com.example.ui.theme.BlackFourth
