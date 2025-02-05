@@ -13,15 +13,14 @@ import androidx.compose.ui.res.stringResource
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomTextButton
 import com.example.ui.components.atoms.VerticalSpacer
-import com.example.ui.models.TopicUiState
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
-import com.example.ui.util.getName
 
 @Composable
 fun TopicsListHeader(
-    topic: TopicUiState,
+    title: String,
+    onClickSeeAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -30,12 +29,12 @@ fun TopicsListHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = topic.type.getName(),
+            text = title,
             style = TextStyles.headingMedium,
             color = MaterialTheme.colorScheme.primary
         )
         CustomTextButton(
-            onClick = topic.onClickSeeAll,
+            onClick = onClickSeeAll,
             text = stringResource(R.string.see_all),
         )
     }

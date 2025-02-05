@@ -17,7 +17,7 @@ data class PostItem(
 
     override val date: String = "",
     val onClickMakeOffer: () -> Unit = {},
-    var onClickGoToDetails: (() -> Unit)? = null,
+    var onClickGoToDetails: () -> Unit = {},
     val favoriteCategories: MutableList<String> = mutableListOf(),
     val isOpen: Boolean = true,
     val rate: Float = 0f,

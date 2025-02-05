@@ -34,9 +34,6 @@ import com.example.ui.components.templates.MainTitledScreenTemplate
 import com.example.ui.home.navigateToHome
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.Chip
-import com.example.ui.models.Orientation
-import com.example.ui.models.TopicType
-import com.example.ui.models.TopicUiState
 import com.example.ui.notifications.navigateToNotifications
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.profile.navigateToProfile
@@ -83,12 +80,6 @@ fun SearchContent(
     bottomBarState: BottomBarUiState,
     searchInteractions: ISearchInteractions,
 ) {
-    val myTopic = TopicUiState(
-        orientation = Orientation.Vertical,
-        type = TopicType.RecentPosts,
-        items = state.topicsList,
-    )
-
     MainTitledScreenTemplate(
         title = stringResource(R.string.search),
         bottomBarState = bottomBarState,
@@ -120,7 +111,11 @@ fun SearchContent(
         } else if (state.baseUiState.isLoading) {
             LoadingContent()
         } else {
-            CustomLazyLayout(topic = myTopic)
+            CustomLazyLayout(
+                items = state.topicsList,
+                isCategoryCard = false,
+                isHorizontalLayout = false
+            )
         }
     }
 }

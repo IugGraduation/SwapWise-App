@@ -14,7 +14,6 @@ import com.example.ui.util.getName
 
 @Composable
 fun TopicSeeAllContent(state: TopicUiState, onClickGoBack: () -> Unit) {
-    val myTopic = state.copy(orientation = Orientation.Vertical)
     val title =
         if (state.type == TopicType.Categories) stringResource(R.string.all) + " " + state.type.getName()
         else state.type.getName()
@@ -24,7 +23,9 @@ fun TopicSeeAllContent(state: TopicUiState, onClickGoBack: () -> Unit) {
         onClickGoBack = onClickGoBack,
         contentState = state,
     ) {
-        CustomLazyLayout(topic = myTopic)
+        CustomLazyLayout(items = state.items,
+            isCategoryCard = state.type == TopicType.Categories,
+            isHorizontalLayout = false)
     }
 }
 

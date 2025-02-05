@@ -6,8 +6,9 @@ import com.example.domain.model.Notification
 import com.example.domain.model.NotificationGroup
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class GroupNotificationsUseCase {
+class GroupNotificationsUseCase @Inject constructor() {
     @RequiresApi(Build.VERSION_CODES.O)
     operator fun invoke(notifications: List<Notification>): List<NotificationGroup> {
         return notifications.groupBy { notification ->

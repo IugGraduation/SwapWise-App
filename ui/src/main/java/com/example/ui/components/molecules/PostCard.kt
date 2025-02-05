@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -39,6 +40,7 @@ import com.example.ui.theme.BackgroundLight
 import com.example.ui.theme.BlackPrimary
 import com.example.ui.theme.BlackSecondary
 import com.example.ui.theme.CardHeight
+import com.example.ui.theme.CardWidth
 import com.example.ui.theme.Correct
 import com.example.ui.theme.CorrectOverlay
 import com.example.ui.theme.Danger
@@ -62,17 +64,30 @@ fun PostCard(
     offersNumber: String = String.empty(),
     isOpen: Boolean = true,
     isPostCard: Boolean = true,
+    isHorizontalCard: Boolean = false,
     onMakeOfferButtonClick: () -> Unit = {},
     onCardClick: () -> Unit,
 ) {
 
     Card(
-        modifier = modifier.height(CardHeight).fillMaxWidth(),
+        modifier = modifier
+            .height(CardHeight)
+            .apply {
+                if (isHorizontalCard) {
+                    width(width = CardWidth)
+                } else {
+                    Modifier.fillMaxWidth()
+                }
+            },
         onClick = onCardClick,
         colors = CardDefaults.cardColors(contentColor = WhitePrimary)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Box(modifier = Modifier.fillMaxWidth().weight(1.6f)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.6f)
+            ) {
                 Image(
                     modifier = Modifier.fillMaxWidth(),
                     painter = postImage,
@@ -88,7 +103,12 @@ fun PostCard(
                 )
             }
 
-            Box(modifier = Modifier.fillMaxWidth().weight(1.4f).background(color = WhitePrimary)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.4f)
+                    .background(color = WhitePrimary)
+            ) {
                 PostInfoSection(
                     title = title,
                     offersNumber = offersNumber,

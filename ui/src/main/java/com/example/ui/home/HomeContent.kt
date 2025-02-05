@@ -7,17 +7,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.example.domain.GetCategoriesUseCase
+import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.GetFakeCategoriesUseCase
 import com.example.domain.GetFakePostsUseCase
 import com.example.domain.GetUserUseCase
 import com.example.domain.model.PostItem
+import com.example.domain.model.TopicItem
 import com.example.ui.R
+import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.VerticalSpacer
+import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.molecules.TopicsListHeader
-import com.example.ui.components.organisms.CustomLazyLayoutWithHeader
-import com.example.ui.components.organisms.TopicCard
 import com.example.ui.components.templates.HomeTemplate
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.Orientation
@@ -27,6 +28,7 @@ import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing8
+import com.example.ui.util.getName
 
 
 @Composable
@@ -53,26 +55,57 @@ fun HomeContent(
                 )
                 VerticalSpacer(Spacing24)
             }
-            items(state.topicsList){ topic ->
-                if(topic != state.topicsList.last()){
-                    CustomLazyLayoutWithHeader(topic = topic)
+            items(state.topicsList) { topic ->
+                if (topic != state.topicsList.last()) {
+                    CustomLazyLayoutWithHeader(
+                        items = topic.items,
+                        isCategoryCard = topic.type == TopicType.Categories,
+                        isHorizontalLayout = topic.orientation == Orientation.Horizontal,
+                        title = topic.type.getName(),
+                        onClickSeeAll = topic.onClickSeeAll
+                    )
                     VerticalSpacer(Spacing24)
-                }else{
-                    TopicsListHeader(topic)
+                } else {
+                    TopicsListHeader(
+                        title = topic.type.getName(),
+                        onClickSeeAll = topic.onClickSeeAll
+                    )
                 }
             }
 
-            val lastTopic = state.topicsList.lastOrNull()?: TopicUiState()
-            items(lastTopic.items){
-                TopicCard(
-                    item = it as PostItem,
-                    orientation = Orientation.Vertical,
+            val lastTopic = state.topicsList.lastOrNull() ?: TopicUiState()
+            items(lastTopic.items) { item ->
+                PostCard(
+                    userImage = rememberAsyncImagePainter((item as PostItem).user.imageLink),
+                    postImage = rememberAsyncImagePainter(item.imageLink),
+                    username = item.user.name,
+                    title = item.title,
+                    details = item.details,
+                    onCardClick = { item.onClickGoToDetails() },
+                    isHorizontalCard = false,
                     modifier = Modifier.padding(horizontal = Spacing16)
                 )
                 VerticalSpacer(Spacing8)
             }
         }
     }
+}
+
+@Composable
+fun CustomLazyLayoutWithHeader(
+    title: String,
+    onClickSeeAll: () -> Unit,
+    items: List<TopicItem> = listOf(),
+    isCategoryCard: Boolean = false,
+    isHorizontalLayout: Boolean = true,
+) {
+    TopicsListHeader(title = title, onClickSeeAll = onClickSeeAll)
+
+    CustomLazyLayout(
+        items = items,
+        isCategoryCard = isCategoryCard,
+        isHorizontalLayout = isHorizontalLayout
+    )
 }
 
 
