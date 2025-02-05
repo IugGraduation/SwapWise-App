@@ -47,7 +47,7 @@ abstract class BaseViewModel<STATE>(initialState: STATE) : ViewModel() {
         updateBaseUiState { copy(errorMessage = throwable.message ?: "") }
     }
 
-    protected fun onActionFail(errorMessage: String = "") {
+    protected fun updateErrorMessage(errorMessage: String = "") {
         updateBaseUiState { copy(errorMessage = errorMessage) }
     }
 
