@@ -2,20 +2,23 @@ package com.example.ui.edit_offer
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.DeleteOfferUseCase
 import com.example.domain.EditOfferUseCase
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetOfferDetailsUseCase
-import com.example.domain.IOfferValidationUseCase
+import com.example.domain.PostValidationUseCase
+import com.example.domain.exception.InvalidDetailsException
+import com.example.domain.exception.InvalidPlaceException
+import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.OfferItem
-import com.example.domain.model.State
+import com.example.ui.base.BaseViewModel
+import com.example.ui.base.StringsResource
 import com.example.ui.models.Chip
 import com.example.ui.models.OfferItemUiState
+import com.example.ui.models.PostErrorUiState
+import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,129 +26,140 @@ import javax.inject.Inject
 @HiltViewModel
 class EditOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val stringsResource: StringsResource,
     private val getOfferDetailsUseCase: GetOfferDetailsUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
-    private val offerValidationUseCase: IOfferValidationUseCase,
+    private val offerValidationUseCase: PostValidationUseCase,
     private val editOfferUseCase: EditOfferUseCase,
     private val deleteOfferUseCase: DeleteOfferUseCase,
-) : ViewModel() {
-    private val _state = MutableStateFlow(OfferItemUiState())
-    val state = _state.asStateFlow()
-
-    val args = EditOfferArgs(savedStateHandle)
+) : BaseViewModel<OfferItemUiState>(OfferItemUiState()), IEditOfferInteractions {
+    private val args = EditOfferArgs(savedStateHandle)
 
 
     init {
         viewModelScope.launch {
             getOfferDetails()
-            getAllCategories()
+            prepareChipsList()
         }
     }
 
-    private suspend fun getOfferDetails() {
-        getOfferDetailsUseCase(args.offerId).collect { state ->
-            _state.value = when (state) {
-                is State.Loading -> OfferItemUiState(isLoading = true)
-                is State.Success -> OfferItemUiState(offerItem = state.data)
-                is State.Error -> OfferItemUiState(error = state.message)
-            }
-        }
+    private fun getOfferDetails() {
+        tryToExecute(
+            call = { getOfferDetailsUseCase(args.offerId) },
+            onSuccess = ::onGetOfferDetailsSuccess,
+        )
     }
 
-    private suspend fun getAllCategories() {
-        val categoriesNames = getCategoriesNamesUseCase()
+    private fun onGetOfferDetailsSuccess(data: OfferItem) {
+        _state.value = OfferItemUiState(offerItem = data)
+    }
+
+
+    private fun prepareChipsList() {
+        tryToExecute(
+            call = { getCategoriesNamesUseCase() },
+            onSuccess = ::onGetChipsDataSuccess,
+        )
+    }
+
+    private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
+        val chipsList = List(categoriesNames.size) { index ->
+            Chip(
+                text = categoriesNames[index], selected = false, onClick = ::onCategoryChange
+            )
+        }
         _state.update {
-            it.copy(chipsList = List(categoriesNames.size) { index ->
-                Chip(
-                    text = categoriesNames[index],
-                    selected = categoriesNames[index] == state.value.offerItem.category,
-                    onClick = ::onCategoryChange
-                )
-            })
+            it.copy(chipsList = chipsList)
         }
     }
 
 
-    fun onTitleChange(title: String) {
+    private fun updateFieldError(
+        titleError: String = String.empty(),
+        placeError: String = String.empty(),
+        detailsError: String = String.empty(),
+    ) {
         _state.update {
             it.copy(
-                offerItem = _state.value.offerItem.copy(
-                    title = title, titleError = null
+                offerError = PostErrorUiState(
+                    titleError = titleError,
+                    placeError = placeError,
+                    detailsError = detailsError,
                 )
             )
         }
     }
 
-    fun onDetailsChange(details: String) {
+    private fun updateOfferItem(update: OfferItem.() -> OfferItem) {
         _state.update {
-            it.copy(
-                offerItem = _state.value.offerItem.copy(
-                    details = details, detailsError = null
-                )
-            )
+            it.copy(offerItem = it.offerItem.update())
         }
     }
 
-    fun onPlaceChange(place: String) {
-        _state.update {
-            it.copy(
-                offerItem = _state.value.offerItem.copy(
-                    place = place, placeError = null
-                )
-            )
-        }
+    override fun onTitleChange(title: String) {
+        updateFieldError()
+        updateOfferItem { copy(title = title) }
     }
 
-    fun onSelectedImageChange(selectedImageUri: Uri) {
-        _state.update { it.copy(offerItem = _state.value.offerItem.copy(imageLink = selectedImageUri.toString())) }
+    override fun onDetailsChange(details: String) {
+        updateFieldError()
+        updateOfferItem { copy(details = details) }
+    }
+
+    override fun onPlaceChange(place: String) {
+        updateFieldError()
+        updateOfferItem { copy(place = place) }
+    }
+
+    override fun onSelectedImageChange(selectedImageUri: Uri) {
+        updateOfferItem { copy(imageLink = selectedImageUri.toString()) }
     }
 
     fun onCategoryChange(category: String) {
-        _state.update {
-            it.copy(
-                offerItem = _state.value.offerItem.copy(
-                    category = category, categoryError = null
+        updateFieldError()
+        updateOfferItem { copy(category = category) }
+    }
+
+
+    override fun onClickSave() {
+        tryToExecute(
+            call = {
+                offerValidationUseCase(
+                    title = state.value.offerItem.title,
+                    place = state.value.offerItem.place,
+                    details = state.value.offerItem.details
                 )
-            )
-        }
+                editOfferUseCase(state.value.offerItem)
+            },
+            onError = ::onSaveOfferFail
+        )
     }
 
 
-    fun onClickSave() {
-        viewModelScope.launch {
-            if (validateForm()) {
-                editOfferUseCase(state.value.offerItem).collect { apiState ->
-                    when (apiState) {
-                        is State.Error -> _state.update { it.copy(error = apiState.message) }
-                        State.Loading -> _state.update { it.copy(isLoading = true) }
-                        is State.Success -> {
-                            _state.update { it.copy(isLoading = false, shouldNavigateUp = true) }
-                        }
-                    }
-                }
+    private fun onSaveOfferFail(throwable: Throwable) {
+        when (throwable) {
+            is InvalidTitleException -> {
+                updateFieldError(titleError = stringsResource.invalidTitle)
             }
-        }
-    }
 
-    private fun validateForm(): Boolean {
-        val newOfferState = offerValidationUseCase(state.value.offerItem)
-        _state.value = OfferItemUiState(offerItem = newOfferState as OfferItem)
-        return newOfferState.isSuccess()
-    }
-
-
-    fun onClickDelete() {
-        viewModelScope.launch {
-            deleteOfferUseCase(state.value.offerItem.uuid).collect { apiState ->
-                when (apiState) {
-                    is State.Error -> _state.update { it.copy(error = apiState.message) }
-                    State.Loading -> _state.update { it.copy(isLoading = true) }
-                    is State.Success -> {
-                        _state.update { it.copy(isLoading = false, shouldNavigateUp = true) }
-                    }
-                }
+            is InvalidPlaceException -> {
+                updateFieldError(placeError = stringsResource.invalidPlace)
             }
+
+            is InvalidDetailsException -> {
+                updateFieldError(detailsError = stringsResource.invalidDetails)
+            }
+
+            else -> onActionFail(throwable)
         }
+    }
+
+
+    override fun onClickDelete() {
+        tryToExecute(
+            call = { deleteOfferUseCase(state.value.offerItem.uuid) },
+            onSuccess = { navigateUp() },
+        )
     }
 
 

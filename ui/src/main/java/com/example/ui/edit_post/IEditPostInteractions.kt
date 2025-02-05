@@ -1,13 +1,7 @@
 package com.example.ui.edit_post
 
-import android.net.Uri
+import com.example.ui.edit_offer.IEditOfferInteractions
 
-interface IEditPostInteractions {
-    fun onTitleChange (title: String)
-    fun onPlaceChange(place: String)
-    fun onDetailsChange(details: String)
+interface IEditPostInteractions: IEditOfferInteractions {
     fun onIsOpenChange (isOpen: Boolean)
-    fun onSelectedImageChange(selectedImageUri: Uri)
-    fun onClickSave()
-    fun onClickDelete()
 }

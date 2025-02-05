@@ -61,11 +61,11 @@ fun EditPostScreen(navController: NavController, viewModel: EditPostViewModel = 
     EditOfferContent(
         state = state,
         editInteractions = viewModel,
-        onClickGoBack = { navController.navigateUp() },
+        onClickGoBack = navController::navigateUp,
     )
 }
 
-
+//todo: check openClosedSwitch saving its state, and check scrolling
 @Composable
 fun EditOfferContent(
     state: PostItemUiState,
@@ -85,7 +85,8 @@ fun EditOfferContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .scrollable(scrollState, orientation = Orientation.Vertical)
-                .padding(Spacing16)
+                .padding(Spacing16),
+            verticalArrangement = Arrangement.spacedBy(Spacing8)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -97,76 +98,12 @@ fun EditOfferContent(
                     style = TextStyles.headingLarge,
                     color = MaterialTheme.colorScheme.primary
                 )
-                Row {
-                    val onBackgroundColor = MaterialTheme.colorScheme.onBackground
-                    val secondaryColor = MaterialTheme.colorScheme.secondary
-
-                    val openContainerColor = remember { Animatable(Primary) }
-                    val openContentColor = remember { Animatable(Color.White) }
-
-                    val closedContainerColor = remember { Animatable(onBackgroundColor) }
-                    val closedContentColor = remember { Animatable(secondaryColor) }
-
-
-                    LaunchedEffect(key1 = state.postItem.isOpen) {
-                        when (state.postItem.isOpen) {
-                            true -> {
-                                openContainerColor.animateTo(Primary)
-                                openContentColor.animateTo(Color.White)
-
-                                closedContainerColor.animateTo(onBackgroundColor)
-                                closedContentColor.animateTo(secondaryColor)
-                            }
-
-                            false -> {
-                                openContainerColor.animateTo(onBackgroundColor)
-                                openContentColor.animateTo(secondaryColor)
-
-                                closedContainerColor.animateTo(Primary)
-                                closedContentColor.animateTo(Color.White)
-                            }
-                        }
-                    }
-                    Box(
-                        Modifier
-                            .clip(
-                                RoundedCornerShape(
-                                    topStartPercent = 100, bottomStartPercent = 100
-                                )
-                            )
-                            .background(color = openContainerColor.value)
-                            .padding(Spacing12)
-                            .clickable { editInteractions.onIsOpenChange(true) }
-
-                    ) {
-                        Text(
-                            stringResource(R.string.open),
-                            style = TextStyles.headingMedium,
-                            color = openContentColor.value
-                        )
-                    }
-
-                    Box(
-                        Modifier
-                            .clip(
-                                RoundedCornerShape(
-                                    topEndPercent = 100, bottomEndPercent = 100
-                                )
-                            )
-                            .background(color = closedContainerColor.value)
-                            .padding(Spacing12)
-                            .clickable { editInteractions.onIsOpenChange(false) }) {
-                        Text(
-                            stringResource(R.string.closed),
-                            style = TextStyles.headingMedium,
-                            color = closedContentColor.value
-                        )
-                    }
-                }
-
+                OpenClosedSwitch(
+                    isOpen = state.postItem.isOpen,
+                    onIsOpenChange = editInteractions::onIsOpenChange
+                )
             }
 
-            VerticalSpacer(Spacing8)
             SwapWiseTextField(
                 value = state.postItem.title,
                 onValueChange = editInteractions::onTitleChange,
@@ -178,7 +115,6 @@ fun EditOfferContent(
                 },
                 errorMessage = state.postError.titleError,
             )
-            VerticalSpacer(Spacing8)
 
             SwapWiseTextField(
                 value = state.postItem.place,
@@ -191,7 +127,6 @@ fun EditOfferContent(
                 },
                 errorMessage = state.postError.placeError,
             )
-            VerticalSpacer(Spacing8)
             SwapWiseTextField(
                 value = state.postItem.details,
                 onValueChange = editInteractions::onDetailsChange,
@@ -204,7 +139,7 @@ fun EditOfferContent(
                 errorMessage = state.postError.detailsError,
                 isMultiline = true,
             )
-            VerticalSpacer(Spacing24)
+            VerticalSpacer(Spacing16)
             TitledChipsList(
                 title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
@@ -212,7 +147,7 @@ fun EditOfferContent(
                     it.selected = it.text == state.postItem.category
                 },
             )
-            VerticalSpacer(Spacing24)
+            VerticalSpacer(Spacing16)
             TitledChipsList(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
@@ -224,7 +159,7 @@ fun EditOfferContent(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(vertical = Spacing24),
+                    .padding(top = Spacing16, bottom = Spacing24),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
@@ -233,11 +168,77 @@ fun EditOfferContent(
                     text = stringResource(R.string.save),
                 )
                 VerticalSpacer(Spacing8)
-                SwapWiseOutlineButton (
+                SwapWiseOutlineButton(
                     onClick = editInteractions::onClickDelete,
                     text = stringResource(R.string.delete),
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun OpenClosedSwitch(isOpen: Boolean, onIsOpenChange: (Boolean) -> Unit) {
+    Row {
+        val onBackgroundColor = MaterialTheme.colorScheme.onBackground
+        val secondaryColor = MaterialTheme.colorScheme.secondary
+
+        val openContainerColor = remember { Animatable(Primary) }
+        val openContentColor = remember { Animatable(Color.White) }
+
+        val closedContainerColor = remember { Animatable(onBackgroundColor) }
+        val closedContentColor = remember { Animatable(secondaryColor) }
+
+
+        LaunchedEffect(key1 = isOpen) {
+            when (isOpen) {
+                true -> {
+                    openContainerColor.animateTo(Primary)
+                    openContentColor.animateTo(Color.White)
+
+                    closedContainerColor.animateTo(onBackgroundColor)
+                    closedContentColor.animateTo(secondaryColor)
+                }
+
+                false -> {
+                    openContainerColor.animateTo(onBackgroundColor)
+                    openContentColor.animateTo(secondaryColor)
+
+                    closedContainerColor.animateTo(Primary)
+                    closedContentColor.animateTo(Color.White)
+                }
+            }
+        }
+        Box(
+            Modifier
+                .clip(
+                    RoundedCornerShape(
+                        topStartPercent = 100, bottomStartPercent = 100
+                    )
+                )
+                .background(color = openContainerColor.value)
+                .padding(Spacing12)
+                .clickable { onIsOpenChange(true) }
+
+        ) {
+            Text(
+                stringResource(R.string.open),
+                style = TextStyles.headingMedium,
+                color = openContentColor.value
+            )
+        }
+
+        Box(
+            Modifier
+                .clip(RoundedCornerShape(topEndPercent = 100, bottomEndPercent = 100))
+                .background(color = closedContainerColor.value)
+                .padding(Spacing12)
+                .clickable { onIsOpenChange(false) }) {
+            Text(
+                stringResource(R.string.closed),
+                style = TextStyles.headingMedium,
+                color = closedContentColor.value
+            )
         }
     }
 }

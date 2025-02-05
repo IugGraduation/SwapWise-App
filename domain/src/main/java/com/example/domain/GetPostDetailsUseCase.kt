@@ -6,9 +6,9 @@ import com.example.domain.model.PostItem
 import javax.inject.Inject
 
 class GetPostDetailsUseCase @Inject constructor(private val postRepository: PostRepository) {
-    suspend operator fun invoke(uuid: String): PostItem {
+    suspend operator fun invoke(postId: String): PostItem {
         return PostItem.fromPostItemDto(
-            postRepository.getPostDetails(uuid) ?: throw EmptyDataException()
+            postRepository.getPostDetails(postId) ?: throw EmptyDataException()
         )
     }
 }

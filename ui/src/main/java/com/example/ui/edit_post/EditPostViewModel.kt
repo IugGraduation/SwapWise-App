@@ -46,11 +46,11 @@ class EditPostViewModel @Inject constructor(
     private fun getPostDetails() {
         tryToExecute(
             call = { getPostDetailsUseCase(args.postId) },
-            onSuccess = ::onGetOfferDetailsSuccess,
+            onSuccess = ::onGetPostDetailsSuccess,
         )
     }
 
-    private fun onGetOfferDetailsSuccess(data: PostItem) {
+    private fun onGetPostDetailsSuccess(data: PostItem) {
         _state.value = PostItemUiState(postItem = data)
     }
 
@@ -76,6 +76,22 @@ class EditPostViewModel @Inject constructor(
         }
     }
 
+
+    private fun updateFieldError(
+        titleError: String = String.empty(),
+        placeError: String = String.empty(),
+        detailsError: String = String.empty(),
+    ) {
+        _state.update {
+            it.copy(
+                postError = PostErrorUiState(
+                    titleError = titleError,
+                    placeError = placeError,
+                    detailsError = detailsError,
+                )
+            )
+        }
+    }
 
     private fun updatePostItem(update: PostItem.() -> PostItem) {
         _state.update {
@@ -154,28 +170,10 @@ class EditPostViewModel @Inject constructor(
         }
     }
 
-    private fun updateFieldError(
-        titleError: String = String.empty(),
-        placeError: String = String.empty(),
-        detailsError: String = String.empty(),
-    ) {
-        _state.update {
-            it.copy(
-                postError = PostErrorUiState(
-                    titleError = titleError,
-                    placeError = placeError,
-                    detailsError = detailsError,
-                )
-            )
-        }
-    }
-
 
     override fun onClickDelete() {
         tryToExecute(
-            call = {
-                deletePostUseCase(state.value.postItem.uuid)
-            },
+            call = { deletePostUseCase(state.value.postItem.uuid) },
             onSuccess = { navigateUp() },
         )
     }
