@@ -6,8 +6,7 @@ data class CategoryItem(
     override val uuid: String = "",
     override val title: String = "",
     override val imageLink: String = "",
-    override val imgContentDescription: String = "",
-): TopicItem{
+): TopicItem(){
     companion object{
         fun fromTopicItemDto(topicItemDto: TopicItemDto): TopicItem {
             return CategoryItem(

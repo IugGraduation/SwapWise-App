@@ -5,21 +5,13 @@ import com.example.data.model.OfferItemDto
 data class OfferItem(
     override val uuid: String = "",
     override val imageLink: String = "",
-    override val imgContentDescription: String = "",
-    override val user: User = User(),
+    val user: User = User(),
     override val title: String = "",
-    override val details: String = "",
-    override val place: String = "",
-    override val category: String = "",
-    override val date: String = "",
-
-    override val imgResIdError: String? = null,
-    override val imgContentDescriptionError: String? = null,
-    override val titleError: String? = null,
-    override val placeError: String? = null,
-    override val detailsError: String? = null,
-    override val categoryError: String? = null,
-) : IOffer {
+    val details: String = "",
+    val place: String = "",
+    val category: String = "",
+    val date: String = "",
+) : TopicItem() {
     fun toOfferItemDto(): OfferItemDto {
         return OfferItemDto(
             uuid = uuid,

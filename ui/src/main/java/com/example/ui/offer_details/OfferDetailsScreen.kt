@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakeOffersUseCase
-import com.example.domain.model.IOffer
 import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.DetailsScreenBody
@@ -79,14 +78,14 @@ fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
             VerticalSpacer(Spacing8)
-            PhoneRow(state.offerItem)
+            PhoneRow(phone = state.offerItem.user.phone)
         }
 
     }
 }
 
 @Composable
-fun PhoneRow(state: IOffer) {
+fun PhoneRow(phone: String) {
     Row(
         modifier = Modifier
             .padding(horizontal = Spacing16)
@@ -95,7 +94,7 @@ fun PhoneRow(state: IOffer) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = state.user.phone,
+            text = phone,
             style = TextStyles.bodyLarge,
             color = MaterialTheme.colorScheme.tertiary
         )
