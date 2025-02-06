@@ -91,7 +91,7 @@ fun EditOfferContent(
                         painter = painterResource(R.drawable.ic_title)
                     )
                 },
-                errorMessage = state.offerItem.titleError,
+                errorMessage = state.offerError.titleError,
             )
             SwapWiseTextField(
                 value = state.offerItem.place,
@@ -102,7 +102,7 @@ fun EditOfferContent(
                         painter = painterResource(R.drawable.ic_location)
                     )
                 },
-                errorMessage = state.offerItem.placeError,
+                errorMessage = state.offerError.placeError,
             )
             SwapWiseTextField(
                 value = state.offerItem.details,
@@ -114,7 +114,7 @@ fun EditOfferContent(
                     )
                 },
                 isMultiline = true,
-                errorMessage = state.offerItem.detailsError,
+                errorMessage = state.offerError.detailsError,
             )
             VerticalSpacer(Spacing16)
             TitledChipsList(
