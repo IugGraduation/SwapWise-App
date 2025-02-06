@@ -19,12 +19,12 @@ import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing8
 
 @Composable
-fun     CustomTextFieldWithErrorMsg(
+fun ErrorMsgWrapper(
     errorMessage: String? = null,
-    customTextField: @Composable () -> Unit
+    content: @Composable () -> Unit
 ) {
     Column {
-        customTextField()
+        content()
 
         if (!errorMessage.isNullOrEmpty()) {
             VerticalSpacer(Spacing8)
@@ -42,7 +42,7 @@ fun PreviewCustomTextFieldWithErrorMsg() {
     GraduationProjectTheme {
         var textState by remember { mutableStateOf("") }
 
-        CustomTextFieldWithErrorMsg {
+        ErrorMsgWrapper {
             CustomTextField(
                 value = textState, onValueChange = { textState = it }, placeholder = "User",
                 leadingIcon = {

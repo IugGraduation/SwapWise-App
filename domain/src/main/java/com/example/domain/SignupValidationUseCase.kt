@@ -1,37 +1,41 @@
 package com.example.domain
 
-import com.example.domain.model.SignState
-import com.example.domain.resource.ResourceProvider
+import com.example.domain.exception.InvalidBestBarterSpotException
+import com.example.domain.exception.InvalidConfirmPasswordException
+import com.example.domain.exception.InvalidFullNameException
+import com.example.domain.exception.PasswordMismatchException
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class SignupValidationUseCase @Inject constructor(
-    private val resourceProvider: ResourceProvider,
-    private val validateFullNameUseCase: ValidateAtLeast3CharacterUseCase,
-    private val validatePhoneNumberUseCase: ValidatePhoneNumberUseCase,
-    private val validatePasswordUseCase: ValidatePasswordUseCase,
-    private val validateConfirmPasswordUseCase: ValidateConfirmPasswordUseCase,
-    private val validateBestBarterSpotUseCase: ValidateAtLeast3CharacterUseCase,
 ) {
-
-    operator fun invoke(signState: SignState): SignState {
-        val fullNameResult = validateFullNameUseCase(signState.fullName,
-            resourceProvider.getString(R.string.full_name))
-        val phoneResult = validatePhoneNumberUseCase(signState.phone)
-        val passwordResult = validatePasswordUseCase(signState.password)
-        val confirmPasswordResult =
-            validateConfirmPasswordUseCase(signState.password, signState.confirmPassword)
-        val bestBarterSpotResult = validateBestBarterSpotUseCase(
-            signState.bestBarterSpot,
-            resourceProvider.getString(R.string.best_barter_spot)
-        )
-
-        val updatedSign = signState.copy(
-            fullNameError = fullNameResult.exceptionOrNull()?.message,
-            phoneError = phoneResult.exceptionOrNull()?.message,
-            passwordError = passwordResult.exceptionOrNull()?.message,
-            confirmPasswordError = confirmPasswordResult.exceptionOrNull()?.message,
-            bestBarterSpotError = bestBarterSpotResult.exceptionOrNull()?.message,
-        )
-        return updatedSign
+    suspend operator fun invoke(
+        fullName: String,
+        phone: String,
+        password: String,
+        confirmPassword: String,
+        bestBarterSpot: String,
+    ) {
+        validateFullName(fullName)
+        validatePhone(phone)
+        validatePassword(password)
+        validateConfirmPassword(password, confirmPassword)
+        validateBestBarterSpot(bestBarterSpot)
+        delay(1000)
+        //todo: signup
     }
+
+    private fun validateFullName(input: String) {
+        if (input.length < 3) throw InvalidFullNameException()
+    }
+
+    private fun validateConfirmPassword(password:String, confirmPassword: String) {
+        if (confirmPassword.length < 3) throw InvalidConfirmPasswordException()
+        if(confirmPassword != password) throw PasswordMismatchException()
+    }
+
+    private fun validateBestBarterSpot(input: String) {
+        if (input.length < 3) throw InvalidBestBarterSpotException()
+    }
+
 }

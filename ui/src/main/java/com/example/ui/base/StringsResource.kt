@@ -11,6 +11,7 @@ interface StringsResource {
     val enterValidEmailAddress: String
     val invalidEmailOrPassword: String
     val invalidPassword: String
+    val invalidBestBarterSpot: String
     val failedEmailWhenEmpty: String
     val failedFullNameWhenEmpty: String
     val invalidUsername: String

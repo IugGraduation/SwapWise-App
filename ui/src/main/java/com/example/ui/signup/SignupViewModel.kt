@@ -1,64 +1,135 @@
 package com.example.ui.signup
 
-import androidx.lifecycle.ViewModel
 import com.example.domain.SignupValidationUseCase
+import com.example.domain.exception.InvalidBestBarterSpotErrorException
+import com.example.domain.exception.InvalidConfirmPasswordException
+import com.example.domain.exception.InvalidFullNameException
+import com.example.domain.exception.InvalidPasswordException
+import com.example.domain.exception.InvalidPhoneException
+import com.example.domain.exception.PasswordMismatchException
+import com.example.ui.base.BaseViewModel
+import com.example.ui.base.StringsResource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
+    private val stringsResource: StringsResource,
     private val signupValidationUseCase: SignupValidationUseCase,
-) : ViewModel() {
-    private val _state = MutableStateFlow(SignupUiState())
-    val state = _state.asStateFlow()
+) : BaseViewModel<SignupUiState>(SignupUiState()), ISignupInteractions {
 
-    fun onFullNameChange(newValue: String) {
-        _state.update { it.copy(fullName = newValue, fullNameError = null) }
+    override fun onClickSignup() {
+        tryToExecute(
+            call = {
+                signupValidationUseCase(
+                    fullName = state.value.fullName,
+                    phone = state.value.phone,
+                    password = state.value.password,
+                    confirmPassword = state.value.confirmPassword,
+                    bestBarterSpot = state.value.bestBarterSpot,
+                )
+            },
+            onSuccess = { navigateToHome() },
+            onError = ::onSignupFail
+        )
     }
 
-    fun onPhoneChange(newValue: String) {
-        _state.update { it.copy(phone = newValue, phoneError = null) }
+    private fun navigateToHome() {
+        _state.update { it.copy(shouldNavigateToHome = true) }
     }
 
-    fun onPasswordChange(newValue: String) {
-        _state.update { it.copy(password = newValue, passwordError = null) }
-    }
+    private fun onSignupFail(throwable: Throwable) {
+        when (throwable) {
+            is InvalidFullNameException -> {
+                updateFieldError(fullNameError = stringsResource.invalidPhoneNumber)
+            }
 
-    fun togglePasswordVisibility() {
-        _state.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
-    }
+            is InvalidPhoneException -> {
+                updateFieldError(phoneError = stringsResource.invalidPhoneNumber)
+            }
 
-    fun onConfirmPasswordChange(newValue: String) {
-        _state.update { it.copy(confirmPassword = newValue, confirmPasswordError = null) }
-    }
+            is InvalidPasswordException -> {
+                updateFieldError(passwordError = stringsResource.invalidPassword)
+            }
 
-    fun toggleConfirmPasswordVisibility() {
-        _state.update { it.copy(isConfirmPasswordVisible = !it.isConfirmPasswordVisible) }
-    }
+            is InvalidConfirmPasswordException -> {
+                updateFieldError(confirmPasswordError = stringsResource.invalidPassword)
+            }
 
-    fun onBestBarterSpotChange(newValue: String) {
-        _state.update { it.copy(bestBarterSpot = newValue, bestBarterSpotError = null) }
-    }
+            is InvalidBestBarterSpotErrorException -> {
+                updateFieldError(bestBarterSpotError = stringsResource.invalidBestBarterSpot)
+            }
 
-    fun onBioChange(newValue: String) {
-        _state.update { it.copy(bio = newValue, bioError = null) }
-    }
+            is PasswordMismatchException -> {
+                updateFieldError(
+                    passwordError = stringsResource.passwordMismatch,
+                    confirmPasswordError = stringsResource.passwordMismatch
+                )
+            }
 
-    fun onClickSignup() {
-        if (validateForm()) {
-            //Signup
+            else -> onActionFail(throwable)
         }
     }
 
-    private fun validateForm(): Boolean{
-        val signStatus = signupValidationUseCase(state.value.toSignState())
-        _state.value = SignupUiState.fromSignState(signStatus)
-        return signStatus.isSuccess()
+    private fun updateFieldError(
+        fullNameError: String = "",
+        phoneError: String = "",
+        passwordError: String = "",
+        confirmPasswordError: String = "",
+        bestBarterSpotError: String = "",
+    ) {
+        _state.update {
+            it.copy(
+                signupError = SignupErrorUiState(
+                    fullNameError = fullNameError,
+                    phoneError = phoneError,
+                    passwordError = passwordError,
+                    confirmPasswordError = confirmPasswordError,
+                    bestBarterSpotError = bestBarterSpotError,
+                )
+            )
+        }
     }
 
+
+    override fun onFullNameChange(newValue: String) {
+        updateFieldError()
+        _state.update { it.copy(fullName = newValue) }
+    }
+
+    override fun onPhoneChange(newValue: String) {
+        updateFieldError()
+        _state.update { it.copy(phone = newValue) }
+    }
+
+    override fun onPasswordChange(newValue: String) {
+        updateFieldError()
+        _state.update { it.copy(password = newValue) }
+    }
+
+    override fun togglePasswordVisibility() {
+        _state.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
+    }
+
+    override fun onConfirmPasswordChange(newValue: String) {
+        updateFieldError()
+        _state.update { it.copy(confirmPassword = newValue) }
+    }
+
+    override fun toggleConfirmPasswordVisibility() {
+        _state.update { it.copy(isConfirmPasswordVisible = !it.isConfirmPasswordVisible) }
+    }
+
+    override fun onBestBarterSpotChange(newValue: String) {
+        updateFieldError()
+        _state.update { it.copy(bestBarterSpot = newValue) }
+    }
+
+    override fun onBioChange(newValue: String) {
+        updateFieldError()
+        _state.update { it.copy(bio = newValue) }
+    }
 
 }
 
