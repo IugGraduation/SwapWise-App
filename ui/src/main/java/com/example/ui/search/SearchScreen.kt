@@ -23,7 +23,7 @@ import androidx.navigation.NavController
 import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomLazyLayout
-import com.example.ui.components.atoms.CustomTextButton
+import com.example.ui.components.atoms.SwapWiseTextButton
 import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.components.atoms.ImageWithMaxWidth
@@ -137,7 +137,7 @@ private fun EmptyContent(onClickTryAgain: () -> Unit) {
         ) {
             Text(stringResource(R.string.nothing_found), style = TextStyles.hint)
             HorizontalSpacer(Spacing4)
-            CustomTextButton(onClick = onClickTryAgain, text = stringResource(R.string.try_again))
+            SwapWiseTextButton(onClick = onClickTryAgain, text = stringResource(R.string.try_again))
         }
     }
 }

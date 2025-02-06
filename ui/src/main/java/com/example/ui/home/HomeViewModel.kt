@@ -1,34 +1,29 @@
 package com.example.ui.home
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.domain.GetHomeDataUseCase
-import com.example.domain.model.State
+import com.example.domain.model.Home
+import com.example.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(getHomeDataUseCase: GetHomeDataUseCase) : ViewModel() {
-    private val _state = MutableStateFlow(HomeUiState())
-    val state = _state.asStateFlow()
+class HomeViewModel @Inject constructor(getHomeDataUseCase: GetHomeDataUseCase) :
+    BaseViewModel<HomeUiState>(HomeUiState()), IHomeInteractions {
 
     init {
-       viewModelScope.launch {
-           getHomeDataUseCase().collect { state ->
-               _state.value = when (state) {
-                   is State.Loading -> HomeUiState(isLoading = true)
-                   is State.Success -> HomeUiState.fromHome(state.data)
-                   is State.Error -> HomeUiState(error = state.message)
-               }
-           }
-       }
+        tryToExecute(
+            call = { getHomeDataUseCase() },
+            onSuccess = ::onGetHomeDataSuccess,
+        )
     }
 
-    fun onNewPostFieldChange(newValue: String) {
+    private fun onGetHomeDataSuccess(data: Home) {
+        _state.value = HomeUiState.fromHome(data)
+    }
+
+
+    override fun onNewPostFieldChange(newValue: String) {
         _state.update { it.copy(newPost = newValue) }
     }
 
