@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -19,7 +21,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.Header
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -59,7 +60,7 @@ fun SignupContent(
     signupInteractions: ISignupInteractions,
     onClickGoToLogin: () -> Unit,
 ) {
-    ScreenTemplate(/*contentState = state,*/) {
+    ScreenTemplate(baseUiState = state.baseUiState,) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -106,9 +107,10 @@ fun SignupForm(
             onValueChange = signupInteractions::onFullNameChange,
             placeholder = stringResource(R.string.full_name),
             leadingIcon = {
-                CustomTextFieldIcon(
+                Icon(
                     painter = painterResource(R.drawable.ic_user),
                     contentDescription = stringResource(R.string.full_name),
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             },
             errorMessage = state.signupError.fullNameError
@@ -119,9 +121,10 @@ fun SignupForm(
             placeholder = stringResource(R.string.phone_number),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             leadingIcon = {
-                CustomTextFieldIcon(
+                Icon(
                     painter = painterResource(R.drawable.ic_phone),
                     contentDescription = stringResource(R.string.phone_number),
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             },
             errorMessage = state.signupError.phoneError
@@ -144,12 +147,12 @@ fun SignupForm(
         SwapWiseTextField(
             value = state.bestBarterSpot,
             onValueChange = signupInteractions::onBestBarterSpotChange,
-            placeholder = stringResource(R.string.phone_number),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            placeholder = stringResource(R.string.best_barter_spot),
             leadingIcon = {
-                CustomTextFieldIcon(
-                    painter = painterResource(R.drawable.ic_phone),
-                    contentDescription = stringResource(R.string.phone_number),
+                Icon(
+                    painter = painterResource(R.drawable.ic_location),
+                    contentDescription = stringResource(R.string.best_barter_spot),
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             },
             errorMessage = state.signupError.bestBarterSpotError
@@ -157,12 +160,12 @@ fun SignupForm(
         SwapWiseTextField(
             value = state.bio,
             onValueChange = signupInteractions::onBioChange,
-            placeholder = stringResource(R.string.phone_number),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            placeholder = stringResource(R.string.bio),
             leadingIcon = {
-                CustomTextFieldIcon(
-                    painter = painterResource(R.drawable.ic_phone),
-                    contentDescription = stringResource(R.string.phone_number),
+                Icon(
+                    painter = painterResource(R.drawable.ic_bio),
+                    contentDescription = stringResource(R.string.bio),
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             },
         )

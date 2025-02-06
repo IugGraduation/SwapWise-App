@@ -57,7 +57,7 @@ fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
     TitledScreenTemplate(
         title = stringResource(R.string.offer_details),
         onClickGoBack = onClickGoBack,
-        contentState = state,
+        baseUiState = state.baseUiState,
     ) {
         Column {
             ProductImage(state.offerItem.imageLink)

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,7 +20,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.Header
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -60,7 +60,7 @@ fun LoginContent(
     loginInteractions: ILoginInteractions,
     onClickGoToSignup: () -> Unit,
 ) {
-    ScreenTemplate(/*contentState = state,*/) {
+    ScreenTemplate(baseUiState = state.baseUiState,) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -109,9 +109,10 @@ private fun LoginForm(
             placeholder = stringResource(R.string.phone_number),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             leadingIcon = {
-                CustomTextFieldIcon(
+                Icon(
                     painter = painterResource(R.drawable.ic_phone),
                     contentDescription = stringResource(R.string.phone_number),
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             },
             errorMessage = state.loginError.phoneError

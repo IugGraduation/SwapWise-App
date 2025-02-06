@@ -86,7 +86,7 @@ fun HomeContent(
     HomeTemplate(
         state.user,
         bottomBarState = bottomBarState,
-//        contentState = state,
+        baseUiState = state.baseUiState,
     ) {
         LazyColumn(
             modifier = Modifier

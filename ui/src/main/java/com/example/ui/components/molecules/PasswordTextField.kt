@@ -1,7 +1,9 @@
 package com.example.ui.components.molecules
 
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +16,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.theme.GraduationProjectTheme
 
@@ -40,14 +41,15 @@ fun PasswordTextField(
             PasswordVisualTransformation()
         },
         leadingIcon = {
-            CustomTextFieldIcon(
+            Icon(
                 painter = painterResource(R.drawable.ic_password_lock),
                 contentDescription = stringResource(R.string.password),
+                tint = MaterialTheme.colorScheme.tertiary
             )
         },
         trailingIcon = {
             IconButton(onClick = { onVisibilityToggle() }) {
-                CustomTextFieldIcon(
+                Icon(
                     painter = painterResource(
                         if (isPasswordVisible) R.drawable.ic_eye_closed
                         else R.drawable.ic_eye
@@ -57,6 +59,7 @@ fun PasswordTextField(
                     } else {
                         stringResource(R.string.show_password)
                     },
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             }
         },

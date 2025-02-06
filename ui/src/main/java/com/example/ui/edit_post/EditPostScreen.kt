@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +34,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakePostsUseCase
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -75,7 +75,7 @@ fun EditOfferContent(
     TitledScreenTemplate(
         title = stringResource(R.string.edit_post),
         onClickGoBack = onClickGoBack,
-//        contentState = state
+        baseUiState = state.baseUiState,
     ) {
         ProductImage(
             state.postItem.imageLink, onImagePicked = editInteractions::onSelectedImageChange
@@ -109,8 +109,10 @@ fun EditOfferContent(
                 onValueChange = editInteractions::onTitleChange,
                 placeholder = stringResource(R.string.post_title),
                 leadingIcon = {
-                    CustomTextFieldIcon(
-                        painter = painterResource(R.drawable.ic_title)
+                    Icon(
+                        painter = painterResource(R.drawable.ic_title),
+                        contentDescription = stringResource(R.string.post_title),
+                        tint = MaterialTheme.colorScheme.tertiary
                     )
                 },
                 errorMessage = state.postError.titleError,
@@ -121,8 +123,10 @@ fun EditOfferContent(
                 onValueChange = editInteractions::onPlaceChange,
                 placeholder = stringResource(R.string.your_place),
                 leadingIcon = {
-                    CustomTextFieldIcon(
-                        painter = painterResource(R.drawable.ic_location)
+                    Icon(
+                        painter = painterResource(R.drawable.ic_location),
+                        contentDescription = stringResource(R.string.your_place),
+                        tint = MaterialTheme.colorScheme.tertiary
                     )
                 },
                 errorMessage = state.postError.placeError,
@@ -132,8 +136,10 @@ fun EditOfferContent(
                 onValueChange = editInteractions::onDetailsChange,
                 placeholder = stringResource(R.string.details),
                 leadingIcon = {
-                    CustomTextFieldIcon(
-                        painter = painterResource(R.drawable.ic_details)
+                    Icon(
+                        painter = painterResource(R.drawable.ic_details),
+                        contentDescription = stringResource(R.string.details),
+                        tint = MaterialTheme.colorScheme.tertiary
                     )
                 },
                 errorMessage = state.postError.detailsError,

@@ -10,12 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.example.domain.model.UiState
+import com.example.ui.base.BaseUiState
 import com.example.ui.theme.BlackTertiary
 
 
 @Composable
-fun ShowContentWithState(state: UiState, content: @Composable () -> Unit) {
+fun ShowContentWithState(state: BaseUiState, content: @Composable () -> Unit) {
     when {
         state.isLoading -> {
             Box {
@@ -33,8 +33,8 @@ fun ShowContentWithState(state: UiState, content: @Composable () -> Unit) {
             }
         }
 
-        state.error != null -> {
-            Toast.makeText(LocalContext.current, "${state.error}", Toast.LENGTH_LONG).show()
+        state.errorMessage.isNotBlank() -> {
+            Toast.makeText(LocalContext.current, state.errorMessage, Toast.LENGTH_LONG).show()
             content()
         }
 

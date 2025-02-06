@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +19,6 @@ import androidx.navigation.NavController
 import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
@@ -65,7 +65,7 @@ fun AddPostContent(
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
         },
-//        contentState = state
+        baseUiState = state.baseUiState,
     ) {
         ProductImage(state.postItem.imageLink, onImagePicked = addInteractions::onSelectedImageChange)
         Column(
@@ -84,8 +84,10 @@ fun AddPostContent(
                 onValueChange = addInteractions::onTitleChange,
                 placeholder = stringResource(R.string.post_title),
                 leadingIcon = {
-                    CustomTextFieldIcon(
-                        painter = painterResource(R.drawable.ic_title)
+                    Icon(
+                        painter = painterResource(R.drawable.ic_title),
+                        contentDescription = stringResource(R.string.post_title),
+                        tint = MaterialTheme.colorScheme.tertiary
                     )
                 },
                 errorMessage = state.postError.titleError,
@@ -96,8 +98,10 @@ fun AddPostContent(
                 onValueChange = addInteractions::onPlaceChange,
                 placeholder = stringResource(R.string.your_place),
                 leadingIcon = {
-                    CustomTextFieldIcon(
-                        painter = painterResource(R.drawable.ic_location)
+                    Icon(
+                        painter = painterResource(R.drawable.ic_location),
+                        contentDescription = stringResource(R.string.your_place),
+                        tint = MaterialTheme.colorScheme.tertiary
                     )
                 },
                 errorMessage = state.postError.placeError,
@@ -108,8 +112,10 @@ fun AddPostContent(
                 onValueChange = addInteractions::onDetailsChange,
                 placeholder = stringResource(R.string.details),
                 leadingIcon = {
-                    CustomTextFieldIcon(
-                        painter = painterResource(R.drawable.ic_details)
+                    Icon(
+                        painter = painterResource(R.drawable.ic_details),
+                        contentDescription = stringResource(R.string.details),
+                        tint = MaterialTheme.colorScheme.tertiary
                     )
                 },
                 isMultiline = true,

@@ -34,7 +34,7 @@ fun SeeAllTopicsContent(state: TopicsHolderUiState, onClickGoBack: () -> Unit) {
     TitledScreenTemplate(
         title = state.title,
         onClickGoBack = onClickGoBack,
-//        contentState = state,
+        baseUiState = state.baseUiState,
     ) {
         CustomLazyLayout(items = state.items,
             isCategoryCard = state.isCategoryTopics,

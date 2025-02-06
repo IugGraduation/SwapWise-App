@@ -9,8 +9,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.domain.model.UiState
 import com.example.ui.R
+import com.example.ui.base.BaseUiState
 import com.example.ui.theme.TextStyles
 
 
@@ -21,10 +21,7 @@ fun TitledScreenTemplate(
     onClickGoBack: () -> Unit,
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.Center,
-    contentState: UiState = object : UiState {
-        override val isLoading: Boolean = false
-        override val error: String? = null
-    },
+    baseUiState: BaseUiState = BaseUiState(),
     content: @Composable () -> Unit
 ) {
     ScreenTemplate(
@@ -43,7 +40,7 @@ fun TitledScreenTemplate(
         },
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,
-        contentState = contentState,
+        baseUiState = baseUiState,
     ) {
         content()
     }

@@ -2,6 +2,7 @@ package com.example.ui.post_details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,7 +29,6 @@ import com.example.ui.R
 import com.example.ui.add_offer.navigateToAddOffer
 import com.example.ui.components.atoms.DetailsScreenBody
 import com.example.ui.components.atoms.HorizontalSpacer
-import com.example.ui.components.atoms.PostDetailsStatusItem
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.DetailsScreenUserHeader
@@ -44,6 +44,7 @@ import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
+import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 
@@ -79,7 +80,7 @@ fun PostDetailsContent(
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
         },
-//        contentState = state,
+        baseUiState = state.baseUiState,
     ) {
         LazyColumn {
             item {
@@ -156,6 +157,23 @@ fun StatusRow(rate: Float, offersCount: Int, isOpen: Boolean) {
         HorizontalSpacer(Spacing24)
         val state = if (isOpen) stringResource(R.string.open) else stringResource(R.string.closed)
         PostDetailsStatusItem(title = stringResource(R.string.state), value = state)
+    }
+}
+
+@Composable
+fun PostDetailsStatusItem(title: String, value: String, modifier: Modifier = Modifier) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            value,
+            style = TextStyles.headingSmall,
+            color = MaterialTheme.colorScheme.primary
+        )
+        VerticalSpacer(Spacing4)
+        Text(
+            title,
+            style = TextStyles.captionLarge,
+            color = MaterialTheme.colorScheme.tertiary
+        )
     }
 }
 

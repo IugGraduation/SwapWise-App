@@ -1,7 +1,6 @@
 package com.example.ui.models
 
 import com.example.domain.model.OfferItem
-import com.example.domain.model.UiState
 import com.example.ui.base.BaseUiState
 
 data class OfferItemUiState(
@@ -11,7 +10,4 @@ data class OfferItemUiState(
 
     val offerError: PostErrorUiState = PostErrorUiState(),
     val baseUiState: BaseUiState = BaseUiState(),
-
-    override val isLoading: Boolean = false,
-    override val error: String? = null,
-) : UiState
+)

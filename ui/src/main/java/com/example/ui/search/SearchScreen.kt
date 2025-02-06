@@ -1,5 +1,6 @@
 package com.example.ui.search
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,9 +27,7 @@ import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.atoms.SwapWiseTextButton
-import com.example.ui.components.atoms.CustomTextFieldIcon
 import com.example.ui.components.atoms.HorizontalSpacer
-import com.example.ui.components.atoms.ImageWithMaxWidth
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.TitledChipsList
@@ -90,8 +91,10 @@ fun SearchContent(
             placeholder = stringResource(R.string.search),
             leadingIcon = {
                 Row(horizontalArrangement = Arrangement.spacedBy(Spacing8)) {
-                    CustomTextFieldIcon(
-                        painter = painterResource(R.drawable.ic_search)
+                    Icon(
+                        painter = painterResource(R.drawable.ic_search),
+                        contentDescription = stringResource(R.string.search),
+                        tint = MaterialTheme.colorScheme.tertiary
                     )
                     Spacer(
                         Modifier
@@ -124,11 +127,12 @@ fun SearchContent(
 private fun EmptyContent(onClickTryAgain: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxHeight(0.8f)
+        modifier = Modifier.fillMaxHeight(0.8f),
     ) {
-        ImageWithMaxWidth(
-            painterResource(R.drawable.ic_empty_box),
-            contentDescription = stringResource(R.string.searching)
+        Image(
+            painter = painterResource(id = R.drawable.ic_empty_box),
+            contentDescription = stringResource(R.string.searching),
+            modifier = Modifier.fillMaxWidth(),
         )
         VerticalSpacer(Spacing8)
         Row(
@@ -148,9 +152,10 @@ private fun LoadingContent() {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxHeight(0.8f)
     ) {
-        ImageWithMaxWidth(
-            painterResource(R.drawable.ic_searching),
-            contentDescription = stringResource(R.string.searching)
+        Image(
+            painter =  painterResource(R.drawable.ic_searching),
+            contentDescription = stringResource(R.string.searching),
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

@@ -63,7 +63,7 @@ fun OtpContent(
     state: ConfirmNumberUiState,
     confirmNumberInteractions: IConfirmNumberInteractions,
 ) {
-    ScreenTemplate(/*contentState = state*/) {
+    ScreenTemplate(baseUiState = state.baseUiState,) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

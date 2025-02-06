@@ -3,6 +3,7 @@ package com.example.ui.components.molecules
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,10 +36,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
-import com.example.ui.components.atoms.ButtonMakeOfferBottom
+import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.theme.BackgroundLight
 import com.example.ui.theme.BlackPrimary
 import com.example.ui.theme.BlackSecondary
+import com.example.ui.theme.ButtonSize32
 import com.example.ui.theme.CardHeight
 import com.example.ui.theme.CardWidth
 import com.example.ui.theme.Correct
@@ -47,6 +49,8 @@ import com.example.ui.theme.Danger
 import com.example.ui.theme.DangerOverlay
 import com.example.ui.theme.IconSizeSmall
 import com.example.ui.theme.ImageSize16
+import com.example.ui.theme.Primary
+import com.example.ui.theme.PrimaryOverlay
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
@@ -232,9 +236,40 @@ private fun PostInfoSection(
                 onClick = { onMakeOfferButtonClick() }
             )
         }
-
     }
+}
 
+
+@Composable
+private fun ButtonMakeOfferBottom(modifier: Modifier = Modifier,  onClick: () -> Unit) {
+    Box(
+        modifier = modifier
+            .background(color = PrimaryOverlay)
+            .height(ButtonSize32)
+            .clickable(onClick = onClick)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = Spacing4),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_offer),
+                contentDescription = "",
+                modifier = Modifier.size(IconSizeSmall),
+                tint = Primary
+//                  todo: draw stroke with smth like: drawStyle = Stroke(width = 1.2f, join = StrokeJoin.Round)
+            )
+            HorizontalSpacer(Spacing4)
+            Text(
+                stringResource(R.string.make_your_offer),
+                style = TextStyles.captionMedium,
+                color = Primary
+            )
+        }
+    }
 }
 
 @Composable

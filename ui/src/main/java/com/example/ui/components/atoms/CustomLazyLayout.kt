@@ -15,12 +15,21 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.model.OfferItem
@@ -125,6 +134,28 @@ fun CategoryCard(
         }
         CardText(text = title, textStyle = textStyle)
     }
+}
+
+@Composable
+fun CardText(
+    text: String,
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier.fillMaxWidth(),
+        text = text,
+        style = textStyle.copy(
+            shadow = Shadow(
+                color = Color(0x99000000),
+                offset = Offset(4f, 4f),
+                blurRadius = 8f
+            ),
+            color = MaterialTheme.colorScheme.primary,
+            drawStyle = Stroke(width = 1.2f, join = StrokeJoin.Round),
+        ),
+        textAlign = TextAlign.Center,
+    )
 }
 
 @Composable
