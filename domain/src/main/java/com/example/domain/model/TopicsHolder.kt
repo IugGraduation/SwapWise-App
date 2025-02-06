@@ -3,13 +3,13 @@ package com.example.domain.model
 import com.example.data.model.TopicDto
 
 
-data class Topic(
+data class TopicsHolder(
     val title: String = "",
     val items: List<TopicItem> = listOf(),
     val url: String = ""
 ){
     companion object{
-        fun fromTopicDto(topicDto: TopicDto): Topic{
+        fun fromTopicDto(topicDto: TopicDto): TopicsHolder{
             val items = topicDto.topicItemsDto?.map { topicItemDto ->
                 if(topicDto.title == "Categories"){
                     CategoryItem.fromTopicItemDto(topicItemDto)
@@ -18,7 +18,7 @@ data class Topic(
                 }
 
             }
-            return Topic(
+            return TopicsHolder(
                 title = topicDto.title.toString(),
                 items = items ?: listOf(),
                 url = topicDto.url.toString()
