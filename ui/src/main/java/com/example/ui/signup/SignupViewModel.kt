@@ -30,13 +30,13 @@ class SignupViewModel @Inject constructor(
                     bestBarterSpot = state.value.bestBarterSpot,
                 )
             },
-            onSuccess = { navigateToHome() },
+            onSuccess = { navigateToConfirmNumber() },
             onError = ::onSignupFail
         )
     }
 
-    private fun navigateToHome() {
-        _state.update { it.copy(shouldNavigateToHome = true) }
+    private fun navigateToConfirmNumber() {
+        _state.update { it.copy(shouldNavigateToConfirmNumber = true) }
     }
 
     private fun onSignupFail(throwable: Throwable) {

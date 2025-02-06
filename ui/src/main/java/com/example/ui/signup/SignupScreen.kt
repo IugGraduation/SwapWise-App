@@ -27,7 +27,7 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.Footer
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.templates.ScreenTemplate
-import com.example.ui.home.navigateToHome
+import com.example.ui.confirm_number.navigateToOtp
 import com.example.ui.login.navigateToLogin
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
@@ -42,8 +42,8 @@ fun SignupScreen(
 ) {
     val state by signupViewModel.state.collectAsState()
 
-    LaunchedEffect(state.shouldNavigateToHome) {
-        if (state.shouldNavigateToHome) navController.navigateToHome()
+    LaunchedEffect(state.shouldNavigateToConfirmNumber) {
+        if (state.shouldNavigateToConfirmNumber) navController.navigateToOtp()
     }
 
     SignupContent(

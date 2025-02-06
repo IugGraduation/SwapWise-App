@@ -12,7 +12,7 @@ data class SignupUiState(
     val isPasswordVisible: Boolean = false,
     val isConfirmPasswordVisible: Boolean = false,
 
-    val shouldNavigateToHome: Boolean = false,
+    val shouldNavigateToConfirmNumber: Boolean = false,
 
     val signupError: SignupErrorUiState = SignupErrorUiState(),
     val baseUiState: BaseUiState = BaseUiState()
