@@ -1,18 +1,163 @@
 package com.example.ui.confirm_number
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.ui.R
+import com.example.ui.components.atoms.Header
+import com.example.ui.components.atoms.SwapWiseFilledButton
+import com.example.ui.components.atoms.VerticalSpacer
+import com.example.ui.components.templates.ScreenTemplate
+import com.example.ui.home.navigateToHome
+import com.example.ui.theme.GraduationProjectTheme
+import com.example.ui.theme.RadiusMedium
+import com.example.ui.theme.Spacing16
+import com.example.ui.theme.Spacing24
+import com.example.ui.theme.Spacing56
+import com.example.ui.theme.Spacing72
+import com.example.ui.theme.Spacing8
+import com.example.ui.theme.Spacing80
+import com.example.ui.theme.Tertiary
+import com.example.ui.theme.TextStyles
 
 @Composable
 fun OtpScreen(navController: NavController, viewModel: ConfirmNumberViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
+    LaunchedEffect(state.shouldNavigateToHome) {
+        if (state.shouldNavigateToHome) navController.navigateToHome()
+    }
+
     OtpContent(
         state = state,
-        onOtpChange = viewModel::onOtpChange,
-        onClickConfirm = viewModel::onClickConfirm,
+        confirmNumberInteractions = viewModel
     )
+}
+
+@Composable
+fun OtpContent(
+    state: ConfirmNumberUiState,
+    confirmNumberInteractions: IConfirmNumberInteractions,
+) {
+    ScreenTemplate(/*contentState = state*/) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = Spacing16)
+        ) {
+            VerticalSpacer(Spacing80)
+            Header(
+                title = stringResource(R.string.enter_otp),
+                imgPainter = painterResource(R.drawable.img_otp),
+                imgPainterDarkTheme = painterResource(R.drawable.img_otp_dark),
+                imgContentDescription = stringResource(R.string.image_otp),
+            )
+            VerticalSpacer(Spacing8)
+            Text(
+                text = stringResource(R.string.an_4_digit_code_has_been_sent_to_your_phone_number),
+                style = TextStyles.bodyLarge,
+            )
+            VerticalSpacer(Spacing24)
+            SwapWiseOtpTextField(
+                otp = state.otp,
+                onOtpChanged = confirmNumberInteractions::onOtpChange,
+                otpLength = state.otpLength
+            )
+            VerticalSpacer(Spacing72)
+            SwapWiseFilledButton(
+                onClick = confirmNumberInteractions::onClickConfirm,
+                text = stringResource(R.string.confirm),
+                enabled = state.isConfirmButtonEnabled,
+            )
+        }
+    }
+}
+
+@Composable
+private fun SwapWiseOtpTextField(
+    otp: String,
+    onOtpChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    otpLength: Int = 4,
+) {
+    val otpChars = otp.toCharArray().toMutableList()
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        val backgroundColor = if (isSystemInDarkTheme()) {
+            MaterialTheme.colorScheme.onBackground
+        }else{
+            Tertiary
+        }
+
+        repeat(otpLength) { index ->
+            Box(
+                modifier = Modifier
+                    .size(width = Spacing56, height = Spacing56)
+                    .background(
+                        color = backgroundColor,
+                        shape = RoundedCornerShape(RadiusMedium),
+                    ),
+                contentAlignment = Alignment.Center,
+
+                ) {
+                BasicTextField(
+                    value = otpChars.getOrElse(index) { ' ' }.toString(),
+                    onValueChange = { newChar ->
+                        if (newChar.length == 1) {
+                            otpChars[index] = newChar.first()
+                            onOtpChanged(otpChars.joinToString(""))
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    maxLines = 1,
+                    textStyle = TextStyles.headingLarge.copy(
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+    }
+}
+
+
+//@Preview(showSystemUi = false, showBackground = true,)
+@Composable
+fun PreviewOtpContent() {
+    GraduationProjectTheme {
+        OtpContent(
+            state = ConfirmNumberUiState(),
+            confirmNumberInteractions = object : IConfirmNumberInteractions {
+                override fun onOtpChange(newOtp: String) {}
+                override fun onClickConfirm() {}
+            }
+        )
+    }
 }

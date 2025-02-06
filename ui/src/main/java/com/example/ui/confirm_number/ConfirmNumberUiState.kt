@@ -1,12 +1,12 @@
 package com.example.ui.confirm_number
 
-import com.example.domain.model.UiState
+import com.example.ui.base.BaseUiState
 
 data class ConfirmNumberUiState(
     val otp: String = "12",
     val isConfirmButtonEnabled: Boolean = false,
     val otpLength: Int = 4,
+    val shouldNavigateToHome: Boolean = false,
 
-    override val isLoading: Boolean = false,
-    override val error: String? = null,
-) : UiState
+    val baseUiState: BaseUiState = BaseUiState()
+)
