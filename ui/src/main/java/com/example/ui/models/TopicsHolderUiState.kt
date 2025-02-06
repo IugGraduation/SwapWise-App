@@ -19,7 +19,6 @@ data class TopicsHolderUiState(
                 title = topic.title,
                 items = topic.items,
                 url = topic.url
-//                orientation = "",
             )
         }
     }

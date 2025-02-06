@@ -5,7 +5,6 @@ import com.example.ui.base.BaseUiState
 
 data class OfferItemUiState(
     val offerItem: OfferItem = OfferItem(),
-    val shouldNavigateUp: Boolean = false,
     val chipsList: List<Chip> = listOf(),
 
     val offerError: PostErrorUiState = PostErrorUiState(),
