@@ -31,22 +31,18 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.templates.HomeTemplate
 import com.example.ui.models.BottomBarUiState
-import com.example.ui.models.Orientation
-import com.example.ui.models.TopicType
-import com.example.ui.models.TopicUiState
+import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.notifications.navigateToNotifications
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.profile.navigateToProfile
 import com.example.ui.search.navigateToSearch
 import com.example.ui.shared.BottomNavigationViewModel
-import com.example.ui.signup.navigateToSignup
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
-import com.example.ui.topic_see_all.navigateToTopicSeeAll
-import com.example.ui.util.getName
+import com.example.ui.see_all_topics.navigateToTopicSeeAll
 
 @Composable
 fun HomeScreen(
@@ -109,13 +105,13 @@ fun HomeContent(
             items(state.topicsList) { topic ->
                 if (topic != state.topicsList.last()) {
                     TopicsListHeader(
-                        title = topic.type.getName(),
+                        title = topic.title,
                         onClickSeeAll = topic.onClickSeeAll
                     )
                     CustomLazyLayout(
                         items = topic.items,
-                        isCategoryCard = topic.type == TopicType.Categories,
-                        isHorizontalLayout = topic.orientation == Orientation.Horizontal,
+                        isCategoryCard = topic.isCategoryTopics,
+                        isHorizontalLayout = topic.isHorizontal,
                     )
                     VerticalSpacer(Spacing24)
                 }
@@ -123,10 +119,10 @@ fun HomeContent(
 
             //doing this because CustomLazyLayout returns a lazy column here,
             //which can't be put inside another lazy column
-            val lastTopic = state.topicsList.lastOrNull() ?: TopicUiState()
+            val lastTopic = state.topicsList.lastOrNull() ?: TopicsHolderUiState()
             item {
                 TopicsListHeader(
-                    title = lastTopic.type.getName(),
+                    title = lastTopic.title,
                     onClickSeeAll = lastTopic.onClickSeeAll
                 )
             }
@@ -182,21 +178,21 @@ fun TopicsListHeader(
 fun PreviewHomeContent() {
     val categoryItemsList = GetFakeCategoriesUseCase()()
 
-    val category = TopicUiState(
-        type = TopicType.Categories,
+    val category = TopicsHolderUiState(
+        title = "Categories",
         items = categoryItemsList,
     )
 
     val postsItemsList = GetFakePostsUseCase()()
 
-    val topInteractive = TopicUiState(
-        type = TopicType.TopInteractive,
+    val topInteractive = TopicsHolderUiState(
+        title = "TopInteractive",
         items = postsItemsList,
     )
-    val recentPosts = TopicUiState(
-        type = TopicType.RecentPosts,
+    val recentPosts = TopicsHolderUiState(
+        title = "RecentPosts",
         items = postsItemsList,
-        orientation = Orientation.Vertical,
+        isHorizontal = false,
     )
     val topicsList = listOf(category, topInteractive, recentPosts)
 
