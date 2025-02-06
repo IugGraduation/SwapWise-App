@@ -14,8 +14,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.CustomTextFieldIcon
+import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.theme.GraduationProjectTheme
 
 @Composable
@@ -28,41 +28,40 @@ fun PasswordTextField(
     placeholder: String = stringResource(R.string.password),
     errorMessage: String? = null,
 ) {
-    CustomTextFieldWithErrorMsg(errorMessage = errorMessage) {
-        CustomTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = modifier,
-            placeholder = placeholder,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            visualTransformation = if (isPasswordVisible) {
-                VisualTransformation.None
-            } else {
-                PasswordVisualTransformation()
-            },
-            leadingIcon = {
+    SwapWiseTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        placeholder = placeholder,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        visualTransformation = if (isPasswordVisible) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation()
+        },
+        leadingIcon = {
+            CustomTextFieldIcon(
+                painter = painterResource(R.drawable.ic_password_lock),
+                contentDescription = stringResource(R.string.password),
+            )
+        },
+        trailingIcon = {
+            IconButton(onClick = { onVisibilityToggle() }) {
                 CustomTextFieldIcon(
-                    painter = painterResource(R.drawable.ic_password_lock),
-                    contentDescription = stringResource(R.string.password),
+                    painter = painterResource(
+                        if (isPasswordVisible) R.drawable.ic_eye_closed
+                        else R.drawable.ic_eye
+                    ),
+                    contentDescription = if (isPasswordVisible) {
+                        stringResource(R.string.hide_password)
+                    } else {
+                        stringResource(R.string.show_password)
+                    },
                 )
-            },
-            trailingIcon = {
-                IconButton(onClick = { onVisibilityToggle() }) {
-                    CustomTextFieldIcon(
-                        painter = painterResource(
-                            if (isPasswordVisible) R.drawable.ic_eye_closed
-                            else R.drawable.ic_eye
-                        ),
-                        contentDescription = if (isPasswordVisible) {
-                            stringResource(R.string.hide_password)
-                        } else {
-                            stringResource(R.string.show_password)
-                        },
-                    )
-                }
             }
-        )
-    }
+        },
+        errorMessage = errorMessage
+    )
 }
 
 

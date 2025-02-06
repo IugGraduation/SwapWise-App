@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomTextField
 import com.example.ui.components.atoms.CustomTextFieldIcon
+import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.theme.GraduationProjectTheme
 
 @Composable
@@ -23,21 +24,35 @@ fun PhoneTextField(
     modifier: Modifier = Modifier,
     errorMessage: String? = null,
 ) {
-    CustomTextFieldWithErrorMsg(errorMessage = errorMessage) {
-        CustomTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = modifier,
-            placeholder = stringResource(R.string.phone_number),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            leadingIcon = {
-                CustomTextFieldIcon(
-                    painter = painterResource(R.drawable.ic_phone),
-                    contentDescription = stringResource(R.string.phone_number),
-                )
-            },
-        )
-    }
+    SwapWiseTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        placeholder = stringResource(R.string.phone_number),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+        leadingIcon = {
+            CustomTextFieldIcon(
+                painter = painterResource(R.drawable.ic_phone),
+                contentDescription = stringResource(R.string.phone_number),
+            )
+        },
+        errorMessage = errorMessage
+    )
+//    CustomTextFieldWithErrorMsg(errorMessage = errorMessage) {
+//        CustomTextField(
+//            value = value,
+//            onValueChange = onValueChange,
+//            modifier = modifier,
+//            placeholder = stringResource(R.string.phone_number),
+//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+//            leadingIcon = {
+//                CustomTextFieldIcon(
+//                    painter = painterResource(R.drawable.ic_phone),
+//                    contentDescription = stringResource(R.string.phone_number),
+//                )
+//            },
+//        )
+//    }
 }
 
 //@Preview(showSystemUi = true)

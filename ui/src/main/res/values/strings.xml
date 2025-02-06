@@ -75,6 +75,7 @@
     <string name="field_cont_be_empty">Field Can\\\'t Be Empty</string>
     <string name="invalid_location">Invalid Location</string>
     <string name="invalid_phone_number">Invalid Phone Number</string>
+    <string name="invalid_password">Invalid Password</string>
     <string name="invalid_title">Invalid Title</string>
     <string name="invalid_place">Invalid Place</string>
     <string name="invalid_details">Invalid Details</string>

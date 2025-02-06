@@ -1,21 +1,26 @@
 package com.example.domain
 
-import com.example.domain.model.SignState
+import com.example.domain.exception.InvalidPasswordException
+import com.example.domain.exception.InvalidPhoneException
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
-class LoginValidationUseCase @Inject constructor(
-    private val validatePhoneNumberUseCase: ValidatePhoneNumberUseCase,
-    private val validatePasswordUseCase: ValidatePasswordUseCase,
-) {
-
-    operator fun invoke(signState: SignState): SignState {
-        val phoneResult = validatePhoneNumberUseCase(signState.phone)
-        val passwordResult = validatePasswordUseCase(signState.password)
-
-        val updatedSign = signState.copy(
-            phoneError = phoneResult.exceptionOrNull()?.message,
-            passwordError = passwordResult.exceptionOrNull()?.message
-        )
-        return updatedSign
+class LoginValidationUseCase @Inject constructor() {
+    suspend operator fun invoke(
+        phone: String,
+        password: String,
+    ) {
+        validatePhone(phone)
+        validatePassword(password)
+        delay(1000)
+        //todo: login
     }
+}
+
+fun validatePhone(input: String) {
+    if (input.length < 3) throw InvalidPhoneException()
+}
+
+fun validatePassword(input: String) {
+    if (input.length < 3) throw InvalidPasswordException()
 }

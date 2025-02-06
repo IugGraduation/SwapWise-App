@@ -1,44 +1,79 @@
 package com.example.ui.login
 
-import androidx.lifecycle.ViewModel
 import com.example.domain.LoginValidationUseCase
+import com.example.domain.exception.InvalidPasswordException
+import com.example.domain.exception.InvalidPhoneException
+import com.example.ui.base.BaseViewModel
+import com.example.ui.base.StringsResource
+import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    private val stringsResource: StringsResource,
     private val loginValidationUseCase: LoginValidationUseCase,
-) :
-    ViewModel() {
-    private val _state = MutableStateFlow(LoginUiState())
-    val state = _state.asStateFlow()
+) : BaseViewModel<LoginUiState>(LoginUiState()), ILoginInteractions {
 
-
-    fun onPhoneChange(newValue: String) {
-        _state.update { it.copy(phone = newValue, phoneError = null) }
+    override fun onClickLogin() {
+        tryToExecute(
+            call = {
+                loginValidationUseCase(
+                    phone = state.value.phone,
+                    password = state.value.password
+                )
+            },
+            onSuccess = { navigateToHome() },
+            onError = ::onLoginFail
+        )
     }
 
-    fun onPasswordChange(newValue: String) {
-        _state.update { it.copy(password = newValue, passwordError = null) }
+    private fun navigateToHome() {
+        _state.update { it.copy(shouldNavigateToHome = true) }
     }
 
-    fun togglePasswordVisibility() {
-        _state.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
-    }
+    private fun onLoginFail(throwable: Throwable) {
+        when (throwable) {
+            is InvalidPhoneException -> {
+                updateFieldError(phoneError = stringsResource.invalidPhoneNumber)
+            }
 
-    fun onClickLogin() {
-        if(validateForm()) {
-            //login
+            is InvalidPasswordException -> {
+                updateFieldError(passwordError = stringsResource.invalidPassword)
+            }
+
+            else -> onActionFail(throwable)
         }
     }
 
-    private fun validateForm(): Boolean{
-        val signStatus = loginValidationUseCase(state.value.toSignState())
-        _state.value = LoginUiState.fromSignState(signStatus)
-        return signStatus.isSuccess()
+
+    private fun updateFieldError(
+        phoneError: String = String.empty(),
+        passwordError: String = String.empty(),
+    ) {
+        _state.update {
+            it.copy(
+                loginError = LoginErrorUiState(
+                    phoneError = phoneError,
+                    passwordError = passwordError,
+                )
+            )
+        }
+    }
+
+    override fun onPhoneChange(newValue: String) {
+        updateFieldError()
+        _state.update { it.copy(phone = newValue) }
+    }
+
+    override fun onPasswordChange(newValue: String) {
+        updateFieldError()
+        _state.update { it.copy(password = newValue) }
+    }
+
+    override fun togglePasswordVisibility() {
+        _state.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
     }
 
 }
