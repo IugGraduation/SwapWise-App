@@ -3,7 +3,6 @@ package com.example.domain.notifications
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.data.repository.NotificationsRepository
-import com.example.domain.exception.EmptyDataException
 import com.example.domain.model.Notification
 import kotlinx.coroutines.delay
 import java.time.LocalDate
