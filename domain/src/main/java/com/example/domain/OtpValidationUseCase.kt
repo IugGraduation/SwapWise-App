@@ -7,7 +7,7 @@ class OtpValidationUseCase @Inject constructor() {
     suspend operator fun invoke(
         otp: String,
     ) {
-        delay(1000)
+        delay(500)
         //todo: confirm otp from server
     }
 }

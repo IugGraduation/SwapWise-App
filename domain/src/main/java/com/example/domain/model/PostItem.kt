@@ -2,7 +2,6 @@ package com.example.domain.model
 
 import com.example.data.model.PostItemDto
 import com.example.data.model.TopicItemDto
-import com.example.domain.GetUserUseCase
 
 
 data class PostItem(
@@ -10,7 +9,7 @@ data class PostItem(
     override val title: String = "",
     override val imageLink: String = "",
 
-    val user: User = GetUserUseCase()(),
+    val user: User = User(),
     val place: String = "",
     val details: String = "",
     val category: String = "",
@@ -21,7 +20,7 @@ data class PostItem(
     val isOpen: Boolean = true,
     val rate: Float = 0f,
     val offers: List<OfferItem> = listOf(),
-): TopicItem() {
+) : TopicItem() {
 
     companion object {
         fun fromTopicItemDto(topicItemDto: TopicItemDto): TopicItem {

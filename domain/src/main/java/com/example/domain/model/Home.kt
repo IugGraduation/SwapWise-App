@@ -2,7 +2,6 @@ package com.example.domain.model
 
 import com.example.data.model.HomeDto
 
-
 data class Home(
     val topicsList: List<TopicsHolder> = listOf(),
     val user: User = User()
@@ -13,7 +12,7 @@ data class Home(
                 TopicsHolder.fromTopicDto(topicDto)
             }
             val user = User.fromUserDto(homeDto.user)
-            return Home(topicsList?: listOf(), user)
+            return Home(topicsList ?: listOf(), user)
         }
     }
 }

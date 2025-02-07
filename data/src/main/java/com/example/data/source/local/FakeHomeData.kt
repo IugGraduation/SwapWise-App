@@ -181,7 +181,7 @@ class FakeHomeData @Inject constructor() {
         val type = object : TypeToken<ApiResponse<HomeDto>>() {}.type
         val apiResponse: ApiResponse<HomeDto> = Gson().fromJson(jsonData, type)
 
-        delay(1000)
+        delay(500)
         return Response.success(apiResponse.data)
     }
 }

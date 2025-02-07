@@ -12,7 +12,7 @@ class LoginValidationUseCase @Inject constructor() {
     ) {
         validatePhone(phone)
         validatePassword(password)
-        delay(1000)
+        delay(500)
         //todo: login
     }
 }
@@ -22,5 +22,5 @@ fun validatePhone(input: String) {
 }
 
 fun validatePassword(input: String) {
-    if (input.length < 3) throw InvalidPasswordException()
+    if (input.length < 6) throw InvalidPasswordException()
 }

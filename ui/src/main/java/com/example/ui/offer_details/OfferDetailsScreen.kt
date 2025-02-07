@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.GetFakeOffersUseCase
+import com.example.domain.GetFakeOfferDetailsUseCase
 import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.DetailsScreenBody
@@ -140,7 +140,7 @@ fun RoundedIconButton(onClick: () -> Unit, iconResId: Int, contentDescription: S
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         OfferDetailsContent(
-            state = OfferItemUiState(offerItem = GetFakeOffersUseCase()()[0]),
+            state = OfferItemUiState(offerItem = GetFakeOfferDetailsUseCase()()),
             onClickGoBack = {},
         )
     }

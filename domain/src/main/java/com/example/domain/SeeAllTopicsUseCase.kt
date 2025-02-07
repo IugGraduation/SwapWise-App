@@ -6,10 +6,10 @@ import javax.inject.Inject
 
 class SeeAllTopicsUseCase @Inject constructor() {
     suspend operator fun invoke(url: String): TopicsHolder {
-        delay(1000)
-        return TopicsHolder(
-            items = GetFakePostsUseCase()(),
-            isCategory = false,
-        )
+        delay(500)
+
+        val postItem = GetFakePostDetailsUseCase()()
+        val postsList = listOf(postItem, postItem, postItem, postItem, postItem)
+        return TopicsHolder(items = postsList,)
     }
 }

@@ -10,21 +10,14 @@ class GetCategoriesUseCase @Inject constructor() {
 }
 
 
-class GetFakeCategoriesUseCase{
+class GetFakeCategoriesUseCase {
     operator fun invoke(): List<CategoryItem> {
         val categoryItem = CategoryItem(
             title = "Food and beverages",
-            imageLink = R.drawable.img_food_and_beverages.toString(),
         )
-
         return listOf(
-            categoryItem,
-            categoryItem,
-            categoryItem,
-            categoryItem,
-            categoryItem,
-            categoryItem,
-            categoryItem
+            categoryItem, categoryItem, categoryItem,
+            categoryItem, categoryItem, categoryItem,
         ).mapIndexed { index, item -> item.copy(title = item.title + " " + index) }
     }
 }

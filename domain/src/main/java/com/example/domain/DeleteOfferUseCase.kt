@@ -8,6 +8,5 @@ import javax.inject.Inject
 class DeleteOfferUseCase @Inject constructor(private val offerRepository: OfferRepository) {
     suspend operator fun invoke(offerId: String): Boolean {
         return offerRepository.deleteOffer(offerId) ?: throw EmptyDataException()
-
     }
 }

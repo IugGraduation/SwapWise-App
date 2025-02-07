@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.GetFakeOffersUseCase
+import com.example.domain.GetFakeOfferDetailsUseCase
 import com.example.ui.R
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
@@ -161,7 +161,7 @@ fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         EditOfferContent(
             state = OfferItemUiState(
-                offerItem = GetFakeOffersUseCase()()[0].copy(
+                offerItem = GetFakeOfferDetailsUseCase()().copy(
                     category = "Food and beverages0",
                 )
             ),

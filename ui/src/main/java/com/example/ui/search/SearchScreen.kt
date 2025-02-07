@@ -163,7 +163,7 @@ private fun LoadingContent() {
 
 //@Preview(showBackground = true)
 @Composable
-fun PreviewAllTopicsContent() {
+fun PreviewSearchContent() {
     GraduationProjectTheme {
         val searchUiState = SearchUiState(
 //            topicsList = GetFakePostsUseCase()(),

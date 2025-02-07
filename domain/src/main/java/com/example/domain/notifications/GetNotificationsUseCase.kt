@@ -10,7 +10,7 @@ import javax.inject.Inject
 class GetNotificationsUseCase @Inject constructor() {
     @RequiresApi(Build.VERSION_CODES.O)
     suspend operator fun invoke(): List<Notification> {
-        delay(1000)
+        delay(500)
         return GetFakeNotificationsUseCase()()
     }
 }

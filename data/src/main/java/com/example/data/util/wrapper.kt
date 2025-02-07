@@ -11,7 +11,7 @@ import retrofit2.Response
 fun <T> fakeWrapWithFlow(value: T): Flow<StateDto<T>> {
     return flow {
         emit(StateDto.Loading)
-        delay(1000)
+        delay(500)
         emit(StateDto.Success(value))
     }
 }
@@ -37,7 +37,7 @@ fun <T> wrapWithFlow(function: suspend () -> Response<T>): Flow<StateDto<T?>> {
 
 
 suspend fun <T> fakeCheckResponse(value: T): T? {
-    delay(1000)
+    delay(500)
     return value
 }
 

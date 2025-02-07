@@ -117,7 +117,7 @@ class FakePostData @Inject constructor() {
         val type = object : TypeToken<ApiResponse<PostItemDto>>() {}.type
         val apiResponse: ApiResponse<PostItemDto> = Gson().fromJson(jsonData, type)
 
-        delay(1000)
+        delay(500)
         return Response.success(apiResponse.data)
     }
 }

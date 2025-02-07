@@ -8,6 +8,7 @@ import javax.inject.Inject
 
 class AddOfferUseCase @Inject constructor(private val offerRepository: OfferRepository) {
     suspend operator fun invoke(postId: String, offerItem: OfferItem): Boolean {
-        return offerRepository.addOffer(postId, offerItem.toOfferItemDto()) ?: throw EmptyDataException()
+        return offerRepository.addOffer(postId, offerItem.toOfferItemDto())
+            ?: throw EmptyDataException()
     }
 }

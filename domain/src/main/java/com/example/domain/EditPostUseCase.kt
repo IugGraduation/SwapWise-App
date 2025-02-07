@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 
 class EditPostUseCase @Inject constructor(private val postRepository: PostRepository) {
-    suspend operator fun invoke(postItem: PostItem): Boolean{
+    suspend operator fun invoke(postItem: PostItem): Boolean {
         return postRepository.updatePost(postItem.toPostItemDto()) ?: throw EmptyDataException()
     }
 }

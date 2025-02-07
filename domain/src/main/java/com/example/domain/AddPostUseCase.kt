@@ -8,6 +8,6 @@ import javax.inject.Inject
 
 class AddPostUseCase @Inject constructor(private val postRepository: PostRepository) {
     suspend operator fun invoke(postItem: PostItem): Boolean {
-            return postRepository.addPost(postItem.toPostItemDto()) ?: throw EmptyDataException()
+        return postRepository.addPost(postItem.toPostItemDto()) ?: throw EmptyDataException()
     }
 }

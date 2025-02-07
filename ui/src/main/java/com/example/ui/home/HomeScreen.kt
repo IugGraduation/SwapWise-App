@@ -20,9 +20,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.GetFakeCategoriesUseCase
-import com.example.domain.GetFakePostsUseCase
-import com.example.domain.GetUserUseCase
+import com.example.domain.GetFakePostDetailsUseCase
 import com.example.domain.model.PostItem
+import com.example.domain.model.User
 import com.example.ui.R
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.atoms.SwapWiseTextButton
@@ -36,13 +36,13 @@ import com.example.ui.notifications.navigateToNotifications
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.profile.navigateToProfile
 import com.example.ui.search.navigateToSearch
+import com.example.ui.see_all_topics.navigateToTopicSeeAll
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
-import com.example.ui.see_all_topics.navigateToTopicSeeAll
 
 @Composable
 fun HomeScreen(
@@ -183,7 +183,13 @@ fun PreviewHomeContent() {
         items = categoryItemsList,
     )
 
-    val postsItemsList = GetFakePostsUseCase()()
+    val postsItemsList = listOf(
+        GetFakePostDetailsUseCase()(),
+        GetFakePostDetailsUseCase()(),
+        GetFakePostDetailsUseCase()(),
+        GetFakePostDetailsUseCase()(),
+        GetFakePostDetailsUseCase()()
+    )
 
     val topInteractive = TopicsHolderUiState(
         title = "TopInteractive",
@@ -197,7 +203,10 @@ fun PreviewHomeContent() {
     val topicsList = listOf(category, topInteractive, recentPosts)
 
     GraduationProjectTheme {
-        val user = GetUserUseCase()()
+        val user = User(
+            name = "Cameron Williamson",
+            phone = "1231231231"
+        )
         HomeContent(
             state = HomeUiState(
                 user = user,

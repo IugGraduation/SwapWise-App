@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
-import com.example.domain.GetFakePostsUseCase
+import com.example.domain.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.add_offer.navigateToAddOffer
 import com.example.ui.components.atoms.DetailsScreenBody
@@ -183,7 +183,7 @@ fun PostDetailsStatusItem(title: String, value: String, modifier: Modifier = Mod
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         PostDetailsContent(
-            state = PostItemUiState(postItem = GetFakePostsUseCase()()[0]),
+            state = PostItemUiState(postItem = GetFakePostDetailsUseCase()()),
             onClickAddOffer = {},
             onClickOfferCard = {},
             onClickGoBack = {},

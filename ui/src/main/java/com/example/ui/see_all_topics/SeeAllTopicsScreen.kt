@@ -3,11 +3,9 @@ package com.example.ui.see_all_topics
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.model.CategoryItem
-import com.example.ui.R
+import com.example.domain.GetFakePostDetailsUseCase
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.TopicsHolderUiState
@@ -47,21 +45,14 @@ fun SeeAllTopicsContent(state: TopicsHolderUiState, onClickGoBack: () -> Unit) {
 @Composable
 fun PreviewAllTopicsContent() {
     GraduationProjectTheme {
-        val categoryItem = CategoryItem(
-            stringResource(R.string.food_and_beverages),
-            R.drawable.img_food_and_beverages.toString(),
-            ""
+        val postItem = GetFakePostDetailsUseCase()()
+        val postsList = listOf(postItem, postItem, postItem, postItem, postItem)
+        val state = TopicsHolderUiState(
+            title = "Top Interactive",
+            items = postsList,
+            isHorizontal = false
         )
-        val categoryItemsList =
-            listOf(categoryItem, categoryItem, categoryItem, categoryItem, categoryItem)
-
-        val category = TopicsHolderUiState(
-            title = "Categories",
-            items = categoryItemsList,
-            isHorizontal = true,
-            onClickSeeAll = { },
-        )
-        SeeAllTopicsContent(state = category, onClickGoBack = { })
+        SeeAllTopicsContent(state = state, onClickGoBack = { })
 
     }
 }

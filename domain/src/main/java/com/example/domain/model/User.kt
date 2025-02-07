@@ -8,9 +8,9 @@ data class User(
     val imageLink: String = "",
     val imgContentDescription: String = "",
     val phone: String = "",
-){
-    companion object{
-        fun fromUserDto(userDto: UserDto?): User{
+) {
+    companion object {
+        fun fromUserDto(userDto: UserDto?): User {
             return User(name = userDto?.name.toString(), imageLink = userDto?.image.toString())
         }
     }

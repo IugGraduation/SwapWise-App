@@ -21,7 +21,7 @@ class SignupValidationUseCase @Inject constructor(
         validatePassword(password)
         validateConfirmPassword(password, confirmPassword)
         validateBestBarterSpot(bestBarterSpot)
-        delay(1000)
+        delay(500)
         //todo: signup
     }
 
@@ -29,9 +29,9 @@ class SignupValidationUseCase @Inject constructor(
         if (input.length < 3) throw InvalidFullNameException()
     }
 
-    private fun validateConfirmPassword(password:String, confirmPassword: String) {
+    private fun validateConfirmPassword(password: String, confirmPassword: String) {
         if (confirmPassword.length < 3) throw InvalidConfirmPasswordException()
-        if(confirmPassword != password) throw PasswordMismatchException()
+        if (confirmPassword != password) throw PasswordMismatchException()
     }
 
     private fun validateBestBarterSpot(input: String) {
