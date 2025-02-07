@@ -4,8 +4,8 @@ import com.example.data.repository.HomeRepository
 import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
 import com.example.data.repository.UserRepository
-import com.example.data.source.local.FakeHomeData
-import com.example.data.source.local.FakePostData
+import com.example.data.source.local.FakeHomeLocalDataSource
+import com.example.data.source.local.FakePostLocalDataSource
 import com.example.data.source.remote.StoreApiService
 import dagger.Module
 import dagger.Provides
@@ -17,14 +17,14 @@ import dagger.hilt.components.SingletonComponent
 object RepositoryModule {
     @Provides
     fun provideHomeRepository(
-        fakeHomeLocalDataSource: FakeHomeData
+        fakeHomeLocalDataSource: FakeHomeLocalDataSource
     ): HomeRepository {
         return HomeRepository(fakeHomeLocalDataSource)
     }
 
     @Provides
     fun providePostRepository(
-        fakePostLocalDataSource: FakePostData,
+        fakePostLocalDataSource: FakePostLocalDataSource,
         storeApiService: StoreApiService,
     ): PostRepository {
         return PostRepository(fakePostLocalDataSource, storeApiService)

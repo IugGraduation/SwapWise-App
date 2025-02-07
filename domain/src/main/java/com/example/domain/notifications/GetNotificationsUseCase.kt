@@ -2,12 +2,14 @@ package com.example.domain.notifications
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.data.repository.NotificationsRepository
+import com.example.domain.exception.EmptyDataException
 import com.example.domain.model.Notification
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import javax.inject.Inject
 
-class GetNotificationsUseCase @Inject constructor() {
+class GetNotificationsUseCase @Inject constructor(private val notificationsRepository: NotificationsRepository) {
     @RequiresApi(Build.VERSION_CODES.O)
     suspend operator fun invoke(): List<Notification> {
         delay(500)
@@ -20,9 +22,7 @@ class GetFakeNotificationsUseCase {
     @RequiresApi(Build.VERSION_CODES.O)
     operator fun invoke(): List<Notification> {
         val notification = Notification(
-            id = "1",
-            message = "message",
-            date = LocalDate.now()
+            id = "1", message = "message", date = LocalDate.now()
         )
         val notificationsList = listOf(
             notification,
@@ -38,8 +38,6 @@ class GetFakeNotificationsUseCase {
                     .minusDays(index.toLong())
             )
         }
-
         return notificationsList
-
     }
 }
