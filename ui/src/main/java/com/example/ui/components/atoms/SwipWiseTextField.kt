@@ -20,19 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
-import com.example.ui.theme.BlackPrimary
-import com.example.ui.theme.BlackTertiary
-import com.example.ui.theme.Danger
 import com.example.ui.theme.IconSizeMedium
 import com.example.ui.theme.MultiLineEditTextHeight
 import com.example.ui.theme.OneLineEditTextHeight
-import com.example.ui.theme.Primary
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Spacing12
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
-import com.example.ui.theme.WhitePrimary
+import com.example.ui.theme.color
 
 @Composable
 fun SwapWiseTextField(
@@ -56,7 +52,7 @@ fun SwapWiseTextField(
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = minHeight)
                 .background(
-                    WhitePrimary,
+                    MaterialTheme.color.onBackground,
                     shape = RoundedCornerShape(RadiusLarge)
                 )
                 .padding(horizontal = Spacing12, vertical = Spacing16)
@@ -81,12 +77,12 @@ fun SwapWiseTextField(
                     enabled = isEditable,
                     onValueChange = onValueChange,
                     textStyle = TextStyles.hint.copy(
-                        color = if(isEditable) BlackPrimary else BlackTertiary
+                        color = if(isEditable) MaterialTheme.color.textPrimary else MaterialTheme.color.textTertiary
                     ),
                     keyboardOptions = keyboardOptions,
                     visualTransformation = visualTransformation,
                     modifier = Modifier.weight(1f),
-                    cursorBrush = SolidColor(Primary),
+                    cursorBrush = SolidColor(MaterialTheme.color.primary),
                     decorationBox = { innerTextField ->
                         if (value.isEmpty()) {
                             placeholderComposable?.invoke()
@@ -111,7 +107,7 @@ fun SwapWiseTextField(
             VerticalSpacer(Spacing8)
             Text(
                 text = errorMessage ?: "",
-                color = Danger,
+                color = MaterialTheme.color.danger,
                 style = TextStyles.captionMedium
             )
         }

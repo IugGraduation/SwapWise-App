@@ -56,6 +56,8 @@ val CardHeight = 272.dp
 
 val NormalButtonHeight = 56.dp
 
+val SettingsRowHeight = 64.dp
+
 val ButtonSize32 = 32.dp
 val ZeroDp = 0.dp
 

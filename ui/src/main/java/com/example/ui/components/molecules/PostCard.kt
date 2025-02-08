@@ -18,12 +18,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -35,20 +35,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.ButtonMakeOfferBottom
-import com.example.ui.theme.BackgroundLight
-import com.example.ui.theme.BlackPrimary
-import com.example.ui.theme.BlackSecondary
 import com.example.ui.theme.CardHeight
-import com.example.ui.theme.Correct
-import com.example.ui.theme.CorrectOverlay
-import com.example.ui.theme.Danger
-import com.example.ui.theme.DangerOverlay
 import com.example.ui.theme.IconSizeSmall
 import com.example.ui.theme.ImageSize16
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
-import com.example.ui.theme.WhitePrimary
+import com.example.ui.theme.color
 import com.example.ui.util.empty
 
 @Composable
@@ -69,7 +62,7 @@ fun PostCard(
     Card(
         modifier = modifier.height(CardHeight).fillMaxWidth(),
         onClick = onCardClick,
-        colors = CardDefaults.cardColors(contentColor = WhitePrimary)
+        colors = CardDefaults.cardColors(contentColor = MaterialTheme.color.onBackground)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Box(modifier = Modifier.fillMaxWidth().weight(1.6f)) {
@@ -88,7 +81,7 @@ fun PostCard(
                 )
             }
 
-            Box(modifier = Modifier.fillMaxWidth().weight(1.4f).background(color = WhitePrimary)) {
+            Box(modifier = Modifier.fillMaxWidth().weight(1.4f).background(color = MaterialTheme.color.onBackground)) {
                 PostInfoSection(
                     title = title,
                     offersNumber = offersNumber,
@@ -119,7 +112,7 @@ private fun PostHeaderSection(
             Image(
                 modifier = Modifier
                     .size(ImageSize16)
-                    .background(shape = CircleShape, color = Color.Transparent),
+                    .background(shape = CircleShape, color = MaterialTheme.color.transparent),
                 painter = userImage,
                 contentDescription = username,
                 contentScale = ContentScale.Crop
@@ -129,12 +122,12 @@ private fun PostHeaderSection(
                 text = username,
                 style = TextStyles.headingSmall.copy(
                     shadow = Shadow(
-                        color = BlackPrimary,
+                        color = MaterialTheme.color.textPrimary,
                         blurRadius = 8f,
                         offset = Offset(2f, 2f)
                     ),
                 ),
-                color = WhitePrimary,
+                color = MaterialTheme.color.textPrimary,
             )
         }
 
@@ -165,7 +158,7 @@ private fun PostInfoSection(
                     .weight(3f),
                 text = title,
                 style = TextStyles.headingMedium,
-                color = BlackPrimary,
+                color = MaterialTheme.color.textPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -174,7 +167,7 @@ private fun PostInfoSection(
                 modifier = Modifier
                     .weight(1f)
                     .wrapContentWidth(),
-                color = BackgroundLight
+                color = MaterialTheme.color.background
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = Spacing8, vertical = Spacing4),
@@ -185,12 +178,12 @@ private fun PostInfoSection(
                         painter = painterResource(R.drawable.ic_offer),
                         contentDescription = offersNumber + stringResource(R.string.offers),
                         modifier = Modifier.size(IconSizeSmall),
-                        tint = BlackSecondary
+                        tint = MaterialTheme.color.textSecondary
                     )
                     Text(
                         text = offersNumber + " " + stringResource(R.string.offers),
                         style = TextStyles.captionSmall,
-                        color = BlackSecondary
+                        color = MaterialTheme.color.textSecondary
                     )
                 }
             }
@@ -201,7 +194,7 @@ private fun PostInfoSection(
             text = details,
             style = TextStyles.bodySmall,
             maxLines = 3,
-            color = BlackSecondary,
+            color = MaterialTheme.color.textSecondary,
             overflow = TextOverflow.Ellipsis
         )
 
@@ -224,12 +217,12 @@ private fun PostStateRoundedBox(
 ) {
     BoxRounded(
         modifier = modifier,
-        color = if (isPostOpen) CorrectOverlay else DangerOverlay
+        color = if (isPostOpen) MaterialTheme.color.correctOverlay else MaterialTheme.color.dangerOverlay
     ) {
         Text(
             text = if (isPostOpen) stringResource(R.string.open) else stringResource(R.string.closed),
             modifier = Modifier.padding(horizontal = Spacing8, vertical = Spacing4),
-            color = if (isPostOpen) Correct else Danger,
+            color = if (isPostOpen) MaterialTheme.color.correct else MaterialTheme.color.danger,
             style = TextStyles.captionSmall.copy(fontWeight = FontWeight.SemiBold),
         )
     }
