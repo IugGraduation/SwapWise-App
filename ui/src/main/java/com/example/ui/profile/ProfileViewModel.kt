@@ -1,22 +1,28 @@
 package com.example.ui.profile
 
 import android.net.Uri
+import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
 import com.example.domain.exception.InvalidUsernameException
+import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.domain.profile.GetCurrentUserDataUseCase
 import com.example.domain.profile.ValidateUserInfoUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getCurrentUserData: GetCurrentUserDataUseCase,
+    private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val validateUserInfoUseCase: ValidateUserInfoUseCase,
 ) : BaseViewModel<ProfileUiState>(ProfileUiState()), ProfileInteraction {
 
@@ -31,6 +37,8 @@ class ProfileViewModel @Inject constructor(
                 userPosts = originalProfileInformation.userPosts
             )
         }
+
+        viewModelScope.launch { isDarkTheme() }
     }
 
     private fun getCurrentUserInfo(): ProfileUiState {
@@ -115,6 +123,17 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    override fun onDarkMoodChange(isDarkMood: Boolean) {
+        _state.update { it.copy(profileSettingsUiState = it.profileSettingsUiState.copy( isDarkTheme = isDarkMood)) }
+        viewModelScope.launch(Dispatchers.IO) { customizeProfileSettings.updateDarkTheme(isDarkMood) }
+    }
+
+    private suspend fun isDarkTheme() {
+        customizeProfileSettings.isDarkThem().buffer().collect{ isDark ->
+            _state.update { it.copy(profileSettingsUiState = it.profileSettingsUiState.copy( isDarkTheme = isDark))}
+        }
+    }
+
     private fun onUpdateUserInfoSuccess() {
         manageUserInfoEdit(isEditable = false)
         makeErrorMessagesEmpty()
@@ -178,5 +197,9 @@ class ProfileViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun updatePagerNumber(currentPage: Int) {
+        _state.update { it.copy(pagerNumber = currentPage) }
     }
 }

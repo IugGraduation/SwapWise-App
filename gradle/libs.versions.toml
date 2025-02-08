@@ -4,6 +4,7 @@ agp = "8.7.3"
 coil = "2.3.0"
 coilCompose = "3.0.4"
 converterGson = "2.9.0"
+datastorePreferences = "1.1.2"
 foundation = "1.7.6"
 hiltAndroidVersion = "2.51.1"
 hiltNavigationCompose = "1.2.0"
@@ -27,10 +28,14 @@ ui = "1.7.6"
 uiToolingPreviewAndroid = "1.7.5"
 foundationLayoutAndroid = "1.7.2"
 foundationAndroid = "1.7.2"
+datastoreCoreAndroid = "1.1.2"
+datastorePreferencesCoreJvm = "1.1.2"
+datastorePreferencesAndroid = "1.1.2"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleRuntimeKtx" }
@@ -68,6 +73,9 @@ androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "u
 androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
+androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
+androidx-datastore-preferences-core-jvm = { group = "androidx.datastore", name = "datastore-preferences-core-jvm", version.ref = "datastorePreferencesCoreJvm" }
+androidx-datastore-preferences-android = { group = "androidx.datastore", name = "datastore-preferences-android", version.ref = "datastorePreferencesAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

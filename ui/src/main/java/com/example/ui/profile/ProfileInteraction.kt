@@ -1,6 +1,5 @@
 package com.example.ui.profile
 
-import android.content.Context
 import android.net.Uri
 
 interface ProfileInteraction {
@@ -12,4 +11,5 @@ interface ProfileInteraction {
     fun onBioChange(bio: String)
     fun onCancelButtonClicked()
     fun onSaveButtonClicked()
+    fun onDarkMoodChange(isDarkMood: Boolean)
 }
