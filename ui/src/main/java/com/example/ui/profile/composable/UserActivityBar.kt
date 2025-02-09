@@ -7,14 +7,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.ui.R
-import com.example.ui.theme.BlackFourth
 import com.example.ui.theme.BorderHeight24
 import com.example.ui.theme.BorderWidth2
+import com.example.ui.theme.color
 
 @Composable
 fun UserActivitiesBar(
@@ -42,6 +43,6 @@ fun InfoBoarder(modifier: Modifier = Modifier) {
         modifier = modifier
             .width(BorderWidth2)
             .height(BorderHeight24)
-            .background(color = BlackFourth)
+            .background(color = MaterialTheme.color.textFourth)
     )
 }
