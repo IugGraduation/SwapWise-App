@@ -26,6 +26,7 @@ import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun TitledChipsList(
@@ -37,7 +38,7 @@ fun TitledChipsList(
         Text(
             text = title,
             style = textStyle,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.color.primary,
             modifier = Modifier.padding(horizontal = Spacing16)
         )
         VerticalSpacer(Spacing8)
@@ -61,9 +62,9 @@ fun SwapWiseChip(chip: Chip, modifier: Modifier = Modifier) {
         spotColor = Color.Black.copy(alpha = 0.8f),
         ambientColor = Color.Black.copy(alpha = 0.8f)
     ) else modifier
-    val backgroundColor = if (chip.selected) Secondary else MaterialTheme.colorScheme.onBackground
+    val backgroundColor = if (chip.selected) Secondary else MaterialTheme.color.onBackground
     val textColor =
-        if (chip.selected && isSystemInDarkTheme()) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.secondary
+        if (chip.selected && isSystemInDarkTheme()) MaterialTheme.color.background else MaterialTheme.color.secondary
 
     BoxRounded(
         modifier = myModifier.clickable(enabled = chip.clickable) {

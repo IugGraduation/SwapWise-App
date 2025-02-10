@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.ui.base.BaseUiState
 import com.example.ui.components.atoms.ShowContentWithState
+import com.example.ui.theme.color
 
 @Composable
 fun ScreenTemplate(
@@ -28,7 +29,7 @@ fun ScreenTemplate(
         floatingActionButtonPosition = floatingActionButtonPosition,
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.color.background),
     ) { padding ->
         Column(
             modifier = Modifier

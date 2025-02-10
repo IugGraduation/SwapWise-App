@@ -25,7 +25,7 @@ object TextStyles {
             fontWeight = FontWeight.SemiBold,
             fontSize = 28.sp,
             letterSpacing = 0.sp,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.color.primary,
         )
     val headingLarge: TextStyle
         @Composable
@@ -34,7 +34,7 @@ object TextStyles {
             fontWeight = FontWeight.SemiBold,
             fontSize = 24.sp,
             letterSpacing = 0.sp,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.color.primary,
         )
     val headingMedium: TextStyle = TextStyle(
         fontFamily = Roboto,
@@ -51,7 +51,7 @@ object TextStyles {
             fontWeight = FontWeight.SemiBold,
             fontSize = 14.sp,
             letterSpacing = 0.sp,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.color.primary
         )
 
     val bodySmall: TextStyle
@@ -61,7 +61,7 @@ object TextStyles {
             fontWeight = FontWeight.Normal,
             fontSize = 12.sp,
             letterSpacing = 0.sp,
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.color.tertiary
         )
 
     val bodyLarge: TextStyle
@@ -71,7 +71,7 @@ object TextStyles {
             fontWeight = FontWeight.Light,
             fontSize = 16.sp,
             letterSpacing = 0.sp,
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.color.tertiary
         )
 
     val hint: TextStyle
@@ -81,7 +81,7 @@ object TextStyles {
             fontWeight = FontWeight.Light,
             fontSize = 14.sp,
             letterSpacing = 0.sp,
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.color.tertiary
         )
 
     val captionLarge
@@ -91,7 +91,7 @@ object TextStyles {
             fontWeight = FontWeight.Normal,
             fontSize = 12.sp,
             letterSpacing = 0.sp,
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.color.tertiary
         )
 
     val captionMedium = TextStyle(
@@ -108,7 +108,7 @@ object TextStyles {
             fontWeight = FontWeight.Normal,
             fontSize = 8.sp,
             letterSpacing = 0.sp,
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.color.secondary
         )
 
     val smallCustomTitle: TextStyle
@@ -118,7 +118,7 @@ object TextStyles {
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
             letterSpacing = 2.sp,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.color.primary
         )
 
     val largeCustomTitle: TextStyle
@@ -128,7 +128,7 @@ object TextStyles {
         fontWeight = FontWeight.Normal,
         fontSize = 24.sp,
         letterSpacing = 2.sp,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.color.primary
     )
 
 }

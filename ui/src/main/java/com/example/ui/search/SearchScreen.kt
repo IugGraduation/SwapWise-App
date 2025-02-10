@@ -46,6 +46,7 @@ import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun SearchScreen(
@@ -94,7 +95,7 @@ fun SearchContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_search),
                         contentDescription = stringResource(R.string.search),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.color.tertiary
                     )
                     Spacer(
                         Modifier

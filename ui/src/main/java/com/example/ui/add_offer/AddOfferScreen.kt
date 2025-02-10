@@ -31,6 +31,7 @@ import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun AddOfferScreen(navController: NavController, viewModel: AddOfferViewModel = hiltViewModel()) {
@@ -76,7 +77,7 @@ fun AddOfferContent(
             Text(
                 stringResource(R.string.offer_info),
                 style = TextStyles.headingLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.color.primary
             )
             SwapWiseTextField(
                 value = state.offerItem.title,
@@ -86,7 +87,7 @@ fun AddOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_title),
                         contentDescription = stringResource(R.string.offer_title),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.color.tertiary
                     )
                 },
                 errorMessage = state.offerError.titleError,
@@ -99,7 +100,7 @@ fun AddOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_location),
                         contentDescription = stringResource(R.string.your_place),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.color.tertiary
                     )
                 },
                 errorMessage = state.offerError.placeError,
@@ -112,7 +113,7 @@ fun AddOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_details),
                         contentDescription = stringResource(R.string.details),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.color.tertiary
                     )
                 },
                 isMultiline = true,

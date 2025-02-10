@@ -35,6 +35,7 @@ import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing56
 import com.example.ui.theme.Spacing8
+import com.example.ui.theme.color
 
 @Composable
 fun SignupScreen(
@@ -110,7 +111,7 @@ fun SignupForm(
                 Icon(
                     painter = painterResource(R.drawable.ic_user),
                     contentDescription = stringResource(R.string.full_name),
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.color.tertiary
                 )
             },
             errorMessage = state.signupError.fullNameError
@@ -124,7 +125,7 @@ fun SignupForm(
                 Icon(
                     painter = painterResource(R.drawable.ic_phone),
                     contentDescription = stringResource(R.string.phone_number),
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.color.tertiary
                 )
             },
             errorMessage = state.signupError.phoneError
@@ -152,7 +153,7 @@ fun SignupForm(
                 Icon(
                     painter = painterResource(R.drawable.ic_location),
                     contentDescription = stringResource(R.string.best_barter_spot),
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.color.tertiary
                 )
             },
             errorMessage = state.signupError.bestBarterSpotError
@@ -165,7 +166,7 @@ fun SignupForm(
                 Icon(
                     painter = painterResource(R.drawable.ic_bio),
                     contentDescription = stringResource(R.string.bio),
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.color.tertiary
                 )
             },
         )

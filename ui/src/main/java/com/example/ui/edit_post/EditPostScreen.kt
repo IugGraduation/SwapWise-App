@@ -49,6 +49,7 @@ import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun EditPostScreen(navController: NavController, viewModel: EditPostViewModel = hiltViewModel()) {
@@ -96,7 +97,7 @@ fun EditOfferContent(
                 Text(
                     stringResource(R.string.post_info),
                     style = TextStyles.headingLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.color.primary
                 )
                 OpenClosedSwitch(
                     isOpen = state.postItem.isOpen,
@@ -112,7 +113,7 @@ fun EditOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_title),
                         contentDescription = stringResource(R.string.post_title),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.color.tertiary
                     )
                 },
                 errorMessage = state.postError.titleError,
@@ -126,7 +127,7 @@ fun EditOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_location),
                         contentDescription = stringResource(R.string.your_place),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.color.tertiary
                     )
                 },
                 errorMessage = state.postError.placeError,
@@ -139,7 +140,7 @@ fun EditOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_details),
                         contentDescription = stringResource(R.string.details),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.color.tertiary
                     )
                 },
                 errorMessage = state.postError.detailsError,
@@ -186,8 +187,8 @@ fun EditOfferContent(
 @Composable
 private fun OpenClosedSwitch(isOpen: Boolean, onIsOpenChange: (Boolean) -> Unit) {
     Row {
-        val onBackgroundColor = MaterialTheme.colorScheme.onBackground
-        val secondaryColor = MaterialTheme.colorScheme.secondary
+        val onBackgroundColor = MaterialTheme.color.onBackground
+        val secondaryColor = MaterialTheme.color.secondary
 
         val openContainerColor = remember { Animatable(Primary) }
         val openContentColor = remember { Animatable(Color.White) }

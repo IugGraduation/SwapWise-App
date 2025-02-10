@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.example.ui.R
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.theme.GraduationProjectTheme
+import com.example.ui.theme.color
 
 @Composable
 fun PasswordTextField(
@@ -44,7 +45,7 @@ fun PasswordTextField(
             Icon(
                 painter = painterResource(R.drawable.ic_password_lock),
                 contentDescription = stringResource(R.string.password),
-                tint = MaterialTheme.colorScheme.tertiary
+                tint = MaterialTheme.color.tertiary
             )
         },
         trailingIcon = {
@@ -59,7 +60,7 @@ fun PasswordTextField(
                     } else {
                         stringResource(R.string.show_password)
                     },
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.color.tertiary
                 )
             }
         },

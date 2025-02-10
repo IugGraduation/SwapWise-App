@@ -60,6 +60,7 @@ import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing56
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -110,7 +111,7 @@ fun NotificationsContent(
                     Text(
                         text = group.title,
                         style = TextStyles.headingSmall,
-                        color = MaterialTheme.colorScheme.tertiary,
+                        color = MaterialTheme.color.tertiary,
                         modifier = Modifier
                             .padding(horizontal = Spacing16)
                             .padding(bottom = Spacing8)
@@ -183,7 +184,7 @@ fun SwipeableNotificationCard(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.onBackground),
+                        .background(color = MaterialTheme.color.onBackground),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
@@ -196,7 +197,7 @@ fun SwipeableNotificationCard(
                     Text(
                         text = notification.message,
                         style = TextStyles.bodySmall,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.color.primary,
                         modifier = Modifier.padding(horizontal = Spacing4, vertical = Spacing8)
 
                     )

@@ -43,6 +43,7 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.Spacing80
 import com.example.ui.theme.Tertiary
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun OtpScreen(navController: NavController, viewModel: ConfirmNumberViewModel = hiltViewModel()) {
@@ -111,7 +112,7 @@ private fun SwapWiseOtpTextField(
         modifier = modifier.fillMaxWidth()
     ) {
         val backgroundColor = if (isSystemInDarkTheme()) {
-            MaterialTheme.colorScheme.onBackground
+            MaterialTheme.color.onBackground
         }else{
             Tertiary
         }

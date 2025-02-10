@@ -41,6 +41,7 @@ import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun CustomLazyLayout(
@@ -151,7 +152,7 @@ fun CardText(
                 offset = Offset(4f, 4f),
                 blurRadius = 8f
             ),
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.color.primary,
             drawStyle = Stroke(width = 1.2f, join = StrokeJoin.Round),
         ),
         textAlign = TextAlign.Center,

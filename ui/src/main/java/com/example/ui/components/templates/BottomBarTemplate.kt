@@ -20,6 +20,7 @@ import com.example.ui.R
 import com.example.ui.base.BaseUiState
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.theme.Primary
+import com.example.ui.theme.color
 
 @Composable
 fun BottomBarTemplate(
@@ -54,10 +55,10 @@ fun BottomBarTemplate(
 @Composable
 private fun SwapWiseBottomNavigationBar(selectedItem: Int = 2, onClickItem: (itemNum: Int) -> Unit) {
     val navigationBarItemColors = NavigationBarItemDefaults.colors().copy(
-        selectedIconColor = MaterialTheme.colorScheme.onBackground,
+        selectedIconColor = MaterialTheme.color.onBackground,
         selectedTextColor = Primary,
         selectedIndicatorColor = Primary,
-        unselectedIconColor = MaterialTheme.colorScheme.tertiary,
+        unselectedIconColor = MaterialTheme.color.tertiary,
     )
 
     Column {
@@ -65,10 +66,10 @@ private fun SwapWiseBottomNavigationBar(selectedItem: Int = 2, onClickItem: (ite
             modifier = Modifier
                 .fillMaxWidth()
                 .height(0.5.dp)
-                .background(MaterialTheme.colorScheme.tertiary)
+                .background(MaterialTheme.color.tertiary)
         )
         NavigationBar(
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.color.background,
         ) {
             NavigationBarItem(
                 icon = {
