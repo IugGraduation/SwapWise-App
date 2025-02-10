@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -13,10 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.theme.IconButtonSize40
 import com.example.ui.theme.IconSizeMedium
-import com.example.ui.theme.Primary
 import com.example.ui.theme.RadiusLarge
-import com.example.ui.theme.WhitePrimary
 import com.example.ui.theme.ZeroDp
+import com.example.ui.theme.color
 
 @Composable
 fun EditIconButton(modifier: Modifier = Modifier, onClick:() -> Unit) {
@@ -28,8 +28,8 @@ fun EditIconButton(modifier: Modifier = Modifier, onClick:() -> Unit) {
         onClick = onClick,
         colors = ButtonDefaults
             .buttonColors(
-                contentColor = Primary,
-                containerColor = WhitePrimary
+                contentColor = MaterialTheme.color.primary,
+                containerColor = MaterialTheme.color.background
             ),
     ) {
         Icon(
@@ -37,7 +37,7 @@ fun EditIconButton(modifier: Modifier = Modifier, onClick:() -> Unit) {
                 .size(IconSizeMedium),
             painter = painterResource(id = R.drawable.ic_pen),
             contentDescription = null,
-            tint = Primary
+            tint = MaterialTheme.color.primary
         )
     }
 }

@@ -91,4 +91,8 @@
     <string name="try_again">Try again!</string>
     <string name="remove_notification">Remove notification</string>
     <string name="edit_post">Edit Post</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="reset_Password">Reset Password</string>
+    <string name="language">Language</string>
+    <string name="log_out">Log Out</string>
 </resources>

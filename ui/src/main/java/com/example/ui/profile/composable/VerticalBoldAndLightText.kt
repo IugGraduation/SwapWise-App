@@ -2,15 +2,15 @@ package com.example.ui.profile.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import com.example.ui.theme.BlackPrimary
-import com.example.ui.theme.BlackTertiary
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun VerticalBoldAndLightText(
@@ -26,12 +26,12 @@ fun VerticalBoldAndLightText(
         Text(
             text = boldText,
             style = boldStyle,
-            color = BlackPrimary
+            color = MaterialTheme.color.textPrimary
         )
         Text(
             text = lightText,
             style = TextStyles.captionLarge,
-            color = BlackTertiary
+            color = MaterialTheme.color.textTertiary
         )
     }
 

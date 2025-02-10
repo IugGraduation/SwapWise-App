@@ -1,5 +1,7 @@
 package com.example.graduationproject.di
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.example.data.repository.HomeRepository
 import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
@@ -7,6 +9,7 @@ import com.example.data.repository.UserRepository
 import com.example.data.source.local.FakeHomeLocalDataSource
 import com.example.data.source.local.FakePostLocalDataSource
 import com.example.data.source.remote.StoreApiService
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,8 +41,7 @@ object RepositoryModule {
     }
 
     @Provides
-    fun provideUserRepository(
-    ): UserRepository {
-        return UserRepository()
+     fun provideUserRepository(dataStore: DataStore<Preferences>): UserRepository {
+         return UserRepository(dataStore)
     }
 }

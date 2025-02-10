@@ -14,11 +14,7 @@ fun ProfileHorizontalPager(
     settingsContent: @Composable () -> Unit,
 
 ) {
-    HorizontalPager(
-        modifier = modifier,
-        state = pagerState,
-    ) {
-
+    HorizontalPager(modifier = modifier, state = pagerState) {
         when(pagerState.currentPage) {
             0 -> informationContent()
             1 -> postsContent()

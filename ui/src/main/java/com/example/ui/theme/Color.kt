@@ -1,5 +1,10 @@
 package com.example.ui.theme
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
@@ -38,3 +43,49 @@ val WhiteTertiary = Color(0x7AFFFFFF)
 val WhiteFourth = Color(0x33FFFFFF)
 
 val GradientBrush = Brush.horizontalGradient(listOf(Purple, Primary))
+
+@Immutable
+data class CustomColorsPalette(
+    val primary: Color = Primary,
+    val secondary: Color = Secondary,
+    val tertiary: Color = Tertiary,
+    val danger: Color = Danger,
+    val correct: Color = Correct,
+    val gray: Color = Gray,
+    val transparent: Color = Color.Transparent,
+    val primaryOverlay: Color = PrimaryOverlay,
+    val dangerOverlay : Color = DangerOverlay,
+    val correctOverlay: Color = CorrectOverlay,
+    val purple: Color = Purple,
+    val background: Color = Color.Unspecified,
+    val onBackground: Color = Color.Unspecified,
+    val textPrimary: Color = Color.Unspecified,
+    val textSecondary: Color = Color.Unspecified,
+    val textTertiary: Color = Color.Unspecified,
+    val textFourth: Color = Color.Unspecified,
+)
+
+val onLightCustomColorsPalette = CustomColorsPalette(
+    background = BackgroundLight,
+    onBackground = OnBackgroundLight,
+    textPrimary = BlackPrimary,
+    textSecondary = BlackSecondary,
+    textTertiary = BlackTertiary,
+    textFourth = BlackFourth
+)
+
+val onDarkCustomColorsPalette = CustomColorsPalette(
+    background = BackgroundDark,
+    onBackground = OnBackgroundDark,
+    textPrimary = WhitePrimary,
+    textSecondary = WhiteSecondary,
+    textTertiary = WhiteTertiary,
+    textFourth = WhiteFourth
+)
+
+val LocalColor = compositionLocalOf { CustomColorsPalette() }
+
+val MaterialTheme.color: CustomColorsPalette
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalColor.current

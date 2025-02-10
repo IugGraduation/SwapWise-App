@@ -6,24 +6,27 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,6 +39,7 @@ import coil3.compose.rememberAsyncImagePainter
 import com.example.ui.R
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
+import com.example.ui.components.atoms.SwapWiseSwitch
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PostCard
@@ -44,17 +48,16 @@ import com.example.ui.profile.composable.GradientCircleBackground
 import com.example.ui.profile.composable.ProfileHorizontalPager
 import com.example.ui.profile.composable.ProfileImage
 import com.example.ui.profile.composable.ProfileToggle
+import com.example.ui.profile.composable.SettingsRow
 import com.example.ui.profile.composable.UserActivitiesBar
 import com.example.ui.profile.composable.VerticalBoldAndLightText
-import com.example.ui.theme.BlackPrimary
-import com.example.ui.theme.BlackTertiary
 import com.example.ui.theme.GradientCircleBackgroundSize
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing40
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles.headingExtraLarge
-import com.example.ui.theme.WhitePrimary
+import com.example.ui.theme.color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -67,6 +70,11 @@ fun ProfileScreen(
         initialPage = 0,
         pageCount = { 3 },
     )
+
+    LaunchedEffect(pagerState.currentPage) {
+        viewModel.updatePagerNumber(pagerState.currentPage)
+    }
+
     ProfileContent(
         state = state,
         profileInteraction = viewModel,
@@ -79,11 +87,10 @@ private fun ProfileContent(
     state: ProfileUiState,
     profileInteraction: ProfileInteraction,
     pagerState: PagerState
-    ) {
+) {
     val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(color = Color.Transparent, darkIcons = false)
-
-    LazyColumn {
+    systemUiController.setSystemBarsColor(color = MaterialTheme.color.transparent, darkIcons = false)
+    LazyColumn(modifier = Modifier.fillMaxHeight().background(MaterialTheme.color.background)) {
         item {
             Box {
                 GradientCircleBackground(
@@ -100,19 +107,19 @@ private fun ProfileContent(
                         .padding(horizontal = Spacing16, vertical = Spacing40)
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = Spacing24),
+                        modifier = Modifier.fillMaxWidth().padding(top = Spacing24),
                         verticalAlignment = Alignment.Top,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
                             text = stringResource(R.string.profile),
-                            color = WhitePrimary,
+                            color = MaterialTheme.color.background,
                             style = headingExtraLarge,
                         )
 
-                        EditIconButton(onClick = profileInteraction::onEditButtonClicked)
+                        AnimatedVisibility(pagerState.currentPage == 0) {
+                            EditIconButton(onClick = profileInteraction::onEditButtonClicked)
+                        }
                     }
 
                     ProfileImage(
@@ -140,24 +147,33 @@ private fun ProfileContent(
                         pagerState = pagerState,
                         informationContent = {
                             UserInformationSection(
-                                state = state,
-                                profileInteraction = profileInteraction
+                                state = state, profileInteraction = profileInteraction,
                             )
                         },
+
                         postsContent = { UserPostsSection(state = state) },
-                        settingsContent = { SettingsSection() }
+
+                        settingsContent = {
+                            SettingsSection(
+                                onResetPasswordClick = {},
+                                onChangeLanguageClick = {},
+                                onLogOutClick = {},
+                                state = state,
+                                interaction = profileInteraction,
+                            )
+                        }
                     )
                 }
             }
         }
     }
-    }
+}
 
 @Composable
 private fun UserInformationSection(
-    modifier: Modifier = Modifier,
     state: ProfileUiState,
-    profileInteraction: ProfileInteraction
+    profileInteraction: ProfileInteraction,
+    modifier: Modifier = Modifier
 ) {
     val isUserInfoEditable = state.profileInformationUiState.isUserInfoEditable
 
@@ -176,26 +192,26 @@ private fun UserInformationSection(
                 Icon(
                     painter = painterResource(R.drawable.ic_user),
                     contentDescription = state.profileInformationUiState.name,
-                    tint = BlackTertiary
+                    tint = MaterialTheme.color.textTertiary
                 )
             }
         )
 
-            SwapWiseTextField(
-                value = state.profileInformationUiState.phoneNumber,
-                onValueChange = profileInteraction::onPhoneNumberChange,
-                isEditable = isUserInfoEditable,
-                placeholder = stringResource(R.string.phone_number),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                errorMessage = state.profileError.phoneNumberErrorMessage,
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_phone),
-                        contentDescription = stringResource(R.string.phone_number),
-                        tint = BlackTertiary
-                    )
-                }
-            )
+        SwapWiseTextField(
+            value = state.profileInformationUiState.phoneNumber,
+            onValueChange = profileInteraction::onPhoneNumberChange,
+            isEditable = isUserInfoEditable,
+            placeholder = stringResource(R.string.phone_number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            errorMessage = state.profileError.phoneNumberErrorMessage,
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_phone),
+                    contentDescription = stringResource(R.string.phone_number),
+                    tint = MaterialTheme.color.textTertiary
+                )
+            }
+        )
 
         SwapWiseTextField(
             value = state.profileInformationUiState.location,
@@ -207,7 +223,7 @@ private fun UserInformationSection(
                 Icon(
                     painter = painterResource(R.drawable.ic_location),
                     contentDescription = state.profileInformationUiState.location,
-                    tint = BlackTertiary
+                    tint = MaterialTheme.color.textTertiary
                 )
             }
         )
@@ -223,7 +239,7 @@ private fun UserInformationSection(
                 Icon(
                     painter = painterResource(R.drawable.ic_bio),
                     contentDescription = state.profileInformationUiState.bio,
-                    tint = BlackTertiary
+                    tint = MaterialTheme.color.textTertiary
                 )
             }
         )
@@ -256,28 +272,68 @@ private fun UserPostsSection(modifier: Modifier = Modifier, state: ProfileUiStat
         modifier = modifier.heightIn(max = LocalConfiguration.current.screenHeightDp.dp),
         verticalArrangement = Arrangement.spacedBy(Spacing8)
     ) {
-        items(items = state.userPosts){ postItem ->
-                PostCard(
-                    username = postItem.username,
-                    userImage = rememberAsyncImagePainter(postItem.userImageLink),
-                    isOpen = postItem.isThePostOpen,
-                    title = postItem.postTitle,
-                    isPostCard = false,
-                    details = postItem.postDescription,
-                    offersNumber = postItem.offersNumber.toString(),
-                    postImage = rememberAsyncImagePainter(postItem.postImageLink),
-                    onCardClick = {}
-                )
+        items(items = state.userPosts) { postItem ->
+            PostCard(
+                username = postItem.username,
+                userImage = rememberAsyncImagePainter(postItem.userImageLink),
+                isOpen = postItem.isThePostOpen,
+                title = postItem.postTitle,
+                isPostCard = false,
+                details = postItem.postDescription,
+                offersNumber = postItem.offersNumber.toString(),
+                postImage = rememberAsyncImagePainter(postItem.postImageLink),
+                onCardClick = {}
+            )
 
         }
     }
 }
 
 @Composable
-private fun SettingsSection(modifier: Modifier = Modifier) {
-    Box(modifier = modifier
-        .size(500.dp)
-        .background(color = BlackPrimary))
+private fun SettingsSection(
+    onResetPasswordClick: () -> Unit,
+    onChangeLanguageClick: () -> Unit,
+    onLogOutClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    state: ProfileUiState,
+    interaction: ProfileInteraction,
+) {
+    Column(
+        modifier = modifier.padding(Spacing8),
+        verticalArrangement = Arrangement.spacedBy(Spacing8)
+    ) {
+        SettingsRow(
+            title = stringResource(R.string.dark_theme),
+            onRowClick = { },
+            isClickEnable = false,
+            leadingIconResource = painterResource(R.drawable.ic_moon),
+            trailingIcon = {
+                SwapWiseSwitch(
+                    state = state.profileSettingsUiState.isDarkTheme,
+                    onCheckedChange = { interaction.onDarkMoodChange(it) }
+                )
+            }
+        )
+        SettingsRow(
+            title = stringResource(R.string.reset_Password),
+            onRowClick = onResetPasswordClick,
+            leadingIconResource = painterResource(R.drawable.ic_reset_password),
+        )
+
+        SettingsRow(
+            title = stringResource(R.string.language),
+            onRowClick = onChangeLanguageClick,
+            leadingIconResource = painterResource(R.drawable.ic_language),
+        )
+
+        SettingsRow(
+            title = stringResource(R.string.log_out),
+            contentColor = MaterialTheme.color.danger,
+            onRowClick = onLogOutClick,
+            leadingIconResource = painterResource(R.drawable.ic_logout),
+        )
+
+    }
 }
 
 
