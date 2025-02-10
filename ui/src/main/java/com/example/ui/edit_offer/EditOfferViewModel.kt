@@ -7,7 +7,6 @@ import com.example.domain.DeleteOfferUseCase
 import com.example.domain.EditOfferUseCase
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetOfferDetailsUseCase
-import com.example.domain.PostValidationUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
@@ -29,7 +28,6 @@ class EditOfferViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getOfferDetailsUseCase: GetOfferDetailsUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
-    private val offerValidationUseCase: PostValidationUseCase,
     private val editOfferUseCase: EditOfferUseCase,
     private val deleteOfferUseCase: DeleteOfferUseCase,
 ) : BaseViewModel<OfferItemUiState>(OfferItemUiState()), IEditOfferInteractions {
@@ -123,14 +121,7 @@ class EditOfferViewModel @Inject constructor(
 
     override fun onClickSave() {
         tryToExecute(
-            call = {
-                offerValidationUseCase(
-                    title = state.value.offerItem.title,
-                    place = state.value.offerItem.place,
-                    details = state.value.offerItem.details
-                )
-                editOfferUseCase(state.value.offerItem)
-            },
+            call = { editOfferUseCase(state.value.offerItem) },
             onError = ::onSaveOfferFail
         )
     }
