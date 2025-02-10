@@ -5,7 +5,7 @@ import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import javax.inject.Inject
 
-class PostValidationUseCase @Inject constructor() {
+class ValidatePostUseCase @Inject constructor() {
     operator fun invoke(
         title: String,
         place: String,

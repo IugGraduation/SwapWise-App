@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.example.domain.AddPostUseCase
 import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.PostValidationUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
@@ -24,7 +23,6 @@ import javax.inject.Inject
 class AddPostViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
-    private val postValidationUseCase: PostValidationUseCase,
     private val addPostUseCase: AddPostUseCase,
 ) : BaseViewModel<PostItemUiState>(PostItemUiState()), IAddPostInteractions {
     init {
@@ -113,14 +111,7 @@ class AddPostViewModel @Inject constructor(
 
     override fun onClickAdd() {
         tryToExecute(
-            call = {
-                postValidationUseCase(
-                    title = state.value.postItem.title,
-                    place = state.value.postItem.place,
-                    details = state.value.postItem.details
-                )
-                addPostUseCase(state.value.postItem)
-            },
+            call = { addPostUseCase(state.value.postItem) },
             onError = ::onAddPostFail
         )
     }

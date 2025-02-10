@@ -7,7 +7,6 @@ import com.example.domain.DeletePostUseCase
 import com.example.domain.EditPostUseCase
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetPostDetailsUseCase
-import com.example.domain.PostValidationUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
@@ -29,7 +28,6 @@ class EditPostViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getPostDetailsUseCase: GetPostDetailsUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
-    private val postValidationUseCase: PostValidationUseCase,
     private val editPostUseCase: EditPostUseCase,
     private val deletePostUseCase: DeletePostUseCase,
 ) : BaseViewModel<PostItemUiState>(PostItemUiState()), IEditPostInteractions {
@@ -140,14 +138,7 @@ class EditPostViewModel @Inject constructor(
 
     override fun onClickSave() {
         tryToExecute(
-            call = {
-                postValidationUseCase(
-                    title = state.value.postItem.title,
-                    place = state.value.postItem.place,
-                    details = state.value.postItem.details
-                )
-                editPostUseCase(state.value.postItem)
-            },
+            call = { editPostUseCase(state.value.postItem) },
             onError = ::onSavePostFail
         )
     }

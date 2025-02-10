@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.domain.AddOfferUseCase
 import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.PostValidationUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
@@ -27,7 +26,6 @@ class AddOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
-    private val offerValidationUseCase: PostValidationUseCase,
     private val addOfferUseCase: AddOfferUseCase,
 ) : BaseViewModel<OfferItemUiState>(OfferItemUiState()), IAddPostInteractions {
 
@@ -41,7 +39,7 @@ class AddOfferViewModel @Inject constructor(
 
     private fun prepareChipsList() {
         tryToExecute(
-            call = {  getCategoriesNamesUseCase() },
+            call = { getCategoriesNamesUseCase() },
             onSuccess = ::onGetChipsDataSuccess,
         )
     }
@@ -106,14 +104,7 @@ class AddOfferViewModel @Inject constructor(
     override fun onClickAdd() {
         isActionLoading()
         tryToExecute(
-            call = {
-                offerValidationUseCase(
-                    title = state.value.offerItem.title,
-                    place = state.value.offerItem.place,
-                    details = state.value.offerItem.details
-                )
-                addOfferUseCase(args.postId, state.value.offerItem)
-            },
+            call = { addOfferUseCase(args.postId, state.value.offerItem) },
             onError = ::onAddPostFail
         )
     }
