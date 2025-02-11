@@ -1,10 +1,8 @@
 package com.example.data.repository
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import javax.inject.Inject
 
-class NotificationsRepository {
-    @RequiresApi(Build.VERSION_CODES.O)
+class NotificationsRepository @Inject constructor(){
     suspend fun getNotifications() {
 
     }

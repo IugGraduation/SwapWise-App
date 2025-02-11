@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.model.OfferItem
@@ -26,6 +27,7 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
+import com.example.ui.models.Chip
 import com.example.ui.models.OfferItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
@@ -66,7 +68,10 @@ fun AddOfferContent(
         },
         baseUiState = state.baseUiState,
     ) {
-        ProductImage(state.offerItem.imageLink, onImagePicked = addInteractions::onSelectedImageChange)
+        ProductImage(
+            state.offerItem.imageLink,
+            onImagePicked = addInteractions::onSelectedImageChange
+        )
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -126,21 +131,23 @@ fun AddOfferContent(
                     it.selected = it.text == state.offerItem.category
                 },
             )
-
         }
-
     }
 }
 
 
-//@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
+@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         AddOfferContent(
-            state = OfferItemUiState(offerItem = OfferItem(category = "Category")),
+            state = OfferItemUiState(
+                offerItem = OfferItem(category = "Category"), chipsList = listOf(
+                    Chip(text = "Category"), Chip(text = "Category2"), Chip(text = "Category3")
+                )
+            ),
             onClickGoBack = { },
-            addInteractions = object : IAddPostInteractions{
+            addInteractions = object : IAddPostInteractions {
                 override fun onTitleChange(title: String) {}
                 override fun onPlaceChange(place: String) {}
                 override fun onDetailsChange(details: String) {}

@@ -102,9 +102,9 @@ class AddOfferViewModel @Inject constructor(
 
 
     override fun onClickAdd() {
-        isActionLoading()
         tryToExecute(
             call = { addOfferUseCase(args.postId, state.value.offerItem) },
+            onSuccess = { navigateUp() },
             onError = ::onAddPostFail
         )
     }
