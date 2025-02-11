@@ -10,6 +10,6 @@ class SeeAllTopicsUseCase @Inject constructor() {
 
         val postItem = GetFakePostDetailsUseCase()()
         val postsList = listOf(postItem, postItem, postItem, postItem, postItem)
-        return TopicsHolder(items = postsList,)
+        return TopicsHolder(title = "Top Interactive", items = postsList,)
     }
 }

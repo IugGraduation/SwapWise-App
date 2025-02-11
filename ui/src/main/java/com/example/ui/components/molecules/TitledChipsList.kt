@@ -55,7 +55,7 @@ fun TitledChipsList(
 }
 
 @Composable
-fun SwapWiseChip(chip: Chip, modifier: Modifier = Modifier) {
+private fun SwapWiseChip(chip: Chip, modifier: Modifier = Modifier) {
     val myModifier = if (!chip.selected) modifier.shadow(
         elevation = 4.dp,
         shape = RoundedCornerShape(RadiusLarge),

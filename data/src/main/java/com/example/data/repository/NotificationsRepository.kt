@@ -1,6 +1,8 @@
 package com.example.data.repository
 
-class NotificationsRepository {
+import javax.inject.Inject
+
+class NotificationsRepository @Inject constructor(){
     suspend fun getNotifications() {
 
     }

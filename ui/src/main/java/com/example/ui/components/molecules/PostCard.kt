@@ -3,6 +3,7 @@ package com.example.ui.components.molecules
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -34,10 +36,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
-import com.example.ui.components.atoms.ButtonMakeOfferBottom
+import com.example.ui.components.atoms.HorizontalSpacer
+import com.example.ui.theme.ButtonSize32
 import com.example.ui.theme.CardHeight
+import com.example.ui.theme.CardWidth
 import com.example.ui.theme.IconSizeSmall
 import com.example.ui.theme.ImageSize16
+import com.example.ui.theme.Primary
+import com.example.ui.theme.PrimaryOverlay
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
@@ -62,19 +68,20 @@ fun PostCard(
 
     Card(
         modifier = modifier
-            .height(CardHeight)
-            .apply {
+            .height(CardHeight).then (
                 if (isHorizontalCard) {
-                    width(width = CardWidth)
+                    Modifier.width(width = CardWidth)
                 } else {
                     Modifier.fillMaxWidth()
                 }
-            },
+            ),
         onClick = onCardClick,
         colors = CardDefaults.cardColors(contentColor = MaterialTheme.color.onBackground)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Box(modifier = Modifier.fillMaxWidth().weight(1.6f)) {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .weight(1.6f)) {
                 Image(
                     modifier = Modifier.fillMaxWidth(),
                     painter = postImage,
@@ -90,7 +97,12 @@ fun PostCard(
                 )
             }
 
-            Box(modifier = Modifier.fillMaxWidth().weight(1.4f).background(color = MaterialTheme.color.onBackground)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.4f)
+                    .background(color = MaterialTheme.color.onBackground)
+            ) {
                 PostInfoSection(
                     title = title,
                     offersNumber = offersNumber,
@@ -174,7 +186,6 @@ private fun PostInfoSection(
             Spacer(modifier = Modifier.weight(1f))
             BoxRounded(
                 modifier = Modifier
-                    .weight(1f)
                     .wrapContentWidth(),
                 color = MaterialTheme.color.background
             ) {
@@ -214,9 +225,38 @@ private fun PostInfoSection(
                 onClick = { onMakeOfferButtonClick() }
             )
         }
-
     }
+}
 
+@Composable
+private fun ButtonMakeOfferBottom(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Box(
+        modifier = modifier
+            .background(color = PrimaryOverlay)
+            .height(ButtonSize32)
+            .clickable(onClick = onClick)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = Spacing4),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_offer),
+                contentDescription = "",
+                modifier = Modifier.size(IconSizeSmall),
+                tint = Primary
+            )
+            HorizontalSpacer(Spacing4)
+            Text(
+                stringResource(R.string.make_your_offer),
+                style = TextStyles.captionMedium,
+                color = Primary
+            )
+        }
+    }
 }
 
 @Composable
@@ -238,7 +278,7 @@ private fun PostStateRoundedBox(
 }
 
 
-@Preview()
+@Preview(showSystemUi = true)
 @Composable
 private fun PostCardPreview() {
     PostCard(
@@ -247,9 +287,9 @@ private fun PostCardPreview() {
         isOpen = true,
         title = "Liters of Olive Oil for Trade Liters of Olive Oil for Trade",
         details = "Looking for a sweet deal? I have 10 kilograms of high-quality sugar Liters of Olive Oil for Trade that I’d like to exchange Liters of Olive Oil for Trade Liters of Olive Oil for Trade Liters of Olive Oil for Trade for something useful",
-        isPostCard = false,
         offersNumber = "50",
-        postImage = painterResource(R.drawable.img_food_and_beverages)
+        postImage = painterResource(R.drawable.img_food_and_beverages),
+        isHorizontalCard = true
     ) { }
 }
 

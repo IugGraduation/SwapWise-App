@@ -195,6 +195,7 @@ fun PreviewHomeContent() {
     val topInteractive = TopicsHolderUiState(
         title = "TopInteractive",
         items = postsItemsList,
+        isHorizontal = true,
     )
     val recentPosts = TopicsHolderUiState(
         title = "RecentPosts",
