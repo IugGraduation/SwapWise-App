@@ -1,23 +1,19 @@
 package com.example.ui.notifications
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import com.example.domain.notifications.GetNotificationsUseCase
-import com.example.domain.notifications.GroupNotificationsUseCase
 import com.example.domain.model.Notification
 import com.example.domain.model.NotificationGroup
+import com.example.domain.notifications.GetNotificationsUseCase
+import com.example.domain.notifications.GroupNotificationsUseCase
 import com.example.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
     private val getNotificationsUseCase: GetNotificationsUseCase,
     private val groupNotificationsUseCase: GroupNotificationsUseCase
-) :
-    BaseViewModel<NotificationUIState>(NotificationUIState()), INotificationsInteractions {
+) : BaseViewModel<NotificationUIState>(NotificationUIState()), INotificationsInteractions {
 
     init {
         getNotifications()
@@ -27,7 +23,6 @@ class NotificationsViewModel @Inject constructor(
         tryToExecute(
             call = { getNotificationsUseCase() },
             onSuccess = ::onGetNotificationsSuccess,
-
             )
     }
 

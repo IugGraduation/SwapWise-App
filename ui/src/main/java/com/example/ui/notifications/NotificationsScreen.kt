@@ -1,7 +1,5 @@
 package com.example.ui.notifications
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -63,7 +61,6 @@ import com.example.ui.theme.TextStyles
 import com.example.ui.theme.color
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NotificationsScreen(
     navController: NavController,
@@ -89,7 +86,6 @@ fun NotificationsScreen(
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NotificationsContent(
     state: NotificationUIState,
@@ -235,7 +231,6 @@ private fun BackgroundDeleteCard() {
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun PreviewNotificationContent() {

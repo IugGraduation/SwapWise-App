@@ -1,12 +1,12 @@
 package com.example.domain.model
 
-import java.time.LocalDate
+import java.util.Date
 
 data class Notification(
     val id: String = "",
     val userImage: String = "",
     val message: String = "",
-    val date: LocalDate,
+    val date: Date = Date(),
 )
 
 
