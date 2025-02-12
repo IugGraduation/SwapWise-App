@@ -2,7 +2,6 @@ package com.example.ui.edit_post
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import com.example.domain.DeletePostUseCase
 import com.example.domain.EditPostUseCase
 import com.example.domain.GetCategoriesNamesUseCase
@@ -19,7 +18,6 @@ import com.example.ui.models.PostItemUiState
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,12 +31,9 @@ class EditPostViewModel @Inject constructor(
 ) : BaseViewModel<PostItemUiState>(PostItemUiState()), IEditPostInteractions {
     private val args = EditPostArgs(savedStateHandle)
 
-
     init {
-        viewModelScope.launch {
-            getPostDetails()
-            prepareChipsList()
-        }
+        getPostDetails()
+        prepareChipsList()
     }
 
     private fun getPostDetails() {
