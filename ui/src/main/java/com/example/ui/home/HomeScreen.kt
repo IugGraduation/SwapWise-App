@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.GetFakeCategoriesUseCase
 import com.example.domain.GetFakePostDetailsUseCase
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.model.User
 import com.example.ui.R
@@ -62,6 +63,8 @@ fun HomeScreen(
         for (item in topic.items) {
             if (item is PostItem) {
                 item.onClickGoToDetails = { navController.navigateToPostDetails(item.uuid) }
+            } else if (item is CategoryItem) {
+                item.onClickSearchByCategory = { navController.navigateToSearch(item.title) }
             }
         }
     }

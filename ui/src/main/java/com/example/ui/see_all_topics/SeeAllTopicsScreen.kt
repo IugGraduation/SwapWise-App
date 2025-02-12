@@ -6,11 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakePostDetailsUseCase
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.post_details.navigateToPostDetails
+import com.example.ui.search.navigateToSearch
 import com.example.ui.theme.GraduationProjectTheme
 
 
@@ -24,8 +26,9 @@ fun SeeAllTopicsScreen(
     for (item in state.items) {
         if (item is PostItem) {
             item.onClickGoToDetails = { navController.navigateToPostDetails(item.uuid) }
+        } else if (item is CategoryItem) {
+            item.onClickSearchByCategory = { navController.navigateToSearch(item.title) }
         }
-        //todo: else categories and same for home screen
     }
 
     SeeAllTopicsContent(

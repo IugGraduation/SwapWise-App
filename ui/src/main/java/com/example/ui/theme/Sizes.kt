@@ -54,6 +54,9 @@ val MultiLineEditTextHeight = 120.dp
 
 val CardHeight = 272.dp
 val CardWidth = 248.dp
+val CategoryCardWidth = 108.dp
+val CategoryCardHorizontalHeight = 80.dp
+val CategoryCardVerticalHeight = 164.dp
 
 val NormalButtonHeight = 56.dp
 
