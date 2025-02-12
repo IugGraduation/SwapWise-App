@@ -3,6 +3,7 @@ package com.example.ui.components.molecules
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +17,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
@@ -24,6 +26,7 @@ import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.theme.BackgroundLight
+import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.IconSizeLarge
 import com.example.ui.theme.IconSizeSmall
 import com.example.ui.theme.RadiusLarge
@@ -34,7 +37,7 @@ import com.example.ui.theme.TextStyles
 @Composable
 fun DetailsScreenUserHeader(user: User, date: String) {
     Row(
-        modifier = Modifier.padding(horizontal = Spacing16),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing16),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -60,7 +63,7 @@ fun DetailsScreenUserHeader(user: User, date: String) {
 }
 
 @Composable
-fun UserHeader(
+private fun UserHeader(
     user: User,
     imgSize: Dp = IconSizeSmall,
     textStyle: TextStyle = TextStyles.headingSmall,
@@ -97,5 +100,21 @@ private fun OverlayBoxWithImage(overlayColor: Color, imgResId: Int, text: String
             HorizontalSpacer(Spacing4)
             Text(text, style = TextStyles.captionSmall)
         }
+    }
+}
+
+
+
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewDetailsScreenUserHeader() {
+    GraduationProjectTheme {
+        DetailsScreenUserHeader(
+            user = User(
+                name = "User",
+                phone = "1213124"
+            ),
+            date = "11/11/11"
+        )
     }
 }

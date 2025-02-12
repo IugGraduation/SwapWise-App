@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakeOfferDetailsUseCase
@@ -135,7 +136,7 @@ fun RoundedIconButton(onClick: () -> Unit, iconResId: Int, contentDescription: S
 }
 
 
-//@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440")
+@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
