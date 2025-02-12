@@ -1,7 +1,7 @@
 package com.example.ui.add_post
 
 import android.net.Uri
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.SavedStateHandle
 import com.example.domain.AddPostUseCase
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.exception.InvalidDetailsException
@@ -16,19 +16,20 @@ import com.example.ui.models.PostItemUiState
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddPostViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
     private val addPostUseCase: AddPostUseCase,
 ) : BaseViewModel<PostItemUiState>(PostItemUiState()), IAddPostInteractions {
+    private val args = AddPostArgs(savedStateHandle)
+
     init {
-        viewModelScope.launch {
-            prepareChipsList()
-        }
+        prepareChipsList()
+        updatePostItem { copy(title = args.postTitle) }
     }
 
 
@@ -112,6 +113,7 @@ class AddPostViewModel @Inject constructor(
     override fun onClickAdd() {
         tryToExecute(
             call = { addPostUseCase(state.value.postItem) },
+            onSuccess = { navigateUp() },
             onError = ::onAddPostFail
         )
     }

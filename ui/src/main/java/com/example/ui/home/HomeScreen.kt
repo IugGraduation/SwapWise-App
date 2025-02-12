@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,7 +16,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -24,6 +28,7 @@ import com.example.domain.GetFakePostDetailsUseCase
 import com.example.domain.model.PostItem
 import com.example.domain.model.User
 import com.example.ui.R
+import com.example.ui.add_post.navigateToAddPost
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.atoms.SwapWiseTextButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -72,7 +77,8 @@ fun HomeScreen(
     HomeContent(
         state = state,
         bottomBarState = bottomBarState,
-        homeInteractions = homeViewModel
+        homeInteractions = homeViewModel,
+        navigateToAddPost = {title -> navController.navigateToAddPost(title)}
     )
 }
 
@@ -81,8 +87,11 @@ fun HomeScreen(
 fun HomeContent(
     state: HomeUiState,
     bottomBarState: BottomBarUiState,
-    homeInteractions: IHomeInteractions
+    homeInteractions: IHomeInteractions,
+    navigateToAddPost: (String) -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     HomeTemplate(
         state.user,
         bottomBarState = bottomBarState,
@@ -97,8 +106,14 @@ fun HomeContent(
                     value = state.newPost,
                     onValueChange = homeInteractions::onNewPostFieldChange,
                     placeholder = stringResource(R.string.would_you_like_to_trade_anything),
-                    modifier = Modifier.padding(horizontal = Spacing16)
-                    //todo: on click enter, go to add post screen
+                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                            navigateToAddPost(state.newPost)
+                        }
+                    ),
+                    modifier = Modifier.padding(horizontal = Spacing16),
                 )
                 VerticalSpacer(Spacing24)
             }
@@ -217,6 +232,7 @@ fun PreviewHomeContent() {
             homeInteractions = object : IHomeInteractions {
                 override fun onNewPostFieldChange(newValue: String) {}
             },
+            navigateToAddPost = {}
         )
     }
 }
