@@ -139,6 +139,7 @@ class EditPostViewModel @Inject constructor(
     override fun onClickSave() {
         tryToExecute(
             call = { editPostUseCase(state.value.postItem) },
+            onSuccess = { navigateUp() },
             onError = ::onSavePostFail
         )
     }

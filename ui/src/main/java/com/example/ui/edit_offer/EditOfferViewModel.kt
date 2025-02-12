@@ -122,6 +122,7 @@ class EditOfferViewModel @Inject constructor(
     override fun onClickSave() {
         tryToExecute(
             call = { editOfferUseCase(state.value.offerItem) },
+            onSuccess = { navigateUp() },
             onError = ::onSaveOfferFail
         )
     }
