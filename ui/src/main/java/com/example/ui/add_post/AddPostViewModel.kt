@@ -28,8 +28,8 @@ class AddPostViewModel @Inject constructor(
     private val args = AddPostArgs(savedStateHandle)
 
     init {
-        prepareChipsList()
         updatePostItem { copy(title = args.postTitle) }
+        prepareChipsList()
     }
 
 

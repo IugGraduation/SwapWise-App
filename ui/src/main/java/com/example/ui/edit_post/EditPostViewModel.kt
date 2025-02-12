@@ -33,7 +33,6 @@ class EditPostViewModel @Inject constructor(
 
     init {
         getPostDetails()
-        prepareChipsList()
     }
 
     private fun getPostDetails() {
@@ -45,6 +44,7 @@ class EditPostViewModel @Inject constructor(
 
     private fun onGetPostDetailsSuccess(data: PostItem) {
         _state.value = PostItemUiState(postItem = data)
+        prepareChipsList()
     }
 
 

@@ -2,7 +2,6 @@ package com.example.ui.add_offer
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import com.example.domain.AddOfferUseCase
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.exception.InvalidDetailsException
@@ -18,7 +17,6 @@ import com.example.ui.models.PostErrorUiState
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,9 +30,7 @@ class AddOfferViewModel @Inject constructor(
     private val args = AddOfferArgs(savedStateHandle)
 
     init {
-        viewModelScope.launch {
-            prepareChipsList()
-        }
+        prepareChipsList()
     }
 
     private fun prepareChipsList() {

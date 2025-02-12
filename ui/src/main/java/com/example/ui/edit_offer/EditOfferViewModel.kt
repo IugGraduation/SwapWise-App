@@ -2,7 +2,6 @@ package com.example.ui.edit_offer
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import com.example.domain.DeleteOfferUseCase
 import com.example.domain.EditOfferUseCase
 import com.example.domain.GetCategoriesNamesUseCase
@@ -19,7 +18,6 @@ import com.example.ui.models.PostErrorUiState
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,12 +31,8 @@ class EditOfferViewModel @Inject constructor(
 ) : BaseViewModel<OfferItemUiState>(OfferItemUiState()), IEditOfferInteractions {
     private val args = EditOfferArgs(savedStateHandle)
 
-
     init {
-        viewModelScope.launch {
-            getOfferDetails()
-            prepareChipsList()
-        }
+        getOfferDetails()
     }
 
     private fun getOfferDetails() {
@@ -50,6 +44,7 @@ class EditOfferViewModel @Inject constructor(
 
     private fun onGetOfferDetailsSuccess(data: OfferItem) {
         _state.value = OfferItemUiState(offerItem = data)
+        prepareChipsList()
     }
 
 
