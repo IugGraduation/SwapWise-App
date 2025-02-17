@@ -34,6 +34,7 @@ import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing56
 import com.example.ui.theme.Spacing8
+import com.example.ui.theme.color
 
 @Composable
 fun LoginScreen(
@@ -65,7 +66,7 @@ fun LoginContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = Spacing16)
-                .background(color = MaterialTheme.colorScheme.background),
+                .background(color = MaterialTheme.color.background),
             verticalArrangement = Arrangement.spacedBy(Spacing24)
         ) {
             VerticalSpacer(Spacing56)
@@ -112,7 +113,7 @@ private fun LoginForm(
                 Icon(
                     painter = painterResource(R.drawable.ic_phone),
                     contentDescription = stringResource(R.string.phone_number),
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.color.tertiary
                 )
             },
             errorMessage = state.loginError.phoneError

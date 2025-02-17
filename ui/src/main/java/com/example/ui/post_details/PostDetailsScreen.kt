@@ -47,6 +47,7 @@ import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun PostDetailsScreen(
@@ -109,7 +110,7 @@ fun PostDetailsContent(
                 Text(
                     text = stringResource(R.string.offers),
                     style = TextStyles.headingMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.color.primary,
                     modifier = Modifier.padding(horizontal = Spacing16)
                 )
                 VerticalSpacer(Spacing8)
@@ -166,13 +167,13 @@ fun PostDetailsStatusItem(title: String, value: String, modifier: Modifier = Mod
         Text(
             value,
             style = TextStyles.headingSmall,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.color.primary
         )
         VerticalSpacer(Spacing4)
         Text(
             title,
             style = TextStyles.captionLarge,
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.color.tertiary
         )
     }
 }

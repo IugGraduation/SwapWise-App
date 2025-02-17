@@ -32,6 +32,7 @@ import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun AddPostScreen(navController: NavController, viewModel: AddPostViewModel = hiltViewModel()) {
@@ -76,7 +77,7 @@ fun AddPostContent(
             Text(
                 text = stringResource(R.string.post_info),
                 style = TextStyles.headingLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.color.primary
             )
             VerticalSpacer(Spacing8)
             SwapWiseTextField(
@@ -87,7 +88,7 @@ fun AddPostContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_title),
                         contentDescription = stringResource(R.string.post_title),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.color.tertiary
                     )
                 },
                 errorMessage = state.postError.titleError,
@@ -101,7 +102,7 @@ fun AddPostContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_location),
                         contentDescription = stringResource(R.string.your_place),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.color.tertiary
                     )
                 },
                 errorMessage = state.postError.placeError,
@@ -115,7 +116,7 @@ fun AddPostContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_details),
                         contentDescription = stringResource(R.string.details),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.color.tertiary
                     )
                 },
                 isMultiline = true,

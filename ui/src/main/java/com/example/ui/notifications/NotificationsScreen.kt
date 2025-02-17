@@ -1,7 +1,5 @@
 package com.example.ui.notifications
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -60,9 +58,9 @@ import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing56
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NotificationsScreen(
     navController: NavController,
@@ -88,7 +86,6 @@ fun NotificationsScreen(
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NotificationsContent(
     state: NotificationUIState,
@@ -110,7 +107,7 @@ fun NotificationsContent(
                     Text(
                         text = group.title,
                         style = TextStyles.headingSmall,
-                        color = MaterialTheme.colorScheme.tertiary,
+                        color = MaterialTheme.color.tertiary,
                         modifier = Modifier
                             .padding(horizontal = Spacing16)
                             .padding(bottom = Spacing8)
@@ -183,7 +180,7 @@ fun SwipeableNotificationCard(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.onBackground),
+                        .background(color = MaterialTheme.color.onBackground),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
@@ -196,7 +193,7 @@ fun SwipeableNotificationCard(
                     Text(
                         text = notification.message,
                         style = TextStyles.bodySmall,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.color.primary,
                         modifier = Modifier.padding(horizontal = Spacing4, vertical = Spacing8)
 
                     )
@@ -234,7 +231,6 @@ private fun BackgroundDeleteCard() {
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun PreviewNotificationContent() {

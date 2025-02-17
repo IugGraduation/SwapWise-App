@@ -43,6 +43,7 @@ import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun HomeScreen(
@@ -159,7 +160,7 @@ fun TopicsListHeader(
         Text(
             text = title,
             style = TextStyles.headingMedium,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.color.primary
         )
         SwapWiseTextButton(
             onClick = onClickSeeAll,

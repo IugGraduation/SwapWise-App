@@ -30,6 +30,7 @@ import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun DetailsScreenUserHeader(user: User, date: String) {
@@ -42,10 +43,10 @@ fun DetailsScreenUserHeader(user: User, date: String) {
             user = user,
             imgSize = IconSizeLarge,
             textStyle = TextStyles.headingMedium,
-            textColor = MaterialTheme.colorScheme.primary
+            textColor = MaterialTheme.color.primary
         )
         OverlayBoxWithImage(
-            overlayColor = MaterialTheme.colorScheme.onBackground,
+            overlayColor = MaterialTheme.color.onBackground,
             imgResId = R.drawable.ic_calendar,
             text = date,
             modifier = Modifier.padding(Spacing4),
@@ -92,7 +93,7 @@ private fun OverlayBoxWithImage(overlayColor: Color, imgResId: Int, text: String
                 painter = painterResource(imgResId),
                 contentDescription = "",
                 modifier = Modifier.size(12.dp),
-                tint = MaterialTheme.colorScheme.secondary
+                tint = MaterialTheme.color.secondary
             )
             HorizontalSpacer(Spacing4)
             Text(text, style = TextStyles.captionSmall)

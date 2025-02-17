@@ -39,6 +39,7 @@ import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun OfferDetailsScreen(
@@ -74,7 +75,7 @@ fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
             Text(
                 text = stringResource(R.string.phone),
                 style = TextStyles.headingMedium,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.color.primary,
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
             VerticalSpacer(Spacing8)
@@ -96,7 +97,7 @@ fun PhoneRow(phone: String) {
         Text(
             text = phone,
             style = TextStyles.bodyLarge,
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.color.tertiary
         )
         Row(horizontalArrangement = Arrangement.spacedBy(Spacing16)) {
             RoundedIconButton(

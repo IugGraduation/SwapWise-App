@@ -10,6 +10,7 @@ import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing32
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
+import com.example.ui.theme.color
 
 @Composable
 fun DetailsScreenBody(title: String, body: String, modifier: Modifier = Modifier) {
@@ -17,13 +18,13 @@ fun DetailsScreenBody(title: String, body: String, modifier: Modifier = Modifier
         Text(
             text = title,
             style = TextStyles.headingLarge,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.color.primary
         )
         VerticalSpacer(Spacing8)
         Text(
             text = body,
             style = TextStyles.bodyLarge,
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.color.tertiary
         )
     }
 }

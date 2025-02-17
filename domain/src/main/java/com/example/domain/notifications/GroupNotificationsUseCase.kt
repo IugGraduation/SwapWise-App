@@ -1,24 +1,34 @@
 package com.example.domain.notifications
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.domain.model.Notification
 import com.example.domain.model.NotificationGroup
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
 class GroupNotificationsUseCase @Inject constructor() {
-    @RequiresApi(Build.VERSION_CODES.O)
     operator fun invoke(notifications: List<Notification>): List<NotificationGroup> {
+        val today = Calendar.getInstance()
+        val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
+        val dateFormat = SimpleDateFormat("MMM d", Locale.getDefault())
+
         return notifications.groupBy { notification ->
+            val notificationDate = Calendar.getInstance().apply { time = notification.date }
+
             when {
-                notification.date.isEqual(LocalDate.now()) -> "Today"
-                notification.date.isEqual(LocalDate.now().minusDays(1)) -> "Yesterday"
-                else -> notification.date.format(DateTimeFormatter.ofPattern("MMM d"))
+                isSameDay(notificationDate, today) -> "Today"
+                isSameDay(notificationDate, yesterday) -> "Yesterday"
+                else -> dateFormat.format(notification.date)
             }
         }.map { (title, notifications) ->
             NotificationGroup(title, notifications)
         }
     }
+
+    private fun isSameDay(cal1: Calendar, cal2: Calendar): Boolean {
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
+    }
+
 }
