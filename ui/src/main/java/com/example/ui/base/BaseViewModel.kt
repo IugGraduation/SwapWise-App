@@ -34,6 +34,7 @@ abstract class BaseViewModel<STATE>(initialState: STATE) : ViewModel() {
 
 
     private fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
+        //todo: make updateBaseUiState work
 //        _state.update {
 //            it.copy(baseUiState = it.baseUiState.update())
 //        }

@@ -2,8 +2,10 @@ package com.example.ui.add_post
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -69,9 +71,11 @@ fun AddPostContent(
         baseUiState = state.baseUiState,
     ) {
         ProductImage(state.postItem.imageLink, onImagePicked = addInteractions::onSelectedImageChange)
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .verticalScroll(scrollState)
                 .padding(Spacing16)
         ) {
             Text(

@@ -2,6 +2,7 @@ package com.example.ui.components.atoms
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,12 +31,15 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.OfferItem
 import com.example.domain.model.PostItem
 import com.example.domain.model.TopicItem
 import com.example.ui.components.molecules.PostCard
+import com.example.ui.theme.CategoryCardHorizontalHeight
+import com.example.ui.theme.CategoryCardVerticalHeight
+import com.example.ui.theme.CategoryCardWidth
 import com.example.ui.theme.PrimaryOverlay
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Spacing16
@@ -66,11 +70,14 @@ private fun getCard(
 ): @Composable (TopicItem) -> Unit {
     return when (isCategoryItem) {
         true -> { item ->
-            CategoryCard(
-                categoryImage = rememberAsyncImagePainter(item.imageLink),
-                title = item.title,
-                isHorizontal = isHorizontal,
-            )
+            if (item is CategoryItem) {
+                CategoryCard(
+                    categoryImage = rememberAsyncImagePainter(item.imageLink),
+                    title = item.title,
+                    isHorizontal = isHorizontal,
+                    onClickSearchByCategory = item.onClickSearchByCategory
+                )
+            }
         }
 
         false -> { item ->
@@ -105,17 +112,17 @@ private fun getCard(
 fun CategoryCard(
     categoryImage: Painter,
     title: String,
-    modifier: Modifier = Modifier,
     isHorizontal: Boolean = true,
-) {
-    val myModifier = when (isHorizontal) {
-        true -> modifier.size(width = 108.dp, height = 80.dp)
-        false -> modifier
+    modifier: Modifier = if (isHorizontal) {
+        Modifier.size(width = CategoryCardWidth, height = CategoryCardHorizontalHeight)
+    } else {
+        Modifier
             .fillMaxWidth()
-            .height(height = 164.dp)
-    }
-
-    BoxRounded(modifier = myModifier, contentAlignment = Alignment.Center) {
+            .height(height = CategoryCardVerticalHeight)
+    },
+    onClickSearchByCategory: () -> Unit = {},
+) {
+    BoxRounded(modifier = modifier, contentAlignment = Alignment.Center) {
         Image(
             painter = categoryImage,
             contentDescription = title,
@@ -126,7 +133,8 @@ fun CategoryCard(
             modifier = modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(RadiusLarge))
-                .background(color = PrimaryOverlay),
+                .background(color = PrimaryOverlay)
+                .clickable { onClickSearchByCategory() },
         ) {}
 
         val textStyle = when (isHorizontal) {

@@ -1,5 +1,6 @@
 package com.example.ui.search
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetSearchResultUseCase
@@ -18,9 +19,11 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase
 ) : BaseViewModel<SearchUiState>(SearchUiState()), ISearchInteractions {
+    private val args = SearchArgs(savedStateHandle)
 
     init {
         prepareChipsList()
@@ -39,7 +42,12 @@ class SearchViewModel @Inject constructor(
 
     private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
         val chipsList = List(categoriesNames.size) { index ->
-            Chip(text = categoriesNames[index], selected = false, onClick = { search() })
+            if (args.filterCategoryName == categoriesNames[index]) {
+                Chip(text = categoriesNames[index], selected = true, onClick = { search() })
+                    .also { search() }
+            } else {
+                Chip(text = categoriesNames[index], selected = false, onClick = { search() })
+            }
         }
         _state.update {
             it.copy(filterChipsList = chipsList)
@@ -51,7 +59,8 @@ class SearchViewModel @Inject constructor(
             call = {
                 updateErrorMessage()
                 _state.update { it.copy(topicsList = listOf()) }
-                val filterCategories = _state.value.filterChipsList.map { it.text }
+                val filterCategories =
+                    _state.value.filterChipsList.filter { it.selected }.map { it.text }
                 getSearchResultUseCase(_state.value.search, filterCategories)
             },
             onSuccess = ::onSearchSuccess,

@@ -8,8 +8,8 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
-import com.example.ui.home.navigateToHome
 import com.example.graduationproject.AppNavGraph
+import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.theme.GraduationProjectTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
             GraduationProjectTheme(darkTheme = isDarkTheme) {
                 val navController = rememberNavController()
                 AppNavGraph(navController)
-                navController.navigateToHome()
+                navController.navigateToEditPost("1")
             }
         }
     }
