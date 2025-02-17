@@ -1,5 +1,7 @@
 package com.example.ui.offer_details
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,8 +18,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakeOfferDetailsUseCase
@@ -47,14 +51,40 @@ fun OfferDetailsScreen(
     viewModel: OfferDetailsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+    val phone = state.offerItem.user.phone
     OfferDetailsContent(
         state = state,
         onClickGoBack = { navController.navigateUp() },
+        onClickPhoneButton = {
+            val intent = Intent(Intent.ACTION_DIAL).apply {
+                data = Uri.parse("tel:$phone")
+            }
+            context.startActivity(intent)
+        },
+        onClickWhatsappButton = {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("https://wa.me/$phone")
+            }
+            context.startActivity(intent)
+        },
+        onClickMessageButton = {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("sms:$phone")
+            }
+            context.startActivity(intent)
+        },
     )
 }
 
 @Composable
-fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
+fun OfferDetailsContent(
+    state: OfferItemUiState,
+    onClickGoBack: () -> Unit,
+    onClickPhoneButton: () -> Unit,
+    onClickWhatsappButton: () -> Unit,
+    onClickMessageButton: () -> Unit
+) {
     TitledScreenTemplate(
         title = stringResource(R.string.offer_details),
         onClickGoBack = onClickGoBack,
@@ -79,14 +109,24 @@ fun OfferDetailsContent(state: OfferItemUiState, onClickGoBack: () -> Unit) {
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
             VerticalSpacer(Spacing8)
-            PhoneRow(phone = state.offerItem.user.phone)
+            PhoneRow(
+                phone = state.offerItem.user.phone,
+                onClickPhoneButton = onClickPhoneButton,
+                onClickWhatsappButton = onClickWhatsappButton,
+                onClickMessageButton = onClickMessageButton
+            )
         }
 
     }
 }
 
 @Composable
-fun PhoneRow(phone: String) {
+fun PhoneRow(
+    phone: String,
+    onClickPhoneButton: () -> Unit,
+    onClickWhatsappButton: () -> Unit,
+    onClickMessageButton: () -> Unit
+) {
     Row(
         modifier = Modifier
             .padding(horizontal = Spacing16)
@@ -101,17 +141,17 @@ fun PhoneRow(phone: String) {
         )
         Row(horizontalArrangement = Arrangement.spacedBy(Spacing16)) {
             RoundedIconButton(
-                onClick = { },
+                onClick = onClickPhoneButton,
                 iconResId = R.drawable.ic_phone,
                 contentDescription = stringResource(R.string.phone)
             )
             RoundedIconButton(
-                onClick = { },
+                onClick = onClickWhatsappButton,
                 iconResId = R.drawable.ic_chat,
                 contentDescription = stringResource(R.string.what_s_up_app)
             )
             RoundedIconButton(
-                onClick = { },
+                onClick = onClickMessageButton,
                 iconResId = R.drawable.ic_message,
                 contentDescription = stringResource(R.string.message)
             )
@@ -123,7 +163,9 @@ fun PhoneRow(phone: String) {
 fun RoundedIconButton(onClick: () -> Unit, iconResId: Int, contentDescription: String = "", modifier: Modifier = Modifier) {
     BoxRounded(
         color = Primary,
-        modifier = modifier.size(IconSizeLarge).clickable { onClick() },
+        modifier = modifier
+            .size(IconSizeLarge)
+            .clickable { onClick() },
         contentAlignment = Alignment.Center,
     ) {
         Icon(
@@ -136,13 +178,16 @@ fun RoundedIconButton(onClick: () -> Unit, iconResId: Int, contentDescription: S
 }
 
 
-//@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440")
+@Preview(showBackground = true, device = "spec:width=1080px,height=3340px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         OfferDetailsContent(
             state = OfferItemUiState(offerItem = GetFakeOfferDetailsUseCase()()),
             onClickGoBack = {},
+            onClickPhoneButton = { },
+            onClickWhatsappButton = { },
+            onClickMessageButton = { },
         )
     }
 }
