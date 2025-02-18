@@ -95,7 +95,7 @@ fun EditOfferContent(
                 Text(
                     stringResource(R.string.post_info),
                     style = TextStyles.headingLarge,
-                    color = MaterialTheme.color.primary
+                    color = MaterialTheme.color.textPrimary
                 )
                 OpenClosedSwitch(
                     isOpen = state.postItem.isOpen,
@@ -111,7 +111,7 @@ fun EditOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_title),
                         contentDescription = stringResource(R.string.post_title),
-                        tint = MaterialTheme.color.tertiary
+                        tint = MaterialTheme.color.textTertiary
                     )
                 },
                 errorMessage = state.postError.titleError,
@@ -125,7 +125,7 @@ fun EditOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_location),
                         contentDescription = stringResource(R.string.your_place),
-                        tint = MaterialTheme.color.tertiary
+                        tint = MaterialTheme.color.textTertiary
                     )
                 },
                 errorMessage = state.postError.placeError,
@@ -138,7 +138,7 @@ fun EditOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_details),
                         contentDescription = stringResource(R.string.details),
-                        tint = MaterialTheme.color.tertiary
+                        tint = MaterialTheme.color.textTertiary
                     )
                 },
                 errorMessage = state.postError.detailsError,
@@ -186,7 +186,7 @@ fun EditOfferContent(
 private fun OpenClosedSwitch(isOpen: Boolean, onIsOpenChange: (Boolean) -> Unit) {
     Row {
         val onBackgroundColor = MaterialTheme.color.onBackground
-        val secondaryColor = MaterialTheme.color.secondary
+        val secondaryColor = MaterialTheme.color.textSecondary
 
         val openContainerColor = remember { Animatable(Primary) }
         val openContentColor = remember { Animatable(Color.White) }

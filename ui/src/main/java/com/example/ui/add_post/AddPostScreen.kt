@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakeCategoriesNamesUseCase
@@ -81,7 +82,7 @@ fun AddPostContent(
             Text(
                 text = stringResource(R.string.post_info),
                 style = TextStyles.headingLarge,
-                color = MaterialTheme.color.primary
+                color = MaterialTheme.color.textPrimary
             )
             VerticalSpacer(Spacing8)
             SwapWiseTextField(
@@ -92,7 +93,7 @@ fun AddPostContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_title),
                         contentDescription = stringResource(R.string.post_title),
-                        tint = MaterialTheme.color.tertiary
+                        tint = MaterialTheme.color.textTertiary
                     )
                 },
                 errorMessage = state.postError.titleError,
@@ -106,7 +107,7 @@ fun AddPostContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_location),
                         contentDescription = stringResource(R.string.your_place),
-                        tint = MaterialTheme.color.tertiary
+                        tint = MaterialTheme.color.textTertiary
                     )
                 },
                 errorMessage = state.postError.placeError,
@@ -120,7 +121,7 @@ fun AddPostContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_details),
                         contentDescription = stringResource(R.string.details),
-                        tint = MaterialTheme.color.tertiary
+                        tint = MaterialTheme.color.textTertiary
                     )
                 },
                 isMultiline = true,
@@ -149,7 +150,7 @@ fun AddPostContent(
 }
 
 
-//@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
+@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {

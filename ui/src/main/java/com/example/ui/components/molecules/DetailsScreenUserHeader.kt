@@ -46,7 +46,7 @@ fun DetailsScreenUserHeader(user: User, date: String) {
             user = user,
             imgSize = IconSizeLarge,
             textStyle = TextStyles.headingMedium,
-            textColor = MaterialTheme.color.primary
+            textColor = MaterialTheme.color.textPrimary
         )
         OverlayBoxWithImage(
             overlayColor = MaterialTheme.color.onBackground,
@@ -96,7 +96,7 @@ private fun OverlayBoxWithImage(overlayColor: Color, imgResId: Int, text: String
                 painter = painterResource(imgResId),
                 contentDescription = "",
                 modifier = Modifier.size(12.dp),
-                tint = MaterialTheme.color.secondary
+                tint = MaterialTheme.color.textSecondary
             )
             HorizontalSpacer(Spacing4)
             Text(text, style = TextStyles.captionSmall)

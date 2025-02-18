@@ -58,7 +58,7 @@ private fun SwapWiseBottomNavigationBar(selectedItem: Int = 2, onClickItem: (ite
         selectedIconColor = MaterialTheme.color.onBackground,
         selectedTextColor = Primary,
         selectedIndicatorColor = Primary,
-        unselectedIconColor = MaterialTheme.color.tertiary,
+        unselectedIconColor = MaterialTheme.color.textTertiary,
     )
 
     Column {
@@ -66,7 +66,7 @@ private fun SwapWiseBottomNavigationBar(selectedItem: Int = 2, onClickItem: (ite
             modifier = Modifier
                 .fillMaxWidth()
                 .height(0.5.dp)
-                .background(MaterialTheme.color.tertiary)
+                .background(MaterialTheme.color.textTertiary)
         )
         NavigationBar(
             containerColor = MaterialTheme.color.background,

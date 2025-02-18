@@ -178,7 +178,7 @@ fun TopicsListHeader(
         Text(
             text = title,
             style = TextStyles.headingMedium,
-            color = MaterialTheme.color.primary
+            color = MaterialTheme.color.textPrimary
         )
         SwapWiseTextButton(
             onClick = onClickSeeAll,

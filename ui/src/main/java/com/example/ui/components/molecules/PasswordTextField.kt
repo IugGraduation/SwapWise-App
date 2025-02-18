@@ -45,7 +45,7 @@ fun PasswordTextField(
             Icon(
                 painter = painterResource(R.drawable.ic_password_lock),
                 contentDescription = stringResource(R.string.password),
-                tint = MaterialTheme.color.tertiary
+                tint = MaterialTheme.color.textTertiary
             )
         },
         trailingIcon = {
@@ -60,7 +60,7 @@ fun PasswordTextField(
                     } else {
                         stringResource(R.string.show_password)
                     },
-                    tint = MaterialTheme.color.tertiary
+                    tint = MaterialTheme.color.textTertiary
                 )
             }
         },

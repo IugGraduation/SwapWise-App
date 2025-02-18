@@ -85,7 +85,7 @@ fun SwapWiseTextField(
                     keyboardActions = keyboardActions,
                     visualTransformation = visualTransformation,
                     modifier = Modifier.weight(1f),
-                    cursorBrush = SolidColor(MaterialTheme.color.primary),
+                    cursorBrush = SolidColor(MaterialTheme.color.textPrimary),
                     decorationBox = { innerTextField ->
                         if (value.isEmpty()) {
                             placeholderComposable?.invoke()

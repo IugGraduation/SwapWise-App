@@ -38,7 +38,7 @@ fun TitledChipsList(
         Text(
             text = title,
             style = textStyle,
-            color = MaterialTheme.color.primary,
+            color = MaterialTheme.color.textPrimary,
             modifier = Modifier.padding(horizontal = Spacing16)
         )
         VerticalSpacer(Spacing8)
@@ -64,7 +64,7 @@ private fun SwapWiseChip(chip: Chip, modifier: Modifier = Modifier) {
     ) else modifier
     val backgroundColor = if (chip.selected) Secondary else MaterialTheme.color.onBackground
     val textColor =
-        if (chip.selected && isSystemInDarkTheme()) MaterialTheme.color.background else MaterialTheme.color.secondary
+        if (chip.selected && isSystemInDarkTheme()) MaterialTheme.color.background else MaterialTheme.color.textSecondary
 
     BoxRounded(
         modifier = myModifier.clickable(enabled = chip.clickable) {

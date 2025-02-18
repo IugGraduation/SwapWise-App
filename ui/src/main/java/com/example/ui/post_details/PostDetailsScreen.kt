@@ -110,7 +110,7 @@ fun PostDetailsContent(
                 Text(
                     text = stringResource(R.string.offers),
                     style = TextStyles.headingMedium,
-                    color = MaterialTheme.color.primary,
+                    color = MaterialTheme.color.textPrimary,
                     modifier = Modifier.padding(horizontal = Spacing16)
                 )
                 VerticalSpacer(Spacing8)
@@ -167,13 +167,13 @@ fun PostDetailsStatusItem(title: String, value: String, modifier: Modifier = Mod
         Text(
             value,
             style = TextStyles.headingSmall,
-            color = MaterialTheme.color.primary
+            color = MaterialTheme.color.textPrimary
         )
         VerticalSpacer(Spacing4)
         Text(
             title,
             style = TextStyles.captionLarge,
-            color = MaterialTheme.color.tertiary
+            color = MaterialTheme.color.textTertiary
         )
     }
 }

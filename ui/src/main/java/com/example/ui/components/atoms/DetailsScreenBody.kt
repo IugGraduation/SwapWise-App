@@ -18,13 +18,13 @@ fun DetailsScreenBody(title: String, body: String, modifier: Modifier = Modifier
         Text(
             text = title,
             style = TextStyles.headingLarge,
-            color = MaterialTheme.color.primary
+            color = MaterialTheme.color.textPrimary
         )
         VerticalSpacer(Spacing8)
         Text(
             text = body,
             style = TextStyles.bodyLarge,
-            color = MaterialTheme.color.tertiary
+            color = MaterialTheme.color.textTertiary
         )
     }
 }

@@ -113,7 +113,7 @@ private fun LoginForm(
                 Icon(
                     painter = painterResource(R.drawable.ic_phone),
                     contentDescription = stringResource(R.string.phone_number),
-                    tint = MaterialTheme.color.tertiary
+                    tint = MaterialTheme.color.textTertiary
                 )
             },
             errorMessage = state.loginError.phoneError

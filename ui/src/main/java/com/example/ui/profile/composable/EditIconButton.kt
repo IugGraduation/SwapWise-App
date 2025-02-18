@@ -28,7 +28,7 @@ fun EditIconButton(modifier: Modifier = Modifier, onClick:() -> Unit) {
         onClick = onClick,
         colors = ButtonDefaults
             .buttonColors(
-                contentColor = MaterialTheme.color.primary,
+                contentColor = MaterialTheme.color.textPrimary,
                 containerColor = MaterialTheme.color.background
             ),
     ) {
@@ -37,7 +37,7 @@ fun EditIconButton(modifier: Modifier = Modifier, onClick:() -> Unit) {
                 .size(IconSizeMedium),
             painter = painterResource(id = R.drawable.ic_pen),
             contentDescription = null,
-            tint = MaterialTheme.color.primary
+            tint = MaterialTheme.color.textPrimary
         )
     }
 }

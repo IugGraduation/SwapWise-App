@@ -95,7 +95,7 @@ fun SearchContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_search),
                         contentDescription = stringResource(R.string.search),
-                        tint = MaterialTheme.color.tertiary
+                        tint = MaterialTheme.color.textTertiary
                     )
                     Spacer(
                         Modifier

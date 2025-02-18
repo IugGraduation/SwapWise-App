@@ -81,7 +81,7 @@ fun EditOfferContent(
             Text(
                 stringResource(R.string.offer_info),
                 style = TextStyles.headingLarge,
-                color = MaterialTheme.color.primary
+                color = MaterialTheme.color.textPrimary
             )
             SwapWiseTextField(
                 value = state.offerItem.title,
@@ -91,7 +91,7 @@ fun EditOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_title),
                         contentDescription = stringResource(R.string.offer_title),
-                        tint = MaterialTheme.color.tertiary
+                        tint = MaterialTheme.color.textTertiary
                     )
                 },
                 errorMessage = state.offerError.titleError,
@@ -104,7 +104,7 @@ fun EditOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_location),
                         contentDescription = stringResource(R.string.your_place),
-                        tint = MaterialTheme.color.tertiary
+                        tint = MaterialTheme.color.textTertiary
                     )
                 },
                 errorMessage = state.offerError.placeError,
@@ -117,7 +117,7 @@ fun EditOfferContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_details),
                         contentDescription = stringResource(R.string.details),
-                        tint = MaterialTheme.color.tertiary
+                        tint = MaterialTheme.color.textTertiary
                     )
                 },
                 isMultiline = true,

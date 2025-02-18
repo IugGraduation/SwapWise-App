@@ -73,7 +73,7 @@ private fun TabButton(
         modifier = modifier
             .height(ProfileToggleHeight - Spacing8)
             .background(
-                color = if (isSelected) MaterialTheme.color.primary else MaterialTheme.color.transparent,
+                color = if (isSelected) MaterialTheme.color.textPrimary else MaterialTheme.color.transparent,
                 shape = CircleShape
             ),
         contentPadding = PaddingValues(ZeroDp),

@@ -160,7 +160,7 @@ fun CardText(
                 offset = Offset(4f, 4f),
                 blurRadius = 8f
             ),
-            color = MaterialTheme.color.primary,
+            color = MaterialTheme.color.textPrimary,
             drawStyle = Stroke(width = 1.2f, join = StrokeJoin.Round),
         ),
         textAlign = TextAlign.Center,

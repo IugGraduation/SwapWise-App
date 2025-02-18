@@ -111,7 +111,7 @@ fun SignupForm(
                 Icon(
                     painter = painterResource(R.drawable.ic_user),
                     contentDescription = stringResource(R.string.full_name),
-                    tint = MaterialTheme.color.tertiary
+                    tint = MaterialTheme.color.textTertiary
                 )
             },
             errorMessage = state.signupError.fullNameError
@@ -125,7 +125,7 @@ fun SignupForm(
                 Icon(
                     painter = painterResource(R.drawable.ic_phone),
                     contentDescription = stringResource(R.string.phone_number),
-                    tint = MaterialTheme.color.tertiary
+                    tint = MaterialTheme.color.textTertiary
                 )
             },
             errorMessage = state.signupError.phoneError
@@ -153,7 +153,7 @@ fun SignupForm(
                 Icon(
                     painter = painterResource(R.drawable.ic_location),
                     contentDescription = stringResource(R.string.best_barter_spot),
-                    tint = MaterialTheme.color.tertiary
+                    tint = MaterialTheme.color.textTertiary
                 )
             },
             errorMessage = state.signupError.bestBarterSpotError
@@ -166,7 +166,7 @@ fun SignupForm(
                 Icon(
                     painter = painterResource(R.drawable.ic_bio),
                     contentDescription = stringResource(R.string.bio),
-                    tint = MaterialTheme.color.tertiary
+                    tint = MaterialTheme.color.textTertiary
                 )
             },
         )

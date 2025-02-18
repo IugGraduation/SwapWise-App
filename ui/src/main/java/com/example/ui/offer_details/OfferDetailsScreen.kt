@@ -105,7 +105,7 @@ fun OfferDetailsContent(
             Text(
                 text = stringResource(R.string.phone),
                 style = TextStyles.headingMedium,
-                color = MaterialTheme.color.primary,
+                color = MaterialTheme.color.textPrimary,
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
             VerticalSpacer(Spacing8)
@@ -137,7 +137,7 @@ fun PhoneRow(
         Text(
             text = phone,
             style = TextStyles.bodyLarge,
-            color = MaterialTheme.color.tertiary
+            color = MaterialTheme.color.textTertiary
         )
         Row(horizontalArrangement = Arrangement.spacedBy(Spacing16)) {
             RoundedIconButton(

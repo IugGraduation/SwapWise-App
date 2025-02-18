@@ -28,7 +28,7 @@ fun SwapWiseOutlineButton(
             .height(NormalButtonHeight)
             .fillMaxWidth(),
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.color.primary,
+            contentColor = MaterialTheme.color.textPrimary,
             containerColor = MaterialTheme.color.transparent
         ),
         shape = RoundedCornerShape(RadiusLarge),

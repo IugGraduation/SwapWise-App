@@ -107,7 +107,7 @@ fun NotificationsContent(
                     Text(
                         text = group.title,
                         style = TextStyles.headingSmall,
-                        color = MaterialTheme.color.tertiary,
+                        color = MaterialTheme.color.textTertiary,
                         modifier = Modifier
                             .padding(horizontal = Spacing16)
                             .padding(bottom = Spacing8)
@@ -193,7 +193,7 @@ fun SwipeableNotificationCard(
                     Text(
                         text = notification.message,
                         style = TextStyles.bodySmall,
-                        color = MaterialTheme.color.primary,
+                        color = MaterialTheme.color.textPrimary,
                         modifier = Modifier.padding(horizontal = Spacing4, vertical = Spacing8)
 
                     )
