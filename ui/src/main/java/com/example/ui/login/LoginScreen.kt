@@ -45,7 +45,9 @@ fun LoginScreen(
     val state by loginViewModel.state.collectAsState()
 
     LaunchedEffect(state.data.shouldNavigateToHome) {
-        if (state.data.shouldNavigateToHome) navController.navigateToHome()
+        if (state.data.shouldNavigateToHome) navController.navigateToHome {
+            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+        }
     }
 
     LoginContent(

@@ -5,14 +5,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 
 private const val ROUTE = "post_details"
 
-fun NavController.navigateToPostDetails(uuid: String) {
-    navigate("$ROUTE/$uuid")
+fun NavController.navigateToPostDetails(uuid: String, builder: NavOptionsBuilder.() -> Unit = {}) {
+    navigate("$ROUTE/$uuid", builder)
 }
 
 fun NavGraphBuilder.postDetailsRoute(navController: NavHostController) {

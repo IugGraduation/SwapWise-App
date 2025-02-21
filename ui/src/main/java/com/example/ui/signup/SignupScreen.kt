@@ -46,7 +46,9 @@ fun SignupScreen(
     val state by signupViewModel.state.collectAsState()
 
     LaunchedEffect(state.data.shouldNavigateToConfirmNumber) {
-        if (state.data.shouldNavigateToConfirmNumber) navController.navigateToOtp()
+        if (state.data.shouldNavigateToConfirmNumber) navController.navigateToOtp {
+            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+        }
     }
 
     SignupContent(

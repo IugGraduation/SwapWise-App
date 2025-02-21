@@ -51,7 +51,9 @@ fun OtpScreen(navController: NavController, viewModel: ConfirmNumberViewModel = 
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(state.data.shouldNavigateToHome) {
-        if (state.data.shouldNavigateToHome) navController.navigateToHome()
+        if (state.data.shouldNavigateToHome) navController.navigateToHome {
+            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+        }
     }
 
     OtpContent(

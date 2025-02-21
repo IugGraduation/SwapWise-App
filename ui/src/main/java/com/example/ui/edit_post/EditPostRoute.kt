@@ -5,14 +5,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 
 private const val ROUTE = "edit_post"
 
-fun NavController.navigateToEditPost(postId: String) {
-    navigate("$ROUTE/$postId")
+fun NavController.navigateToEditPost(postId: String, builder: NavOptionsBuilder.() -> Unit = {}) {
+    navigate("$ROUTE/$postId", builder)
 }
 
 fun NavGraphBuilder.editPostRoute(navController: NavHostController) {

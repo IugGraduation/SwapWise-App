@@ -4,14 +4,18 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 
 private const val ROUTE = "search"
 
-fun NavController.navigateToSearch(filterCategoryName: String = "") {
-    navigate("$ROUTE/$filterCategoryName")
+fun NavController.navigateToSearch(
+    filterCategoryName: String = "",
+    builder: NavOptionsBuilder.() -> Unit = {}
+) {
+    navigate("$ROUTE/$filterCategoryName", builder)
 }
 
 fun NavGraphBuilder.searchRoute(navController: NavHostController){
