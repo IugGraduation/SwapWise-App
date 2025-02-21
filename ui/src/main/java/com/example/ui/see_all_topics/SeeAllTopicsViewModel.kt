@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.domain.SeeAllTopicsUseCase
 import com.example.domain.model.TopicsHolder
 import com.example.ui.base.BaseViewModel
+import com.example.ui.base.MyUiState
 import com.example.ui.models.TopicsHolderUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -23,7 +24,7 @@ class SeeAllTopicsViewModel @Inject constructor(
     }
 
     private fun onGetHomeDataSuccess(data: TopicsHolder) {
-        _state.value = TopicsHolderUiState.fromTopicsHolder(data)
+        _state.value = MyUiState(TopicsHolderUiState.fromTopicsHolder(data))
     }
 
 }

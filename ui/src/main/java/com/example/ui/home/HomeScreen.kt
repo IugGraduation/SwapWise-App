@@ -30,6 +30,7 @@ import com.example.domain.model.PostItem
 import com.example.domain.model.User
 import com.example.ui.R
 import com.example.ui.add_post.navigateToAddPost
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.atoms.SwapWiseTextButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -59,7 +60,7 @@ fun HomeScreen(
 ) {
     val state by homeViewModel.state.collectAsState()
     val selectedItem by mainViewModel.selectedItem.collectAsState()
-    for (topic in state.topicsList) {
+    for (topic in state.data.topicsList) {
         topic.onClickSeeAll = { navController.navigateToTopicSeeAll(topic.url) }
         for (item in topic.items) {
             if (item is PostItem) {
@@ -89,7 +90,7 @@ fun HomeScreen(
 
 @Composable
 fun HomeContent(
-    state: HomeUiState,
+    state: MyUiState<HomeUiState>,
     bottomBarState: BottomBarUiState,
     homeInteractions: IHomeInteractions,
     navigateToAddPost: (String) -> Unit,
@@ -97,7 +98,7 @@ fun HomeContent(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     HomeTemplate(
-        state.user,
+        state.data.user,
         bottomBarState = bottomBarState,
         baseUiState = state.baseUiState,
     ) {
@@ -107,22 +108,22 @@ fun HomeContent(
         ) {
             item {
                 SwapWiseTextField(
-                    value = state.newPost,
+                    value = state.data.newPost,
                     onValueChange = homeInteractions::onNewPostFieldChange,
                     placeholder = stringResource(R.string.would_you_like_to_trade_anything),
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(
                         onDone = {
                             keyboardController?.hide()
-                            navigateToAddPost(state.newPost)
+                            navigateToAddPost(state.data.newPost)
                         }
                     ),
                     modifier = Modifier.padding(horizontal = Spacing16),
                 )
                 VerticalSpacer(Spacing24)
             }
-            items(state.topicsList) { topic ->
-                if (topic != state.topicsList.last()) {
+            items(state.data.topicsList) { topic ->
+                if (topic != state.data.topicsList.last()) {
                     TopicsListHeader(
                         title = topic.title,
                         onClickSeeAll = topic.onClickSeeAll
@@ -138,7 +139,7 @@ fun HomeContent(
 
             //doing this because CustomLazyLayout returns a lazy column here,
             //which can't be put inside another lazy column
-            val lastTopic = state.topicsList.lastOrNull() ?: TopicsHolderUiState()
+            val lastTopic = state.data.topicsList.lastOrNull() ?: TopicsHolderUiState()
             item {
                 TopicsListHeader(
                     title = lastTopic.title,
@@ -228,9 +229,11 @@ fun PreviewHomeContent() {
             phone = "1231231231"
         )
         HomeContent(
-            state = HomeUiState(
+            state = MyUiState(
+                HomeUiState(
                 user = user,
                 topicsList = topicsList,
+                )
             ),
             bottomBarState = BottomBarUiState(),
             homeInteractions = object : IHomeInteractions {

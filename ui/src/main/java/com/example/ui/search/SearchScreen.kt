@@ -25,9 +25,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.ui.R
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout
-import com.example.ui.components.atoms.SwapWiseTextButton
 import com.example.ui.components.atoms.HorizontalSpacer
+import com.example.ui.components.atoms.SwapWiseTextButton
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.TitledChipsList
@@ -56,7 +57,7 @@ fun SearchScreen(
 ) {
     val state by searchViewModel.state.collectAsState()
     val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
-    for (topicItem in state.topicsList) {
+    for (topicItem in state.data.topicsList) {
         topicItem.onClickGoToDetails = { navController.navigateToPostDetails(topicItem.uuid) }
     }
     val bottomBarState = BottomBarUiState(
@@ -78,7 +79,7 @@ fun SearchScreen(
 
 @Composable
 fun SearchContent(
-    state: SearchUiState,
+    state: MyUiState<SearchUiState>,
     bottomBarState: BottomBarUiState,
     searchInteractions: ISearchInteractions,
 ) {
@@ -87,7 +88,7 @@ fun SearchContent(
         bottomBarState = bottomBarState,
     ) {
         SwapWiseTextField(
-            value = state.search,
+            value = state.data.search,
             onValueChange = searchInteractions::onSearchChange,
             placeholder = stringResource(R.string.search),
             leadingIcon = {
@@ -108,7 +109,7 @@ fun SearchContent(
             modifier = Modifier.padding(horizontal = Spacing16)
         )
         VerticalSpacer(Spacing8)
-        TitledChipsList(chipsList = state.filterChipsList)
+        TitledChipsList(chipsList = state.data.filterChipsList)
         VerticalSpacer(Spacing16)
         if (state.baseUiState.errorMessage.isNotEmpty()) {
             EmptyContent(searchInteractions::onClickTryAgain)
@@ -116,7 +117,7 @@ fun SearchContent(
             LoadingContent()
         } else {
             CustomLazyLayout(
-                items = state.topicsList,
+                items = state.data.topicsList,
                 isCategoryCard = false,
                 isHorizontalLayout = false
             )
@@ -174,7 +175,7 @@ fun PreviewSearchContent() {
 //            isLoading = true,
         )
         SearchContent(
-            state = searchUiState,
+            state = MyUiState(searchUiState),
             bottomBarState = BottomBarUiState(selectedItem = 1),
             searchInteractions = object : ISearchInteractions {
                 override fun onSearchChange(newValue: String) {}

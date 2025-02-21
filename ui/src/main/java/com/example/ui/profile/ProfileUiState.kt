@@ -1,6 +1,5 @@
 package com.example.ui.profile
 
-import com.example.ui.base.BaseUiState
 import com.example.ui.util.empty
 
 data class ProfileUiState(
@@ -10,7 +9,6 @@ data class ProfileUiState(
     val profileSettingsUiState: ProfileSettingsUiState = ProfileSettingsUiState(),
     val pagerNumber: Int = 0,
     val profileError: ProfileErrorUiState = ProfileErrorUiState(),
-    val baseUiState: BaseUiState = BaseUiState()
 )
 
 data class ProfileInformationUiState(

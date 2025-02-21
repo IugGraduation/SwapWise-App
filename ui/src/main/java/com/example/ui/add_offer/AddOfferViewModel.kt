@@ -16,7 +16,6 @@ import com.example.ui.models.OfferItemUiState
 import com.example.ui.models.PostErrorUiState
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,15 +43,15 @@ class AddOfferViewModel @Inject constructor(
         val chipsList = List(categoriesNames.size) { index ->
             Chip(text = categoriesNames[index], selected = false, onClick = ::onCategoryChange)
         }
-        _state.update {
-            it.copy(chipsList = chipsList)
+        updateData {
+            copy(chipsList = chipsList)
         }
     }
 
 
     private fun updatePostItem(update: OfferItem.() -> OfferItem) {
-        _state.update {
-            it.copy(offerItem = it.offerItem.update())
+        updateData {
+            copy(offerItem = offerItem.update())
         }
     }
 
@@ -61,8 +60,8 @@ class AddOfferViewModel @Inject constructor(
         placeError: String = String.empty(),
         detailsError: String = String.empty(),
     ) {
-        _state.update {
-            it.copy(
+        updateData {
+            copy(
                 offerError = PostErrorUiState(
                     titleError = titleError,
                     placeError = placeError,
@@ -99,7 +98,7 @@ class AddOfferViewModel @Inject constructor(
 
     override fun onClickAdd() {
         tryToExecute(
-            call = { addOfferUseCase(args.postId, state.value.offerItem) },
+            call = { addOfferUseCase(args.postId, state.value.data.offerItem) },
             onSuccess = { navigateUp() },
             onError = ::onAddPostFail
         )

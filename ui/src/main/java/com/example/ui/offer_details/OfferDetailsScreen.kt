@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakeOfferDetailsUseCase
 import com.example.ui.R
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.DetailsScreenBody
 import com.example.ui.components.atoms.VerticalSpacer
@@ -52,7 +53,7 @@ fun OfferDetailsScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val phone = state.offerItem.user.phone
+    val phone = state.data.offerItem.user.phone
     OfferDetailsContent(
         state = state,
         onClickGoBack = { navController.navigateUp() },
@@ -79,7 +80,7 @@ fun OfferDetailsScreen(
 
 @Composable
 fun OfferDetailsContent(
-    state: OfferItemUiState,
+    state: MyUiState<OfferItemUiState>,
     onClickGoBack: () -> Unit,
     onClickPhoneButton: () -> Unit,
     onClickWhatsappButton: () -> Unit,
@@ -91,15 +92,24 @@ fun OfferDetailsContent(
         baseUiState = state.baseUiState,
     ) {
         Column {
-            ProductImage(state.offerItem.imageLink)
+            ProductImage(state.data.offerItem.imageLink)
             VerticalSpacer(Spacing16)
-            DetailsScreenUserHeader(user = state.offerItem.user, date = state.offerItem.date)
+            DetailsScreenUserHeader(
+                user = state.data.offerItem.user,
+                date = state.data.offerItem.date
+            )
             VerticalSpacer(Spacing24)
-            DetailsScreenBody(state.offerItem.title, state.offerItem.details)
+            DetailsScreenBody(state.data.offerItem.title, state.data.offerItem.details)
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
-                chipsList = listOf(Chip(text = state.offerItem.category, selected = true, clickable = false))
+                chipsList = listOf(
+                    Chip(
+                        text = state.data.offerItem.category,
+                        selected = true,
+                        clickable = false
+                    )
+                )
             )
             VerticalSpacer(Spacing24)
             Text(
@@ -110,7 +120,7 @@ fun OfferDetailsContent(
             )
             VerticalSpacer(Spacing8)
             PhoneRow(
-                phone = state.offerItem.user.phone,
+                phone = state.data.offerItem.user.phone,
                 onClickPhoneButton = onClickPhoneButton,
                 onClickWhatsappButton = onClickWhatsappButton,
                 onClickMessageButton = onClickMessageButton
@@ -183,7 +193,7 @@ fun RoundedIconButton(onClick: () -> Unit, iconResId: Int, contentDescription: S
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         OfferDetailsContent(
-            state = OfferItemUiState(offerItem = GetFakeOfferDetailsUseCase()()),
+            state = MyUiState(OfferItemUiState(offerItem = GetFakeOfferDetailsUseCase()())),
             onClickGoBack = {},
             onClickPhoneButton = { },
             onClickWhatsappButton = { },

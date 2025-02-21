@@ -7,3 +7,6 @@ data class BaseUiState(
     val isLoading: Boolean = false,
     val shouldNavigateUp: Boolean = false,
 )
+
+
+data class MyUiState<T>(val data: T, val baseUiState: BaseUiState = BaseUiState())

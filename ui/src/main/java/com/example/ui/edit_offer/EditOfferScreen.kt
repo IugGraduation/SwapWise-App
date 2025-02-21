@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakeOfferDetailsUseCase
 import com.example.ui.R
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -57,7 +58,7 @@ fun EditOfferScreen(navController: NavController, viewModel: EditOfferViewModel 
 
 @Composable
 fun EditOfferContent(
-    state: OfferItemUiState,
+    state: MyUiState<OfferItemUiState>,
     editInteractions: IEditOfferInteractions,
     onClickGoBack: () -> Unit
 ) {
@@ -67,7 +68,7 @@ fun EditOfferContent(
         baseUiState = state.baseUiState,
     ) {
         ProductImage(
-            state.offerItem.imageLink,
+            state.data.offerItem.imageLink,
             onImagePicked = editInteractions::onSelectedImageChange
         )
         val scrollState = rememberScrollState()
@@ -84,7 +85,7 @@ fun EditOfferContent(
                 color = MaterialTheme.color.textPrimary
             )
             SwapWiseTextField(
-                value = state.offerItem.title,
+                value = state.data.offerItem.title,
                 onValueChange = editInteractions::onTitleChange,
                 placeholder = stringResource(R.string.offer_title),
                 leadingIcon = {
@@ -94,10 +95,10 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
-                errorMessage = state.offerError.titleError,
+                errorMessage = state.data.offerError.titleError,
             )
             SwapWiseTextField(
-                value = state.offerItem.place,
+                value = state.data.offerItem.place,
                 onValueChange = editInteractions::onPlaceChange,
                 placeholder = stringResource(R.string.your_place),
                 leadingIcon = {
@@ -107,10 +108,10 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
-                errorMessage = state.offerError.placeError,
+                errorMessage = state.data.offerError.placeError,
             )
             SwapWiseTextField(
-                value = state.offerItem.details,
+                value = state.data.offerItem.details,
                 onValueChange = editInteractions::onDetailsChange,
                 placeholder = stringResource(R.string.details),
                 leadingIcon = {
@@ -121,14 +122,14 @@ fun EditOfferContent(
                     )
                 },
                 isMultiline = true,
-                errorMessage = state.offerError.detailsError,
+                errorMessage = state.data.offerError.detailsError,
             )
             VerticalSpacer(Spacing16)
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.chipsList.onEach {
-                    it.selected = it.text == state.offerItem.category
+                chipsList = state.data.chipsList.onEach {
+                    it.selected = it.text == state.data.offerItem.category
                 },
             )
         }
@@ -161,9 +162,11 @@ fun EditOfferContent(
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         EditOfferContent(
-            state = OfferItemUiState(
+            state = MyUiState(
+                OfferItemUiState(
                 offerItem = GetFakeOfferDetailsUseCase()().copy(
                     category = "Food and beverages0",
+                )
                 )
             ),
             editInteractions = object : IEditOfferInteractions {

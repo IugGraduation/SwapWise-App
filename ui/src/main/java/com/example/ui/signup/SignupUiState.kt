@@ -1,7 +1,5 @@
 package com.example.ui.signup
 
-import com.example.ui.base.BaseUiState
-
 data class SignupUiState(
     val fullName: String = "",
     val phone: String = "",
@@ -15,7 +13,6 @@ data class SignupUiState(
     val shouldNavigateToConfirmNumber: Boolean = false,
 
     val signupError: SignupErrorUiState = SignupErrorUiState(),
-    val baseUiState: BaseUiState = BaseUiState()
 )
 
 data class SignupErrorUiState(

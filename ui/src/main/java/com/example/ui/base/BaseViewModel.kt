@@ -6,12 +6,19 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
 abstract class BaseViewModel<STATE>(initialState: STATE) : ViewModel() {
 
-    protected val _state: MutableStateFlow<STATE> by lazy { MutableStateFlow(initialState) }
+    protected val _state: MutableStateFlow<MyUiState<STATE>> by lazy {
+        MutableStateFlow(
+            MyUiState(
+                initialState
+            )
+        )
+    }
     val state = _state.asStateFlow()
 
     fun <T> tryToExecute(
@@ -33,11 +40,17 @@ abstract class BaseViewModel<STATE>(initialState: STATE) : ViewModel() {
     }
 
 
+    protected fun updateData(update: STATE.() -> STATE) {
+        _state.update {
+            it.copy(data = it.data.update())
+        }
+    }
+
+
     private fun updateBaseUiState(update: BaseUiState.() -> BaseUiState) {
-        //todo: make updateBaseUiState work
-//        _state.update {
-//            it.copy(baseUiState = it.baseUiState.update())
-//        }
+        _state.update {
+            it.copy(baseUiState = it.baseUiState.update())
+        }
     }
 
     protected fun isActionLoading(isLoading: Boolean = true) {

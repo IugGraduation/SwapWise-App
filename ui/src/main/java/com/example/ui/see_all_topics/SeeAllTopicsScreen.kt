@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import com.example.domain.GetFakePostDetailsUseCase
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.TopicsHolderUiState
@@ -23,7 +24,7 @@ fun SeeAllTopicsScreen(
 ) {
     val state by topicSeeAllViewModel.state.collectAsState()
 
-    for (item in state.items) {
+    for (item in state.data.items) {
         if (item is PostItem) {
             item.onClickGoToDetails = { navController.navigateToPostDetails(item.uuid) }
         } else if (item is CategoryItem) {
@@ -39,15 +40,16 @@ fun SeeAllTopicsScreen(
 
 
 @Composable
-fun SeeAllTopicsContent(state: TopicsHolderUiState, onClickGoBack: () -> Unit) {
+fun SeeAllTopicsContent(state: MyUiState<TopicsHolderUiState>, onClickGoBack: () -> Unit) {
 
     TitledScreenTemplate(
-        title = state.title,
+        title = state.data.title,
         onClickGoBack = onClickGoBack,
         baseUiState = state.baseUiState,
     ) {
-        CustomLazyLayout(items = state.items,
-            isCategoryCard = state.isCategoryTopics,
+        CustomLazyLayout(
+            items = state.data.items,
+            isCategoryCard = state.data.isCategoryTopics,
             isHorizontalLayout = false)
     }
 }
@@ -59,10 +61,12 @@ fun PreviewAllTopicsContent() {
     GraduationProjectTheme {
         val postItem = GetFakePostDetailsUseCase()()
         val postsList = listOf(postItem, postItem, postItem, postItem, postItem)
-        val state = TopicsHolderUiState(
+        val state = MyUiState(
+            TopicsHolderUiState(
             title = "Top Interactive",
             items = postsList,
             isHorizontal = false
+            )
         )
         SeeAllTopicsContent(state = state, onClickGoBack = { })
 

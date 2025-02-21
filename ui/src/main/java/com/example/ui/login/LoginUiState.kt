@@ -1,7 +1,5 @@
 package com.example.ui.login
 
-import com.example.ui.base.BaseUiState
-
 data class LoginUiState(
     val phone: String = "",
     val password: String = "",
@@ -9,7 +7,6 @@ data class LoginUiState(
     val shouldNavigateToHome: Boolean = false,
 
     val loginError: LoginErrorUiState = LoginErrorUiState(),
-    val baseUiState: BaseUiState = BaseUiState()
 )
 
 data class LoginErrorUiState(

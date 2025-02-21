@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.GetFakePostDetailsUseCase
 import com.example.ui.R
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -67,7 +68,7 @@ fun EditPostScreen(navController: NavController, viewModel: EditPostViewModel = 
 
 @Composable
 fun EditOfferContent(
-    state: PostItemUiState,
+    state: MyUiState<PostItemUiState>,
     editInteractions: IEditPostInteractions,
     onClickGoBack: () -> Unit
 ) {
@@ -77,7 +78,7 @@ fun EditOfferContent(
         baseUiState = state.baseUiState,
     ) {
         ProductImage(
-            state.postItem.imageLink, onImagePicked = editInteractions::onSelectedImageChange
+            state.data.postItem.imageLink, onImagePicked = editInteractions::onSelectedImageChange
         )
         val scrollState = rememberScrollState()
         Column(
@@ -98,13 +99,13 @@ fun EditOfferContent(
                     color = MaterialTheme.color.textPrimary
                 )
                 OpenClosedSwitch(
-                    isOpen = state.postItem.isOpen,
+                    isOpen = state.data.postItem.isOpen,
                     onIsOpenChange = editInteractions::onIsOpenChange
                 )
             }
 
             SwapWiseTextField(
-                value = state.postItem.title,
+                value = state.data.postItem.title,
                 onValueChange = editInteractions::onTitleChange,
                 placeholder = stringResource(R.string.post_title),
                 leadingIcon = {
@@ -114,11 +115,11 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
-                errorMessage = state.postError.titleError,
+                errorMessage = state.data.postError.titleError,
             )
 
             SwapWiseTextField(
-                value = state.postItem.place,
+                value = state.data.postItem.place,
                 onValueChange = editInteractions::onPlaceChange,
                 placeholder = stringResource(R.string.your_place),
                 leadingIcon = {
@@ -128,10 +129,10 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
-                errorMessage = state.postError.placeError,
+                errorMessage = state.data.postError.placeError,
             )
             SwapWiseTextField(
-                value = state.postItem.details,
+                value = state.data.postItem.details,
                 onValueChange = editInteractions::onDetailsChange,
                 placeholder = stringResource(R.string.details),
                 leadingIcon = {
@@ -141,23 +142,23 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
-                errorMessage = state.postError.detailsError,
+                errorMessage = state.data.postError.detailsError,
                 isMultiline = true,
             )
             VerticalSpacer(Spacing16)
             TitledChipsList(
                 title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.chipsList.onEach {
-                    it.selected = it.text == state.postItem.category
+                chipsList = state.data.chipsList.onEach {
+                    it.selected = it.text == state.data.postItem.category
                 },
             )
             VerticalSpacer(Spacing16)
             TitledChipsList(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.favoriteChipsList.onEach {
-                    it.selected = state.postItem.favoriteCategories.contains(it.text)
+                chipsList = state.data.favoriteChipsList.onEach {
+                    it.selected = state.data.postItem.favoriteCategories.contains(it.text)
                 },
             )
 
@@ -253,10 +254,13 @@ private fun OpenClosedSwitch(isOpen: Boolean, onIsOpenChange: (Boolean) -> Unit)
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
-        EditOfferContent(state = PostItemUiState(
+        EditOfferContent(
+            state = MyUiState(
+                PostItemUiState(
             postItem = GetFakePostDetailsUseCase()().copy(
                 category = "Food and beverages0",
             )
+                )
         ), editInteractions = object : IEditPostInteractions {
             override fun onTitleChange(title: String) {}
             override fun onPlaceChange(place: String) {}

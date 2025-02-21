@@ -3,7 +3,6 @@ package com.example.ui.confirm_number
 import com.example.domain.OtpValidationUseCase
 import com.example.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -12,12 +11,13 @@ class ConfirmNumberViewModel @Inject constructor(
 ) : BaseViewModel<ConfirmNumberUiState>(ConfirmNumberUiState()), IConfirmNumberInteractions {
 
     override fun onOtpChange(newOtp: String) {
-        _state.update {
-            it.copy(
+        updateData {
+            copy(
                 otp = newOtp,
-                isConfirmButtonEnabled = newOtp.length == it.otpLength
+                isConfirmButtonEnabled = newOtp.length == otpLength
             )
         }
+
     }
 
 
@@ -25,7 +25,7 @@ class ConfirmNumberViewModel @Inject constructor(
         tryToExecute(
             call = {
                 otpValidationUseCase(
-                    otp = state.value.otp,
+                    otp = state.value.data.otp,
                 )
             },
             onSuccess = { navigateToHome() },
@@ -33,7 +33,9 @@ class ConfirmNumberViewModel @Inject constructor(
     }
 
     private fun navigateToHome() {
-        _state.update { it.copy(shouldNavigateToHome = true) }
+        updateData {
+            copy(shouldNavigateToHome = true)
+        }
     }
 
 }

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ui.R
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.Header
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -43,8 +44,8 @@ fun LoginScreen(
 ) {
     val state by loginViewModel.state.collectAsState()
 
-    LaunchedEffect(state.shouldNavigateToHome) {
-        if (state.shouldNavigateToHome) navController.navigateToHome()
+    LaunchedEffect(state.data.shouldNavigateToHome) {
+        if (state.data.shouldNavigateToHome) navController.navigateToHome()
     }
 
     LoginContent(
@@ -57,7 +58,7 @@ fun LoginScreen(
 
 @Composable
 fun LoginContent(
-    state: LoginUiState,
+    state: MyUiState<LoginUiState>,
     loginInteractions: ILoginInteractions,
     onClickGoToSignup: () -> Unit,
 ) {
@@ -78,7 +79,7 @@ fun LoginContent(
                 imgContentDescription = stringResource(R.string.image_login),
             )
             LoginForm(
-                state = state,
+                state = state.data,
                 onPhoneChange = loginInteractions::onPhoneChange,
                 onPasswordChange = loginInteractions::onPasswordChange,
                 togglePasswordVisibility = loginInteractions::togglePasswordVisibility,
@@ -134,7 +135,7 @@ private fun LoginForm(
 fun PreviewLoginContent() {
     GraduationProjectTheme {
         LoginContent(
-            state = LoginUiState(),
+            state = MyUiState(LoginUiState()),
             loginInteractions = object : ILoginInteractions {
                 override fun onPhoneChange(newValue: String) {}
                 override fun onPasswordChange(newValue: String) {}

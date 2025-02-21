@@ -14,7 +14,6 @@ import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.buffer
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,8 +30,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     init {
-        _state.update {
-            it.copy(
+        updateData {
+            copy(
                 profileInformationUiState = originalProfileInformation.profileInformationUiState,
                 userPosts = originalProfileInformation.userPosts
             )
@@ -97,19 +96,21 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun updateProfileField(update: ProfileInformationUiState.() -> ProfileInformationUiState) {
-        _state.update {
-            it.copy(profileInformationUiState = it.profileInformationUiState.update())
+        updateData {
+            copy(profileInformationUiState = profileInformationUiState.update())
         }
     }
 
     override fun onCancelButtonClicked() {
         manageUserInfoEdit(isEditable = false)
         makeErrorMessagesEmpty()
-        _state.update { it.copy(profileInformationUiState = originalProfileInformation.profileInformationUiState) }
+        updateData {
+            copy(profileInformationUiState = originalProfileInformation.profileInformationUiState)
+        }
     }
 
     override fun onSaveButtonClicked() {
-        val lastUserInfo = _state.value.profileInformationUiState
+        val lastUserInfo = _state.value.data.profileInformationUiState
         tryToExecute(
             call = {
                 validateUserInfoUseCase(
@@ -124,13 +125,17 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onDarkMoodChange(isDarkMood: Boolean) {
-        _state.update { it.copy(profileSettingsUiState = it.profileSettingsUiState.copy( isDarkTheme = isDarkMood)) }
+        updateData {
+            copy(profileSettingsUiState = profileSettingsUiState.copy(isDarkTheme = isDarkMood))
+        }
         viewModelScope.launch(Dispatchers.IO) { customizeProfileSettings.updateDarkTheme(isDarkMood) }
     }
 
     private suspend fun isDarkTheme() {
         customizeProfileSettings.isDarkThem().buffer().collect{ isDark ->
-            _state.update { it.copy(profileSettingsUiState = it.profileSettingsUiState.copy( isDarkTheme = isDark))}
+            updateData {
+                copy(profileSettingsUiState = profileSettingsUiState.copy(isDarkTheme = isDark))
+            }
         }
     }
 
@@ -159,9 +164,9 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun manageUserInfoEdit(isEditable: Boolean) {
-        _state.update {
-            it.copy(
-                profileInformationUiState = it.profileInformationUiState.copy(
+        updateData {
+            copy(
+                profileInformationUiState = profileInformationUiState.copy(
                     isUserInfoEditable = isEditable
                 )
             )
@@ -174,8 +179,8 @@ class ProfileViewModel @Inject constructor(
         locationError: String = String.empty(),
         bioError: String = String.empty(),
     ) {
-        _state.update {
-            it.copy(
+        updateData {
+            copy(
                 profileError = ProfileErrorUiState(
                     userNameErrorMessage = userNameError,
                     phoneNumberErrorMessage = phoneNumberError,
@@ -187,8 +192,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun makeErrorMessagesEmpty() {
-        _state.update {
-            it.copy(
+        updateData {
+            copy(
                 profileError = ProfileErrorUiState(
                     userNameErrorMessage = String.empty(),
                     phoneNumberErrorMessage = String.empty(),
@@ -200,6 +205,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun updatePagerNumber(currentPage: Int) {
-        _state.update { it.copy(pagerNumber = currentPage) }
+        updateData {
+            copy(pagerNumber = currentPage)
+        }
     }
 }

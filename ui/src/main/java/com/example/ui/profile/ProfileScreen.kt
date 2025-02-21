@@ -23,8 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -37,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
 import com.example.ui.R
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
 import com.example.ui.components.atoms.SwapWiseSwitch
@@ -84,13 +83,17 @@ fun ProfileScreen(
 
 @Composable
 private fun ProfileContent(
-    state: ProfileUiState,
+    state: MyUiState<ProfileUiState>,
     profileInteraction: ProfileInteraction,
     pagerState: PagerState
 ) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(color = MaterialTheme.color.transparent, darkIcons = false)
-    LazyColumn(modifier = Modifier.fillMaxHeight().background(MaterialTheme.color.background)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxHeight()
+            .background(MaterialTheme.color.background)
+    ) {
         item {
             Box {
                 GradientCircleBackground(
@@ -107,7 +110,9 @@ private fun ProfileContent(
                         .padding(horizontal = Spacing16, vertical = Spacing40)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(top = Spacing24),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = Spacing24),
                         verticalAlignment = Alignment.Top,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -124,21 +129,21 @@ private fun ProfileContent(
 
                     ProfileImage(
                         modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-                        state = state,
+                        state = state.data,
                         onImageChangeClick = profileInteraction::onUpdateProfileImage
                     )
 
                     VerticalBoldAndLightText(
                         modifier = Modifier.padding(top = Spacing16),
-                        boldText = state.profileInformationUiState.name,
+                        boldText = state.data.profileInformationUiState.name,
                         boldStyle = headingExtraLarge,
-                        lightText = state.profileInformationUiState.bio
+                        lightText = state.data.profileInformationUiState.bio
                     )
 
                     UserActivitiesBar(
-                        postsNumber = state.profileInformationUiState.postsNumber,
-                        offersNumber = state.profileInformationUiState.offersNumber,
-                        exchangesNumber = state.profileInformationUiState.exchangesNumber
+                        postsNumber = state.data.profileInformationUiState.postsNumber,
+                        offersNumber = state.data.profileInformationUiState.offersNumber,
+                        exchangesNumber = state.data.profileInformationUiState.exchangesNumber
                     )
 
                     ProfileToggle(pagerState = pagerState)
@@ -147,18 +152,18 @@ private fun ProfileContent(
                         pagerState = pagerState,
                         informationContent = {
                             UserInformationSection(
-                                state = state, profileInteraction = profileInteraction,
+                                state = state.data, profileInteraction = profileInteraction,
                             )
                         },
 
-                        postsContent = { UserPostsSection(state = state) },
+                        postsContent = { UserPostsSection(state = state.data) },
 
                         settingsContent = {
                             SettingsSection(
                                 onResetPasswordClick = {},
                                 onChangeLanguageClick = {},
                                 onLogOutClick = {},
-                                state = state,
+                                state = state.data,
                                 interaction = profileInteraction,
                             )
                         }

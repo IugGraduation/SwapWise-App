@@ -11,13 +11,13 @@ import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.OfferItem
 import com.example.ui.base.BaseViewModel
+import com.example.ui.base.MyUiState
 import com.example.ui.base.StringsResource
 import com.example.ui.models.Chip
 import com.example.ui.models.OfferItemUiState
 import com.example.ui.models.PostErrorUiState
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,7 +43,7 @@ class EditOfferViewModel @Inject constructor(
     }
 
     private fun onGetOfferDetailsSuccess(data: OfferItem) {
-        _state.value = OfferItemUiState(offerItem = data)
+        _state.value = MyUiState(OfferItemUiState(offerItem = data))
         prepareChipsList()
     }
 
@@ -61,8 +61,8 @@ class EditOfferViewModel @Inject constructor(
                 text = categoriesNames[index], selected = false, onClick = ::onCategoryChange
             )
         }
-        _state.update {
-            it.copy(chipsList = chipsList)
+        updateData {
+            copy(chipsList = chipsList)
         }
     }
 
@@ -72,8 +72,8 @@ class EditOfferViewModel @Inject constructor(
         placeError: String = String.empty(),
         detailsError: String = String.empty(),
     ) {
-        _state.update {
-            it.copy(
+        updateData {
+            copy(
                 offerError = PostErrorUiState(
                     titleError = titleError,
                     placeError = placeError,
@@ -84,8 +84,8 @@ class EditOfferViewModel @Inject constructor(
     }
 
     private fun updateOfferItem(update: OfferItem.() -> OfferItem) {
-        _state.update {
-            it.copy(offerItem = it.offerItem.update())
+        updateData {
+            copy(offerItem = offerItem.update())
         }
     }
 
@@ -116,7 +116,7 @@ class EditOfferViewModel @Inject constructor(
 
     override fun onClickSave() {
         tryToExecute(
-            call = { editOfferUseCase(state.value.offerItem) },
+            call = { editOfferUseCase(state.value.data.offerItem) },
             onSuccess = { navigateUp() },
             onError = ::onSaveOfferFail
         )
@@ -144,7 +144,7 @@ class EditOfferViewModel @Inject constructor(
 
     override fun onClickDelete() {
         tryToExecute(
-            call = { deleteOfferUseCase(state.value.offerItem.uuid) },
+            call = { deleteOfferUseCase(state.value.data.offerItem.uuid) },
             onSuccess = { navigateUp() },
         )
     }

@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.example.domain.model.OfferItem
 import com.example.ui.R
 import com.example.ui.add_post.IAddPostInteractions
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
@@ -55,7 +56,7 @@ fun AddOfferScreen(navController: NavController, viewModel: AddOfferViewModel = 
 
 @Composable
 fun AddOfferContent(
-    state: OfferItemUiState,
+    state: MyUiState<OfferItemUiState>,
     addInteractions: IAddPostInteractions,
     onClickGoBack: () -> Unit
 ) {
@@ -72,7 +73,7 @@ fun AddOfferContent(
         baseUiState = state.baseUiState,
     ) {
         ProductImage(
-            state.offerItem.imageLink,
+            state.data.offerItem.imageLink,
             onImagePicked = addInteractions::onSelectedImageChange
         )
         val scrollState = rememberScrollState()
@@ -89,7 +90,7 @@ fun AddOfferContent(
                 color = MaterialTheme.color.textPrimary
             )
             SwapWiseTextField(
-                value = state.offerItem.title,
+                value = state.data.offerItem.title,
                 onValueChange = addInteractions::onTitleChange,
                 placeholder = stringResource(R.string.offer_title),
                 leadingIcon = {
@@ -99,10 +100,10 @@ fun AddOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
-                errorMessage = state.offerError.titleError,
+                errorMessage = state.data.offerError.titleError,
             )
             SwapWiseTextField(
-                value = state.offerItem.place,
+                value = state.data.offerItem.place,
                 onValueChange = addInteractions::onPlaceChange,
                 placeholder = stringResource(R.string.your_place),
                 leadingIcon = {
@@ -112,10 +113,10 @@ fun AddOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
-                errorMessage = state.offerError.placeError,
+                errorMessage = state.data.offerError.placeError,
             )
             SwapWiseTextField(
-                value = state.offerItem.details,
+                value = state.data.offerItem.details,
                 onValueChange = addInteractions::onDetailsChange,
                 placeholder = stringResource(R.string.details),
                 leadingIcon = {
@@ -126,14 +127,14 @@ fun AddOfferContent(
                     )
                 },
                 isMultiline = true,
-                errorMessage = state.offerError.detailsError,
+                errorMessage = state.data.offerError.detailsError,
             )
             VerticalSpacer(Spacing16)
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.chipsList.onEach {
-                    it.selected = it.text == state.offerItem.category
+                chipsList = state.data.chipsList.onEach {
+                    it.selected = it.text == state.data.offerItem.category
                 },
             )
         }
@@ -146,9 +147,11 @@ fun AddOfferContent(
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         AddOfferContent(
-            state = OfferItemUiState(
+            state = MyUiState(
+                OfferItemUiState(
                 offerItem = OfferItem(category = "Category"), chipsList = listOf(
                     Chip(text = "Category"), Chip(text = "Category2"), Chip(text = "Category3")
+                    )
                 )
             ),
             onClickGoBack = { },

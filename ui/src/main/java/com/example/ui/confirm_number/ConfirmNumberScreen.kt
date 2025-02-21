@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ui.R
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.Header
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.VerticalSpacer
@@ -49,8 +50,8 @@ import com.example.ui.theme.color
 fun OtpScreen(navController: NavController, viewModel: ConfirmNumberViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(state.shouldNavigateToHome) {
-        if (state.shouldNavigateToHome) navController.navigateToHome()
+    LaunchedEffect(state.data.shouldNavigateToHome) {
+        if (state.data.shouldNavigateToHome) navController.navigateToHome()
     }
 
     OtpContent(
@@ -61,7 +62,7 @@ fun OtpScreen(navController: NavController, viewModel: ConfirmNumberViewModel = 
 
 @Composable
 fun OtpContent(
-    state: ConfirmNumberUiState,
+    state: MyUiState<ConfirmNumberUiState>,
     confirmNumberInteractions: IConfirmNumberInteractions,
 ) {
     ScreenTemplate(baseUiState = state.baseUiState,) {
@@ -84,15 +85,15 @@ fun OtpContent(
             )
             VerticalSpacer(Spacing24)
             SwapWiseOtpTextField(
-                otp = state.otp,
+                otp = state.data.otp,
                 onOtpChanged = confirmNumberInteractions::onOtpChange,
-                otpLength = state.otpLength
+                otpLength = state.data.otpLength
             )
             VerticalSpacer(Spacing72)
             SwapWiseFilledButton(
                 onClick = confirmNumberInteractions::onClickConfirm,
                 text = stringResource(R.string.confirm),
-                enabled = state.isConfirmButtonEnabled,
+                enabled = state.data.isConfirmButtonEnabled,
             )
         }
     }
@@ -154,7 +155,7 @@ private fun SwapWiseOtpTextField(
 fun PreviewOtpContent() {
     GraduationProjectTheme {
         OtpContent(
-            state = ConfirmNumberUiState(),
+            state = MyUiState(ConfirmNumberUiState()),
             confirmNumberInteractions = object : IConfirmNumberInteractions {
                 override fun onOtpChange(newOtp: String) {}
                 override fun onClickConfirm() {}

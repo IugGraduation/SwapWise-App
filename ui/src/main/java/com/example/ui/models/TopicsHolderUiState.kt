@@ -1,8 +1,7 @@
 package com.example.ui.models
 
-import com.example.domain.model.TopicsHolder
 import com.example.domain.model.TopicItem
-import com.example.ui.base.BaseUiState
+import com.example.domain.model.TopicsHolder
 
 data class TopicsHolderUiState(
     val title: String = "Categories",
@@ -11,7 +10,6 @@ data class TopicsHolderUiState(
     val isHorizontal: Boolean = true,
     var onClickSeeAll: () -> Unit = {},
     val url: String = "",
-    val baseUiState: BaseUiState = BaseUiState()
 ){
     companion object {
         fun fromTopicsHolder(topic: TopicsHolder): TopicsHolderUiState {

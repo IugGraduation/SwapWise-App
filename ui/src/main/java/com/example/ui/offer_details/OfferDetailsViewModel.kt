@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.GetOfferDetailsUseCase
 import com.example.domain.model.OfferItem
 import com.example.ui.base.BaseViewModel
+import com.example.ui.base.MyUiState
 import com.example.ui.models.OfferItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class OfferDetailsViewModel @Inject constructor(
     }
 
     private fun onGetOfferDetailsSuccess(data: OfferItem) {
-        _state.value = OfferItemUiState(offerItem = data)
+        _state.value = MyUiState(OfferItemUiState(offerItem = data))
     }
 
 }

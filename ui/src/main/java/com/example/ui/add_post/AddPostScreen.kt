@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.R
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
@@ -55,7 +56,7 @@ fun AddPostScreen(navController: NavController, viewModel: AddPostViewModel = hi
 
 @Composable
 fun AddPostContent(
-    state: PostItemUiState,
+    state: MyUiState<PostItemUiState>,
     addInteractions: IAddPostInteractions,
     onClickGoBack: () -> Unit
 ) {
@@ -71,7 +72,10 @@ fun AddPostContent(
         },
         baseUiState = state.baseUiState,
     ) {
-        ProductImage(state.postItem.imageLink, onImagePicked = addInteractions::onSelectedImageChange)
+        ProductImage(
+            state.data.postItem.imageLink,
+            onImagePicked = addInteractions::onSelectedImageChange
+        )
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
@@ -86,7 +90,7 @@ fun AddPostContent(
             )
             VerticalSpacer(Spacing8)
             SwapWiseTextField(
-                value = state.postItem.title,
+                value = state.data.postItem.title,
                 onValueChange = addInteractions::onTitleChange,
                 placeholder = stringResource(R.string.post_title),
                 leadingIcon = {
@@ -96,11 +100,11 @@ fun AddPostContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
-                errorMessage = state.postError.titleError,
+                errorMessage = state.data.postError.titleError,
             )
             VerticalSpacer(Spacing8)
             SwapWiseTextField(
-                value = state.postItem.place,
+                value = state.data.postItem.place,
                 onValueChange = addInteractions::onPlaceChange,
                 placeholder = stringResource(R.string.your_place),
                 leadingIcon = {
@@ -110,11 +114,11 @@ fun AddPostContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
-                errorMessage = state.postError.placeError,
+                errorMessage = state.data.postError.placeError,
             )
             VerticalSpacer(Spacing8)
             SwapWiseTextField(
-                value = state.postItem.details,
+                value = state.data.postItem.details,
                 onValueChange = addInteractions::onDetailsChange,
                 placeholder = stringResource(R.string.details),
                 leadingIcon = {
@@ -125,22 +129,22 @@ fun AddPostContent(
                     )
                 },
                 isMultiline = true,
-                errorMessage = state.postError.detailsError,
+                errorMessage = state.data.postError.detailsError,
             )
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.chipsList.onEach {
-                    it.selected = it.text == state.postItem.category
+                chipsList = state.data.chipsList.onEach {
+                    it.selected = it.text == state.data.postItem.category
                 },
             )
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.favoriteChipsList.onEach {
-                    it.selected = state.postItem.favoriteCategories.contains(it.text)
+                chipsList = state.data.favoriteChipsList.onEach {
+                    it.selected = state.data.postItem.favoriteCategories.contains(it.text)
                 },
             )
 
@@ -155,12 +159,14 @@ fun AddPostContent(
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         AddPostContent(
-            state = PostItemUiState(
+            state = MyUiState(
+                PostItemUiState(
                 chipsList = GetFakeCategoriesNamesUseCase()().map { title ->
                     Chip(text = title)
                 },
                 postItem = PostItem(
                     category = "Category",
+                )
                 )
             ),
             onClickGoBack = { },

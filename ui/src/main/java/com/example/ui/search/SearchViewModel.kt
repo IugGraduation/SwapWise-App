@@ -12,7 +12,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,7 +27,7 @@ class SearchViewModel @Inject constructor(
     init {
         prepareChipsList()
         viewModelScope.launch {
-            _state.map { it.search }.debounce(500L).distinctUntilChanged()
+            _state.map { it.data.search }.debounce(500L).distinctUntilChanged()
                 .collect { if (it.isNotBlank()) search() }
         }
     }
@@ -49,8 +48,8 @@ class SearchViewModel @Inject constructor(
                 Chip(text = categoriesNames[index], selected = false, onClick = { search() })
             }
         }
-        _state.update {
-            it.copy(filterChipsList = chipsList)
+        updateData {
+            copy(filterChipsList = chipsList)
         }
     }
 
@@ -58,10 +57,12 @@ class SearchViewModel @Inject constructor(
         tryToExecute(
             call = {
                 updateErrorMessage()
-                _state.update { it.copy(topicsList = listOf()) }
+                updateData {
+                    copy(topicsList = listOf())
+                }
                 val filterCategories =
-                    _state.value.filterChipsList.filter { it.selected }.map { it.text }
-                getSearchResultUseCase(_state.value.search, filterCategories)
+                    _state.value.data.filterChipsList.filter { it.selected }.map { it.text }
+                getSearchResultUseCase(_state.value.data.search, filterCategories)
             },
             onSuccess = ::onSearchSuccess,
             onError = ::onSearchFail
@@ -69,17 +70,23 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun onSearchSuccess(data: List<PostItem>) {
-        _state.update { it.copy(topicsList = data) }
+        updateData {
+            copy(topicsList = data)
+        }
     }
 
     private fun onSearchFail(throwable: Throwable) {
         onActionFail(throwable)
-        _state.update { it.copy(topicsList = listOf()) }
+        updateData {
+            copy(topicsList = listOf())
+        }
     }
 
 
     override fun onSearchChange(newValue: String) {
-        _state.update { it.copy(search = newValue) }
+        updateData {
+            copy(search = newValue)
+        }
     }
 
     override fun onClickTryAgain() {

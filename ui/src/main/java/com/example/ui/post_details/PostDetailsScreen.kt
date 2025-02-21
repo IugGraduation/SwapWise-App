@@ -27,6 +27,7 @@ import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.add_offer.navigateToAddOffer
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.DetailsScreenBody
 import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.components.atoms.SwapWiseFilledButton
@@ -57,7 +58,7 @@ fun PostDetailsScreen(
     val state by viewModel.state.collectAsState()
     PostDetailsContent(
         state = state,
-        onClickAddOffer = { navController.navigateToAddOffer(state.postItem.uuid) },
+        onClickAddOffer = { navController.navigateToAddOffer(state.data.postItem.uuid) },
         onClickOfferCard = navController::navigateToOfferDetails,
         onClickGoBack = navController::navigateUp,
     )
@@ -66,7 +67,7 @@ fun PostDetailsScreen(
 
 @Composable
 fun PostDetailsContent(
-    state: PostItemUiState,
+    state: MyUiState<PostItemUiState>,
     onClickAddOffer: () -> Unit,
     onClickOfferCard: (postId: String) -> Unit,
     onClickGoBack: () -> Unit
@@ -85,24 +86,27 @@ fun PostDetailsContent(
     ) {
         LazyColumn {
             item {
-                ProductImage(state.postItem.imageLink)
+                ProductImage(state.data.postItem.imageLink)
                 VerticalSpacer(Spacing16)
-                DetailsScreenUserHeader(user = state.postItem.user, date = state.postItem.date)
-                VerticalSpacer(Spacing24)
-                StatusRow(
-                    rate = state.postItem.rate,
-                    offersCount = state.postItem.offers.size,
-                    isOpen = state.postItem.isOpen
+                DetailsScreenUserHeader(
+                    user = state.data.postItem.user,
+                    date = state.data.postItem.date
                 )
                 VerticalSpacer(Spacing24)
-                DetailsScreenBody(state.postItem.title, state.postItem.details)
+                StatusRow(
+                    rate = state.data.postItem.rate,
+                    offersCount = state.data.postItem.offers.size,
+                    isOpen = state.data.postItem.isOpen
+                )
+                VerticalSpacer(Spacing24)
+                DetailsScreenBody(state.data.postItem.title, state.data.postItem.details)
                 VerticalSpacer(Spacing24)
                 TitledChipsList(
                     title = stringResource(R.string.favorite_categories),
-                    chipsList = state.postItem.favoriteCategories.map {
+                    chipsList = state.data.postItem.favoriteCategories.map {
                         Chip(
                             text = it,
-                            selected = state.postItem.favoriteCategories.contains(it),
+                            selected = state.data.postItem.favoriteCategories.contains(it),
                             onClick = {})
                     }
                 )
@@ -115,7 +119,7 @@ fun PostDetailsContent(
                 )
                 VerticalSpacer(Spacing8)
             }
-            items(state.postItem.offers) { offer ->
+            items(state.data.postItem.offers) { offer ->
                 PostCard(
                     username = offer.user.name,
                     userImage = rememberAsyncImagePainter(offer.user.imageLink),
@@ -184,7 +188,7 @@ fun PostDetailsStatusItem(title: String, value: String, modifier: Modifier = Mod
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         PostDetailsContent(
-            state = PostItemUiState(postItem = GetFakePostDetailsUseCase()()),
+            state = MyUiState(PostItemUiState(postItem = GetFakePostDetailsUseCase()())),
             onClickAddOffer = {},
             onClickOfferCard = {},
             onClickGoBack = {},

@@ -7,7 +7,6 @@ import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,8 +19,8 @@ class LoginViewModel @Inject constructor(
         tryToExecute(
             call = {
                 loginValidationUseCase(
-                    phone = state.value.phone,
-                    password = state.value.password
+                    phone = state.value.data.phone,
+                    password = state.value.data.password
                 )
             },
             onSuccess = { navigateToHome() },
@@ -30,7 +29,9 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun navigateToHome() {
-        _state.update { it.copy(shouldNavigateToHome = true) }
+        updateData {
+            copy(shouldNavigateToHome = true)
+        }
     }
 
     private fun onLoginFail(throwable: Throwable) {
@@ -52,8 +53,8 @@ class LoginViewModel @Inject constructor(
         phoneError: String = String.empty(),
         passwordError: String = String.empty(),
     ) {
-        _state.update {
-            it.copy(
+        updateData {
+            copy(
                 loginError = LoginErrorUiState(
                     phoneError = phoneError,
                     passwordError = passwordError,
@@ -64,16 +65,22 @@ class LoginViewModel @Inject constructor(
 
     override fun onPhoneChange(newValue: String) {
         updateFieldError()
-        _state.update { it.copy(phone = newValue) }
+        updateData {
+            copy(phone = newValue)
+        }
     }
 
     override fun onPasswordChange(newValue: String) {
         updateFieldError()
-        _state.update { it.copy(password = newValue) }
+        updateData {
+            copy(password = newValue)
+        }
     }
 
     override fun togglePasswordVisibility() {
-        _state.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
+        updateData {
+            copy(isPasswordVisible = !isPasswordVisible)
+        }
     }
 
 }

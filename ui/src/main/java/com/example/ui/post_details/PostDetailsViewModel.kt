@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.GetPostDetailsUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.base.BaseViewModel
+import com.example.ui.base.MyUiState
 import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class PostDetailsViewModel @Inject constructor(
     }
 
     private fun onGetPostDetailsSuccess(data: PostItem) {
-        _state.value = PostItemUiState(postItem = data)
+        _state.value = MyUiState(PostItemUiState(postItem = data))
     }
 
 

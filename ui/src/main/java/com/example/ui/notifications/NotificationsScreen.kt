@@ -43,6 +43,7 @@ import com.example.domain.model.NotificationGroup
 import com.example.domain.notifications.GetFakeNotificationsUseCase
 import com.example.domain.notifications.GroupNotificationsUseCase
 import com.example.ui.R
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.templates.MainTitledScreenTemplate
 import com.example.ui.home.navigateToHome
@@ -88,7 +89,7 @@ fun NotificationsScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NotificationsContent(
-    state: NotificationUIState,
+    state: MyUiState<NotificationUIState>,
     bottomBarState: BottomBarUiState,
     notificationsInteractions: INotificationsInteractions
 ) {
@@ -240,7 +241,7 @@ fun PreviewNotificationContent() {
             notifications = GetFakeNotificationsUseCase()()
         )
         NotificationsContent(
-            state = notificationUIState,
+            state = MyUiState(notificationUIState),
             bottomBarState = BottomBarUiState(selectedItem = 2),
             notificationsInteractions = object : INotificationsInteractions {
                 override fun onDismiss(id: String) {}

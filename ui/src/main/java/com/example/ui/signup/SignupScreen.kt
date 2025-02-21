@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ui.R
+import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.Header
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -44,8 +45,8 @@ fun SignupScreen(
 ) {
     val state by signupViewModel.state.collectAsState()
 
-    LaunchedEffect(state.shouldNavigateToConfirmNumber) {
-        if (state.shouldNavigateToConfirmNumber) navController.navigateToOtp()
+    LaunchedEffect(state.data.shouldNavigateToConfirmNumber) {
+        if (state.data.shouldNavigateToConfirmNumber) navController.navigateToOtp()
     }
 
     SignupContent(
@@ -57,7 +58,7 @@ fun SignupScreen(
 
 @Composable
 fun SignupContent(
-    state: SignupUiState,
+    state: MyUiState<SignupUiState>,
     signupInteractions: ISignupInteractions,
     onClickGoToLogin: () -> Unit,
 ) {
@@ -77,7 +78,7 @@ fun SignupContent(
                 imgContentDescription = stringResource(R.string.image_signup),
             )
             SignupForm(
-                state = state,
+                state = state.data,
                 signupInteractions = signupInteractions,
             )
             SwapWiseFilledButton(
@@ -182,7 +183,7 @@ fun SignupForm(
 fun PreviewSignupContent() {
     GraduationProjectTheme {
         SignupContent(
-            state = SignupUiState(),
+            state = MyUiState(SignupUiState()),
             signupInteractions = object : ISignupInteractions {
                 override fun onFullNameChange(newValue: String) {}
                 override fun onPhoneChange(newValue: String) {}

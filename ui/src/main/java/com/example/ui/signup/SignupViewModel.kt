@@ -10,7 +10,6 @@ import com.example.domain.exception.PasswordMismatchException
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,11 +22,11 @@ class SignupViewModel @Inject constructor(
         tryToExecute(
             call = {
                 signupValidationUseCase(
-                    fullName = state.value.fullName,
-                    phone = state.value.phone,
-                    password = state.value.password,
-                    confirmPassword = state.value.confirmPassword,
-                    bestBarterSpot = state.value.bestBarterSpot,
+                    fullName = state.value.data.fullName,
+                    phone = state.value.data.phone,
+                    password = state.value.data.password,
+                    confirmPassword = state.value.data.confirmPassword,
+                    bestBarterSpot = state.value.data.bestBarterSpot,
                 )
             },
             onSuccess = { navigateToConfirmNumber() },
@@ -36,7 +35,9 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun navigateToConfirmNumber() {
-        _state.update { it.copy(shouldNavigateToConfirmNumber = true) }
+        updateData {
+            copy(shouldNavigateToConfirmNumber = true)
+        }
     }
 
     private fun onSignupFail(throwable: Throwable) {
@@ -79,8 +80,8 @@ class SignupViewModel @Inject constructor(
         confirmPasswordError: String = "",
         bestBarterSpotError: String = "",
     ) {
-        _state.update {
-            it.copy(
+        updateData {
+            copy(
                 signupError = SignupErrorUiState(
                     fullNameError = fullNameError,
                     phoneError = phoneError,
@@ -95,40 +96,56 @@ class SignupViewModel @Inject constructor(
 
     override fun onFullNameChange(newValue: String) {
         updateFieldError()
-        _state.update { it.copy(fullName = newValue) }
+        updateData {
+            copy(fullName = newValue)
+        }
     }
 
     override fun onPhoneChange(newValue: String) {
         updateFieldError()
-        _state.update { it.copy(phone = newValue) }
+        updateData {
+            copy(phone = newValue)
+        }
     }
 
     override fun onPasswordChange(newValue: String) {
         updateFieldError()
-        _state.update { it.copy(password = newValue) }
+        updateData {
+            copy(password = newValue)
+        }
     }
 
     override fun togglePasswordVisibility() {
-        _state.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
+        updateData {
+            copy(isPasswordVisible = !isPasswordVisible)
+        }
     }
 
     override fun onConfirmPasswordChange(newValue: String) {
         updateFieldError()
-        _state.update { it.copy(confirmPassword = newValue) }
+        updateData {
+            copy(confirmPassword = newValue)
+        }
     }
 
     override fun toggleConfirmPasswordVisibility() {
-        _state.update { it.copy(isConfirmPasswordVisible = !it.isConfirmPasswordVisible) }
+        updateData {
+            copy(isConfirmPasswordVisible = !isConfirmPasswordVisible)
+        }
     }
 
     override fun onBestBarterSpotChange(newValue: String) {
         updateFieldError()
-        _state.update { it.copy(bestBarterSpot = newValue) }
+        updateData {
+            copy(bestBarterSpot = newValue)
+        }
     }
 
     override fun onBioChange(newValue: String) {
         updateFieldError()
-        _state.update { it.copy(bio = newValue) }
+        updateData {
+            copy(bio = newValue)
+        }
     }
 
 }
