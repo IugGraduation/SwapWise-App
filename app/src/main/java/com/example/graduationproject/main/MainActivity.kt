@@ -20,9 +20,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val isDarkTheme by mainViewModel.state.collectAsState()
+            val state by mainViewModel.state.collectAsState()
 
-            GraduationProjectTheme(darkTheme = isDarkTheme) {
+            GraduationProjectTheme(darkTheme = state.data) {
                 val navController = rememberNavController()
                 AppNavGraph(navController)
             }

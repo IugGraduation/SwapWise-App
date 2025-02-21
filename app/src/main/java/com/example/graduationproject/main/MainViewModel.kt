@@ -5,7 +5,6 @@ import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,12 +12,12 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase
 ) : BaseViewModel<Boolean>(false) {
-    init { viewModelScope.launch(Dispatchers.IO) { isDarkThem() } }
+    init { viewModelScope.launch(Dispatchers.IO) { isDarkTheme() } }
 
 
-    private suspend fun isDarkThem() {
+    private suspend fun isDarkTheme() {
         customizeProfileSettings.isDarkThem().collect{ isDark ->
-            _state.update { isDark }
+            updateData { isDark }
         }
     }
 }
