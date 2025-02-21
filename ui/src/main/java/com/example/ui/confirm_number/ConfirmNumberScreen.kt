@@ -101,6 +101,7 @@ fun OtpContent(
     }
 }
 
+//todo: check this otp text field, and its colors
 @Composable
 private fun SwapWiseOtpTextField(
     otp: String,

@@ -70,6 +70,7 @@ fun HomeScreen(
             }
         }
     }
+    //todo: optimize this bottomBarState
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,
         onItemSelected = mainViewModel::onItemSelected,
