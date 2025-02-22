@@ -1,7 +1,6 @@
 package com.example.ui.confirm_number
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -79,6 +78,7 @@ fun OtpContent(
                 imgPainter = painterResource(R.drawable.img_otp),
                 imgPainterDarkTheme = painterResource(R.drawable.img_otp_dark),
                 imgContentDescription = stringResource(R.string.image_otp),
+                isDarkTheme = state.data.isDarkTheme
             )
             VerticalSpacer(Spacing8)
             Text(
@@ -88,7 +88,8 @@ fun OtpContent(
             VerticalSpacer(Spacing24)
             SwapWiseOtpTextField(
                 otp = state.data.otp,
-                onOtpChanged = confirmNumberInteractions::onOtpChange,
+                onOtpChange = confirmNumberInteractions::onOtpChange,
+                isDarkTheme = state.data.isDarkTheme,
                 otpLength = state.data.otpLength
             )
             VerticalSpacer(Spacing72)
@@ -101,11 +102,12 @@ fun OtpContent(
     }
 }
 
-//todo: check this otp text field, and its colors
+//todo: check this otp text field
 @Composable
 private fun SwapWiseOtpTextField(
     otp: String,
-    onOtpChanged: (String) -> Unit,
+    onOtpChange: (String) -> Unit,
+    isDarkTheme: Boolean,
     modifier: Modifier = Modifier,
     otpLength: Int = 4,
 ) {
@@ -115,7 +117,7 @@ private fun SwapWiseOtpTextField(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
     ) {
-        val backgroundColor = if (isSystemInDarkTheme()) {
+        val backgroundColor = if (isDarkTheme) {
             MaterialTheme.color.onBackground
         }else{
             Tertiary
@@ -136,8 +138,9 @@ private fun SwapWiseOtpTextField(
                     value = otpChars.getOrElse(index) { ' ' }.toString(),
                     onValueChange = { newChar ->
                         if (newChar.length == 1) {
-                            otpChars[index] = newChar.first()
-                            onOtpChanged(otpChars.joinToString(""))
+                            otpChars.add(index,newChar.first())
+//                            otpChars[index] = newChar.first()
+                            onOtpChange(otpChars.joinToString(""))
                         }
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

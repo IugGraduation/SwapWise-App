@@ -1,5 +1,6 @@
 package com.example.ui.signup
 
+import androidx.lifecycle.viewModelScope
 import com.example.domain.SignupValidationUseCase
 import com.example.domain.exception.InvalidBestBarterSpotErrorException
 import com.example.domain.exception.InvalidConfirmPasswordException
@@ -7,16 +8,33 @@ import com.example.domain.exception.InvalidFullNameException
 import com.example.domain.exception.InvalidPasswordException
 import com.example.domain.exception.InvalidPhoneException
 import com.example.domain.exception.PasswordMismatchException
+import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val stringsResource: StringsResource,
+    private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val signupValidationUseCase: SignupValidationUseCase,
 ) : BaseViewModel<SignupUiState>(SignupUiState()), ISignupInteractions {
+
+    init {
+        viewModelScope.launch { isDarkTheme() }
+    }
+
+    private suspend fun isDarkTheme() {
+        customizeProfileSettings.isDarkThem().buffer().collect{ isDark ->
+            updateData {
+                copy(isDarkTheme = isDark)
+            }
+        }
+    }
+
 
     override fun onClickSignup() {
         tryToExecute(

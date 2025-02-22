@@ -9,6 +9,7 @@ data class SignupUiState(
     val bio: String = "",
     val isPasswordVisible: Boolean = false,
     val isConfirmPasswordVisible: Boolean = false,
+    val isDarkTheme: Boolean = false,
 
     val shouldNavigateToConfirmNumber: Boolean = false,
 

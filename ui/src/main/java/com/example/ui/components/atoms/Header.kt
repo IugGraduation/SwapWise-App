@@ -1,7 +1,6 @@
 package com.example.ui.components.atoms
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,12 +14,13 @@ fun Header(
     title: String,
     imgPainter: Painter,
     imgContentDescription: String?,
+    isDarkTheme: Boolean,
+    modifier: Modifier = Modifier,
     imgPainterDarkTheme: Painter = imgPainter,
-    modifier: Modifier = Modifier
 ) {
     //todo: change the way of checking dark theme
     Image(
-        painter =  if(isSystemInDarkTheme()) imgPainterDarkTheme else imgPainter,
+        painter =  if(isDarkTheme) imgPainterDarkTheme else imgPainter,
         contentDescription = imgContentDescription,
         modifier = modifier.fillMaxWidth(),
     )

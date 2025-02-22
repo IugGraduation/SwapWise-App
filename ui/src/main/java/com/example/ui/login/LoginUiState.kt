@@ -5,6 +5,7 @@ data class LoginUiState(
     val password: String = "",
     val isPasswordVisible: Boolean = false,
     val shouldNavigateToHome: Boolean = false,
+    val isDarkTheme: Boolean = false,
 
     val loginError: LoginErrorUiState = LoginErrorUiState(),
 )

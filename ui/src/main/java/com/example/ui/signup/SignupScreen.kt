@@ -78,6 +78,7 @@ fun SignupContent(
                 imgPainter = painterResource(R.drawable.img_signup),
                 imgPainterDarkTheme = painterResource(R.drawable.img_signup_dark),
                 imgContentDescription = stringResource(R.string.image_signup),
+                isDarkTheme = state.data.isDarkTheme
             )
             SignupForm(
                 state = state.data,

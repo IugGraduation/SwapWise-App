@@ -5,4 +5,5 @@ data class ConfirmNumberUiState(
     val isConfirmButtonEnabled: Boolean = false,
     val otpLength: Int = 4,
     val shouldNavigateToHome: Boolean = false,
+    val isDarkTheme: Boolean = false,
 )

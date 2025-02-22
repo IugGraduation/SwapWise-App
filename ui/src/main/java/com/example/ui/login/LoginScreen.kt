@@ -79,6 +79,7 @@ fun LoginContent(
                 imgPainter = painterResource(R.drawable.img_login),
                 imgPainterDarkTheme = painterResource(R.drawable.img_login_dark),
                 imgContentDescription = stringResource(R.string.image_login),
+                isDarkTheme = state.data.isDarkTheme
             )
             LoginForm(
                 state = state.data,
