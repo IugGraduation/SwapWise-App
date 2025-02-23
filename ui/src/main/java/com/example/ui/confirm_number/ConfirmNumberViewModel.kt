@@ -32,7 +32,7 @@ class ConfirmNumberViewModel @Inject constructor(
         updateData {
             copy(
                 otp = newOtp,
-                isConfirmButtonEnabled = newOtp.length == otpLength
+                isConfirmButtonEnabled = newOtp.replace(" ", "").length == otpLength
             )
         }
 

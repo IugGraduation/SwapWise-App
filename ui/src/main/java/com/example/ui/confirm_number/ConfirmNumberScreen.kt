@@ -18,8 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -66,7 +69,7 @@ fun OtpContent(
     state: MyUiState<ConfirmNumberUiState>,
     confirmNumberInteractions: IConfirmNumberInteractions,
 ) {
-    ScreenTemplate(baseUiState = state.baseUiState,) {
+    ScreenTemplate(baseUiState = state.baseUiState) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -102,7 +105,6 @@ fun OtpContent(
     }
 }
 
-//todo: check this otp text field
 @Composable
 private fun SwapWiseOtpTextField(
     otp: String,
@@ -111,7 +113,11 @@ private fun SwapWiseOtpTextField(
     modifier: Modifier = Modifier,
     otpLength: Int = 4,
 ) {
-    val otpChars = otp.toCharArray().toMutableList()
+    val otpChars = otp.toCharArray().toMutableList().apply {
+        while (size < otpLength) {
+            add(' ')
+        }
+    }
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -119,11 +125,14 @@ private fun SwapWiseOtpTextField(
     ) {
         val backgroundColor = if (isDarkTheme) {
             MaterialTheme.color.onBackground
-        }else{
+        } else {
             Tertiary
         }
 
+        val focusRequesters = List(otpLength) { remember { FocusRequester() } }
+
         repeat(otpLength) { index ->
+
             Box(
                 modifier = Modifier
                     .size(width = Spacing56, height = Spacing56)
@@ -132,23 +141,35 @@ private fun SwapWiseOtpTextField(
                         shape = RoundedCornerShape(RadiusMedium),
                     ),
                 contentAlignment = Alignment.Center,
-
-                ) {
+            ) {
                 BasicTextField(
                     value = otpChars.getOrElse(index) { ' ' }.toString(),
-                    onValueChange = { newChar ->
-                        if (newChar.length == 1) {
-                            otpChars.add(index,newChar.first())
-//                            otpChars[index] = newChar.first()
+                    onValueChange = { value ->
+                        val newChar = value.trim()
+                        if (newChar.isNotEmpty()) {
+                            otpChars[index] = newChar.last()
                             onOtpChange(otpChars.joinToString(""))
+
+                            if (index < otpLength - 1) {
+                                focusRequesters[index + 1].requestFocus()
+                            }
+                        }
+                        else {
+                            otpChars[index] = ' '
+                            onOtpChange(otpChars.joinToString(""))
+                            if (index > 0) {
+                                focusRequesters[index - 1].requestFocus()
+                            }
                         }
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     maxLines = 1,
-                    textStyle = TextStyles.headingLarge.copy(
+                    textStyle = MaterialTheme.typography.headlineLarge.copy(
                         textAlign = TextAlign.Center
                     ),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequesters[index]),
                 )
             }
         }
