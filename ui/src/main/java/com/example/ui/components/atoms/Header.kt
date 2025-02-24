@@ -18,7 +18,6 @@ fun Header(
     modifier: Modifier = Modifier,
     imgPainterDarkTheme: Painter = imgPainter,
 ) {
-    //todo: change the way of checking dark theme
     Image(
         painter =  if(isDarkTheme) imgPainterDarkTheme else imgPainter,
         contentDescription = imgContentDescription,

@@ -14,13 +14,15 @@ import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.search.navigateToSearch
+import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GraduationProjectTheme
 
 
 @Composable
 fun SeeAllTopicsScreen(
     navController: NavController,
-    topicSeeAllViewModel: SeeAllTopicsViewModel = hiltViewModel()
+    topicSeeAllViewModel: SeeAllTopicsViewModel = hiltViewModel(),
+    bottomNavigationViewModel: BottomNavigationViewModel = hiltViewModel()
 ) {
     val state by topicSeeAllViewModel.state.collectAsState()
 
@@ -28,7 +30,10 @@ fun SeeAllTopicsScreen(
         if (item is PostItem) {
             item.onClickGoToDetails = { navController.navigateToPostDetails(item.uuid) }
         } else if (item is CategoryItem) {
-            item.onClickSearchByCategory = { navController.navigateToSearch(item.title) }
+            item.onClickSearchByCategory = {
+                bottomNavigationViewModel.onItemSelected(1)
+                navController.navigateToSearch(item.title)
+            }
         }
     }
 

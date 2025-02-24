@@ -18,7 +18,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.ui.R
 import com.example.ui.base.BaseUiState
+import com.example.ui.home.navigateToHome
 import com.example.ui.models.BottomBarUiState
+import com.example.ui.notifications.navigateToNotifications
+import com.example.ui.profile.navigateToProfile
+import com.example.ui.search.navigateToSearch
 import com.example.ui.theme.Primary
 import com.example.ui.theme.color
 
@@ -37,10 +41,10 @@ fun BottomBarTemplate(
                 onClickItem = { item ->
                     bottomBarState.onItemSelected(item)
                     when (item) {
-                        0 -> bottomBarState.navigateToHome()
-                        1 -> bottomBarState.navigateToSearch()
-                        2 -> bottomBarState.navigateToNotifications()
-                        3 -> bottomBarState.navigateToProfile()
+                        0 -> bottomBarState.navController?.navigateToHome()
+                        1 -> bottomBarState.navController?.navigateToSearch()
+                        2 -> bottomBarState.navController?.navigateToNotifications()
+                        3 -> bottomBarState.navController?.navigateToProfile()
                     }
                 }
             )
@@ -53,7 +57,7 @@ fun BottomBarTemplate(
 
 
 @Composable
-private fun SwapWiseBottomNavigationBar(selectedItem: Int = 2, onClickItem: (itemNum: Int) -> Unit) {
+private fun SwapWiseBottomNavigationBar(selectedItem: Int, onClickItem: (itemNum: Int) -> Unit) {
     val navigationBarItemColors = NavigationBarItemDefaults.colors().copy(
         selectedIconColor = MaterialTheme.color.onBackground,
         selectedTextColor = Primary,

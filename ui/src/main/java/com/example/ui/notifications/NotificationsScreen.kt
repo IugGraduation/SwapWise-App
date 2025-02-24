@@ -46,10 +46,7 @@ import com.example.ui.R
 import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.templates.MainTitledScreenTemplate
-import com.example.ui.home.navigateToHome
 import com.example.ui.models.BottomBarUiState
-import com.example.ui.profile.navigateToProfile
-import com.example.ui.search.navigateToSearch
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.BackgroundLight
 import com.example.ui.theme.Danger
@@ -73,10 +70,7 @@ fun NotificationsScreen(
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,
         onItemSelected = bottomNavigationViewModel::onItemSelected,
-        navigateToHome = { navController.navigateToHome() },
-        navigateToSearch = { navController.navigateToSearch() },
-        navigateToNotifications = { navController.navigateToNotifications() },
-        navigateToProfile = { navController.navigateToProfile() },
+        navController = navController
     )
 
     NotificationsContent(

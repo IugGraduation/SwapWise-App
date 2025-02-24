@@ -33,12 +33,9 @@ import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.MainTitledScreenTemplate
-import com.example.ui.home.navigateToHome
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.ChipUiState
-import com.example.ui.notifications.navigateToNotifications
 import com.example.ui.post_details.navigateToPostDetails
-import com.example.ui.profile.navigateToProfile
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.BlackFourth
 import com.example.ui.theme.GraduationProjectTheme
@@ -63,10 +60,7 @@ fun SearchScreen(
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,
         onItemSelected = bottomNavigationViewModel::onItemSelected,
-        navigateToHome = { navController.navigateToHome() },
-        navigateToSearch = { navController.navigateToSearch() },
-        navigateToNotifications = { navController.navigateToNotifications() },
-        navigateToProfile = { navController.navigateToProfile() },
+        navController = navController
     )
 
     SearchContent(

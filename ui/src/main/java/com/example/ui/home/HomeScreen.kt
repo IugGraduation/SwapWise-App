@@ -39,9 +39,7 @@ import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.templates.HomeTemplate
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.TopicsHolderUiState
-import com.example.ui.notifications.navigateToNotifications
 import com.example.ui.post_details.navigateToPostDetails
-import com.example.ui.profile.navigateToProfile
 import com.example.ui.search.navigateToSearch
 import com.example.ui.see_all_topics.navigateToTopicSeeAll
 import com.example.ui.shared.BottomNavigationViewModel
@@ -56,28 +54,27 @@ import com.example.ui.theme.color
 fun HomeScreen(
     navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    mainViewModel: BottomNavigationViewModel = hiltViewModel()
+    bottomNavigationViewModel: BottomNavigationViewModel = hiltViewModel()
 ) {
     val state by homeViewModel.state.collectAsState()
-    val selectedItem by mainViewModel.selectedItem.collectAsState()
+    val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
     for (topic in state.data.topicsList) {
         topic.onClickSeeAll = { navController.navigateToTopicSeeAll(topic.url) }
         for (item in topic.items) {
             if (item is PostItem) {
                 item.onClickGoToDetails = { navController.navigateToPostDetails(item.uuid) }
             } else if (item is CategoryItem) {
-                item.onClickSearchByCategory = { navController.navigateToSearch(item.title) }
+                item.onClickSearchByCategory = {
+                    bottomNavigationViewModel.onItemSelected(1)
+                    navController.navigateToSearch(item.title)
+                }
             }
         }
     }
-    //todo: optimize this bottomBarState
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,
-        onItemSelected = mainViewModel::onItemSelected,
-        navigateToHome = { navController.navigateToHome() },
-        navigateToSearch = { navController.navigateToSearch() },
-        navigateToNotifications = { navController.navigateToNotifications() },
-        navigateToProfile = { navController.navigateToProfile() },
+        onItemSelected = bottomNavigationViewModel::onItemSelected,
+        navController = navController,
     )
 
     HomeContent(
