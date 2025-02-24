@@ -37,7 +37,7 @@ import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
-import com.example.ui.models.Chip
+import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.offer_details.navigateToOfferDetails
 import com.example.ui.theme.BlackFourth
@@ -104,7 +104,7 @@ fun PostDetailsContent(
                 TitledChipsList(
                     title = stringResource(R.string.favorite_categories),
                     chipsList = state.data.postItem.favoriteCategories.map {
-                        Chip(
+                        ChipUiState(
                             text = it,
                             selected = state.data.postItem.favoriteCategories.contains(it),
                             onClick = {})

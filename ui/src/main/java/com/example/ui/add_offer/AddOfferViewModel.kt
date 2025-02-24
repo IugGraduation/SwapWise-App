@@ -11,7 +11,7 @@ import com.example.domain.model.OfferItem
 import com.example.ui.add_post.IAddPostInteractions
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
-import com.example.ui.models.Chip
+import com.example.ui.models.ChipUiState
 import com.example.ui.models.OfferItemUiState
 import com.example.ui.models.PostErrorUiState
 import com.example.ui.util.empty
@@ -41,7 +41,7 @@ class AddOfferViewModel @Inject constructor(
 
     private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
         val chipsList = List(categoriesNames.size) { index ->
-            Chip(text = categoriesNames[index], selected = false, onClick = ::onCategoryChange)
+            ChipUiState(text = categoriesNames[index], selected = false, onClick = ::onCategoryChange)
         }
         updateData {
             copy(chipsList = chipsList)

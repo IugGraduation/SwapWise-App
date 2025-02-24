@@ -13,7 +13,7 @@ import com.example.domain.model.PostItem
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.base.StringsResource
-import com.example.ui.models.Chip
+import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostErrorUiState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.util.empty
@@ -57,7 +57,7 @@ class EditPostViewModel @Inject constructor(
 
     private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
         val chipsList = List(categoriesNames.size) { index ->
-            Chip(
+            ChipUiState(
                 text = categoriesNames[index], selected = false, onClick = ::onCategoryChange
             )
         }

@@ -19,7 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.VerticalSpacer
-import com.example.ui.models.Chip
+import com.example.ui.models.ChipUiState
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Secondary
 import com.example.ui.theme.Spacing16
@@ -32,7 +32,7 @@ import com.example.ui.theme.color
 fun TitledChipsList(
     title: String? = null,
     textStyle: TextStyle = TextStyles.headingMedium,
-    chipsList: List<Chip>
+    chipsList: List<ChipUiState>
 ) {
     if (title != null) {
         Text(
@@ -55,7 +55,7 @@ fun TitledChipsList(
 }
 
 @Composable
-private fun SwapWiseChip(chip: Chip, modifier: Modifier = Modifier) {
+private fun SwapWiseChip(chip: ChipUiState, modifier: Modifier = Modifier) {
     val myModifier = if (!chip.selected) modifier.shadow(
         elevation = 4.dp,
         shape = RoundedCornerShape(RadiusLarge),

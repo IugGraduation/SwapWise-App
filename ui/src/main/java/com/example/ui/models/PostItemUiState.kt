@@ -4,8 +4,8 @@ import com.example.domain.model.PostItem
 
 data class PostItemUiState(
     val postItem: PostItem = PostItem(),
-    val chipsList: List<Chip> = listOf(),
-    val favoriteChipsList: List<Chip> = listOf(),
+    val chipsList: List<ChipUiState> = listOf(),
+    val favoriteChipsList: List<ChipUiState> = listOf(),
     val postError: PostErrorUiState = PostErrorUiState(),
 )
 

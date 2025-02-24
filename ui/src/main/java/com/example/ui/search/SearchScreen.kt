@@ -35,7 +35,7 @@ import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.MainTitledScreenTemplate
 import com.example.ui.home.navigateToHome
 import com.example.ui.models.BottomBarUiState
-import com.example.ui.models.Chip
+import com.example.ui.models.ChipUiState
 import com.example.ui.notifications.navigateToNotifications
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.profile.navigateToProfile
@@ -170,7 +170,7 @@ fun PreviewSearchContent() {
         val searchUiState = SearchUiState(
 //            topicsList = GetFakePostsUseCase()(),
             filterChipsList = GetFakeCategoriesNamesUseCase()().map {
-                Chip(text = it, onClick = { }, selected = false)
+                ChipUiState(text = it, onClick = { }, selected = false)
             },
 //            isLoading = true,
         )

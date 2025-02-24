@@ -10,7 +10,7 @@ import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.PostItem
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
-import com.example.ui.models.Chip
+import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostErrorUiState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.util.empty
@@ -41,7 +41,7 @@ class AddPostViewModel @Inject constructor(
 
     private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
         val chipsList = List(categoriesNames.size) { index ->
-            Chip(text = categoriesNames[index], selected = false, onClick = ::onCategoryChange)
+            ChipUiState(text = categoriesNames[index], selected = false, onClick = ::onCategoryChange)
         }
         val favoriteChipsList = chipsList.map { it.copy() }.onEach {
             it.onClick = ::onFavoriteCategoryChange

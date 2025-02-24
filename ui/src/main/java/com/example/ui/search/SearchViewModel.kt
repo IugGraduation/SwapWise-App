@@ -6,7 +6,7 @@ import com.example.domain.GetCategoriesNamesUseCase
 import com.example.domain.GetSearchResultUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.base.BaseViewModel
-import com.example.ui.models.Chip
+import com.example.ui.models.ChipUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -42,10 +42,10 @@ class SearchViewModel @Inject constructor(
     private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
         val chipsList = List(categoriesNames.size) { index ->
             if (args.filterCategoryName == categoriesNames[index]) {
-                Chip(text = categoriesNames[index], selected = true, onClick = { search() })
+                ChipUiState(text = categoriesNames[index], selected = true, onClick = { search() })
                     .also { search() }
             } else {
-                Chip(text = categoriesNames[index], selected = false, onClick = { search() })
+                ChipUiState(text = categoriesNames[index], selected = false, onClick = { search() })
             }
         }
         updateData {
@@ -60,9 +60,10 @@ class SearchViewModel @Inject constructor(
                 updateData {
                     copy(topicsList = listOf())
                 }
-                val filterCategories =
-                    _state.value.data.filterChipsList.filter { it.selected }.map { it.text }
-                getSearchResultUseCase(_state.value.data.search, filterCategories)
+                val filterChips =
+                    _state.value.data.filterChipsList.map { it.toChip() }
+//                    _state.value.data.filterChipsList.filter { it.selected }.map { it.text }
+                getSearchResultUseCase(_state.value.data.search, filterChips)
             },
             onSuccess = ::onSearchSuccess,
             onError = ::onSearchFail

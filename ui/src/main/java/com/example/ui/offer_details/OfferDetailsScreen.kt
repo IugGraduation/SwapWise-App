@@ -34,7 +34,7 @@ import com.example.ui.components.molecules.DetailsScreenUserHeader
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
-import com.example.ui.models.Chip
+import com.example.ui.models.ChipUiState
 import com.example.ui.models.OfferItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.IconSizeLarge
@@ -104,7 +104,7 @@ fun OfferDetailsContent(
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
                 chipsList = listOf(
-                    Chip(
+                    ChipUiState(
                         text = state.data.offerItem.category,
                         selected = true,
                         clickable = false

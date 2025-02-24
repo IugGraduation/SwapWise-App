@@ -30,7 +30,7 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
-import com.example.ui.models.Chip
+import com.example.ui.models.ChipUiState
 import com.example.ui.models.OfferItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
@@ -150,7 +150,7 @@ fun PreviewPostDetailsContent() {
             state = MyUiState(
                 OfferItemUiState(
                 offerItem = OfferItem(category = "Category"), chipsList = listOf(
-                    Chip(text = "Category"), Chip(text = "Category2"), Chip(text = "Category3")
+                    ChipUiState(text = "Category"), ChipUiState(text = "Category2"), ChipUiState(text = "Category3")
                     )
                 )
             ),
