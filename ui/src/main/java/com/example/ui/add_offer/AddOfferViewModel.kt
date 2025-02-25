@@ -10,6 +10,7 @@ import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.OfferItem
 import com.example.ui.add_post.IAddPostInteractions
 import com.example.ui.base.BaseViewModel
+import com.example.ui.base.NavigateUpEffect
 import com.example.ui.base.StringsResource
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.OfferItemUiState
@@ -24,9 +25,14 @@ class AddOfferViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
     private val addOfferUseCase: AddOfferUseCase,
-) : BaseViewModel<OfferItemUiState>(OfferItemUiState()), IAddPostInteractions {
+) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IAddPostInteractions {
 
     private val args = AddOfferArgs(savedStateHandle)
+
+    override fun navigateUp() {
+        navigateTo(NavigateUpEffect.NavigateUp)
+    }
+
 
     init {
         prepareChipsList()

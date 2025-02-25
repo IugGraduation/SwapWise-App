@@ -9,7 +9,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(getHomeDataUseCase: GetHomeDataUseCase) :
-    BaseViewModel<HomeUiState>(HomeUiState()), IHomeInteractions {
+    BaseViewModel<HomeUiState, HomeEffects>(HomeUiState()), IHomeInteractions {
+
+    override fun navigateToAddPost(postTitle: String) {
+        navigateTo(HomeEffects.NavigateToAddPost(postTitle))
+    }
+
 
     init {
         tryToExecute(

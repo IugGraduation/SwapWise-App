@@ -13,7 +13,8 @@ import javax.inject.Inject
 class ConfirmNumberViewModel @Inject constructor(
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val otpValidationUseCase: OtpValidationUseCase
-) : BaseViewModel<ConfirmNumberUiState>(ConfirmNumberUiState()), IConfirmNumberInteractions {
+) : BaseViewModel<ConfirmNumberUiState, ConfirmNumberEffects>(ConfirmNumberUiState()),
+    IConfirmNumberInteractions {
 
     init {
         viewModelScope.launch { isDarkTheme() }
@@ -51,9 +52,7 @@ class ConfirmNumberViewModel @Inject constructor(
     }
 
     private fun navigateToHome() {
-        updateData {
-            copy(shouldNavigateToHome = true)
-        }
+        navigateTo(ConfirmNumberEffects.NavigateToHome)
     }
 
 }

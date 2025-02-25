@@ -52,9 +52,13 @@ import com.example.ui.theme.color
 fun OtpScreen(navController: NavController, viewModel: ConfirmNumberViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(state.data.shouldNavigateToHome) {
-        if (state.data.shouldNavigateToHome) navController.navigateToHome {
-            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is ConfirmNumberEffects.NavigateToHome -> navController.navigateToHome {
+                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                }
+            }
         }
     }
 

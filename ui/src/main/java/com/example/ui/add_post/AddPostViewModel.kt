@@ -9,6 +9,7 @@ import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.PostItem
 import com.example.ui.base.BaseViewModel
+import com.example.ui.base.NavigateUpEffect
 import com.example.ui.base.StringsResource
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostErrorUiState
@@ -23,14 +24,18 @@ class AddPostViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
     private val addPostUseCase: AddPostUseCase,
-) : BaseViewModel<PostItemUiState>(PostItemUiState()), IAddPostInteractions {
+) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IAddPostInteractions {
     private val args = AddPostArgs(savedStateHandle)
+
+    override fun navigateUp() {
+        navigateTo(NavigateUpEffect.NavigateUp)
+    }
+
 
     init {
         updatePostItem { copy(title = args.postTitle) }
         prepareChipsList()
     }
-
 
     private fun prepareChipsList() {
         tryToExecute(

@@ -15,8 +15,25 @@ import javax.inject.Inject
 class OfferDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getOfferDetailsUseCase: GetOfferDetailsUseCase,
-    ) : BaseViewModel<OfferItemUiState>(OfferItemUiState()) {
+) : BaseViewModel<OfferItemUiState, OfferDetailsEffects>(OfferItemUiState()),
+    OfferDetailsInteractions {
     private val args = OfferDetailsArgs(savedStateHandle)
+
+    override fun navigateUp() {
+        navigateTo(OfferDetailsEffects.NavigateUp)
+    }
+
+    override fun navigateToPhone() {
+        navigateTo(OfferDetailsEffects.NavigateToPhone)
+    }
+
+    override fun navigateToWhatsapp() {
+        navigateTo(OfferDetailsEffects.NavigateToWhatsapp)
+    }
+
+    override fun navigateToMessages() {
+        navigateTo(OfferDetailsEffects.NavigateToMessages)
+    }
 
 
     init {
@@ -35,5 +52,4 @@ class OfferDetailsViewModel @Inject constructor(
     private fun onGetOfferDetailsSuccess(data: OfferItem) {
         _state.value = MyUiState(OfferItemUiState(offerItem = data))
     }
-
 }

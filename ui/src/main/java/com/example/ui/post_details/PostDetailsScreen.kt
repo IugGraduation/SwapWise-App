@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -56,28 +57,36 @@ fun PostDetailsScreen(
     viewModel: PostDetailsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is PostDetailsEffects.NavigateToAddOffer -> navController.navigateToAddOffer(state.data.postItem.uuid)
+                is PostDetailsEffects.NavigateToOfferDetails -> navController.navigateToOfferDetails(
+                    effect.offerId
+                )
+
+                is PostDetailsEffects.NavigateUp -> navController.navigateUp()
+            }
+        }
+    }
     PostDetailsContent(
         state = state,
-        onClickAddOffer = { navController.navigateToAddOffer(state.data.postItem.uuid) },
-        onClickOfferCard = navController::navigateToOfferDetails,
-        onClickGoBack = navController::navigateUp,
+        postDetailsInteractions = viewModel,
     )
 }
-
 
 @Composable
 fun PostDetailsContent(
     state: MyUiState<PostItemUiState>,
-    onClickAddOffer: () -> Unit,
-    onClickOfferCard: (postId: String) -> Unit,
-    onClickGoBack: () -> Unit
+    postDetailsInteractions: PostDetailsInteractions,
 ) {
     TitledScreenTemplate(
         title = stringResource(R.string.post_details),
-        onClickGoBack = onClickGoBack,
+        onClickGoBack = postDetailsInteractions::navigateUp,
         floatingActionButton = {
             SwapWiseFilledButton(
-                onClick = onClickAddOffer,
+                onClick = postDetailsInteractions::navigateToAddOffer,
                 text = stringResource(R.string.add_offer),
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
@@ -127,7 +136,7 @@ fun PostDetailsContent(
                     isPostCard = false,
                     details = offer.details,
                     postImage = rememberAsyncImagePainter(offer.imageLink),
-                    onCardClick = { onClickOfferCard(offer.uuid) }
+                    onCardClick = { postDetailsInteractions.navigateToOfferDetails(offer.uuid) }
                 )
             }
         }
@@ -189,9 +198,11 @@ fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         PostDetailsContent(
             state = MyUiState(PostItemUiState(postItem = GetFakePostDetailsUseCase()())),
-            onClickAddOffer = {},
-            onClickOfferCard = {},
-            onClickGoBack = {},
+            postDetailsInteractions = object : PostDetailsInteractions {
+                override fun navigateToAddOffer() {}
+                override fun navigateToOfferDetails(offerId: String) {}
+                override fun navigateUp() {}
+            },
         )
     }
 }

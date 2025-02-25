@@ -13,7 +13,7 @@ import javax.inject.Inject
 class NotificationsViewModel @Inject constructor(
     private val getNotificationsUseCase: GetNotificationsUseCase,
     private val groupNotificationsUseCase: GroupNotificationsUseCase
-) : BaseViewModel<NotificationUIState>(NotificationUIState()), INotificationsInteractions {
+) : BaseViewModel<NotificationUIState, Nothing>(NotificationUIState()), INotificationsInteractions {
 
     init {
         getNotifications()

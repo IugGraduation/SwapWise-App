@@ -13,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -54,41 +55,50 @@ fun OfferDetailsScreen(
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val phone = state.data.offerItem.user.phone
+
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                OfferDetailsEffects.NavigateToPhone -> {
+                    val intent = Intent(Intent.ACTION_DIAL).apply {
+                        data = Uri.parse("tel:$phone")
+                    }
+                    context.startActivity(intent)
+                }
+
+                OfferDetailsEffects.NavigateToWhatsapp -> {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse("https://wa.me/$phone")
+                    }
+                    context.startActivity(intent)
+                }
+
+                OfferDetailsEffects.NavigateToMessages -> {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse("sms:$phone")
+                    }
+                    context.startActivity(intent)
+                }
+
+                OfferDetailsEffects.NavigateUp -> navController.navigateUp()
+            }
+        }
+    }
+
     OfferDetailsContent(
         state = state,
-        onClickGoBack = { navController.navigateUp() },
-        onClickPhoneButton = {
-            val intent = Intent(Intent.ACTION_DIAL).apply {
-                data = Uri.parse("tel:$phone")
-            }
-            context.startActivity(intent)
-        },
-        onClickWhatsappButton = {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://wa.me/$phone")
-            }
-            context.startActivity(intent)
-        },
-        onClickMessageButton = {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("sms:$phone")
-            }
-            context.startActivity(intent)
-        },
+        offerDetailsInteractions = viewModel
     )
 }
 
 @Composable
 fun OfferDetailsContent(
     state: MyUiState<OfferItemUiState>,
-    onClickGoBack: () -> Unit,
-    onClickPhoneButton: () -> Unit,
-    onClickWhatsappButton: () -> Unit,
-    onClickMessageButton: () -> Unit
+    offerDetailsInteractions: OfferDetailsInteractions,
 ) {
     TitledScreenTemplate(
         title = stringResource(R.string.offer_details),
-        onClickGoBack = onClickGoBack,
+        onClickGoBack = offerDetailsInteractions::navigateUp,
         baseUiState = state.baseUiState,
     ) {
         Column {
@@ -121,9 +131,9 @@ fun OfferDetailsContent(
             VerticalSpacer(Spacing8)
             PhoneRow(
                 phone = state.data.offerItem.user.phone,
-                onClickPhoneButton = onClickPhoneButton,
-                onClickWhatsappButton = onClickWhatsappButton,
-                onClickMessageButton = onClickMessageButton
+                onClickPhoneButton = offerDetailsInteractions::navigateToPhone,
+                onClickWhatsappButton = offerDetailsInteractions::navigateToWhatsapp,
+                onClickMessageButton = offerDetailsInteractions::navigateToMessages
             )
         }
 
@@ -194,10 +204,12 @@ fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         OfferDetailsContent(
             state = MyUiState(OfferItemUiState(offerItem = GetFakeOfferDetailsUseCase()())),
-            onClickGoBack = {},
-            onClickPhoneButton = { },
-            onClickWhatsappButton = { },
-            onClickMessageButton = { },
+            offerDetailsInteractions = object : OfferDetailsInteractions {
+                override fun navigateToPhone() {}
+                override fun navigateToWhatsapp() {}
+                override fun navigateToMessages() {}
+                override fun navigateUp() {}
+            },
         )
     }
 }

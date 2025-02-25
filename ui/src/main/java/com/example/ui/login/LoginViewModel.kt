@@ -18,7 +18,12 @@ class LoginViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val loginValidationUseCase: LoginValidationUseCase,
-) : BaseViewModel<LoginUiState>(LoginUiState()), ILoginInteractions {
+) : BaseViewModel<LoginUiState, LoginEffects>(LoginUiState()), ILoginInteractions {
+
+    override fun NavigateToSignup() {
+        navigateTo(LoginEffects.NavigateToSignup)
+    }
+
 
     init {
         viewModelScope.launch { isDarkTheme() }
@@ -47,9 +52,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun navigateToHome() {
-        updateData {
-            copy(shouldNavigateToHome = true)
-        }
+        navigateTo(LoginEffects.NavigateToHome)
     }
 
     private fun onLoginFail(throwable: Throwable) {
@@ -100,6 +103,7 @@ class LoginViewModel @Inject constructor(
             copy(isPasswordVisible = !isPasswordVisible)
         }
     }
+
 
 }
 

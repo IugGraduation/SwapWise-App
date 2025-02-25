@@ -34,6 +34,7 @@ import androidx.navigation.NavController
 import com.example.domain.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
+import com.example.ui.base.NavigateUpEffect
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -55,14 +56,17 @@ import com.example.ui.theme.color
 fun EditPostScreen(navController: NavController, viewModel: EditPostViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(state.baseUiState.shouldNavigateUp) {
-        if (state.baseUiState.shouldNavigateUp) navController.navigateUp()
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is NavigateUpEffect.NavigateUp -> navController.navigateUp()
+            }
+        }
     }
 
     EditOfferContent(
         state = state,
         editInteractions = viewModel,
-        onClickGoBack = navController::navigateUp,
     )
 }
 
@@ -70,11 +74,10 @@ fun EditPostScreen(navController: NavController, viewModel: EditPostViewModel = 
 fun EditOfferContent(
     state: MyUiState<PostItemUiState>,
     editInteractions: IEditPostInteractions,
-    onClickGoBack: () -> Unit
 ) {
     TitledScreenTemplate(
         title = stringResource(R.string.edit_post),
-        onClickGoBack = onClickGoBack,
+        onClickGoBack = editInteractions::navigateUp,
         baseUiState = state.baseUiState,
     ) {
         ProductImage(
@@ -269,6 +272,8 @@ fun PreviewPostDetailsContent() {
             override fun onSelectedImageChange(selectedImageUri: Uri) {}
             override fun onClickSave() {}
             override fun onClickDelete() {}
-        }, onClickGoBack = { })
+                override fun navigateUp() {}
+            },
+        )
     }
 }

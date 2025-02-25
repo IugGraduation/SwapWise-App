@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -77,11 +78,20 @@ fun HomeScreen(
         navController = navController,
     )
 
+    LaunchedEffect(homeViewModel.effect) {
+        homeViewModel.effect.collect { effect ->
+            when (effect) {
+                is HomeEffects.NavigateToAddPost -> {
+                    navController.navigateToAddPost(effect.postTitle)
+                }
+            }
+        }
+    }
+
     HomeContent(
         state = state,
         bottomBarState = bottomBarState,
         homeInteractions = homeViewModel,
-        navigateToAddPost = {title -> navController.navigateToAddPost(title)}
     )
 }
 
@@ -91,7 +101,6 @@ fun HomeContent(
     state: MyUiState<HomeUiState>,
     bottomBarState: BottomBarUiState,
     homeInteractions: IHomeInteractions,
-    navigateToAddPost: (String) -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -113,7 +122,7 @@ fun HomeContent(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             keyboardController?.hide()
-                            navigateToAddPost(state.data.newPost)
+                            homeInteractions.navigateToAddPost(state.data.newPost)
                         }
                     ),
                     modifier = Modifier.padding(horizontal = Spacing16),
@@ -236,8 +245,8 @@ fun PreviewHomeContent() {
             bottomBarState = BottomBarUiState(),
             homeInteractions = object : IHomeInteractions {
                 override fun onNewPostFieldChange(newValue: String) {}
+                override fun navigateToAddPost(postTitle: String) {}
             },
-            navigateToAddPost = {}
         )
     }
 }

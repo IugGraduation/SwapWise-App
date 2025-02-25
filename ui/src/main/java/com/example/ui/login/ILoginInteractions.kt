@@ -6,4 +6,5 @@ interface ILoginInteractions {
     fun onPasswordChange(newValue: String)
     fun onClickLogin()
     fun togglePasswordVisibility()
+    fun NavigateToSignup()
 }

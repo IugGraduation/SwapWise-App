@@ -13,7 +13,7 @@ import javax.inject.Inject
 class SeeAllTopicsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     seeAllTopicsUseCase: SeeAllTopicsUseCase,
-) : BaseViewModel<TopicsHolderUiState>(TopicsHolderUiState()) {
+) : BaseViewModel<TopicsHolderUiState, Nothing>(TopicsHolderUiState()) {
     private val args = SeeAllTopicsArgs(savedStateHandle)
 
     init {

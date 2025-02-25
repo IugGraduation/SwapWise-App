@@ -15,7 +15,7 @@ import javax.inject.Inject
 class PostDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getPostDetailsUseCase: GetPostDetailsUseCase
-) : BaseViewModel<PostItemUiState>(PostItemUiState()) {
+) : BaseViewModel<PostItemUiState, PostDetailsEffects>(PostItemUiState()), PostDetailsInteractions {
     private val args = PostDetailsArgs(savedStateHandle)
 
 
@@ -36,5 +36,17 @@ class PostDetailsViewModel @Inject constructor(
         _state.value = MyUiState(PostItemUiState(postItem = data))
     }
 
+
+    override fun navigateToAddOffer() {
+        navigateTo(PostDetailsEffects.NavigateToAddOffer)
+    }
+
+    override fun navigateToOfferDetails(offerId: String) {
+        navigateTo(PostDetailsEffects.NavigateToOfferDetails(offerId))
+    }
+
+    override fun navigateUp() {
+        navigateTo(PostDetailsEffects.NavigateUp)
+    }
 
 }

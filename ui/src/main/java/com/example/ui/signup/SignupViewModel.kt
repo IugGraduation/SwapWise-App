@@ -21,7 +21,7 @@ class SignupViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val signupValidationUseCase: SignupValidationUseCase,
-) : BaseViewModel<SignupUiState>(SignupUiState()), ISignupInteractions {
+) : BaseViewModel<SignupUiState, Nothing>(SignupUiState()), ISignupInteractions {
 
     init {
         viewModelScope.launch { isDarkTheme() }

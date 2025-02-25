@@ -44,16 +44,21 @@ fun LoginScreen(
 ) {
     val state by loginViewModel.state.collectAsState()
 
-    LaunchedEffect(state.data.shouldNavigateToHome) {
-        if (state.data.shouldNavigateToHome) navController.navigateToHome {
-            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+    LaunchedEffect(loginViewModel.effect) {
+        loginViewModel.effect.collect { effect ->
+            when (effect) {
+                is LoginEffects.NavigateToHome -> navController.navigateToHome {
+                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                }
+
+                is LoginEffects.NavigateToSignup -> navController.navigateToSignup()
+            }
         }
     }
 
     LoginContent(
         state = state,
         loginInteractions = loginViewModel,
-        onClickGoToSignup = { navController.navigateToSignup() }
     )
 }
 
@@ -62,7 +67,6 @@ fun LoginScreen(
 fun LoginContent(
     state: MyUiState<LoginUiState>,
     loginInteractions: ILoginInteractions,
-    onClickGoToSignup: () -> Unit,
 ) {
     ScreenTemplate(baseUiState = state.baseUiState,) {
         Column(
@@ -94,7 +98,7 @@ fun LoginContent(
             Footer(
                 footerText = stringResource(R.string.don_t_have_an_account),
                 buttonText = stringResource(R.string.sign_up),
-                onClickButton = onClickGoToSignup
+                onClickButton = loginInteractions::NavigateToSignup
             )
         }
     }
@@ -144,8 +148,8 @@ fun PreviewLoginContent() {
                 override fun onPasswordChange(newValue: String) {}
                 override fun onClickLogin() {}
                 override fun togglePasswordVisibility() {}
+                override fun NavigateToSignup() {}
             },
-            onClickGoToSignup = { }
         )
     }
 }

@@ -21,7 +21,7 @@ class SearchViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase
-) : BaseViewModel<SearchUiState>(SearchUiState()), ISearchInteractions {
+) : BaseViewModel<SearchUiState, Nothing>(SearchUiState()), ISearchInteractions {
     private val args = SearchArgs(savedStateHandle)
 
     init {

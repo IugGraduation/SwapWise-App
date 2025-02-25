@@ -23,7 +23,7 @@ class ProfileViewModel @Inject constructor(
     private val getCurrentUserData: GetCurrentUserDataUseCase,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val validateUserInfoUseCase: ValidateUserInfoUseCase,
-) : BaseViewModel<ProfileUiState>(ProfileUiState()), ProfileInteraction {
+) : BaseViewModel<ProfileUiState, Nothing>(ProfileUiState()), ProfileInteraction {
 
     private val originalProfileInformation: ProfileUiState by lazy {
         getCurrentUserInfo()

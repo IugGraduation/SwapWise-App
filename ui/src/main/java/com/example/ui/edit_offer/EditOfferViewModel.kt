@@ -12,6 +12,7 @@ import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.OfferItem
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
+import com.example.ui.base.NavigateUpEffect
 import com.example.ui.base.StringsResource
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.OfferItemUiState
@@ -28,8 +29,13 @@ class EditOfferViewModel @Inject constructor(
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
     private val editOfferUseCase: EditOfferUseCase,
     private val deleteOfferUseCase: DeleteOfferUseCase,
-) : BaseViewModel<OfferItemUiState>(OfferItemUiState()), IEditOfferInteractions {
+) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IEditOfferInteractions {
     private val args = EditOfferArgs(savedStateHandle)
+
+    override fun navigateUp() {
+        navigateTo(NavigateUpEffect.NavigateUp)
+    }
+
 
     init {
         getOfferDetails()

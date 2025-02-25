@@ -12,6 +12,7 @@ import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.PostItem
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
+import com.example.ui.base.NavigateUpEffect
 import com.example.ui.base.StringsResource
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostErrorUiState
@@ -28,8 +29,13 @@ class EditPostViewModel @Inject constructor(
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
     private val editPostUseCase: EditPostUseCase,
     private val deletePostUseCase: DeletePostUseCase,
-) : BaseViewModel<PostItemUiState>(PostItemUiState()), IEditPostInteractions {
+) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IEditPostInteractions {
     private val args = EditPostArgs(savedStateHandle)
+
+    override fun navigateUp() {
+        navigateTo(NavigateUpEffect.NavigateUp)
+    }
+
 
     init {
         getPostDetails()

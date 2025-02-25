@@ -23,6 +23,7 @@ import com.example.domain.GetFakeCategoriesNamesUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState
+import com.example.ui.base.NavigateUpEffect
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
@@ -42,14 +43,17 @@ import com.example.ui.theme.color
 fun AddPostScreen(navController: NavController, viewModel: AddPostViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(state.baseUiState.shouldNavigateUp) {
-        if (state.baseUiState.shouldNavigateUp) navController.navigateUp()
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is NavigateUpEffect.NavigateUp -> navController.navigateUp()
+            }
+        }
     }
 
     AddPostContent(
         state = state,
         addInteractions = viewModel,
-        onClickGoBack = { navController.navigateUp() },
     )
 }
 
@@ -58,11 +62,10 @@ fun AddPostScreen(navController: NavController, viewModel: AddPostViewModel = hi
 fun AddPostContent(
     state: MyUiState<PostItemUiState>,
     addInteractions: IAddPostInteractions,
-    onClickGoBack: () -> Unit
 ) {
     TitledScreenTemplate(
         title = stringResource(R.string.add_post),
-        onClickGoBack = onClickGoBack,
+        onClickGoBack = addInteractions::navigateUp,
         floatingActionButton = {
             SwapWiseFilledButton(
                 onClick = addInteractions::onClickAdd,
@@ -169,13 +172,13 @@ fun PreviewPostDetailsContent() {
                 )
                 )
             ),
-            onClickGoBack = { },
             addInteractions = object : IAddPostInteractions{
                 override fun onTitleChange(title: String) {}
                 override fun onPlaceChange(place: String) {}
                 override fun onDetailsChange(details: String) {}
                 override fun onSelectedImageChange(selectedImageUri: Uri) {}
                 override fun onClickAdd() {}
+                override fun navigateUp() {}
             },
         )
     }
