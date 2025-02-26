@@ -1,4 +1,4 @@
-package com.example.ui.confirm_number
+package com.example.ui.otp
 
 import androidx.lifecycle.viewModelScope
 import com.example.domain.OtpValidationUseCase
@@ -10,11 +10,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ConfirmNumberViewModel @Inject constructor(
+class OtpViewModel @Inject constructor(
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val otpValidationUseCase: OtpValidationUseCase
-) : BaseViewModel<ConfirmNumberUiState, ConfirmNumberEffects>(ConfirmNumberUiState()),
-    IConfirmNumberInteractions {
+) : BaseViewModel<OtpUiState, OtpEffects>(OtpUiState()),
+    IOtpInteractions {
 
     init {
         viewModelScope.launch { isDarkTheme() }
@@ -52,7 +52,7 @@ class ConfirmNumberViewModel @Inject constructor(
     }
 
     private fun navigateToHome() {
-        navigateTo(ConfirmNumberEffects.NavigateToHome)
+        navigateTo(OtpEffects.NavigateToHome)
     }
 
 }

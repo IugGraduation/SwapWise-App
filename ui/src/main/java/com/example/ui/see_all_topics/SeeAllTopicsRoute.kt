@@ -12,7 +12,7 @@ import androidx.navigation.navArgument
 
 private const val ROUTE = "topic_see_all"
 
-fun NavController.navigateToTopicSeeAll(url: String, builder: NavOptionsBuilder.() -> Unit = {}) {
+fun NavController.navigateToSeeAllTopics(url: String, builder: NavOptionsBuilder.() -> Unit = {}) {
     navigate("$ROUTE/$url", builder)
 }
 

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ui.R
@@ -29,7 +30,7 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.Footer
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.templates.ScreenTemplate
-import com.example.ui.confirm_number.navigateToOtp
+import com.example.ui.otp.navigateToOtp
 import com.example.ui.login.navigateToLogin
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
@@ -181,10 +182,10 @@ fun SignupForm(
 }
 
 
-//@Preview(
-//    showSystemUi = false, showBackground = true,
-//    device = "spec:width=1080px,height=2790px,dpi=440",
-//)
+@Preview(
+    showSystemUi = false, showBackground = true,
+    device = "spec:width=1080px,height=2790px,dpi=440",
+)
 @Composable
 fun PreviewSignupContent() {
     GraduationProjectTheme {

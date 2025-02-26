@@ -42,7 +42,7 @@ import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.search.navigateToSearch
-import com.example.ui.see_all_topics.navigateToTopicSeeAll
+import com.example.ui.see_all_topics.navigateToSeeAllTopics
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
@@ -60,7 +60,7 @@ fun HomeScreen(
     val state by homeViewModel.state.collectAsState()
     val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
     for (topic in state.data.topicsList) {
-        topic.onClickSeeAll = { navController.navigateToTopicSeeAll(topic.url) }
+        topic.onClickSeeAll = { navController.navigateToSeeAllTopics(topic.url) }
         for (item in topic.items) {
             if (item is PostItem) {
                 item.onClickGoToDetails = { navController.navigateToPostDetails(item.uuid) }

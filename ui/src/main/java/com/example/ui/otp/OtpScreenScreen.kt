@@ -1,4 +1,4 @@
-package com.example.ui.confirm_number
+package com.example.ui.otp
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ui.R
@@ -49,13 +50,13 @@ import com.example.ui.theme.TextStyles
 import com.example.ui.theme.color
 
 @Composable
-fun OtpScreen(navController: NavController, viewModel: ConfirmNumberViewModel = hiltViewModel()) {
+fun OtpScreen(navController: NavController, viewModel: OtpViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is ConfirmNumberEffects.NavigateToHome -> navController.navigateToHome {
+                is OtpEffects.NavigateToHome -> navController.navigateToHome {
                     popUpTo(navController.graph.startDestinationId) { inclusive = true }
                 }
             }
@@ -64,14 +65,14 @@ fun OtpScreen(navController: NavController, viewModel: ConfirmNumberViewModel = 
 
     OtpContent(
         state = state,
-        confirmNumberInteractions = viewModel
+        otpInteractions = viewModel
     )
 }
 
 @Composable
 fun OtpContent(
-    state: MyUiState<ConfirmNumberUiState>,
-    confirmNumberInteractions: IConfirmNumberInteractions,
+    state: MyUiState<OtpUiState>,
+    otpInteractions: IOtpInteractions,
 ) {
     ScreenTemplate(baseUiState = state.baseUiState) {
         Column(
@@ -95,13 +96,13 @@ fun OtpContent(
             VerticalSpacer(Spacing24)
             SwapWiseOtpTextField(
                 otp = state.data.otp,
-                onOtpChange = confirmNumberInteractions::onOtpChange,
+                onOtpChange = otpInteractions::onOtpChange,
                 isDarkTheme = state.data.isDarkTheme,
                 otpLength = state.data.otpLength
             )
             VerticalSpacer(Spacing72)
             SwapWiseFilledButton(
-                onClick = confirmNumberInteractions::onClickConfirm,
+                onClick = otpInteractions::onClickConfirm,
                 text = stringResource(R.string.confirm),
                 enabled = state.data.isConfirmButtonEnabled,
             )
@@ -181,13 +182,13 @@ private fun SwapWiseOtpTextField(
 }
 
 
-//@Preview(showSystemUi = false, showBackground = true,)
+@Preview(showSystemUi = false, showBackground = true,)
 @Composable
 fun PreviewOtpContent() {
     GraduationProjectTheme {
         OtpContent(
-            state = MyUiState(ConfirmNumberUiState()),
-            confirmNumberInteractions = object : IConfirmNumberInteractions {
+            state = MyUiState(OtpUiState()),
+            otpInteractions = object : IOtpInteractions {
                 override fun onOtpChange(newOtp: String) {}
                 override fun onClickConfirm() {}
             }

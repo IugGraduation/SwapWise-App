@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import com.example.ui.add_offer.addOfferRoute
 import com.example.ui.add_post.addPostRoute
 import com.example.ui.login.loginRoute
-import com.example.ui.confirm_number.otpRoute
+import com.example.ui.otp.otpRoute
 import com.example.ui.edit_offer.editOfferRoute
 import com.example.ui.edit_post.editPostRoute
 import com.example.ui.home.homeRoute
