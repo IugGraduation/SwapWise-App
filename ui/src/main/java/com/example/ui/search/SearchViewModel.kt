@@ -21,8 +21,12 @@ class SearchViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase
-) : BaseViewModel<SearchUiState, Nothing>(SearchUiState()), ISearchInteractions {
+) : BaseViewModel<SearchUiState, SearchEffects>(SearchUiState()), ISearchInteractions {
     private val args = SearchArgs(savedStateHandle)
+
+    fun navigateToPostDetails(postId: String) {
+        navigateTo(SearchEffects.NavigateToPostDetails(postId))
+    }
 
     init {
         prepareChipsList()

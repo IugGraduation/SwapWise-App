@@ -21,7 +21,7 @@ class SignupViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val signupValidationUseCase: SignupValidationUseCase,
-) : BaseViewModel<SignupUiState, Nothing>(SignupUiState()), ISignupInteractions {
+) : BaseViewModel<SignupUiState, SignupEffects>(SignupUiState()), ISignupInteractions {
 
     init {
         viewModelScope.launch { isDarkTheme() }
@@ -47,15 +47,17 @@ class SignupViewModel @Inject constructor(
                     bestBarterSpot = state.value.data.bestBarterSpot,
                 )
             },
-            onSuccess = { navigateToConfirmNumber() },
+            onSuccess = { navigateToOtp() },
             onError = ::onSignupFail
         )
     }
 
-    private fun navigateToConfirmNumber() {
-        updateData {
-            copy(shouldNavigateToConfirmNumber = true)
-        }
+    override fun navigateToLogin() {
+        navigateTo(SignupEffects.NavigateToLogin)
+    }
+
+    private fun navigateToOtp() {
+        navigateTo(SignupEffects.NavigateToOtp)
     }
 
     private fun onSignupFail(throwable: Throwable) {

@@ -45,16 +45,20 @@ fun SignupScreen(
 ) {
     val state by signupViewModel.state.collectAsState()
 
-    LaunchedEffect(state.data.shouldNavigateToConfirmNumber) {
-        if (state.data.shouldNavigateToConfirmNumber) navController.navigateToOtp {
-            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+    LaunchedEffect(signupViewModel.effect) {
+        signupViewModel.effect.collect { effect ->
+            when (effect) {
+                SignupEffects.NavigateToLogin -> navController.navigateToLogin()
+                SignupEffects.NavigateToOtp -> navController.navigateToOtp {
+                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                }
+            }
         }
     }
 
     SignupContent(
         state = state,
         signupInteractions = signupViewModel,
-        onClickGoToLogin = { navController.navigateToLogin() }
     )
 }
 
@@ -62,7 +66,6 @@ fun SignupScreen(
 fun SignupContent(
     state: MyUiState<SignupUiState>,
     signupInteractions: ISignupInteractions,
-    onClickGoToLogin: () -> Unit,
 ) {
     ScreenTemplate(baseUiState = state.baseUiState,) {
         Column(
@@ -91,7 +94,7 @@ fun SignupContent(
             Footer(
                 footerText = stringResource(R.string.joined_us_before),
                 buttonText = stringResource(R.string.login),
-                onClickButton = onClickGoToLogin
+                onClickButton = signupInteractions::navigateToLogin
             )
 
         }
@@ -197,8 +200,8 @@ fun PreviewSignupContent() {
                 override fun togglePasswordVisibility() {}
                 override fun toggleConfirmPasswordVisibility() {}
                 override fun onClickSignup() {}
+                override fun navigateToLogin() {}
             },
-            onClickGoToLogin = {},
         )
     }
 }

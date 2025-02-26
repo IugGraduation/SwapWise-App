@@ -12,24 +12,27 @@ import androidx.navigation.navArgument
 
 private const val ROUTE = "post_details"
 
-fun NavController.navigateToPostDetails(uuid: String, builder: NavOptionsBuilder.() -> Unit = {}) {
-    navigate("$ROUTE/$uuid", builder)
+fun NavController.navigateToPostDetails(
+    postId: String,
+    builder: NavOptionsBuilder.() -> Unit = {}
+) {
+    navigate("$ROUTE/$postId", builder)
 }
 
 fun NavGraphBuilder.postDetailsRoute(navController: NavHostController) {
     composable(
-        route = "$ROUTE/{${PostDetailsArgs.UUID_ARG}}",
+        route = "$ROUTE/{${PostDetailsArgs.POST_ID}}",
         arguments = listOf(
-            navArgument(PostDetailsArgs.UUID_ARG) { NavType.StringType },
+            navArgument(PostDetailsArgs.POST_ID) { NavType.StringType },
         )
     ) { PostDetailsScreen(navController) }
 }
 
 
 class PostDetailsArgs(savedStateHandle: SavedStateHandle) {
-    val postId: String = checkNotNull(savedStateHandle[UUID_ARG])
+    val postId: String = checkNotNull(savedStateHandle[POST_ID])
 
     companion object {
-        const val UUID_ARG = "uuid"
+        const val POST_ID = "post_id"
     }
 }

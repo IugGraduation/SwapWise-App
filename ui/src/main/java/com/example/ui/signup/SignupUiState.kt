@@ -10,9 +10,6 @@ data class SignupUiState(
     val isPasswordVisible: Boolean = false,
     val isConfirmPasswordVisible: Boolean = false,
     val isDarkTheme: Boolean = false,
-
-    val shouldNavigateToConfirmNumber: Boolean = false,
-
     val signupError: SignupErrorUiState = SignupErrorUiState(),
 )
 

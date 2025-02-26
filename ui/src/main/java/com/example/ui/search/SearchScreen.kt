@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -55,13 +56,21 @@ fun SearchScreen(
     val state by searchViewModel.state.collectAsState()
     val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
     for (topicItem in state.data.topicsList) {
-        topicItem.onClickGoToDetails = { navController.navigateToPostDetails(topicItem.uuid) }
+        topicItem.onClickGoToDetails = { searchViewModel.navigateToPostDetails(topicItem.uuid) }
     }
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,
         onItemSelected = bottomNavigationViewModel::onItemSelected,
         navController = navController
     )
+
+    LaunchedEffect(searchViewModel.effect) {
+        searchViewModel.effect.collect { effect ->
+            when (effect) {
+                is SearchEffects.NavigateToPostDetails -> navController.navigateToPostDetails(effect.postId)
+            }
+        }
+    }
 
     SearchContent(
         state = state,
