@@ -1,7 +1,7 @@
 package com.example.domain.model
 
-import com.example.data.model.PostItemDto
-import com.example.data.model.TopicItemDto
+import com.example.data.model.response.PostItemDto
+import com.example.data.model.response.TopicItemDto
 
 
 data class PostItem(

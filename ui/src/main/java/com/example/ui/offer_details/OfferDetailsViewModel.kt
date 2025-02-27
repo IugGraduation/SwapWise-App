@@ -2,8 +2,8 @@ package com.example.ui.offer_details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.domain.GetOfferDetailsUseCase
 import com.example.domain.model.OfferItem
+import com.example.domain.offer.GetOfferDetailsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.models.OfferItemUiState

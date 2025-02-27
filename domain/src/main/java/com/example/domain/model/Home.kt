@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-import com.example.data.model.HomeDto
+import com.example.data.model.response.HomeDto
 
 data class Home(
     val topicsList: List<TopicsHolder> = listOf(),

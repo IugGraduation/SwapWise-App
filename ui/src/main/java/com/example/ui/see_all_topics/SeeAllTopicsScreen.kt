@@ -7,9 +7,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.GetFakePostDetailsUseCase
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
+import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.base.INavigateUp
 import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout

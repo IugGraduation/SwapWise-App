@@ -1,14 +1,14 @@
 package com.example.data.repository
 
-import com.example.data.model.PostItemDto
+import com.example.data.model.response.PostItemDto
 import com.example.data.source.local.FakePostLocalDataSource
-import com.example.data.source.remote.StoreApiService
+import com.example.data.source.remote.PostApiService
 import com.example.data.util.checkResponse
 import com.example.data.util.fakeCheckResponse
 
 class PostRepository(
     private val fakePostData: FakePostLocalDataSource,
-    private val storeApiService: StoreApiService,
+    private val postApiService: PostApiService,
 ) {
     suspend fun getPostDetails(uuid: String) =
         checkResponse(fakePostData::getPostDetails, uuid)

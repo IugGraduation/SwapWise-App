@@ -1,6 +1,6 @@
 package com.example.ui.home
 
-import com.example.domain.GetHomeDataUseCase
+import com.example.domain.home.GetHomeDataUseCase
 import com.example.domain.model.Home
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState

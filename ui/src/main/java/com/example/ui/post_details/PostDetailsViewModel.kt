@@ -2,8 +2,8 @@ package com.example.ui.post_details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.domain.GetPostDetailsUseCase
 import com.example.domain.model.PostItem
+import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.models.PostItemUiState

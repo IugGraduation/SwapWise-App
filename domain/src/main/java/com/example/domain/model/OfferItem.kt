@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-import com.example.data.model.OfferItemDto
+import com.example.data.model.response.OfferItemDto
 
 data class OfferItem(
     override val uuid: String = "",

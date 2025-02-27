@@ -1,7 +1,7 @@
 package com.example.ui.otp
 
 import androidx.lifecycle.viewModelScope
-import com.example.domain.OtpValidationUseCase
+import com.example.domain.authentication.OtpValidationUseCase
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

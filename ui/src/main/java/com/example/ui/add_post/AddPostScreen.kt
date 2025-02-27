@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.GetFakeCategoriesNamesUseCase
+import com.example.domain.category.GetFakeCategoriesNamesUseCase
 import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState

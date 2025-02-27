@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-import com.example.data.model.UserDto
+import com.example.data.model.response.UserDto
 
 data class User(
     val uuid: String = "",

@@ -1,7 +1,7 @@
 package com.example.data.source.local
 
-import com.example.data.model.ApiResponse
-import com.example.data.model.HomeDto
+import com.example.data.model.response.ApiResponseDto
+import com.example.data.model.response.HomeDto
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay
@@ -178,8 +178,8 @@ class FakeHomeLocalDataSource @Inject constructor() {
                 "    \"errors\": []\n" +
                 "}".trimMargin()
 
-        val type = object : TypeToken<ApiResponse<HomeDto>>() {}.type
-        val apiResponse: ApiResponse<HomeDto> = Gson().fromJson(jsonData, type)
+        val type = object : TypeToken<ApiResponseDto<HomeDto>>() {}.type
+        val apiResponse: ApiResponseDto<HomeDto> = Gson().fromJson(jsonData, type)
 
         delay(500)
         return Response.success(apiResponse.data)

@@ -2,14 +2,14 @@ package com.example.ui.edit_post
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import com.example.domain.DeletePostUseCase
-import com.example.domain.EditPostUseCase
-import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.GetPostDetailsUseCase
+import com.example.domain.category.GetCategoriesNamesUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.PostItem
+import com.example.domain.post.DeletePostUseCase
+import com.example.domain.post.EditPostUseCase
+import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.base.NavigateUpEffect

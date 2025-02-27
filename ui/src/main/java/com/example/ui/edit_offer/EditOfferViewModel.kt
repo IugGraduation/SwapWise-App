@@ -2,14 +2,14 @@ package com.example.ui.edit_offer
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import com.example.domain.DeleteOfferUseCase
-import com.example.domain.EditOfferUseCase
-import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.GetOfferDetailsUseCase
+import com.example.domain.category.GetCategoriesNamesUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.OfferItem
+import com.example.domain.offer.DeleteOfferUseCase
+import com.example.domain.offer.EditOfferUseCase
+import com.example.domain.offer.GetOfferDetailsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.base.NavigateUpEffect

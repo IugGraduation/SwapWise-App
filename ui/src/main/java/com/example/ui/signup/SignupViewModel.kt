@@ -1,7 +1,7 @@
 package com.example.ui.signup
 
 import androidx.lifecycle.viewModelScope
-import com.example.domain.SignupValidationUseCase
+import com.example.domain.authentication.SignupValidationUseCase
 import com.example.domain.exception.InvalidBestBarterSpotErrorException
 import com.example.domain.exception.InvalidConfirmPasswordException
 import com.example.domain.exception.InvalidFullNameException

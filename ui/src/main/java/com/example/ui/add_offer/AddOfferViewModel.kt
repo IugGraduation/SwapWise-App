@@ -2,12 +2,12 @@ package com.example.ui.add_offer
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import com.example.domain.AddOfferUseCase
-import com.example.domain.GetCategoriesNamesUseCase
+import com.example.domain.category.GetCategoriesNamesUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.OfferItem
+import com.example.domain.offer.AddOfferUseCase
 import com.example.ui.add_post.IAddPostInteractions
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.NavigateUpEffect

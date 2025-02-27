@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-import com.example.data.model.TopicDto
+import com.example.data.model.response.TopicDto
 
 
 data class TopicsHolder(

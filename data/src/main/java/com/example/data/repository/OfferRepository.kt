@@ -1,6 +1,6 @@
 package com.example.data.repository
 
-import com.example.data.model.OfferItemDto
+import com.example.data.model.response.OfferItemDto
 import com.example.data.util.fakeCheckResponse
 
 class OfferRepository(

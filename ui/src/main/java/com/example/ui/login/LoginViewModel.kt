@@ -1,7 +1,7 @@
 package com.example.ui.login
 
 import androidx.lifecycle.viewModelScope
-import com.example.domain.LoginValidationUseCase
+import com.example.domain.authentication.LoginValidationUseCase
 import com.example.domain.exception.InvalidPasswordException
 import com.example.domain.exception.InvalidPhoneException
 import com.example.domain.profile.CustomizeProfileSettingsUseCase

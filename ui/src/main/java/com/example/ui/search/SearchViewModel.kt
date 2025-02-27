@@ -2,9 +2,9 @@ package com.example.ui.search
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.GetSearchResultUseCase
+import com.example.domain.category.GetCategoriesNamesUseCase
 import com.example.domain.model.PostItem
+import com.example.domain.search.GetSearchResultUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.models.ChipUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

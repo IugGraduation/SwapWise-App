@@ -24,11 +24,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
-import com.example.domain.GetFakeCategoriesUseCase
-import com.example.domain.GetFakePostDetailsUseCase
+import com.example.domain.category.GetFakeCategoriesUseCase
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.model.User
+import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.add_post.navigateToAddPost
 import com.example.ui.base.MyUiState

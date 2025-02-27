@@ -1,6 +1,6 @@
 package com.example.graduationproject.di
 
-import com.example.data.source.remote.StoreApiService
+import com.example.data.source.remote.PostApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,12 +15,12 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideResourceProvider(): StoreApiService {
-        val BASE_URL = "http://127.0.0.1:8080"
+    fun provideResourceProvider(): PostApiService {
+        val BASE_URL = "https://swapwise.shop/api"
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        return retrofit.create(StoreApiService::class.java)
+        return retrofit.create(PostApiService::class.java)
     }
 }
