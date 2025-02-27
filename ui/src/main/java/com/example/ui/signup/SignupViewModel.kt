@@ -2,7 +2,7 @@ package com.example.ui.signup
 
 import androidx.lifecycle.viewModelScope
 import com.example.domain.authentication.SignupUseCase
-import com.example.domain.exception.InvalidBestBarterSpotErrorException
+import com.example.domain.exception.InvalidBestBarterSpotException
 import com.example.domain.exception.InvalidConfirmPasswordException
 import com.example.domain.exception.InvalidFullNameException
 import com.example.domain.exception.InvalidPasswordException
@@ -63,7 +63,7 @@ class SignupViewModel @Inject constructor(
     private fun onSignupFail(throwable: Throwable) {
         when (throwable) {
             is InvalidFullNameException -> {
-                updateFieldError(fullNameError = stringsResource.invalidPhoneNumber)
+                updateFieldError(fullNameError = stringsResource.invalidUsername)
             }
 
             is InvalidPhoneException -> {
@@ -78,7 +78,7 @@ class SignupViewModel @Inject constructor(
                 updateFieldError(confirmPasswordError = stringsResource.invalidPassword)
             }
 
-            is InvalidBestBarterSpotErrorException -> {
+            is InvalidBestBarterSpotException -> {
                 updateFieldError(bestBarterSpotError = stringsResource.invalidBestBarterSpot)
             }
 

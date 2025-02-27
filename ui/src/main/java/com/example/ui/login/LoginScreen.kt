@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ui.R
@@ -73,7 +76,8 @@ fun LoginContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = Spacing16)
-                .background(color = MaterialTheme.color.background),
+                .background(color = MaterialTheme.color.background)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(Spacing24)
         ) {
             VerticalSpacer(Spacing56)
@@ -137,7 +141,7 @@ private fun LoginForm(
 }
 
 
-//@Preview
+@Preview
 @Composable
 fun PreviewLoginContent() {
     GraduationProjectTheme {

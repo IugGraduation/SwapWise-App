@@ -38,7 +38,7 @@ class StringsResourceImpl @Inject constructor(
     override val invalidLocation: String = getString(R.string.invalid_location)
     override val invalidPhoneNumber: String = getString(R.string.invalid_phone_number)
     override val invalidPassword: String = getString(R.string.invalid_password)
-    override val invalidBestBarterSpot: String = getString(R.string.invalid_password)
+    override val invalidBestBarterSpot: String = getString(R.string.invalid_best_barter_spot)
     override val invalidTitle: String = getString(R.string.invalid_title)
     override val invalidPlace: String = getString(R.string.invalid_place)
     override val invalidDetails: String = getString(R.string.invalid_details)

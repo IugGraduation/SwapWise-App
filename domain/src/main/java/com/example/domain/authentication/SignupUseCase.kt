@@ -38,7 +38,7 @@ class SignupUseCase @Inject constructor(
     }
 
     private fun validateConfirmPassword(password: String, confirmPassword: String) {
-        if (confirmPassword.length < 3) throw InvalidConfirmPasswordException()
+        if (confirmPassword.length < 8) throw InvalidConfirmPasswordException()
         if (confirmPassword != password) throw PasswordMismatchException()
     }
 

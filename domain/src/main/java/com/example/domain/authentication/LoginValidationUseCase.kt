@@ -18,9 +18,9 @@ class LoginValidationUseCase @Inject constructor() {
 }
 
 fun validatePhone(input: String) {
-    if (input.length < 3) throw InvalidPhoneException()
+    if (input.length < 10) throw InvalidPhoneException()
 }
 
 fun validatePassword(input: String) {
-    if (input.length < 6) throw InvalidPasswordException()
+    if (input.length < 8) throw InvalidPasswordException()
 }
