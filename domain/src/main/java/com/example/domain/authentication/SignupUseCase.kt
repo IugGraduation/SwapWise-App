@@ -1,13 +1,15 @@
 package com.example.domain.authentication
 
+import com.example.data.model.request.SignupRequest
+import com.example.data.repository.AuthenticationRepository
 import com.example.domain.exception.InvalidBestBarterSpotException
 import com.example.domain.exception.InvalidConfirmPasswordException
 import com.example.domain.exception.InvalidFullNameException
 import com.example.domain.exception.PasswordMismatchException
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
-class SignupValidationUseCase @Inject constructor(
+class SignupUseCase @Inject constructor(
+    private val authenticationRepository: AuthenticationRepository
 ) {
     suspend operator fun invoke(
         fullName: String,
@@ -21,8 +23,14 @@ class SignupValidationUseCase @Inject constructor(
         validatePassword(password)
         validateConfirmPassword(password, confirmPassword)
         validateBestBarterSpot(bestBarterSpot)
-        delay(500)
-        //todo: signup
+
+        val signupRequest = SignupRequest(
+            mobile = phone,
+            name = fullName,
+            password = password,
+            confirmPassword = confirmPassword
+        )
+        authenticationRepository.signup(signupRequest)
     }
 
     private fun validateFullName(input: String) {

@@ -21,16 +21,3 @@ suspend fun <T> checkResponse(function: suspend () -> Response<T>): T? {
         throw e
     }
 }
-
-
-suspend fun <T, B> checkResponse(function: suspend (body: B) -> Response<T>, body: B): T? {
-    try {
-        val result = function(body)
-        when {
-            result.isSuccessful -> return result.body()
-            else -> throw Exception(result.message())
-        }
-    } catch (e: Exception) {
-        throw e
-    }
-}

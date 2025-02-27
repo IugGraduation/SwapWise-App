@@ -1,7 +1,7 @@
 package com.example.ui.signup
 
 import androidx.lifecycle.viewModelScope
-import com.example.domain.authentication.SignupValidationUseCase
+import com.example.domain.authentication.SignupUseCase
 import com.example.domain.exception.InvalidBestBarterSpotErrorException
 import com.example.domain.exception.InvalidConfirmPasswordException
 import com.example.domain.exception.InvalidFullNameException
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class SignupViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
-    private val signupValidationUseCase: SignupValidationUseCase,
+    private val signupUseCase: SignupUseCase,
 ) : BaseViewModel<SignupUiState, SignupEffects>(SignupUiState()), ISignupInteractions {
 
     init {
@@ -39,7 +39,7 @@ class SignupViewModel @Inject constructor(
     override fun onClickSignup() {
         tryToExecute(
             call = {
-                signupValidationUseCase(
+                signupUseCase(
                     fullName = state.value.data.fullName,
                     phone = state.value.data.phone,
                     password = state.value.data.password,

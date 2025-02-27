@@ -7,8 +7,6 @@ data class SignupRequest(
     val mobile: String,
     @SerializedName("name")
     val name: String,
-    @SerializedName("email")
-    val email: String,
     @SerializedName("password")
     val password: String,
     @SerializedName("confirm_password")

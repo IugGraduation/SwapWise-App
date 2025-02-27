@@ -6,7 +6,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 
-interface AuthenticationApiService {
+interface AuthenticationRemoteDataSource {
 
     @GET("auth/register")
     suspend fun signup(@Body body: SignupRequest): Response<SignupDto>

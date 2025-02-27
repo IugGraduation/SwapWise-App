@@ -1,6 +1,7 @@
 package com.example.graduationproject.di
 
-import com.example.data.source.remote.PostApiService
+import com.example.data.source.remote.AuthenticationRemoteDataSource
+import com.example.data.source.remote.PostRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,12 +16,25 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideResourceProvider(): PostApiService {
+    fun provideRetrofit(): Retrofit {
         val BASE_URL = "https://swapwise.shop/api"
-        val retrofit = Retrofit.Builder()
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        return retrofit.create(PostApiService::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun providePostApiService(retrofit: Retrofit): PostRemoteDataSource {
+        return retrofit.create(PostRemoteDataSource::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthenticationApiService(retrofit: Retrofit): AuthenticationRemoteDataSource {
+        return retrofit.create(AuthenticationRemoteDataSource::class.java)
+    }
+
+
 }
