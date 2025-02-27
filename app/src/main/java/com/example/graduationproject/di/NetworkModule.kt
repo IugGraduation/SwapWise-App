@@ -17,7 +17,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
-        val BASE_URL = "https://swapwise.shop/api"
+        val BASE_URL = "https://swapwise.shop/api/"
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
