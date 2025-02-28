@@ -41,10 +41,11 @@ import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
 import com.example.ui.components.atoms.SwapWiseSwitch
 import com.example.ui.components.atoms.SwapWiseTextField
+import com.example.ui.components.atoms.TransparentStatusBar
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.templates.BottomBarTemplate
-import com.example.ui.login.navigateToLoginScreen
+import com.example.ui.login.navigateToLogin
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.profile.composable.EditIconButton
 import com.example.ui.profile.composable.GradientCircleBackground
@@ -55,6 +56,7 @@ import com.example.ui.profile.composable.ProfileToggle
 import com.example.ui.profile.composable.SettingsRow
 import com.example.ui.profile.composable.UserActivitiesBar
 import com.example.ui.profile.composable.VerticalBoldAndLightText
+import com.example.ui.reset_password.navigateToResetPassword
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GradientCircleBackgroundSize
 import com.example.ui.theme.Spacing16
@@ -64,7 +66,6 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles.headingExtraLarge
 import com.example.ui.theme.color
 import com.example.ui.util.CollectUiEffect
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun ProfileScreen(
@@ -85,8 +86,12 @@ fun ProfileScreen(
 
     CollectUiEffect(viewModel.effect) { effect ->
         when(effect){
-            ProfileEffect.NavigateToLoginScreen -> navController.navigateToLoginScreen{
+            ProfileEffect.NavigateToLoginScreen -> navController.navigateToLogin{
                 popUpTo(navController.graph.startDestinationId) { inclusive = true }
+            }
+
+            ProfileEffect.NavigateToResetPassword -> {
+                navController.navigateToResetPassword()
             }
         }
 
@@ -107,22 +112,14 @@ private fun ProfileContent(
     pagerState: PagerState,
     bottomBarState: BottomBarUiState,
 ) {
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(color = MaterialTheme.color.transparent, darkIcons = false)
-    BottomBarTemplate(
-        bottomBarState = bottomBarState
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxHeight()
-                .background(MaterialTheme.color.background)
-        ) {
+    TransparentStatusBar()
+
+    BottomBarTemplate(bottomBarState = bottomBarState) {
+        LazyColumn(modifier = Modifier.fillMaxHeight().background(MaterialTheme.color.background)) {
             item {
                 Box {
                     GradientCircleBackground(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(GradientCircleBackgroundSize)
+                        modifier = Modifier.fillMaxWidth().height(GradientCircleBackgroundSize)
                     )
 
                     Column(

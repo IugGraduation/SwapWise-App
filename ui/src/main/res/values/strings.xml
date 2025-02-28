@@ -99,4 +99,8 @@
     <string name="dismiss">Dismiss</string>
     <string name="logout_title">Are you sure you want to log out?</string>
     <string name="logout_content_message">Logging out will sign you out of your account and you\'ll need to re-enter your credentials to access the app again.</string>
+    <string name="reset">Reset\n</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
 </resources>

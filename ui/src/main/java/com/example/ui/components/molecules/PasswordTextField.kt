@@ -52,8 +52,8 @@ fun PasswordTextField(
             IconButton(onClick = { onVisibilityToggle() }) {
                 Icon(
                     painter = painterResource(
-                        if (isPasswordVisible) R.drawable.ic_eye_closed
-                        else R.drawable.ic_eye
+                        if (isPasswordVisible) R.drawable.ic_eye
+                        else R.drawable.ic_eye_closed
                     ),
                     contentDescription = if (isPasswordVisible) {
                         stringResource(R.string.hide_password)

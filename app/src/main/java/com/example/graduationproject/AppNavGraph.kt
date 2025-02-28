@@ -14,6 +14,7 @@ import com.example.ui.notifications.notificationsRoute
 import com.example.ui.offer_details.offerDetailsRoute
 import com.example.ui.post_details.postDetailsRoute
 import com.example.ui.profile.profileRoute
+import com.example.ui.reset_password.resetPasswordRout
 import com.example.ui.search.searchRoute
 import com.example.ui.signup.signupRoute
 import com.example.ui.see_all_topics.seeAllTopicsRoute
@@ -37,5 +38,7 @@ fun AppNavGraph(navController: NavHostController) {
         notificationsRoute(navController)
         editPostRoute(navController)
         profileRoute(navController)
+        resetPasswordRout(navController)
+
     }
 }
