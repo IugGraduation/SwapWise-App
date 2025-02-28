@@ -17,11 +17,12 @@ import com.example.ui.profile.profileRoute
 import com.example.ui.search.searchRoute
 import com.example.ui.signup.signupRoute
 import com.example.ui.see_all_topics.seeAllTopicsRoute
+import com.example.ui.util.Screen
 
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "signup") {
+    NavHost(navController = navController, startDestination = Screen.Profile.route) {
         signupRoute(navController)
         loginRoute(navController)
         otpRoute(navController)

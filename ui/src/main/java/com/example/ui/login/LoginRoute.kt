@@ -5,13 +5,16 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
-
-private const val ROUTE = "login"
+import com.example.ui.util.Screen
 
 fun NavController.navigateToLogin(builder: NavOptionsBuilder.() -> Unit = {}) {
-    navigate(ROUTE, builder)
+    navigate(Screen.Login.route, builder)
 }
 
 fun NavGraphBuilder.loginRoute(navController: NavHostController){
-    composable(ROUTE) { LoginScreen(navController) }
+    composable(Screen.Login.route) { LoginScreen(navController) }
+}
+
+fun NavController.navigateToLoginScreen(builder: NavOptionsBuilder.() -> Unit = {}) {
+    navigate(Screen.Login.route, builder = builder)
 }
