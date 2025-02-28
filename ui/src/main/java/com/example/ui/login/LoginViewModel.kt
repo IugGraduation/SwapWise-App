@@ -1,7 +1,7 @@
 package com.example.ui.login
 
 import androidx.lifecycle.viewModelScope
-import com.example.domain.authentication.LoginValidationUseCase
+import com.example.domain.authentication.LoginUseCase
 import com.example.domain.exception.InvalidPasswordException
 import com.example.domain.exception.InvalidPhoneException
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
-    private val loginValidationUseCase: LoginValidationUseCase,
+    private val loginUseCase: LoginUseCase,
 ) : BaseViewModel<LoginUiState, LoginEffects>(LoginUiState()), ILoginInteractions {
 
     override fun NavigateToSignup() {
@@ -41,7 +41,7 @@ class LoginViewModel @Inject constructor(
     override fun onClickLogin() {
         tryToExecute(
             call = {
-                loginValidationUseCase(
+                loginUseCase(
                     phone = state.value.data.phone,
                     password = state.value.data.password
                 )
