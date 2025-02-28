@@ -1,7 +1,7 @@
 package com.example.domain.authentication
 
 import com.example.data.model.request.SignupRequest
-import com.example.data.repository.AuthenticationRepository
+import com.example.data.repository.AuthRepository
 import com.example.domain.exception.InvalidBestBarterSpotException
 import com.example.domain.exception.InvalidConfirmPasswordException
 import com.example.domain.exception.InvalidFullNameException
@@ -9,7 +9,7 @@ import com.example.domain.exception.PasswordMismatchException
 import javax.inject.Inject
 
 class SignupUseCase @Inject constructor(
-    private val authenticationRepository: AuthenticationRepository
+    private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(
         fullName: String,
@@ -30,7 +30,7 @@ class SignupUseCase @Inject constructor(
             password = password,
             confirmPassword = confirmPassword
         )
-        authenticationRepository.signup(signupRequest)
+        authRepository.signup(signupRequest)
     }
 
     private fun validateFullName(input: String) {

@@ -2,7 +2,7 @@ package com.example.graduationproject.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.example.data.repository.AuthenticationRepository
+import com.example.data.repository.AuthRepository
 import com.example.data.repository.HomeRepository
 import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
@@ -24,8 +24,9 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideAuthenticationRepository(
-        authenticationRemoteDataSource: AuthenticationRemoteDataSource
-    ) = AuthenticationRepository(authenticationRemoteDataSource)
+        authenticationRemoteDataSource: AuthenticationRemoteDataSource,
+        dataStore: DataStore<Preferences>
+    ) = AuthRepository(authenticationRemoteDataSource, dataStore)
 
 
     @Singleton

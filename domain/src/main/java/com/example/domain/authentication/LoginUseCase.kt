@@ -1,13 +1,13 @@
 package com.example.domain.authentication
 
 import com.example.data.model.request.LoginRequest
-import com.example.data.repository.AuthenticationRepository
+import com.example.data.repository.AuthRepository
 import com.example.domain.exception.InvalidPasswordException
 import com.example.domain.exception.InvalidPhoneException
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
-    private val authenticationRepository: AuthenticationRepository
+    private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(
         phone: String,
@@ -22,7 +22,7 @@ class LoginUseCase @Inject constructor(
             fcmDevice = "android",
             fcmToken = "0"
         )
-        authenticationRepository.login(loginRequest)
+        authRepository.login(loginRequest)
     }
 }
 
