@@ -23,7 +23,7 @@ class ProfileViewModel @Inject constructor(
     private val getCurrentUserData: GetCurrentUserDataUseCase,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val validateUserInfoUseCase: ValidateUserInfoUseCase,
-) : BaseViewModel<ProfileUiState, Nothing>(ProfileUiState()), ProfileInteraction {
+) : BaseViewModel<ProfileUiState, ProfileEffect>(ProfileUiState()), ProfileInteraction {
 
     private val originalProfileInformation: ProfileUiState by lazy {
         getCurrentUserInfo()
@@ -131,8 +131,25 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) { customizeProfileSettings.updateDarkTheme(isDarkMood) }
     }
 
+    override fun onLogoutClicked() {
+        sendUiEffect(ProfileEffect.NavigateToLoginScreen)
+        //todo: clear stored user data
+    }
+
+    override fun onResetPasswordClicked() {
+        sendUiEffect(ProfileEffect.NavigateToResetPassword)
+    }
+
+    override fun onChangeLanguageClicked() {
+        //todo send show language dialog effect
+    }
+
+    override fun onUpdateLogoutDialogState(showDialog: Boolean) {
+        updateData { copy(profileSettingsUiState = ProfileSettingsUiState().copy(showLogoutDialog = showDialog)) }
+    }
+
     private suspend fun isDarkTheme() {
-        customizeProfileSettings.isDarkThem().buffer().collect{ isDark ->
+        customizeProfileSettings.isDarkThem().buffer().collect { isDark ->
             updateData {
                 copy(profileSettingsUiState = profileSettingsUiState.copy(isDarkTheme = isDark))
             }
