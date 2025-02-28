@@ -28,7 +28,7 @@ class AddPostViewModel @Inject constructor(
     private val args = AddPostArgs(savedStateHandle)
 
     override fun navigateUp() {
-        navigateTo(NavigateUpEffect.NavigateUp)
+        sendUiEffect(NavigateUpEffect.NavigateUp)
     }
 
 

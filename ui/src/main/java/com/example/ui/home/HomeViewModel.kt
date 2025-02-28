@@ -12,7 +12,7 @@ class HomeViewModel @Inject constructor(getHomeDataUseCase: GetHomeDataUseCase) 
     BaseViewModel<HomeUiState, HomeEffects>(HomeUiState()), IHomeInteractions {
 
     override fun navigateToAddPost(postTitle: String) {
-        navigateTo(HomeEffects.NavigateToAddPost(postTitle))
+        sendUiEffect(HomeEffects.NavigateToAddPost(postTitle))
     }
 
 

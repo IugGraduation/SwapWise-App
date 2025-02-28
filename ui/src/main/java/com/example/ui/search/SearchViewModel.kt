@@ -25,7 +25,7 @@ class SearchViewModel @Inject constructor(
     private val args = SearchArgs(savedStateHandle)
 
     fun navigateToPostDetails(postId: String) {
-        navigateTo(SearchEffects.NavigateToPostDetails(postId))
+        sendUiEffect(SearchEffects.NavigateToPostDetails(postId))
     }
 
     init {

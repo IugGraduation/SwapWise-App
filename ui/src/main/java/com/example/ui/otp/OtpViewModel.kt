@@ -52,7 +52,7 @@ class OtpViewModel @Inject constructor(
     }
 
     private fun navigateToHome() {
-        navigateTo(OtpEffects.NavigateToHome)
+        sendUiEffect(OtpEffects.NavigateToHome)
     }
 
 }

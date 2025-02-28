@@ -30,14 +30,14 @@ class SeeAllTopicsViewModel @Inject constructor(
 
 
     fun navigateToPostDetails(postId: String) {
-        navigateTo(SeeAllTopicsEffects.NavigateToPostDetails(postId))
+        sendUiEffect(SeeAllTopicsEffects.NavigateToPostDetails(postId))
     }
 
     fun navigateToSearch(filterCategoryName: String = "") {
-        navigateTo(SeeAllTopicsEffects.NavigateToSearch(filterCategoryName))
+        sendUiEffect(SeeAllTopicsEffects.NavigateToSearch(filterCategoryName))
     }
 
     override fun navigateUp() {
-        navigateTo(SeeAllTopicsEffects.NavigateUp)
+        sendUiEffect(SeeAllTopicsEffects.NavigateUp)
     }
 }

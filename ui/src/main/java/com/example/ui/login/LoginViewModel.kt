@@ -20,8 +20,8 @@ class LoginViewModel @Inject constructor(
     private val loginValidationUseCase: LoginValidationUseCase,
 ) : BaseViewModel<LoginUiState, LoginEffects>(LoginUiState()), ILoginInteractions {
 
-    override fun NavigateToSignup() {
-        navigateTo(LoginEffects.NavigateToSignup)
+    override fun navigateToSignup() {
+        sendUiEffect(LoginEffects.NavigateToSignup)
     }
 
 
@@ -52,7 +52,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun navigateToHome() {
-        navigateTo(LoginEffects.NavigateToHome)
+        sendUiEffect(LoginEffects.NavigateToHome)
     }
 
     private fun onLoginFail(throwable: Throwable) {

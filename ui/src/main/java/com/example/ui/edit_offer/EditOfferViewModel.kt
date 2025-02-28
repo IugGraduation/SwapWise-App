@@ -33,7 +33,7 @@ class EditOfferViewModel @Inject constructor(
     private val args = EditOfferArgs(savedStateHandle)
 
     override fun navigateUp() {
-        navigateTo(NavigateUpEffect.NavigateUp)
+        sendUiEffect(NavigateUpEffect.NavigateUp)
     }
 
 

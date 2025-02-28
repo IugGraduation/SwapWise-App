@@ -20,19 +20,19 @@ class OfferDetailsViewModel @Inject constructor(
     private val args = OfferDetailsArgs(savedStateHandle)
 
     override fun navigateUp() {
-        navigateTo(OfferDetailsEffects.NavigateUp)
+        sendUiEffect(OfferDetailsEffects.NavigateUp)
     }
 
     override fun navigateToPhone() {
-        navigateTo(OfferDetailsEffects.NavigateToPhone)
+        sendUiEffect(OfferDetailsEffects.NavigateToPhone)
     }
 
     override fun navigateToWhatsapp() {
-        navigateTo(OfferDetailsEffects.NavigateToWhatsapp)
+        sendUiEffect(OfferDetailsEffects.NavigateToWhatsapp)
     }
 
     override fun navigateToMessages() {
-        navigateTo(OfferDetailsEffects.NavigateToMessages)
+        sendUiEffect(OfferDetailsEffects.NavigateToMessages)
     }
 
 

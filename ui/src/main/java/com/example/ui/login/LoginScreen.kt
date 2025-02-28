@@ -102,7 +102,7 @@ fun LoginContent(
             Footer(
                 footerText = stringResource(R.string.don_t_have_an_account),
                 buttonText = stringResource(R.string.sign_up),
-                onClickButton = loginInteractions::NavigateToSignup
+                onClickButton = loginInteractions::navigateToSignup
             )
         }
     }
@@ -152,7 +152,7 @@ fun PreviewLoginContent() {
                 override fun onPasswordChange(newValue: String) {}
                 override fun onClickLogin() {}
                 override fun togglePasswordVisibility() {}
-                override fun NavigateToSignup() {}
+                override fun navigateToSignup() {}
             },
         )
     }

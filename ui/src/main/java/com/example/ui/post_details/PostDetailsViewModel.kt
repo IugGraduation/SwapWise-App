@@ -38,15 +38,15 @@ class PostDetailsViewModel @Inject constructor(
 
 
     override fun navigateToAddOffer() {
-        navigateTo(PostDetailsEffects.NavigateToAddOffer)
+        sendUiEffect(PostDetailsEffects.NavigateToAddOffer)
     }
 
     override fun navigateToOfferDetails(offerId: String) {
-        navigateTo(PostDetailsEffects.NavigateToOfferDetails(offerId))
+        sendUiEffect(PostDetailsEffects.NavigateToOfferDetails(offerId))
     }
 
     override fun navigateUp() {
-        navigateTo(PostDetailsEffects.NavigateUp)
+        sendUiEffect(PostDetailsEffects.NavigateUp)
     }
 
 }
