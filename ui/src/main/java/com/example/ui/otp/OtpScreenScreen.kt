@@ -188,6 +188,9 @@ private fun SwapWiseOtpTextField(
                 )
             }
         }
+        LaunchedEffect(Unit) {
+            focusRequesters[0].requestFocus()
+        }
     }
 }
 
