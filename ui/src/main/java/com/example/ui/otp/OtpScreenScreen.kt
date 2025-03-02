@@ -46,10 +46,9 @@ import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.RadiusMedium
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
+import com.example.ui.theme.Spacing40
 import com.example.ui.theme.Spacing56
-import com.example.ui.theme.Spacing72
 import com.example.ui.theme.Spacing8
-import com.example.ui.theme.Spacing80
 import com.example.ui.theme.Tertiary
 import com.example.ui.theme.TextStyles
 import com.example.ui.theme.color
@@ -86,7 +85,7 @@ fun OtpContent(
                 .padding(horizontal = Spacing16)
                 .verticalScroll(rememberScrollState())
         ) {
-            VerticalSpacer(Spacing80)
+            VerticalSpacer(Spacing56)
             Header(
                 title = stringResource(R.string.enter_otp),
                 imgPainter = painterResource(R.drawable.img_otp),
@@ -106,13 +105,14 @@ fun OtpContent(
                 isDarkTheme = state.data.isDarkTheme,
                 otpLength = state.data.otpLength
             )
-            VerticalSpacer(Spacing72)
+            VerticalSpacer(Spacing56)
             SwapWiseFilledButton(
                 onClick = otpInteractions::onClickConfirm,
                 text = stringResource(R.string.confirm),
                 enabled = state.data.isConfirmButtonEnabled,
                 modifier = Modifier.focusable()
             )
+            VerticalSpacer(Spacing40)
         }
     }
 }
