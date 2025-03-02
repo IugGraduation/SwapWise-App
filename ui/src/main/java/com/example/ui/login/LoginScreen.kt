@@ -36,6 +36,7 @@ import com.example.ui.components.molecules.Footer
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.templates.ScreenTemplate
 import com.example.ui.home.navigateToHome
+import com.example.ui.otp.navigateToOtp
 import com.example.ui.signup.navigateToSignup
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
@@ -58,7 +59,11 @@ fun LoginScreen(
                     popUpTo(navController.graph.startDestinationId) { inclusive = true }
                 }
 
-                is LoginEffects.NavigateToSignup -> navController.navigateToSignup()
+                is LoginEffects.NavigateToSignup -> navController.navigateToSignup {
+                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                }
+
+                LoginEffects.NavigateToOtp -> navController.navigateToOtp()
             }
         }
     }

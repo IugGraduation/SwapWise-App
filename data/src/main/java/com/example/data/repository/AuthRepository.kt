@@ -20,8 +20,7 @@ class AuthRepository(
     private val dataStore: DataStore<Preferences>,
 ) {
     suspend fun signup(body: SignupRequest) {
-        val authDto = checkResponse { authRemoteDataSource.signup(body) }?.data
-        saveUserDataToDataStore(authDto)
+        checkResponse { authRemoteDataSource.signup(body) }
         saveAccountState(false)
         saveMobile(body.mobile)
     }
@@ -59,20 +58,23 @@ class AuthRepository(
     }
 
 
-    suspend fun getAuthDto(checkIsAccountActive: Boolean = true): AuthDto {
+    suspend fun getAuthDto(): AuthDto {
         return dataStore.data.map {
-            if (it[PreferencesKeys.token].isNullOrBlank()) throw DataException.EmptyDataException()
-
-            if (checkIsAccountActive) {
-                if (it[PreferencesKeys.isAccountActive] == false) throw DataException.InactiveAccountException()
-            }
-
             AuthDto(
                 image = it[PreferencesKeys.image] ?: "",
                 name = it[PreferencesKeys.name] ?: "",
                 token = it[PreferencesKeys.token] ?: "",
                 uuid = it[PreferencesKeys.userId] ?: "",
             )
+        }.first()
+    }
+
+    suspend fun checkAuthDto() {
+        dataStore.data.map {
+            if(it[PreferencesKeys.token].isNullOrBlank()){
+            if (it[PreferencesKeys.isAccountActive] == false) throw DataException.InactiveAccountException()
+            throw DataException.EmptyDataException()
+            }
         }.first()
     }
 

@@ -1,7 +1,10 @@
 package com.example.ui.login
 
 import androidx.lifecycle.viewModelScope
+import com.example.domain.authentication.CheckAuthUseCase
 import com.example.domain.authentication.LoginUseCase
+import com.example.domain.exception.EmptyDataException
+import com.example.domain.exception.InactiveAccountException
 import com.example.domain.exception.InvalidPasswordException
 import com.example.domain.exception.InvalidPhoneException
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
@@ -18,15 +21,12 @@ class LoginViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val loginUseCase: LoginUseCase,
+    private val checkAuthUseCase: CheckAuthUseCase,
 ) : BaseViewModel<LoginUiState, LoginEffects>(LoginUiState()), ILoginInteractions {
-
-    override fun NavigateToSignup() {
-        navigateTo(LoginEffects.NavigateToSignup)
-    }
-
 
     init {
         viewModelScope.launch { isDarkTheme() }
+        checkAuthState()
     }
 
     private suspend fun isDarkTheme() {
@@ -35,6 +35,34 @@ class LoginViewModel @Inject constructor(
                 copy(isDarkTheme = isDark)
             }
         }
+    }
+
+    private fun checkAuthState() {
+        tryToExecute(
+            call = { checkAuthUseCase() },
+            onSuccess = { navigateToHome() },
+            onError = ::onCheckAuthFail,
+        )
+    }
+
+    private fun navigateToHome() {
+        navigateTo(LoginEffects.NavigateToHome)
+    }
+
+    private fun onCheckAuthFail(throwable: Throwable) {
+        when (throwable) {
+            is EmptyDataException -> {}
+
+            is InactiveAccountException -> {
+                navigateToOtp()
+            }
+
+            else -> onActionFail(throwable)
+        }
+    }
+
+    private fun navigateToOtp() {
+        navigateTo(LoginEffects.NavigateToOtp)
     }
 
 
@@ -49,10 +77,6 @@ class LoginViewModel @Inject constructor(
             onSuccess = { navigateToHome() },
             onError = ::onLoginFail
         )
-    }
-
-    private fun navigateToHome() {
-        navigateTo(LoginEffects.NavigateToHome)
     }
 
     private fun onLoginFail(throwable: Throwable) {
@@ -105,5 +129,8 @@ class LoginViewModel @Inject constructor(
     }
 
 
+    override fun NavigateToSignup() {
+        navigateTo(LoginEffects.NavigateToSignup)
+    }
 }
 

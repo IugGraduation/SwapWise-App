@@ -21,7 +21,7 @@ import com.example.ui.see_all_topics.seeAllTopicsRoute
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "signup") {
+    NavHost(navController = navController, startDestination = "login") {
         signupRoute(navController)
         loginRoute(navController)
         otpRoute(navController)

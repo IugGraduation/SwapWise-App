@@ -53,7 +53,10 @@ fun SignupScreen(
     LaunchedEffect(signupViewModel.effect) {
         signupViewModel.effect.collect { effect ->
             when (effect) {
-                SignupEffects.NavigateToLogin -> navController.navigateToLogin()
+                SignupEffects.NavigateToLogin -> navController.navigateToLogin {
+                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                }
+
                 SignupEffects.NavigateToOtp -> navController.navigateToOtp {
                     popUpTo(navController.graph.startDestinationId) { inclusive = true }
                 }
