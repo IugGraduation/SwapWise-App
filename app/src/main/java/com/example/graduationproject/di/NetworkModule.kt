@@ -1,6 +1,6 @@
 package com.example.graduationproject.di
 
-import com.example.data.source.remote.AuthenticationRemoteDataSource
+import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import dagger.Module
 import dagger.Provides
@@ -32,8 +32,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideAuthenticationApiService(retrofit: Retrofit): AuthenticationRemoteDataSource {
-        return retrofit.create(AuthenticationRemoteDataSource::class.java)
+    fun provideAuthenticationApiService(retrofit: Retrofit): AuthRemoteDataSource {
+        return retrofit.create(AuthRemoteDataSource::class.java)
     }
 
 
