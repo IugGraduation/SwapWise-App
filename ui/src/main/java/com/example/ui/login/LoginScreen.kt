@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -16,8 +17,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -115,12 +119,13 @@ private fun LoginForm(
     onPasswordChange: (String) -> Unit,
     togglePasswordVisibility: () -> Unit,
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing8)) {
         SwapWiseTextField(
             value = state.phone,
             onValueChange = onPhoneChange,
             placeholder = stringResource(R.string.phone_number),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_phone),
@@ -128,6 +133,11 @@ private fun LoginForm(
                     tint = MaterialTheme.color.textTertiary
                 )
             },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Phone,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
             errorMessage = state.loginError.phoneError
         )
         PasswordTextField(
@@ -135,6 +145,8 @@ private fun LoginForm(
             onValueChange = onPasswordChange,
             isPasswordVisible = state.isPasswordVisible,
             onVisibilityToggle = togglePasswordVisibility,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { focusManager.moveFocus(FocusDirection.Down) }),
             errorMessage = state.loginError.passwordError
         )
     }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -15,8 +16,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,8 +34,8 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.Footer
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.templates.ScreenTemplate
-import com.example.ui.otp.navigateToOtp
 import com.example.ui.login.navigateToLogin
+import com.example.ui.otp.navigateToOtp
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -107,6 +111,8 @@ fun SignupForm(
     state: SignupUiState,
     signupInteractions: ISignupInteractions,
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(Spacing8)
@@ -122,13 +128,14 @@ fun SignupForm(
                     tint = MaterialTheme.color.textTertiary
                 )
             },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
             errorMessage = state.signupError.fullNameError
         )
         SwapWiseTextField(
             value = state.phone,
             onValueChange = signupInteractions::onPhoneChange,
             placeholder = stringResource(R.string.phone_number),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_phone),
@@ -136,6 +143,11 @@ fun SignupForm(
                     tint = MaterialTheme.color.textTertiary
                 )
             },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Phone,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
             errorMessage = state.signupError.phoneError
         )
         PasswordTextField(
@@ -143,6 +155,8 @@ fun SignupForm(
             onValueChange = signupInteractions::onPasswordChange,
             isPasswordVisible = state.isPasswordVisible,
             onVisibilityToggle = signupInteractions::togglePasswordVisibility,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
             errorMessage = state.signupError.passwordError
         )
         PasswordTextField(
@@ -151,6 +165,8 @@ fun SignupForm(
             isPasswordVisible = state.isConfirmPasswordVisible,
             onVisibilityToggle = signupInteractions::toggleConfirmPasswordVisibility,
             placeholder = stringResource(R.string.confirm_password),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
             errorMessage = state.signupError.confirmPasswordError
         )
         SwapWiseTextField(
@@ -164,6 +180,8 @@ fun SignupForm(
                     tint = MaterialTheme.color.textTertiary
                 )
             },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
             errorMessage = state.signupError.bestBarterSpotError
         )
         SwapWiseTextField(
@@ -177,6 +195,8 @@ fun SignupForm(
                     tint = MaterialTheme.color.textTertiary
                 )
             },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { focusManager.moveFocus(FocusDirection.Down) }),
         )
     }
 }

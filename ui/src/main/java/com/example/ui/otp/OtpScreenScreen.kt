@@ -1,6 +1,7 @@
 package com.example.ui.otp
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +24,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -108,6 +111,7 @@ fun OtpContent(
                 onClick = otpInteractions::onClickConfirm,
                 text = stringResource(R.string.confirm),
                 enabled = state.data.isConfirmButtonEnabled,
+                modifier = Modifier.focusable()
             )
         }
     }
@@ -138,6 +142,7 @@ private fun SwapWiseOtpTextField(
         }
 
         val focusRequesters = List(otpLength) { remember { FocusRequester() } }
+        val focusManager = LocalFocusManager.current
 
         repeat(otpLength) { index ->
 
@@ -160,6 +165,8 @@ private fun SwapWiseOtpTextField(
 
                             if (index < otpLength - 1) {
                                 focusRequesters[index + 1].requestFocus()
+                            }else{
+                                focusManager.moveFocus(FocusDirection.Down)
                             }
                         }
                         else {
