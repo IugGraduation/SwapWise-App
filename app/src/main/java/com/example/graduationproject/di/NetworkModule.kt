@@ -1,6 +1,6 @@
 package com.example.graduationproject.di
 
-import StatusAwareConverterFactory
+import com.example.data.util.StatusAwareConverterFactory
 import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import com.google.gson.Gson

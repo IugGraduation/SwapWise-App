@@ -1,3 +1,5 @@
+package com.example.data.util
+
 import com.example.data.model.response.ApiResponseDto
 import com.google.gson.Gson
 import okhttp3.ResponseBody
