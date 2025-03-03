@@ -1,7 +1,9 @@
 package com.example.graduationproject.di
 
+import StatusAwareConverterFactory
 import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,9 +20,11 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(): Retrofit {
         val BASE_URL = "https://swapwise.shop/api/"
+        val gson = Gson()
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(StatusAwareConverterFactory(gson))
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 

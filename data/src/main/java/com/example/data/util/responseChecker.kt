@@ -21,13 +21,13 @@ suspend fun <T> checkResponse(function: suspend () -> Response<ApiResponseDto<T>
                 if(result.body()?.status == true){
                 return result.body()
                 }else{
-                    Log.e("TAG", "error status Response body: ${result.body()}")
                     throw Exception(result.body()?.message)
                 }
             }
             else -> throw Exception(result.message())
         }
     } catch (e: Exception) {
+        Log.e("TAG", "checkResponse Error: ${e.message}")
         throw e
     }
 }
