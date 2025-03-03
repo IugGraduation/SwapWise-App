@@ -5,7 +5,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.example.data.exception.DataException
 import com.example.data.model.request.LoginRequest
 import com.example.data.model.request.SignupRequest
 import com.example.data.model.request.VerifyCodeRequest
@@ -69,12 +68,15 @@ class AuthRepository(
         }.first()
     }
 
-    suspend fun checkAuthDto() {
-        dataStore.data.map {
-            if(it[PreferencesKeys.token].isNullOrBlank()){
-            if (it[PreferencesKeys.isAccountActive] == false) throw DataException.InactiveAccountException()
-            throw DataException.EmptyDataException()
-            }
+    suspend fun checkIsAuthDtoStored(): Boolean {
+        return dataStore.data.map {
+            (it[PreferencesKeys.token].isNullOrBlank())
+        }.first()
+    }
+
+    suspend fun checkIsAccountActive(): Boolean {
+        return dataStore.data.map {
+            (it[PreferencesKeys.isAccountActive] == true)
         }.first()
     }
 
