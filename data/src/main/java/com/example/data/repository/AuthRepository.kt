@@ -70,8 +70,8 @@ class AuthRepository(
 
     suspend fun checkIsAuthDtoStored(): Boolean {
         return dataStore.data.map {
-            (it[PreferencesKeys.token].isNullOrBlank())
-        }.first()
+            (it[PreferencesKeys.token]?.isNotBlank())
+        }.first() == true
     }
 
     suspend fun checkIsAccountActive(): Boolean {
