@@ -25,12 +25,12 @@ class AuthRepository(
     }
 
     suspend fun login(body: LoginRequest) {
-        val authDto = checkResponse { authRemoteDataSource.login(body) }?.data
+        val authDto = checkResponse { authRemoteDataSource.login(body) }
         saveUserDataToDataStore(authDto)
     }
 
     suspend fun verifyCode(body: VerifyCodeRequest) {
-        val authDto = checkResponse { authRemoteDataSource.verifyCode(body) }?.data
+        val authDto = checkResponse { authRemoteDataSource.verifyCode(body) }
         saveUserDataToDataStore(authDto)
         saveAccountState(true)
     }
