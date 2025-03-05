@@ -7,6 +7,6 @@ import javax.inject.Inject
 
 class GetHomeDataUseCase @Inject constructor(private val homeRepository: HomeRepository) {
     suspend operator fun invoke(): Home {
-        return Home.fromHomeDto(homeRepository.getHomeData() ?: throw EmptyDataException())
+        return Home.fromHomeDto(homeRepository.getHomeDto() ?: throw EmptyDataException())
     }
 }

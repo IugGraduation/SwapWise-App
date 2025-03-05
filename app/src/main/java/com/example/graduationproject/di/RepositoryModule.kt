@@ -7,9 +7,9 @@ import com.example.data.repository.HomeRepository
 import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
 import com.example.data.repository.UserRepository
-import com.example.data.source.local.FakeHomeLocalDataSource
 import com.example.data.source.local.FakePostLocalDataSource
 import com.example.data.source.remote.AuthRemoteDataSource
+import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import dagger.Module
 import dagger.Provides
@@ -32,9 +32,9 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideHomeRepository(
-        fakeHomeLocalDataSource: FakeHomeLocalDataSource
+        homeRemoteDataSource: HomeRemoteDataSource,
     ): HomeRepository {
-        return HomeRepository(fakeHomeLocalDataSource)
+        return HomeRepository(homeRemoteDataSource)
     }
 
     @Singleton

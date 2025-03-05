@@ -25,7 +25,11 @@ suspend fun <T> checkResponse(function: suspend () -> Response<ApiResponseDto<T>
                     throw Exception(result.body()?.message)
                 }
             }
-            else -> throw Exception(result.message())
+            else -> {
+                Log.e("TAG", "checkResponse not successful code: ${result.code()}", )
+                Log.e("TAG", "checkResponse not successful message: ${result.message()}", )
+                throw Exception(result.message())
+            }
         }
     } catch (e: UnknownHostException) {
         Log.e("TAG", "checkResponse Internet Error: ${e.message}")

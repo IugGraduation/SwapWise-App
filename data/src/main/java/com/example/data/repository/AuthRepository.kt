@@ -10,6 +10,7 @@ import com.example.data.model.request.SignupRequest
 import com.example.data.model.request.VerifyCodeRequest
 import com.example.data.model.response.AuthDto
 import com.example.data.source.remote.AuthRemoteDataSource
+import com.example.data.util.Constants
 import com.example.data.util.checkResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -90,7 +91,7 @@ class AuthRepository(
         val image = stringPreferencesKey("image")
         val name = stringPreferencesKey("name")
         val userId = stringPreferencesKey("user_id")
-        val token = stringPreferencesKey("token")
+        val token = stringPreferencesKey(Constants.TOKEN)
         val isAccountActive = booleanPreferencesKey("is_account_active")
         val mobile = stringPreferencesKey("mobile")
     }
