@@ -1,6 +1,5 @@
 package com.example.domain.profile
 
-import android.util.Log
 import com.example.data.repository.AuthRepository
 import com.example.data.repository.UserRepository
 import com.example.domain.model.User

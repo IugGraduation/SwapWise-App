@@ -4,7 +4,6 @@ import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import com.example.data.source.remote.ProfileDataSource
-import com.google.gson.GsonBuilder
 import com.example.data.util.StatusAwareConverterFactory
 import com.example.data.util.TokenInterceptor
 import com.google.gson.Gson

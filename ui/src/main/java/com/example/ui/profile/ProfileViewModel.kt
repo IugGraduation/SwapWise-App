@@ -1,7 +1,6 @@
 package com.example.ui.profile
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
