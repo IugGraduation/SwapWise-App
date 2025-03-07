@@ -1,19 +1,22 @@
 package com.example.domain.model
 
+import com.example.data.model.response.PostImageDto
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.TopicItemDto
 
 
 data class PostItem(
+    val image: PostImageDto = PostImageDto(),
     override val uuid: String = "",
     override val title: String = "",
-    override val imageLink: String = "",
+    override val imageLink: String = image.attachment ?: "",
 
     val user: User = User(),
     val place: String = "",
     val details: String = "",
     val category: String = "",
     val date: String = "",
+    //todo: replace these onClicks in the UiState, maybe same for offerItem
     val onClickMakeOffer: () -> Unit = {},
     var onClickGoToDetails: () -> Unit = {},
     val favoriteCategories: MutableList<String> = mutableListOf(),
@@ -25,20 +28,18 @@ data class PostItem(
     companion object {
         fun fromTopicItemDto(topicItemDto: TopicItemDto): TopicItem {
             return PostItem(
-                uuid = topicItemDto.uuid.toString(),
+                uuid = topicItemDto.uuid ?: "",
                 user = User(
-                    uuid = topicItemDto.userUuid.toString(),
-                    name = topicItemDto.userName.toString(),
-                    imageLink = topicItemDto.userImage.toString(),
+                    uuid = topicItemDto.userUuid ?: "",
+                    name = topicItemDto.userName ?: "",
+                    imageLink = topicItemDto.userImage ?: "",
                 ),
-                imageLink = topicItemDto.postImage.toString(),
-                title = topicItemDto.postName.toString(),
-                isOpen = topicItemDto.status.toString() == "Active",
-                details = topicItemDto.postDetails.toString(),
+                imageLink = topicItemDto.postImage ?: "",
+                title = topicItemDto.postName ?: "",
+                isOpen = topicItemDto.status == "Active",
+                details = topicItemDto.postDetails ?: "",
 //                place = "",
 //                category = "",
-//                onClickMakeOffer = "",
-//                onClickGoToDetails = "",
 //                date = "",
 //                favoriteCategories ="",
 //                rate = "",
@@ -49,25 +50,22 @@ data class PostItem(
 
         fun fromPostItemDto(postItemDto: PostItemDto): PostItem {
             return PostItem(
-                uuid = postItemDto.uuid.toString(),
+                uuid = postItemDto.uuid ?: "",
                 user = User(
-                    uuid = postItemDto.userUuid.toString(),
-                    name = postItemDto.userName.toString(),
-                    imageLink = postItemDto.userImage.toString(),
+                    uuid = postItemDto.userUuid ?: "",
+                    name = postItemDto.userName ?: "",
+                    imageLink = postItemDto.userImage ?: "",
                 ),
-                imageLink = postItemDto.postImage.toString(),
-                title = postItemDto.postName.toString(),
-                isOpen = postItemDto.status.toString() == "Active",
-                details = postItemDto.postDetails.toString(),
+                image = postItemDto.postImages?.get(0) ?: PostImageDto(),
+                title = postItemDto.postName ?: "",
+                isOpen = postItemDto.status == "Active",
+                details = postItemDto.postDetails ?: "",
 //                place = "",
 //                category = "",
-//                onClickMakeOffer = "",
-//                onClickGoToDetails = "",
-//                date = "",
+                date = postItemDto.date ?: "",
 //                favoriteCategories ="",
 //                rate = "",
-//                offers = "",
-
+                offers = OfferItem.fromOfferItemDtoList(postItemDto.offers),
             )
         }
     }
@@ -79,18 +77,16 @@ data class PostItem(
             userImage = user.imageLink,
             userName = user.name,
             userUuid = user.uuid,
-            postImage = imageLink,
+            postImages = listOf(PostImageDto()),
             postName = title,
             status = if (isOpen) "Active" else "Closed",
             postDetails = details,
 //                place = "",
 //                category = "",
-//                onClickMakeOffer = "",
-//                onClickGoToDetails = "",
-//                date = "",
+            date = date,
 //                favoriteCategories ="",
 //                rate = "",
-//                offers = "",
+            offers = OfferItem.toOfferItemDtoList(offers),
 
         )
     }

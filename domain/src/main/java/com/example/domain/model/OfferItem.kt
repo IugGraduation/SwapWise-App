@@ -22,31 +22,39 @@ data class OfferItem(
             details = details,
 //                place = "",
 //                category = "",
-//                date = "",
-//                favoriteCategories ="",
+                date = date,
 //                rate = "",
-//                offers = "",
         )
     }
 
     companion object {
         fun fromOfferItemDto(offerItemDto: OfferItemDto): OfferItem {
             return OfferItem(
-                uuid = offerItemDto.uuid.toString(),
+                uuid = offerItemDto.uuid ?: "",
                 user = User(
-                    name = offerItemDto.userName.toString(),
-                    imageLink = offerItemDto.userImage.toString(),
+                    name = offerItemDto.userName ?: "",
+                    imageLink = offerItemDto.userImage ?: "",
                 ),
-                imageLink = offerItemDto.image.toString(),
-                title = offerItemDto.title.toString(),
-                details = offerItemDto.details.toString(),
+                imageLink = offerItemDto.image ?: "",
+                title = offerItemDto.title ?: "",
+                details = offerItemDto.details ?: "",
 //                place = "",
 //                category = "",
-//                date = "",
-//                favoriteCategories ="",
+                date = offerItemDto.date ?: "",
 //                rate = "",
-//                offers = "",
             )
+        }
+
+        fun fromOfferItemDtoList(offerItemDtoList: List<OfferItemDto?>?): List<OfferItem> {
+            return offerItemDtoList?.filterNotNull()?.map {
+                fromOfferItemDto(it)
+            } ?: listOf()
+        }
+
+        fun toOfferItemDtoList(offerItemList: List<OfferItem>): List<OfferItemDto> {
+            return offerItemList.map {
+                it.toOfferItemDto()
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.data.source.remote
 
+import com.example.data.model.response.ApiResponseDto
 import com.example.data.model.response.PostItemDto
 import retrofit2.Response
 import retrofit2.http.Body
@@ -14,7 +15,7 @@ interface PostRemoteDataSource {
 //    suspend fun getProducts(@Query("limit") amount: Int? = null): Response<List<ProductResponse>>
 
     @GET("post/{post_id}")
-    suspend fun getPost(@Path("post_id") postId: String): Response<PostItemDto>
+    suspend fun getPost(@Path("post_id") postId: String): Response<ApiResponseDto<PostItemDto>>
 
     @POST("post/store")
     suspend fun addPost(@Body body: PostItemDto): Response<Boolean>
