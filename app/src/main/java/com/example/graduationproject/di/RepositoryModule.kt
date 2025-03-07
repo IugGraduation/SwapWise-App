@@ -7,7 +7,6 @@ import com.example.data.repository.HomeRepository
 import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
 import com.example.data.repository.UserRepository
-import com.example.data.source.local.FakePostLocalDataSource
 import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
@@ -31,28 +30,17 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideHomeRepository(
-        homeRemoteDataSource: HomeRemoteDataSource,
-    ): HomeRepository {
-        return HomeRepository(homeRemoteDataSource)
-    }
+    fun provideHomeRepository(homeRemoteDataSource: HomeRemoteDataSource) =
+        HomeRepository(homeRemoteDataSource)
 
     @Singleton
     @Provides
-    fun providePostRepository(
-        fakePostLocalDataSource: FakePostLocalDataSource,
-        postRemoteDataSource: PostRemoteDataSource,
-    ): PostRepository {
-        return PostRepository(fakePostLocalDataSource, postRemoteDataSource)
-    }
+    fun providePostRepository(postRemoteDataSource: PostRemoteDataSource) =
+        PostRepository(postRemoteDataSource)
 
     @Singleton
     @Provides
-    fun provideOfferRepository(
-//        fakePostLocalDataSource: FakePostLocalDataSource
-    ): OfferRepository {
-        return OfferRepository()
-    }
+    fun provideOfferRepository() = OfferRepository()
 
     @Provides
      fun provideUserRepository(dataStore: DataStore<Preferences>): UserRepository {

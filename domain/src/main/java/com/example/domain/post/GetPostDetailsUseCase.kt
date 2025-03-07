@@ -2,10 +2,10 @@ package com.example.domain.post
 
 import com.example.data.repository.PostRepository
 import com.example.domain.category.GetFakeCategoriesNamesUseCase
-import com.example.domain.offer.GetFakeOfferDetailsUseCase
 import com.example.domain.exception.EmptyDataException
 import com.example.domain.model.PostItem
 import com.example.domain.model.User
+import com.example.domain.offer.GetFakeOfferDetailsUseCase
 import javax.inject.Inject
 
 class GetPostDetailsUseCase @Inject constructor(private val postRepository: PostRepository) {
