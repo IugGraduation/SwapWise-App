@@ -46,7 +46,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun navigateToHome() {
-        navigateTo(LoginEffects.NavigateToHome)
+        sendUiEffect(LoginEffects.NavigateToHome)
     }
 
     private fun onCheckAuthFail(throwable: Throwable) {
@@ -62,7 +62,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun navigateToOtp() {
-        navigateTo(LoginEffects.NavigateToOtp)
+        sendUiEffect(LoginEffects.NavigateToOtp)
     }
 
 
@@ -128,9 +128,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-
-    override fun NavigateToSignup() {
-        navigateTo(LoginEffects.NavigateToSignup)
+    override fun navigateToSignup() {
+        sendUiEffect(LoginEffects.NavigateToSignup)
     }
 }
 

@@ -23,7 +23,7 @@ import com.example.ui.util.Screen
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = Screen.Login.route) {
         signupRoute(navController)
         loginRoute(navController)
         otpRoute(navController)

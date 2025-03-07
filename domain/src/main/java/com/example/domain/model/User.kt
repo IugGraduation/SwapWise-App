@@ -22,8 +22,8 @@ data class User(
             )
         }
 
-        fun fromProfileDto(profileDto: ProfileDto?): User {
-            val item = profileDto?.data?.item
+        fun fromData(profileData: ProfileDto?): User {
+            val item = profileData?.item
 
                 return User(
                     uuid = item?.uuid.orEmpty(),
