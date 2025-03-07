@@ -2,7 +2,7 @@ package com.example.ui.see_all_topics
 
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.model.TopicsHolder
-import com.example.domain.see_all_topics.SeeAllTopicsUseCase
+import com.example.domain.home.SeeAllTopicsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.INavigateUp
 import com.example.ui.base.MyUiState
