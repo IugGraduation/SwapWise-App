@@ -1,5 +1,6 @@
 package com.example.ui.components.molecules
 
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.theme.GraduationProjectTheme
@@ -28,6 +30,8 @@ fun PasswordTextField(
     onVisibilityToggle: () -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = stringResource(R.string.password),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     errorMessage: String? = null,
 ) {
     SwapWiseTextField(
@@ -35,7 +39,8 @@ fun PasswordTextField(
         onValueChange = onValueChange,
         modifier = modifier,
         placeholder = placeholder,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = keyboardOptions.copy(keyboardType = KeyboardType.Password),
+        keyboardActions = keyboardActions,
         visualTransformation = if (isPasswordVisible) {
             VisualTransformation.None
         } else {
@@ -69,7 +74,7 @@ fun PasswordTextField(
 }
 
 
-//@Preview(showSystemUi = true)
+@Preview(showSystemUi = true)
 @Composable
 fun PreviewPasswordTextField() {
     GraduationProjectTheme {

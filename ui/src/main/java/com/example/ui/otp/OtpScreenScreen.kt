@@ -1,6 +1,7 @@
 package com.example.ui.otp
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +24,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,10 +46,9 @@ import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.RadiusMedium
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
+import com.example.ui.theme.Spacing40
 import com.example.ui.theme.Spacing56
-import com.example.ui.theme.Spacing72
 import com.example.ui.theme.Spacing8
-import com.example.ui.theme.Spacing80
 import com.example.ui.theme.Tertiary
 import com.example.ui.theme.TextStyles
 import com.example.ui.theme.color
@@ -83,7 +85,7 @@ fun OtpContent(
                 .padding(horizontal = Spacing16)
                 .verticalScroll(rememberScrollState())
         ) {
-            VerticalSpacer(Spacing80)
+            VerticalSpacer(Spacing56)
             Header(
                 title = stringResource(R.string.enter_otp),
                 imgPainter = painterResource(R.drawable.img_otp),
@@ -103,12 +105,14 @@ fun OtpContent(
                 isDarkTheme = state.data.isDarkTheme,
                 otpLength = state.data.otpLength
             )
-            VerticalSpacer(Spacing72)
+            VerticalSpacer(Spacing56)
             SwapWiseFilledButton(
                 onClick = otpInteractions::onClickConfirm,
                 text = stringResource(R.string.confirm),
                 enabled = state.data.isConfirmButtonEnabled,
+                modifier = Modifier.focusable()
             )
+            VerticalSpacer(Spacing40)
         }
     }
 }
@@ -138,6 +142,7 @@ private fun SwapWiseOtpTextField(
         }
 
         val focusRequesters = List(otpLength) { remember { FocusRequester() } }
+        val focusManager = LocalFocusManager.current
 
         repeat(otpLength) { index ->
 
@@ -160,6 +165,8 @@ private fun SwapWiseOtpTextField(
 
                             if (index < otpLength - 1) {
                                 focusRequesters[index + 1].requestFocus()
+                            }else{
+                                focusManager.moveFocus(FocusDirection.Down)
                             }
                         }
                         else {
@@ -180,6 +187,9 @@ private fun SwapWiseOtpTextField(
                         .focusRequester(focusRequesters[index]),
                 )
             }
+        }
+        LaunchedEffect(Unit) {
+            focusRequesters[0].requestFocus()
         }
     }
 }

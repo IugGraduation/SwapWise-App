@@ -3,7 +3,7 @@ package com.example.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class SignupDto(
+data class AuthDto(
     @SerializedName("image")
     val image: String? = null,
     @SerializedName("name")

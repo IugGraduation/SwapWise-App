@@ -2,14 +2,14 @@ package com.example.graduationproject.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.example.data.repository.AuthenticationRepository
+import com.example.data.repository.AuthRepository
 import com.example.data.repository.HomeRepository
 import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
 import com.example.data.repository.UserRepository
-import com.example.data.source.local.FakeHomeLocalDataSource
 import com.example.data.source.local.FakePostLocalDataSource
-import com.example.data.source.remote.AuthenticationRemoteDataSource
+import com.example.data.source.remote.AuthRemoteDataSource
+import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import com.example.data.source.remote.ProfileDataSource
 import dagger.Module
@@ -25,16 +25,17 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideAuthenticationRepository(
-        authenticationRemoteDataSource: AuthenticationRemoteDataSource
-    ) = AuthenticationRepository(authenticationRemoteDataSource)
+        authRemoteDataSource: AuthRemoteDataSource,
+        dataStore: DataStore<Preferences>
+    ) = AuthRepository(authRemoteDataSource, dataStore)
 
 
     @Singleton
     @Provides
     fun provideHomeRepository(
-        fakeHomeLocalDataSource: FakeHomeLocalDataSource
+        homeRemoteDataSource: HomeRemoteDataSource,
     ): HomeRepository {
-        return HomeRepository(fakeHomeLocalDataSource)
+        return HomeRepository(homeRemoteDataSource)
     }
 
     @Singleton

@@ -1,7 +1,7 @@
 package com.example.ui.otp
 
 import androidx.lifecycle.viewModelScope
-import com.example.domain.authentication.OtpValidationUseCase
+import com.example.domain.authentication.VerifyCodeUseCase
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OtpViewModel @Inject constructor(
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
-    private val otpValidationUseCase: OtpValidationUseCase
+    private val verifyCodeUseCase: VerifyCodeUseCase
 ) : BaseViewModel<OtpUiState, OtpEffects>(OtpUiState()),
     IOtpInteractions {
 
@@ -43,11 +43,12 @@ class OtpViewModel @Inject constructor(
     override fun onClickConfirm() {
         tryToExecute(
             call = {
-                otpValidationUseCase(
+                verifyCodeUseCase(
                     otp = state.value.data.otp,
                 )
             },
             onSuccess = { navigateToHome() },
+            onError = ::onActionFail
         )
     }
 

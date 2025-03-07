@@ -1,19 +1,28 @@
 package com.example.domain.authentication
 
+import com.example.data.model.request.LoginRequest
+import com.example.data.repository.AuthRepository
 import com.example.domain.exception.InvalidPasswordException
 import com.example.domain.exception.InvalidPhoneException
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
-class LoginValidationUseCase @Inject constructor() {
+class LoginUseCase @Inject constructor(
+    private val authRepository: AuthRepository
+) {
     suspend operator fun invoke(
         phone: String,
         password: String,
     ) {
         validatePhone(phone)
         validatePassword(password)
-        delay(500)
-        //todo: login
+
+        val loginRequest = LoginRequest(
+            mobile = phone,
+            password = password,
+            fcmDevice = "android",
+            fcmToken = "0"
+        )
+        authRepository.login(loginRequest)
     }
 }
 

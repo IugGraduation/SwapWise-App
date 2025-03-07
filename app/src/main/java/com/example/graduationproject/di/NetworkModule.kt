@@ -1,9 +1,13 @@
 package com.example.graduationproject.di
 
-import com.example.data.source.remote.AuthenticationRemoteDataSource
+import com.example.data.source.remote.AuthRemoteDataSource
+import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import com.example.data.source.remote.ProfileDataSource
 import com.google.gson.GsonBuilder
+import com.example.data.util.StatusAwareConverterFactory
+import com.example.data.util.TokenInterceptor
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,12 +22,18 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(tokenInterceptor: TokenInterceptor): Retrofit {
         val BASE_URL = "https://swapwise.shop/api/"
-        val gson = GsonBuilder().setLenient().create()
+        val gson = Gson()
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .addConverterFactory(StatusAwareConverterFactory(gson))
             .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(tokenInterceptor)
+                    .build()
+            )
             .build()
     }
 
@@ -35,8 +45,14 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideAuthenticationApiService(retrofit: Retrofit): AuthenticationRemoteDataSource {
-        return retrofit.create(AuthenticationRemoteDataSource::class.java)
+    fun provideAuthenticationApiService(retrofit: Retrofit): AuthRemoteDataSource {
+        return retrofit.create(AuthRemoteDataSource::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideHomeApiService(retrofit: Retrofit): HomeRemoteDataSource {
+        return retrofit.create(HomeRemoteDataSource::class.java)
     }
 
     @Singleton

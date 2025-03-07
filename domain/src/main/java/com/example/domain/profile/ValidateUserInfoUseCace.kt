@@ -1,7 +1,6 @@
 package com.example.domain.profile
 
 import com.example.data.repository.UserRepository
-import com.example.domain.exception.EmptyDataException
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
 import com.example.domain.exception.InvalidUsernameException
