@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -97,12 +98,23 @@ fun ProfileScreen(
 
     }
 
-    ProfileContent(
-        state = state,
-        profileInteraction = viewModel,
-        pagerState = pagerState,
-        bottomBarState = bottomBarState
-    )
+    if (!state.baseUiState.isLoading) {
+        ProfileContent(
+            state = state,
+            profileInteraction = viewModel,
+            pagerState = pagerState,
+            bottomBarState = bottomBarState
+        )
+    } else {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator(color = MaterialTheme.color.primary)
+        }
+    }
+
 }
 
 @Composable

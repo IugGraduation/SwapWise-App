@@ -11,6 +11,7 @@ import com.example.data.source.local.FakeHomeLocalDataSource
 import com.example.data.source.local.FakePostLocalDataSource
 import com.example.data.source.remote.AuthenticationRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
+import com.example.data.source.remote.ProfileDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,7 +55,7 @@ object RepositoryModule {
     }
 
     @Provides
-     fun provideUserRepository(dataStore: DataStore<Preferences>): UserRepository {
-         return UserRepository(dataStore)
+     fun provideUserRepository(dataStore: DataStore<Preferences>, profileDataSource: ProfileDataSource): UserRepository {
+         return UserRepository(dataStore = dataStore, profileDataSource = profileDataSource)
     }
 }

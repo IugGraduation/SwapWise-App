@@ -2,6 +2,8 @@ package com.example.graduationproject.di
 
 import com.example.data.source.remote.AuthenticationRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
+import com.example.data.source.remote.ProfileDataSource
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,9 +20,10 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(): Retrofit {
         val BASE_URL = "https://swapwise.shop/api/"
+        val gson = GsonBuilder().setLenient().create()
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
@@ -34,6 +37,12 @@ object NetworkModule {
     @Provides
     fun provideAuthenticationApiService(retrofit: Retrofit): AuthenticationRemoteDataSource {
         return retrofit.create(AuthenticationRemoteDataSource::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideProfileApiService(retrofit: Retrofit): ProfileDataSource {
+        return retrofit.create(ProfileDataSource::class.java)
     }
 
 

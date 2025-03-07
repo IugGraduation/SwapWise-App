@@ -1,6 +1,7 @@
 package com.example.ui.profile
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
@@ -25,49 +26,37 @@ class ProfileViewModel @Inject constructor(
     private val validateUserInfoUseCase: ValidateUserInfoUseCase,
 ) : BaseViewModel<ProfileUiState, ProfileEffect>(ProfileUiState()), ProfileInteraction {
 
-    private val originalProfileInformation: ProfileUiState by lazy {
-        getCurrentUserInfo()
-    }
-
     init {
-        updateData {
-            copy(
-                profileInformationUiState = originalProfileInformation.profileInformationUiState,
-                userPosts = originalProfileInformation.userPosts
-            )
-        }
-
+        getCurrentUserInfo()
         viewModelScope.launch { isDarkTheme() }
     }
 
-    private fun getCurrentUserInfo(): ProfileUiState {
+    private fun getCurrentUserInfo() {
         //todo: get current user information from api
-        val postItem = PostItemUiState(
-            id = 6344,
-            username = "Kellie Bentley",
-            userImageLink = "https://media.istockphoto.com/id/1384257150/photo/stylish-compositon-of-modern-living-room-interior-with-frotte-armchair-wooden-commode-side.jpg?s=612x612&w=0&k=20&c=oYzzcYlPTEvDijxTd9CPMlRT6pIRlXTBU7VIJKsF4m8=",
-            postImageLink = "https://media.istockphoto.com/id/1384257150/photo/stylish-compositon-of-modern-living-room-interior-with-frotte-armchair-wooden-commode-side.jpg?s=612x612&w=0&k=20&c=oYzzcYlPTEvDijxTd9CPMlRT6pIRlXTBU7VIJKsF4m8=",
-            isThePostOpen = false,
-            postTitle = "A Sturdy Office Chair for Your Offer",
-            postDescription = "I have a comfortable and sturdy office chair in great condition that I’m looking to trade. It’s ergonomic, adjustable, and perfect for home offices or study spaces.",
-            offersNumber = 95
-        )
+        //updateLoadingState(isLoading = true)
+        tryToExecute(
+            call = { getCurrentUserData("17f91149-7d7b-4ea2-985e-db92ca5b7b82").toProfileUiState() },
+            onSuccess = ::onGetCurrentUserSuccess,
+            onError = ::onGetCurrentUserFail
 
-        return ProfileUiState(
-            profileInformationUiState = ProfileInformationUiState(
-                imageUrl = "https://www.google.com/#q=non",
-                name = "Ines Wyatt",
-                phoneNumber = "(804) 890-6202",
-                postsNumber = "29",
-                location = "putent",
-                bio = "justo, justo, justo",
-                offersNumber = "55",
-                exchangesNumber = "12",
-                isUserInfoEditable = false,
-            ),
-            userPosts = listOf(postItem, postItem, postItem, postItem)
         )
+    }
 
+    private fun onGetCurrentUserSuccess(user: ProfileUiState) {
+        Log.e("bk", "onGetCurrentUserSuccess: ${user.profileInformationUiState.name}")
+        //updateLoadingState(isLoading = false)
+        updateData { copy(profileInformationUiState = user.profileInformationUiState) }
+    }
+
+    private fun onGetCurrentUserFail(throwable: Throwable) {
+        Log.e("bk", "onGetCurrentUserFail: ${throwable.message}")
+
+        //updateLoadingState(isLoading = false)
+        updateData { copy(baseUiState = this.baseUiState.copy(errorMessage = throwable.message.toString())) }
+    }
+
+    private fun updateLoadingState(isLoading: Boolean){
+        updateData { copy(baseUiState = this.baseUiState.copy(isLoading = isLoading)) }
     }
 
     override fun onUpdateProfileImage(imageUri: Uri) {
@@ -104,9 +93,9 @@ class ProfileViewModel @Inject constructor(
     override fun onCancelButtonClicked() {
         manageUserInfoEdit(isEditable = false)
         makeErrorMessagesEmpty()
-        updateData {
-            copy(profileInformationUiState = originalProfileInformation.profileInformationUiState)
-        }
+//        updateData {
+//            copy(profileInformationUiState = originalProfileInformation.profileInformationUiState)
+//        }
     }
 
     override fun onSaveButtonClicked() {
@@ -227,3 +216,33 @@ class ProfileViewModel @Inject constructor(
         }
     }
 }
+
+
+//return getCurrentUserData("17f91149-7d7b-4ea2-985e-db92ca5b7b82").toProfileUiState()
+
+
+//        val postItem = PostItemUiState(
+//            id = 6344,
+//            username = "Kellie Bentley",
+//            userImageLink = "https://media.istockphoto.com/id/1384257150/photo/stylish-compositon-of-modern-living-room-interior-with-frotte-armchair-wooden-commode-side.jpg?s=612x612&w=0&k=20&c=oYzzcYlPTEvDijxTd9CPMlRT6pIRlXTBU7VIJKsF4m8=",
+//            postImageLink = "https://media.istockphoto.com/id/1384257150/photo/stylish-compositon-of-modern-living-room-interior-with-frotte-armchair-wooden-commode-side.jpg?s=612x612&w=0&k=20&c=oYzzcYlPTEvDijxTd9CPMlRT6pIRlXTBU7VIJKsF4m8=",
+//            isThePostOpen = false,
+//            postTitle = "A Sturdy Office Chair for Your Offer",
+//            postDescription = "I have a comfortable and sturdy office chair in great condition that I’m looking to trade. It’s ergonomic, adjustable, and perfect for home offices or study spaces.",
+//            offersNumber = 95
+//        )
+//
+//        return ProfileUiState(
+//            profileInformationUiState = ProfileInformationUiState(
+//                imageUrl = "https://www.google.com/#q=non",
+//                name = "Ines Wyatt",
+//                phoneNumber = "(804) 890-6202",
+//                postsNumber = "29",
+//                location = "putent",
+//                bio = "justo, justo, justo",
+//                offersNumber = "55",
+//                exchangesNumber = "12",
+//                isUserInfoEditable = false,
+//            ),
+//            userPosts = listOf(postItem, postItem, postItem, postItem)
+//        )
