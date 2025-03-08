@@ -24,10 +24,6 @@ class SearchViewModel @Inject constructor(
 ) : BaseViewModel<SearchUiState, SearchEffects>(SearchUiState()), ISearchInteractions {
     private val args = SearchArgs(savedStateHandle)
 
-    fun navigateToPostDetails(postId: String) {
-        navigateTo(SearchEffects.NavigateToPostDetails(postId))
-    }
-
     init {
         prepareChipsList()
         viewModelScope.launch {
@@ -96,6 +92,10 @@ class SearchViewModel @Inject constructor(
 
     override fun onClickTryAgain() {
         search()
+    }
+
+    override fun navigateToPostDetails(postId: String) {
+        navigateTo(SearchEffects.NavigateToPostDetails(postId))
     }
 
 }

@@ -56,9 +56,7 @@ fun SearchScreen(
 ) {
     val state by searchViewModel.state.collectAsState()
     val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
-    for (topicItem in state.data.topicsList) {
-        topicItem.onClickGoToDetails = { searchViewModel.navigateToPostDetails(topicItem.uuid) }
-    }
+
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,
         onItemSelected = bottomNavigationViewModel::onItemSelected,
@@ -123,7 +121,8 @@ fun SearchContent(
             CustomLazyLayout(
                 items = state.data.topicsList,
                 isCategoryCard = false,
-                isHorizontalLayout = false
+                isHorizontalLayout = false,
+                onClickGoToDetails = { id, _ -> searchInteractions.navigateToPostDetails(id) }
             )
         }
     }
@@ -184,6 +183,7 @@ fun PreviewSearchContent() {
             searchInteractions = object : ISearchInteractions {
                 override fun onSearchChange(newValue: String) {}
                 override fun onClickTryAgain() {}
+                override fun navigateToPostDetails(postId: String) {}
             }
         )
     }

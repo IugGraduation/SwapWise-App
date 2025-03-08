@@ -7,10 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.model.CategoryItem
-import com.example.domain.model.PostItem
 import com.example.domain.post.GetFakePostDetailsUseCase
-import com.example.ui.base.INavigateUp
 import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.templates.TitledScreenTemplate
@@ -29,14 +26,6 @@ fun SeeAllTopicsScreen(
 ) {
     val state by seeAllTopicsViewModel.state.collectAsState()
 
-    for (item in state.data.items) {
-        if (item is PostItem) {
-            item.onClickGoToDetails = { seeAllTopicsViewModel.navigateToPostDetails(item.uuid) }
-        } else if (item is CategoryItem) {
-            item.onClickSearchByCategory = { seeAllTopicsViewModel.navigateToSearch(item.title) }
-        }
-    }
-
     LaunchedEffect(seeAllTopicsViewModel.effect) {
         seeAllTopicsViewModel.effect.collect { effect ->
             when (effect) {
@@ -44,9 +33,9 @@ fun SeeAllTopicsScreen(
                     effect.postId
                 )
 
-                is SeeAllTopicsEffects.NavigateToSearch -> {
+                is SeeAllTopicsEffects.NavigateToSearchByCategory -> {
                     bottomNavigationViewModel.onItemSelected(1)
-                    navController.navigateToSearch(effect.filterCategoryName)
+                    navController.navigateToSearch(effect.categoryId)
                 }
 
                 SeeAllTopicsEffects.NavigateUp -> navController.navigateUp()
@@ -64,7 +53,7 @@ fun SeeAllTopicsScreen(
 @Composable
 fun SeeAllTopicsContent(
     state: MyUiState<TopicsHolderUiState>,
-    seeAllTopicsInteractions: INavigateUp
+    seeAllTopicsInteractions: ISeeAllInteractions
 ) {
 
     TitledScreenTemplate(
@@ -75,7 +64,9 @@ fun SeeAllTopicsContent(
         CustomLazyLayout(
             items = state.data.items,
             isCategoryCard = state.data.isCategoryTopics,
-            isHorizontalLayout = false)
+            isHorizontalLayout = false,
+            onClickGoToDetails = seeAllTopicsInteractions::onClickGoToDetails
+        )
     }
 }
 
@@ -93,7 +84,8 @@ fun PreviewAllTopicsContent() {
             isHorizontal = false
             )
         )
-        SeeAllTopicsContent(state = state, seeAllTopicsInteractions = object : INavigateUp {
+        SeeAllTopicsContent(state = state, seeAllTopicsInteractions = object : ISeeAllInteractions {
+            override fun onClickGoToDetails(topicId: String, isCategory: Boolean) {}
             override fun navigateUp() {}
         })
 

@@ -6,7 +6,6 @@ data class CategoryItem(
     override val uuid: String = "",
     override val title: String = "",
     override val imageLink: String = "",
-    var onClickSearchByCategory: () -> Unit = {},
 
 ) : TopicItem() {
     companion object {

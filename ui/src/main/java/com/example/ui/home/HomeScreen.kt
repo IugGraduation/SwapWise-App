@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.category.GetFakeCategoriesUseCase
-import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.model.User
 import com.example.domain.post.GetFakePostDetailsUseCase
@@ -61,16 +60,6 @@ fun HomeScreen(
     val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
     for (topic in state.data.topicsList) {
         topic.onClickSeeAll = { navController.navigateToSeeAllTopics(topic.url) }
-        for (item in topic.items) {
-            if (item is PostItem) {
-                item.onClickGoToDetails = { navController.navigateToPostDetails(item.uuid) }
-            } else if (item is CategoryItem) {
-                item.onClickSearchByCategory = {
-                    bottomNavigationViewModel.onItemSelected(1)
-                    navController.navigateToSearch(item.title)
-                }
-            }
-        }
     }
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,
@@ -83,6 +72,15 @@ fun HomeScreen(
             when (effect) {
                 is HomeEffects.NavigateToAddPost -> {
                     navController.navigateToAddPost(effect.postTitle)
+                }
+
+                is HomeEffects.NavigateToPostDetails -> {
+                    navController.navigateToPostDetails(effect.postId)
+                }
+
+                is HomeEffects.NavigateToSearchByCategory -> {
+                    bottomNavigationViewModel.onItemSelected(1)
+                    navController.navigateToSearch(effect.categoryId)
                 }
             }
         }
@@ -139,6 +137,7 @@ fun HomeContent(
                         items = topic.items,
                         isCategoryCard = topic.isCategoryTopics,
                         isHorizontalLayout = topic.isHorizontal,
+                        onClickGoToDetails = homeInteractions::onClickGoToDetails
                     )
                     VerticalSpacer(Spacing24)
                 }
@@ -160,7 +159,12 @@ fun HomeContent(
                     username = item.user.name,
                     title = item.title,
                     details = item.details,
-                    onCardClick = { item.onClickGoToDetails() },
+                    onCardClick = {
+                        homeInteractions.onClickGoToDetails(
+                            topicId = item.uuid,
+                            isCategory = false
+                        )
+                    },
                     isHorizontalCard = false,
                     modifier = Modifier.padding(horizontal = Spacing16)
                 )
@@ -246,6 +250,7 @@ fun PreviewHomeContent() {
             homeInteractions = object : IHomeInteractions {
                 override fun onNewPostFieldChange(newValue: String) {}
                 override fun navigateToAddPost(postTitle: String) {}
+                override fun onClickGoToDetails(topicId: String, isCategory: Boolean) {}
             },
         )
     }

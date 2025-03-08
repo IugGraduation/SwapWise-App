@@ -6,19 +6,16 @@ import com.example.data.model.response.TopicItemDto
 
 
 data class PostItem(
-    val image: PostImageDto = PostImageDto(),
     override val uuid: String = "",
     override val title: String = "",
-    override val imageLink: String = image.attachment ?: "",
+    override val imageLink: String = "",
 
+    val imageId: String = "",
     val user: User = User(),
     val place: String = "",
     val details: String = "",
     val category: String = "",
     val date: String = "",
-    //todo: replace these onClicks in the UiState, maybe same for offerItem
-    val onClickMakeOffer: () -> Unit = {},
-    var onClickGoToDetails: () -> Unit = {},
     val favoriteCategories: MutableList<String> = mutableListOf(),
     val isOpen: Boolean = true,
     val rate: Float = 0f,
@@ -49,6 +46,7 @@ data class PostItem(
         }
 
         fun fromPostItemDto(postItemDto: PostItemDto): PostItem {
+            val image = postItemDto.postImages?.get(0) ?: PostImageDto()
             return PostItem(
                 uuid = postItemDto.uuid ?: "",
                 user = User(
@@ -56,7 +54,8 @@ data class PostItem(
                     name = postItemDto.userName ?: "",
                     imageLink = postItemDto.userImage ?: "",
                 ),
-                image = postItemDto.postImages?.get(0) ?: PostImageDto(),
+                imageId =image.uuid ?: "",
+                imageLink =image.attachment ?: "",
                 title = postItemDto.postName ?: "",
                 isOpen = postItemDto.status == "Active",
                 details = postItemDto.postDetails ?: "",
@@ -77,8 +76,9 @@ data class PostItem(
             userImage = user.imageLink,
             userName = user.name,
             userUuid = user.uuid,
-            postImages = listOf(PostImageDto()),
+            postImages = listOf(PostImageDto(attachment = imageLink, uuid = imageId)),
             postName = title,
+            //todo: check this status and value from api
             status = if (isOpen) "Active" else "Closed",
             postDetails = details,
 //                place = "",
@@ -88,7 +88,7 @@ data class PostItem(
 //                rate = "",
             offers = OfferItem.toOfferItemDtoList(offers),
 
-        )
+            )
     }
 }
 
