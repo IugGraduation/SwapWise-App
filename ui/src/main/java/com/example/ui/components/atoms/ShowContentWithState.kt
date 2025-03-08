@@ -16,12 +16,12 @@ import com.example.ui.theme.BlackTertiary
 
 @Composable
 fun ShowContentWithState(state: BaseUiState, content: @Composable () -> Unit) {
-    when {
-        state.isLoading -> {
-            Box {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    content()
-                }
+    Box {
+        Column(modifier = Modifier.fillMaxSize()) {
+            content()
+        }
+        when {
+            state.isLoading -> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -31,15 +31,10 @@ fun ShowContentWithState(state: BaseUiState, content: @Composable () -> Unit) {
                     CircularProgressIndicator()
                 }
             }
-        }
 
-        state.errorMessage.isNotBlank() -> {
-            Toast.makeText(LocalContext.current, state.errorMessage, Toast.LENGTH_LONG).show()
-            content()
-        }
-
-        else -> {
-            content()
+            state.errorMessage.isNotBlank() -> {
+                Toast.makeText(LocalContext.current, state.errorMessage, Toast.LENGTH_LONG).show()
+            }
         }
     }
 }
