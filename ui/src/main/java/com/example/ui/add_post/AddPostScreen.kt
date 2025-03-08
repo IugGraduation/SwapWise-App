@@ -1,10 +1,14 @@
 package com.example.ui.add_post
 
 import android.net.Uri
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -13,9 +17,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -66,13 +74,6 @@ fun AddPostContent(
     TitledScreenTemplate(
         title = stringResource(R.string.add_post),
         onClickGoBack = addInteractions::navigateUp,
-        floatingActionButton = {
-            SwapWiseFilledButton(
-                onClick = addInteractions::onClickAdd,
-                text = stringResource(R.string.post),
-                modifier = Modifier.padding(horizontal = Spacing16)
-            )
-        },
         baseUiState = state.baseUiState,
     ) {
         ProductImage(
@@ -92,6 +93,9 @@ fun AddPostContent(
                 color = MaterialTheme.color.textPrimary
             )
             VerticalSpacer(Spacing8)
+
+            val focusManager = LocalFocusManager.current
+
             SwapWiseTextField(
                 value = state.data.postItem.title,
                 onValueChange = addInteractions::onTitleChange,
@@ -103,6 +107,8 @@ fun AddPostContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 errorMessage = state.data.postError.titleError,
             )
             VerticalSpacer(Spacing8)
@@ -117,6 +123,8 @@ fun AddPostContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 errorMessage = state.data.postError.placeError,
             )
             VerticalSpacer(Spacing8)
@@ -150,6 +158,20 @@ fun AddPostContent(
                     it.selected = state.data.postItem.favoriteCategories.contains(it.text)
                 },
             )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = Spacing24),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom,
+            ) {
+                SwapWiseFilledButton(
+                    onClick = addInteractions::onClickAdd,
+                    text = stringResource(R.string.post),
+                    modifier = Modifier.padding(horizontal = Spacing16)
+                )
+            }
 
         }
 
