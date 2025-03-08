@@ -48,6 +48,7 @@ import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
+import com.example.ui.theme.Spacing80
 import com.example.ui.theme.TextStyles
 import com.example.ui.theme.color
 
@@ -138,6 +139,10 @@ fun PostDetailsContent(
                     postImage = rememberAsyncImagePainter(offer.imageLink),
                     onCardClick = { postDetailsInteractions.navigateToOfferDetails(offer.uuid) }
                 )
+            }
+
+            item {
+                VerticalSpacer(Spacing80) //space for floating button at down
             }
         }
     }
