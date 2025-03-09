@@ -5,7 +5,6 @@ import com.example.data.model.response.OfferItemDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
@@ -28,9 +27,6 @@ interface OfferRemoteDataSource {
         @Part("category_uuid") categoryUuid: RequestBody,
         @Part("post_uuid") postUuid: RequestBody,
     ): Response<ApiResponseDto<Any>>
-
-    @POST("offer/update")
-    suspend fun updateOffer(@Body body: OfferItemDto): Response<ApiResponseDto<Any>>
 
     @Multipart
     @POST("offer/update")

@@ -2,7 +2,6 @@ package com.example.data.repository
 
 import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.util.checkResponse
-import com.example.data.util.fakeCheckResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -51,5 +50,6 @@ class OfferRepository(
         }
 
     suspend fun deleteOffer(offerId: String) =
-        fakeCheckResponse(true)
+        checkResponse { offerRemoteDataSource.deleteOffer(offerId) }
+
 }
