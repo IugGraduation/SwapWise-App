@@ -42,7 +42,7 @@ class SearchViewModel @Inject constructor(
 
     private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
         val chipsList = List(categoryItems.size) { index ->
-            if (args.filterCategoryItem == categoryItems[index]) {
+            if (args.filterCategoryId == categoryItems[index].uuid) {
                 ChipUiState(
                     categoryItem = categoryItems[index],
                     selected = true,
