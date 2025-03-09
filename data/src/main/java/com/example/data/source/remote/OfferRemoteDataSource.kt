@@ -32,7 +32,7 @@ interface OfferRemoteDataSource {
     @POST("offer/update")
     suspend fun updateOffer(
         @Part("image") image: MultipartBody.Part,
-        @Part("name") name: RequestBody,
+        @Part("title") name: RequestBody,
         @Part("place") place: RequestBody,
         @Part("details") details: RequestBody,
         @Part("category_uuid") categoryUuid: RequestBody,

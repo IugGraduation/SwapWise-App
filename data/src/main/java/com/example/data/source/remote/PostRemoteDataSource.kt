@@ -39,6 +39,7 @@ interface PostRemoteDataSource {
     @Multipart
     @POST("post/update")
     suspend fun updatePost(
+        //todo: check api does not accept images here?
         @Part images: List<MultipartBody.Part>?,
         @Part("name") name: RequestBody,
         @Part("place") place: RequestBody,
