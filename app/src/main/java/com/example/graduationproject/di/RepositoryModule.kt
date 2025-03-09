@@ -9,6 +9,7 @@ import com.example.data.repository.PostRepository
 import com.example.data.repository.UserRepository
 import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
+import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import dagger.Module
 import dagger.Provides
@@ -40,7 +41,8 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideOfferRepository() = OfferRepository()
+    fun provideOfferRepository(offerRemoteDataSource: OfferRemoteDataSource) =
+        OfferRepository(offerRemoteDataSource)
 
     @Provides
      fun provideUserRepository(dataStore: DataStore<Preferences>): UserRepository {

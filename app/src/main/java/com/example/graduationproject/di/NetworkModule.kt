@@ -2,6 +2,7 @@ package com.example.graduationproject.di
 
 import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
+import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import com.example.data.util.StatusAwareConverterFactory
 import com.example.data.util.TokenInterceptor
@@ -40,6 +41,12 @@ object NetworkModule {
     @Provides
     fun providePostApiService(retrofit: Retrofit): PostRemoteDataSource {
         return retrofit.create(PostRemoteDataSource::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideOfferApiService(retrofit: Retrofit): OfferRemoteDataSource {
+        return retrofit.create(OfferRemoteDataSource::class.java)
     }
 
     @Singleton
