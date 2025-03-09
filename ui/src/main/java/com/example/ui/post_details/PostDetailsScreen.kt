@@ -113,10 +113,10 @@ fun PostDetailsContent(
                 VerticalSpacer(Spacing24)
                 TitledChipsList(
                     title = stringResource(R.string.favorite_categories),
-                    chipsList = state.data.postItem.favoriteCategories.map {
+                    chipsList = state.data.postItem.favoriteCategoryItems.map {
                         ChipUiState(
-                            text = it,
-                            selected = state.data.postItem.favoriteCategories.contains(it),
+                            categoryItem = it,
+                            selected = state.data.postItem.favoriteCategoryItems.contains(it),
                             onClick = {})
                     }
                 )

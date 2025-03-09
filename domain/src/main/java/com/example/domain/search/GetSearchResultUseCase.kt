@@ -10,10 +10,10 @@ class GetSearchResultUseCase @Inject constructor(private val postRepository: Pos
     suspend operator fun invoke(
         searchValue: String, filterChipsList: List<Chip>
     ): List<PostItem> {
-        val filterCategories = filterChipsList.filter { it.selected }.map { it.text }
+        val filterCategoryIds = filterChipsList.filter { it.selected }.map { it.categoryItem.uuid }
 
-        val result = postRepository.searchPosts(searchValue, filterCategories)
-        val postItemList = result?.filterNotNull()?.map {
+        val result = postRepository.searchPosts(searchValue, filterCategoryIds)
+        val postItemList = result?.map {
             PostItem.fromPostItemDto(it)
         }
         return postItemList ?: throw EmptyDataException()

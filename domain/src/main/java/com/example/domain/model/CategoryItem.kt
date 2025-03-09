@@ -11,9 +11,9 @@ data class CategoryItem(
     companion object {
         fun fromTopicItemDto(topicItemDto: TopicItemDto): CategoryItem {
             return CategoryItem(
-                uuid = topicItemDto.uuid.toString(),
-                title = topicItemDto.categoryName.toString(),
-                imageLink = topicItemDto.categoryImage.toString(),
+                uuid = topicItemDto.uuid ?: "",
+                title = topicItemDto.categoryName ?: "",
+                imageLink = topicItemDto.categoryImage ?: "",
             )
         }
     }

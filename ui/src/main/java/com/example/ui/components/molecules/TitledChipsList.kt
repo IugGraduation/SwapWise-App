@@ -69,12 +69,12 @@ private fun SwapWiseChip(chip: ChipUiState, modifier: Modifier = Modifier) {
     BoxRounded(
         modifier = myModifier.clickable(enabled = chip.clickable) {
             chip.selected = !chip.selected
-            chip.onClick(chip.text)
+            chip.onClick(chip.categoryItem)
         },
         color = backgroundColor,
     ) {
         Text(
-            chip.text,
+            chip.categoryItem.title,
             style = TextStyles.hint,
             color = textColor,
             modifier = Modifier.padding(horizontal = Spacing16, vertical = Spacing8)

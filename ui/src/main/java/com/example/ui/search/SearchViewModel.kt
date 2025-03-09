@@ -2,7 +2,8 @@ package com.example.ui.search
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.domain.category.GetCategoriesNamesUseCase
+import com.example.domain.category.GetCategoriesUseCase
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.search.GetSearchResultUseCase
 import com.example.ui.base.BaseViewModel
@@ -20,7 +21,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getSearchResultUseCase: GetSearchResultUseCase,
-    private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase
+    private val getCategoriesUseCase: GetCategoriesUseCase
 ) : BaseViewModel<SearchUiState, SearchEffects>(SearchUiState()), ISearchInteractions {
     private val args = SearchArgs(savedStateHandle)
 
@@ -34,18 +35,24 @@ class SearchViewModel @Inject constructor(
 
     private fun prepareChipsList() {
         tryToExecute(
-            call = { getCategoriesNamesUseCase() },
+            call = { getCategoriesUseCase() },
             onSuccess = ::onGetChipsDataSuccess,
         )
     }
 
-    private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
-        val chipsList = List(categoriesNames.size) { index ->
-            if (args.filterCategoryName == categoriesNames[index]) {
-                ChipUiState(text = categoriesNames[index], selected = true, onClick = { search() })
+    private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
+        val chipsList = List(categoryItems.size) { index ->
+            if (args.filterCategoryItem == categoryItems[index]) {
+                ChipUiState(
+                    categoryItem = categoryItems[index],
+                    selected = true,
+                    onClick = { search() })
                     .also { search() }
             } else {
-                ChipUiState(text = categoriesNames[index], selected = false, onClick = { search() })
+                ChipUiState(
+                    categoryItem = categoryItems[index],
+                    selected = false,
+                    onClick = { search() })
             }
         }
         updateData {

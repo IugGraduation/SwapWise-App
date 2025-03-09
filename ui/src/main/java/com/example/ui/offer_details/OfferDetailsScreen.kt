@@ -115,7 +115,7 @@ fun OfferDetailsContent(
                 title = stringResource(R.string.category_of_the_offer),
                 chipsList = listOf(
                     ChipUiState(
-                        text = state.data.offerItem.category,
+                        categoryItem = state.data.offerItem.categoryItem,
                         selected = true,
                         clickable = false
                     )

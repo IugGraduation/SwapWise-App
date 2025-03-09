@@ -1,6 +1,6 @@
 package com.example.domain.model
 
 data class Chip(
-    val text: String,
+    val categoryItem: CategoryItem,
     var selected: Boolean = false,
 )

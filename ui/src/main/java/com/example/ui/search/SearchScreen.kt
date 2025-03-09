@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.category.GetFakeCategoriesNamesUseCase
+import com.example.domain.category.GetFakeCategoriesUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout
@@ -172,8 +172,8 @@ fun PreviewSearchContent() {
     GraduationProjectTheme {
         val searchUiState = SearchUiState(
 //            topicsList = GetFakePostsUseCase()(),
-            filterChipsList = GetFakeCategoriesNamesUseCase()().map {
-                ChipUiState(text = it, onClick = { }, selected = false)
+            filterChipsList = GetFakeCategoriesUseCase()().map {
+                ChipUiState(categoryItem = it, onClick = { }, selected = false)
             },
 //            isLoading = true,
         )

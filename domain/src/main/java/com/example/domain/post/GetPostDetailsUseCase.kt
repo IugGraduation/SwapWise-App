@@ -1,8 +1,9 @@
 package com.example.domain.post
 
 import com.example.data.repository.PostRepository
-import com.example.domain.category.GetFakeCategoriesNamesUseCase
+import com.example.domain.category.GetFakeCategoriesUseCase
 import com.example.domain.exception.EmptyDataException
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.model.User
 import com.example.domain.offer.GetFakeOfferDetailsUseCase
@@ -25,10 +26,10 @@ class GetFakePostDetailsUseCase{
             ),
             title = "10kg of Sugar Up for 10kg of Rice",
             details = "Looking for a sweet deal? I have 10 kilograms of high-quality sugar that I’d like to exchange for something useful like 10 kilograms of high-quality salt or 10 kilograms of high-quality rice or 10 kilograms of high-quality anything else that I’d like to exchange for something useful",
-            category = "Category",
+            categoryItem = CategoryItem("Category"),
             date = "Wed, Nov 20",
             offers = listOf(GetFakeOfferDetailsUseCase()()),
-            favoriteCategories = GetFakeCategoriesNamesUseCase()().toMutableList(),
+            favoriteCategoryItems = GetFakeCategoriesUseCase()().toMutableList(),
             rate = 4.8f,
         )
         return postItem

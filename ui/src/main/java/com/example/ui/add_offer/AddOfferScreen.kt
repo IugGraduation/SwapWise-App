@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.OfferItem
 import com.example.ui.R
 import com.example.ui.add_post.IAddPostInteractions
@@ -145,7 +146,7 @@ fun AddOfferContent(
                 title = stringResource(R.string.category_of_the_offer),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
-                    it.selected = it.text == state.data.offerItem.category
+                    it.selected = it.categoryItem == state.data.offerItem.categoryItem
                 },
             )
 
@@ -174,8 +175,11 @@ fun PreviewPostDetailsContent() {
         AddOfferContent(
             state = MyUiState(
                 OfferItemUiState(
-                offerItem = OfferItem(category = "Category"), chipsList = listOf(
-                    ChipUiState(text = "Category"), ChipUiState(text = "Category2"), ChipUiState(text = "Category3")
+                    offerItem = OfferItem(categoryItem = CategoryItem("Category1")),
+                    chipsList = listOf(
+                        ChipUiState(categoryItem = CategoryItem("Category1")),
+                        ChipUiState(categoryItem = CategoryItem("Category2")),
+                        ChipUiState(categoryItem = CategoryItem("Category3"))
                     )
                 )
             ),

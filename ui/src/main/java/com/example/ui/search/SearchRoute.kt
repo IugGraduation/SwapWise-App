@@ -8,6 +8,7 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.domain.model.CategoryItem
 
 private const val ROUTE = "search"
 
@@ -29,7 +30,7 @@ fun NavGraphBuilder.searchRoute(navController: NavHostController){
 
 
 class SearchArgs(savedStateHandle: SavedStateHandle) {
-    val filterCategoryName: String = checkNotNull(savedStateHandle[FILTER_CATEGORY_NAME_ARG])
+    val filterCategoryItem: CategoryItem = checkNotNull(savedStateHandle[FILTER_CATEGORY_NAME_ARG])
 
     companion object {
         const val FILTER_CATEGORY_NAME_ARG = "filter_category_name"

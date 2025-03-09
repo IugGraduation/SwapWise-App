@@ -27,7 +27,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.category.GetFakeCategoriesNamesUseCase
+import com.example.domain.category.GetFakeCategoriesUseCase
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState
@@ -147,7 +148,7 @@ fun AddPostContent(
                 title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
-                    it.selected = it.text == state.data.postItem.category
+                    it.selected = it.categoryItem == state.data.postItem.categoryItem
                 },
             )
             VerticalSpacer(Spacing24)
@@ -155,7 +156,8 @@ fun AddPostContent(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.favoriteChipsList.onEach {
-                    it.selected = state.data.postItem.favoriteCategories.contains(it.text)
+                    it.selected =
+                        state.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
                 },
             )
 
@@ -186,11 +188,11 @@ fun PreviewPostDetailsContent() {
         AddPostContent(
             state = MyUiState(
                 PostItemUiState(
-                chipsList = GetFakeCategoriesNamesUseCase()().map { title ->
-                    ChipUiState(text = title)
+                    chipsList = GetFakeCategoriesUseCase()().map {
+                        ChipUiState(categoryItem = it)
                 },
                 postItem = PostItem(
-                    category = "Category",
+                    categoryItem = CategoryItem(title = "Category")
                 )
                 )
             ),

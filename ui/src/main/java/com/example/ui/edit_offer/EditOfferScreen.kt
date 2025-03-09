@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.domain.model.CategoryItem
 import com.example.domain.offer.GetFakeOfferDetailsUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
@@ -132,7 +133,7 @@ fun EditOfferContent(
                 title = stringResource(R.string.category_of_the_offer),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
-                    it.selected = it.text == state.data.offerItem.category
+                    it.selected = it.categoryItem == state.data.offerItem.categoryItem
                 },
             )
         }
@@ -167,9 +168,9 @@ fun PreviewPostDetailsContent() {
         EditOfferContent(
             state = MyUiState(
                 OfferItemUiState(
-                offerItem = GetFakeOfferDetailsUseCase()().copy(
-                    category = "Food and beverages0",
-                )
+                    offerItem = GetFakeOfferDetailsUseCase()().copy(
+                        categoryItem = CategoryItem("Food and beverages0"),
+                    )
                 )
             ),
             editInteractions = object : IEditOfferInteractions {

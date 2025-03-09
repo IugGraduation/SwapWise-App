@@ -9,7 +9,7 @@ data class OfferItem(
     override val title: String = "",
     val details: String = "",
     val place: String = "",
-    val category: String = "",
+    val categoryItem: CategoryItem = CategoryItem(),
     val date: String = "",
 ) : TopicItem() {
     fun toOfferItemDto(): OfferItemDto {
