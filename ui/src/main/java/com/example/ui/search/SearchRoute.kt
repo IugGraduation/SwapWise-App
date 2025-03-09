@@ -28,7 +28,7 @@ fun NavGraphBuilder.searchRoute(navController: NavHostController){
     ) { SearchScreen(navController) }
 }
 
-
+//todo: change categoryItem to string, id
 class SearchArgs(savedStateHandle: SavedStateHandle) {
     val filterCategoryItem: CategoryItem = checkNotNull(savedStateHandle[FILTER_CATEGORY_NAME_ARG])
 

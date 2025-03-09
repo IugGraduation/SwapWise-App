@@ -70,6 +70,7 @@ data class PostItem(
     }
 
 
+    //todo: delete this after implement edit post
     fun toPostItemDto(): PostItemDto {
         return PostItemDto(
             uuid = uuid,
@@ -78,7 +79,6 @@ data class PostItem(
             userUuid = user.uuid,
             postImages = listOf(PostImageDto(attachment = imageLink, uuid = imageId)),
             postName = title,
-            //todo: check this status and value from api
             status = if (isOpen) "Active" else "Closed",
             postDetails = details,
 //                place = "",
