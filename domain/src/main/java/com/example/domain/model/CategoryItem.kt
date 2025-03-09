@@ -1,5 +1,6 @@
 package com.example.domain.model
 
+import com.example.data.model.response.CategoryItemDto
 import com.example.data.model.response.TopicItemDto
 
 data class CategoryItem(
@@ -16,5 +17,19 @@ data class CategoryItem(
                 imageLink = topicItemDto.categoryImage ?: "",
             )
         }
+
+        fun fromCategoryItemDto(categoryItemDto: CategoryItemDto): CategoryItem {
+            return CategoryItem(
+                uuid = categoryItemDto.categoryUuid ?: "",
+                title = categoryItemDto.categoryName ?: "",
+            )
+        }
+
+        fun fromCategoryItemDtoList(categoryItemDtoList: List<CategoryItemDto?>?): List<CategoryItem> {
+            return categoryItemDtoList?.filterNotNull()?.map {
+                fromCategoryItemDto(it)
+            } ?: listOf()
+        }
+
     }
 }
