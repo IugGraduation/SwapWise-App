@@ -62,28 +62,6 @@ data class PostItem(
             )
         }
     }
-
-
-    //todo: delete this after implement edit post
-    fun toPostItemDto(): PostItemDto {
-        return PostItemDto(
-            uuid = uuid,
-            userImage = user.imageLink,
-            userName = user.name,
-            userUuid = user.uuid,
-            postImages = listOf(PostImageDto(attachment = imageLink, uuid = imageId)),
-            postName = title,
-            status = if (isOpen) "Active" else "Closed",
-            postDetails = details,
-//                place = "",
-//                category = "",
-            date = date,
-//                favoriteCategories ="",
-//                rate = "",
-            offers = OfferItem.toOfferItemDtoList(offers),
-
-            )
-    }
 }
 
 
