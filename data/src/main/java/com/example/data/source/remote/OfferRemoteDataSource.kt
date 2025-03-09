@@ -21,12 +21,12 @@ interface OfferRemoteDataSource {
     @Multipart
     @POST("offer/store")
     suspend fun addOffer(
-        @Part images: List<MultipartBody.Part>?,
-        @Part("name") name: RequestBody,
+        @Part("image") image: MultipartBody.Part,
+        @Part("title") name: RequestBody,
         @Part("place") place: RequestBody,
         @Part("details") details: RequestBody,
         @Part("category_uuid") categoryUuid: RequestBody,
-        @Part fcategory: List<MultipartBody.Part>?
+        @Part("post_uuid") postUuid: RequestBody,
     ): Response<ApiResponseDto<Any>>
 
     @POST("offer/update")

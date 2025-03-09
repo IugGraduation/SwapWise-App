@@ -9,6 +9,7 @@ import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.OfferItem
 import com.example.domain.offer.AddOfferUseCase
+import com.example.domain.post.UploadImageUseCase
 import com.example.ui.add_post.IAddPostInteractions
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.NavigateUpEffect
@@ -25,6 +26,7 @@ class AddOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
     private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
     private val addOfferUseCase: AddOfferUseCase,
 ) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IAddPostInteractions {
 
@@ -99,6 +101,7 @@ class AddOfferViewModel @Inject constructor(
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
         updatePostItem { copy(imageLink = selectedImageUri.toString()) }
+        uploadImageUseCase(selectedImageUri)
     }
 
     fun onCategoryChange(categoryItem: CategoryItem) {
@@ -109,7 +112,7 @@ class AddOfferViewModel @Inject constructor(
 
     override fun onClickAdd() {
         tryToExecute(
-            call = { addOfferUseCase(args.postId, state.value.data.offerItem) },
+            call = { addOfferUseCase(uploadImageUseCase.getImageRequestBody(), args.postId, state.value.data.offerItem) },
             onSuccess = { navigateUp() },
             onError = ::onAddPostFail
         )

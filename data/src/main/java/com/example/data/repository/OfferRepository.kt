@@ -14,25 +14,22 @@ class OfferRepository(
         fakeCheckResponse(OfferItemDto())
 
 
-    suspend fun addOffer(postId: String, offerItemDto: OfferItemDto) =
-        fakeCheckResponse(true)
-
     suspend fun addOffer(
-        images: List<MultipartBody.Part>?,
+        image: MultipartBody.Part,
         name: RequestBody,
         place: RequestBody,
         details: RequestBody,
         categoryUuid: RequestBody,
-        fcategory: List<MultipartBody.Part>?
+        postUuid: RequestBody,
     ) =
         checkResponse {
             offerRemoteDataSource.addOffer(
-                images = images,
+                image = image,
                 name = name,
                 place = place,
                 details = details,
                 categoryUuid = categoryUuid,
-                fcategory = fcategory
+                postUuid = postUuid,
             )
         }
 

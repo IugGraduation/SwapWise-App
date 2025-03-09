@@ -13,7 +13,6 @@ import javax.inject.Inject
 class AddPostUseCase @Inject constructor(
     private val validatePostUseCase: ValidatePostUseCase,
     private val postRepository: PostRepository,
-
 ) {
     suspend operator fun invoke(imageRequestBody: RequestBody, postItem: PostItem) {
         validatePostUseCase(
@@ -31,13 +30,13 @@ class AddPostUseCase @Inject constructor(
             MultipartBody.Part.createFormData("fcategory[$index]", it.uuid)
         }
 
-        val imagePart2 = MultipartBody.Part.createFormData(
+        val image = MultipartBody.Part.createFormData(
             "images[0]",
             "IMG_${UUID.randomUUID()}.jpg",
             imageRequestBody,
         )
 
-        val images: List<MultipartBody.Part> = listOf(imagePart2)
+        val images: List<MultipartBody.Part> = listOf(image)
 
         postRepository.addPost(
             images = images,
