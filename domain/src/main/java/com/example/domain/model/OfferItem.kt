@@ -1,5 +1,6 @@
 package com.example.domain.model
 
+import com.example.data.model.response.CategoryItemDto
 import com.example.data.model.response.OfferItemDto
 
 data class OfferItem(
@@ -38,8 +39,8 @@ data class OfferItem(
                 imageLink = offerItemDto.image ?: "",
                 title = offerItemDto.title ?: "",
                 details = offerItemDto.details ?: "",
+                categoryItem = CategoryItem.fromCategoryItemDto(offerItemDto.category ?: CategoryItemDto()),
 //                place = "",
-//                category = "",
                 date = offerItemDto.date ?: "",
 //                rate = "",
             )

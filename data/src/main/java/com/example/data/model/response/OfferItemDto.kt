@@ -4,6 +4,8 @@ package com.example.data.model.response
 import com.google.gson.annotations.SerializedName
 
 data class OfferItemDto(
+    @SerializedName("category")
+    val category: CategoryItemDto? = null,
     @SerializedName("details")
     val details: String? = null,
     @SerializedName("image")
