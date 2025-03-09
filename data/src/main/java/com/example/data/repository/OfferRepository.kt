@@ -11,8 +11,7 @@ class OfferRepository(
     private val offerRemoteDataSource: OfferRemoteDataSource,
 ) {
     suspend fun getOfferDetails(offerId: String) =
-        fakeCheckResponse(OfferItemDto())
-
+        checkResponse { offerRemoteDataSource.getOffer(offerId) }
 
     suspend fun addOffer(
         image: MultipartBody.Part,

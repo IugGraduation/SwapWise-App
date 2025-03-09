@@ -9,7 +9,8 @@ import okhttp3.RequestBody
 
 class PostRepository(private val postRemoteDataSource: PostRemoteDataSource) {
 
-    suspend fun getPostDetails(uuid: String) = checkResponse { postRemoteDataSource.getPost(uuid) }
+    suspend fun getPostDetails(postId: String) =
+        checkResponse { postRemoteDataSource.getPost(postId) }
 
     suspend fun addPost(
         images: List<MultipartBody.Part>?,
