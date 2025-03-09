@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PostItemDto(
     @SerializedName("favorite_categories")
-    val favoriteCategories: List<CategoryDto?>? = null,
+    val favoriteCategories: List<CategoryItemDto?>? = null,
     @SerializedName("num_offers")
     val numOffers: Int? = null,
     @SerializedName("offers")
@@ -13,7 +13,7 @@ data class PostItemDto(
     @SerializedName("post_details")
     val postDetails: String? = null,
     @SerializedName("post_image")
-    val postImage: String? = null,
+    val postImages: List<PostImageDto?>? = null,
     @SerializedName("post_name")
     val postName: String? = null,
     @SerializedName("status")
@@ -26,4 +26,6 @@ data class PostItemDto(
     val userUuid: String? = null,
     @SerializedName("uuid")
     val uuid: String? = null,
+    @SerializedName("date")
+    val date: String? = null,
 )

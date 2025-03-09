@@ -52,8 +52,9 @@ fun CustomLazyLayout(
     items: List<TopicItem> = listOf(),
     isCategoryCard: Boolean = false,
     isHorizontalLayout: Boolean = true,
+    onClickGoToDetails: (topicId: String, isCategory: Boolean) -> Unit,
 ) {
-    val card = getCard(isCategoryCard, isHorizontalLayout)
+    val card = getCard(isCategoryCard, isHorizontalLayout, onClickGoToDetails)
 
     val content = getContent(items, card)
 
@@ -67,15 +68,17 @@ fun CustomLazyLayout(
 private fun getCard(
     isCategoryItem: Boolean = false,
     isHorizontal: Boolean = true,
+    onClickGoToDetails: (topicId: String, isCategory: Boolean) -> Unit,
 ): @Composable (TopicItem) -> Unit {
     return when (isCategoryItem) {
         true -> { item ->
             if (item is CategoryItem) {
                 CategoryCard(
                     categoryImage = rememberAsyncImagePainter(item.imageLink),
+                    categoryId = item.uuid,
                     title = item.title,
                     isHorizontal = isHorizontal,
-                    onClickSearchByCategory = item.onClickSearchByCategory
+                    onClickGoSearchByCategory = onClickGoToDetails,
                 )
             }
         }
@@ -88,7 +91,7 @@ private fun getCard(
                     username = item.user.name,
                     title = item.title,
                     details = item.details,
-                    onCardClick = { item.onClickGoToDetails() },
+                    onCardClick = { onClickGoToDetails(item.uuid, false) },
                     isHorizontalCard = isHorizontal,
                 )
             } else if (item is OfferItem) {
@@ -111,6 +114,7 @@ private fun getCard(
 @Composable
 fun CategoryCard(
     categoryImage: Painter,
+    categoryId: String,
     title: String,
     isHorizontal: Boolean = true,
     modifier: Modifier = if (isHorizontal) {
@@ -120,7 +124,7 @@ fun CategoryCard(
             .fillMaxWidth()
             .height(height = CategoryCardVerticalHeight)
     },
-    onClickSearchByCategory: () -> Unit = {},
+    onClickGoSearchByCategory: (topicId: String, isCategory: Boolean) -> Unit,
 ) {
     BoxRounded(modifier = modifier, contentAlignment = Alignment.Center) {
         Image(
@@ -134,7 +138,7 @@ fun CategoryCard(
                 .fillMaxSize()
                 .clip(RoundedCornerShape(RadiusLarge))
                 .background(color = PrimaryOverlay)
-                .clickable { onClickSearchByCategory() },
+                .clickable { onClickGoSearchByCategory(categoryId, true) },
         ) {}
 
         val textStyle = when (isHorizontal) {

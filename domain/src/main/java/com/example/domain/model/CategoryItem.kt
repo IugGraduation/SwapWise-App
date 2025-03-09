@@ -6,15 +6,14 @@ data class CategoryItem(
     override val uuid: String = "",
     override val title: String = "",
     override val imageLink: String = "",
-    var onClickSearchByCategory: () -> Unit = {},
 
 ) : TopicItem() {
     companion object {
-        fun fromTopicItemDto(topicItemDto: TopicItemDto): TopicItem {
+        fun fromTopicItemDto(topicItemDto: TopicItemDto): CategoryItem {
             return CategoryItem(
-                uuid = topicItemDto.uuid.toString(),
-                title = topicItemDto.categoryName.toString(),
-                imageLink = topicItemDto.categoryImage.toString(),
+                uuid = topicItemDto.uuid ?: "",
+                title = topicItemDto.categoryName ?: "",
+                imageLink = topicItemDto.categoryImage ?: "",
             )
         }
     }

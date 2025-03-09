@@ -2,12 +2,14 @@ package com.example.ui.add_post
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import com.example.domain.category.GetCategoriesNamesUseCase
+import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.post.AddPostUseCase
+import com.example.domain.post.UploadImageUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.NavigateUpEffect
 import com.example.ui.base.StringsResource
@@ -22,8 +24,9 @@ import javax.inject.Inject
 class AddPostViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
-    private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
+    private val getCategoriesUseCase: GetCategoriesUseCase,
     private val addPostUseCase: AddPostUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IAddPostInteractions {
     private val args = AddPostArgs(savedStateHandle)
 
@@ -39,14 +42,18 @@ class AddPostViewModel @Inject constructor(
 
     private fun prepareChipsList() {
         tryToExecute(
-            call = { getCategoriesNamesUseCase() },
+            call = { getCategoriesUseCase() },
             onSuccess = ::onGetChipsDataSuccess,
         )
     }
 
-    private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
-        val chipsList = List(categoriesNames.size) { index ->
-            ChipUiState(text = categoriesNames[index], selected = false, onClick = ::onCategoryChange)
+    private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
+        val chipsList = List(categoryItems.size) { index ->
+            ChipUiState(
+                categoryItem = categoryItems[index],
+                selected = false,
+                onClick = ::onCategoryChange
+            )
         }
         val favoriteChipsList = chipsList.map { it.copy() }.onEach {
             it.onClick = ::onFavoriteCategoryChange
@@ -96,28 +103,34 @@ class AddPostViewModel @Inject constructor(
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
         updatePostItem { copy(imageLink = selectedImageUri.toString()) }
+        uploadImageUseCase(selectedImageUri)
     }
 
-    fun onCategoryChange(category: String) {
+    fun onCategoryChange(categoryItem: CategoryItem) {
         updateFieldError()
-        updatePostItem { copy(category = category) }
+        updatePostItem { copy(categoryItem = categoryItem) }
     }
 
-    fun onFavoriteCategoryChange(category: String) {
+    fun onFavoriteCategoryChange(categoryItem: CategoryItem) {
         val newFavoriteChipList =
-            if (state.value.data.postItem.favoriteCategories.contains(category)) {
-                _state.value.data.postItem.favoriteCategories - category
+            if (state.value.data.postItem.favoriteCategoryItems.contains(categoryItem)) {
+                _state.value.data.postItem.favoriteCategoryItems - categoryItem
         } else {
-                _state.value.data.postItem.favoriteCategories + category
+                _state.value.data.postItem.favoriteCategoryItems + categoryItem
         }
 
-        updatePostItem { copy(favoriteCategories = newFavoriteChipList.toMutableList()) }
+        updatePostItem { copy(favoriteCategoryItems = newFavoriteChipList.toMutableList()) }
     }
 
 
     override fun onClickAdd() {
         tryToExecute(
-            call = { addPostUseCase(state.value.data.postItem) },
+            call = {
+                addPostUseCase(
+                    postItem = state.value.data.postItem,
+                    imageRequestBody = uploadImageUseCase.imageRequestBody
+                )
+            },
             onSuccess = { navigateUp() },
             onError = ::onAddPostFail
         )

@@ -51,15 +51,3 @@ fun ProductImage(
         )
     }
 }
-
-
-@Composable
-fun PickImageFromGallery(onImagePicked: (Uri) -> Unit) {
-    val galleryLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let { onImagePicked(it) }
-        }
-
-    galleryLauncher.launch("image/*")
-}
-

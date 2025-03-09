@@ -2,10 +2,11 @@ package com.example.ui.edit_post
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import com.example.domain.category.GetCategoriesNamesUseCase
+import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.post.DeletePostUseCase
 import com.example.domain.post.EditPostUseCase
@@ -26,7 +27,7 @@ class EditPostViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
     private val getPostDetailsUseCase: GetPostDetailsUseCase,
-    private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
+    private val getCategoriesUseCase: GetCategoriesUseCase,
     private val editPostUseCase: EditPostUseCase,
     private val deletePostUseCase: DeletePostUseCase,
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IEditPostInteractions {
@@ -56,15 +57,15 @@ class EditPostViewModel @Inject constructor(
 
     private fun prepareChipsList() {
         tryToExecute(
-            call = { getCategoriesNamesUseCase() },
+            call = { getCategoriesUseCase() },
             onSuccess = ::onGetChipsDataSuccess,
         )
     }
 
-    private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
-        val chipsList = List(categoriesNames.size) { index ->
+    private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
+        val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
-                text = categoriesNames[index], selected = false, onClick = ::onCategoryChange
+                categoryItem = categoryItems[index], selected = false, onClick = ::onCategoryChange
             )
         }
         val favoriteChipsList = chipsList.map { it.copy() }.onEach {
@@ -121,20 +122,20 @@ class EditPostViewModel @Inject constructor(
         updatePostItem { copy(imageLink = selectedImageUri.toString()) }
     }
 
-    fun onCategoryChange(category: String) {
+    fun onCategoryChange(categoryItem: CategoryItem) {
         updateFieldError()
-        updatePostItem { copy(category = category) }
+        updatePostItem { copy(categoryItem = categoryItem) }
     }
 
-    fun onFavoriteCategoryChange(category: String) {
+    fun onFavoriteCategoryChange(categoryItem: CategoryItem) {
         val newFavoriteChipList =
-            if (state.value.data.postItem.favoriteCategories.contains(category)) {
-                _state.value.data.postItem.favoriteCategories - category
+            if (state.value.data.postItem.favoriteCategoryItems.contains(categoryItem)) {
+                _state.value.data.postItem.favoriteCategoryItems - categoryItem
         } else {
-                _state.value.data.postItem.favoriteCategories + category
+                _state.value.data.postItem.favoriteCategoryItems + categoryItem
         }
 
-        updatePostItem { copy(favoriteCategories = newFavoriteChipList.toMutableList()) }
+        updatePostItem { copy(favoriteCategoryItems = newFavoriteChipList.toMutableList()) }
     }
 
 

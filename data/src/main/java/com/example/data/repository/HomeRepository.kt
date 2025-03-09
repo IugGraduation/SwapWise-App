@@ -7,4 +7,6 @@ class HomeRepository(
     private val homeRemoteDataSource: HomeRemoteDataSource,
 ) {
     suspend fun getHomeDto() = checkResponse { homeRemoteDataSource.getHomeDto() }
+
+    suspend fun seeAll(url: String) = checkResponse { homeRemoteDataSource.seeAll(url) }
 }

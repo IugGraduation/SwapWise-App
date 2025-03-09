@@ -1,10 +1,9 @@
 package com.example.ui.see_all_topics
 
 import androidx.lifecycle.SavedStateHandle
+import com.example.domain.home.SeeAllTopicsUseCase
 import com.example.domain.model.TopicsHolder
-import com.example.domain.see_all_topics.SeeAllTopicsUseCase
 import com.example.ui.base.BaseViewModel
-import com.example.ui.base.INavigateUp
 import com.example.ui.base.MyUiState
 import com.example.ui.models.TopicsHolderUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +13,8 @@ import javax.inject.Inject
 class SeeAllTopicsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     seeAllTopicsUseCase: SeeAllTopicsUseCase,
-) : BaseViewModel<TopicsHolderUiState, SeeAllTopicsEffects>(TopicsHolderUiState()), INavigateUp {
+) : BaseViewModel<TopicsHolderUiState, SeeAllTopicsEffects>(TopicsHolderUiState()),
+    ISeeAllInteractions {
     private val args = SeeAllTopicsArgs(savedStateHandle)
 
     init {
@@ -29,15 +29,16 @@ class SeeAllTopicsViewModel @Inject constructor(
     }
 
 
-    fun navigateToPostDetails(postId: String) {
-        sendUiEffect(SeeAllTopicsEffects.NavigateToPostDetails(postId))
-    }
+    override fun onClickGoToDetails(topicId: String, isCategory: Boolean) {
+        if (isCategory) {
+            navigateTo(SeeAllTopicsEffects.NavigateToSearchByCategory(topicId))
+        } else {
+            navigateTo(SeeAllTopicsEffects.NavigateToPostDetails(topicId))
 
-    fun navigateToSearch(filterCategoryName: String = "") {
-        sendUiEffect(SeeAllTopicsEffects.NavigateToSearch(filterCategoryName))
+        }
     }
 
     override fun navigateUp() {
-        sendUiEffect(SeeAllTopicsEffects.NavigateUp)
+        navigateTo(SeeAllTopicsEffects.NavigateUp)
     }
 }

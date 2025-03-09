@@ -10,8 +10,4 @@ data class ApiResponseDto<T>(
     val message: String? = null,
     @SerializedName("data")
     val data: T? = null,
-    @SerializedName("pages")
-    val pages: PagesDto? = null,
-    @SerializedName("errors")
-    val errors: List<ErrorDto?>? = null,
 )

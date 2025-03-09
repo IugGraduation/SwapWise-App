@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.category.GetFakeCategoriesNamesUseCase
+import com.example.domain.category.GetFakeCategoriesUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout
@@ -56,9 +56,7 @@ fun SearchScreen(
 ) {
     val state by searchViewModel.state.collectAsState()
     val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
-    for (topicItem in state.data.topicsList) {
-        topicItem.onClickGoToDetails = { searchViewModel.navigateToPostDetails(topicItem.uuid) }
-    }
+
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,
         onItemSelected = bottomNavigationViewModel::onItemSelected,
@@ -123,7 +121,8 @@ fun SearchContent(
             CustomLazyLayout(
                 items = state.data.topicsList,
                 isCategoryCard = false,
-                isHorizontalLayout = false
+                isHorizontalLayout = false,
+                onClickGoToDetails = { id, _ -> searchInteractions.navigateToPostDetails(id) }
             )
         }
     }
@@ -173,8 +172,8 @@ fun PreviewSearchContent() {
     GraduationProjectTheme {
         val searchUiState = SearchUiState(
 //            topicsList = GetFakePostsUseCase()(),
-            filterChipsList = GetFakeCategoriesNamesUseCase()().map {
-                ChipUiState(text = it, onClick = { }, selected = false)
+            filterChipsList = GetFakeCategoriesUseCase()().map {
+                ChipUiState(categoryItem = it, onClick = { }, selected = false)
             },
 //            isLoading = true,
         )
@@ -184,6 +183,7 @@ fun PreviewSearchContent() {
             searchInteractions = object : ISearchInteractions {
                 override fun onSearchChange(newValue: String) {}
                 override fun onClickTryAgain() {}
+                override fun navigateToPostDetails(postId: String) {}
             }
         )
     }

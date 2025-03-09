@@ -1,11 +1,16 @@
 package com.example.domain.category
 
+import com.example.data.repository.HomeRepository
 import com.example.domain.model.CategoryItem
 import javax.inject.Inject
 
-class GetCategoriesUseCase @Inject constructor() {
+class GetCategoriesUseCase @Inject constructor(
+    private val homeRepository: HomeRepository
+) {
     suspend operator fun invoke(): List<CategoryItem> {
-        return GetFakeCategoriesUseCase()()
+         return homeRepository.seeAll("category")?.map {
+           CategoryItem.fromTopicItemDto(it)
+        } ?: listOf()
     }
 }
 

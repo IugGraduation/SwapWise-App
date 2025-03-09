@@ -1,12 +1,11 @@
 package com.example.domain.post
 
 import com.example.data.repository.PostRepository
-import com.example.domain.exception.EmptyDataException
 import javax.inject.Inject
 
 
 class DeletePostUseCase @Inject constructor(private val postRepository: PostRepository) {
-    suspend operator fun invoke(postId: String): Boolean {
-        return postRepository.deletePost(postId) ?: throw EmptyDataException()
+    suspend operator fun invoke(postId: String) {
+        postRepository.deletePost(postId)
     }
 }

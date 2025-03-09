@@ -2,10 +2,11 @@ package com.example.ui.edit_offer
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import com.example.domain.category.GetCategoriesNamesUseCase
+import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.OfferItem
 import com.example.domain.offer.DeleteOfferUseCase
 import com.example.domain.offer.EditOfferUseCase
@@ -26,7 +27,7 @@ class EditOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
     private val getOfferDetailsUseCase: GetOfferDetailsUseCase,
-    private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
+    private val getCategoriesUseCase: GetCategoriesUseCase,
     private val editOfferUseCase: EditOfferUseCase,
     private val deleteOfferUseCase: DeleteOfferUseCase,
 ) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IEditOfferInteractions {
@@ -56,15 +57,15 @@ class EditOfferViewModel @Inject constructor(
 
     private fun prepareChipsList() {
         tryToExecute(
-            call = { getCategoriesNamesUseCase() },
+            call = { getCategoriesUseCase() },
             onSuccess = ::onGetChipsDataSuccess,
         )
     }
 
-    private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
-        val chipsList = List(categoriesNames.size) { index ->
+    private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
+        val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
-                text = categoriesNames[index], selected = false, onClick = ::onCategoryChange
+                categoryItem = categoryItems[index], selected = false, onClick = ::onCategoryChange
             )
         }
         updateData {
@@ -114,9 +115,9 @@ class EditOfferViewModel @Inject constructor(
         updateOfferItem { copy(imageLink = selectedImageUri.toString()) }
     }
 
-    fun onCategoryChange(category: String) {
+    fun onCategoryChange(categoryItem: CategoryItem) {
         updateFieldError()
-        updateOfferItem { copy(category = category) }
+        updateOfferItem { copy(categoryItem = categoryItem) }
     }
 
 

@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.domain.model.CategoryItem
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
@@ -153,7 +154,7 @@ fun EditOfferContent(
                 title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
-                    it.selected = it.text == state.data.postItem.category
+                    it.selected = it.categoryItem == state.data.postItem.categoryItem
                 },
             )
             VerticalSpacer(Spacing16)
@@ -161,7 +162,8 @@ fun EditOfferContent(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.favoriteChipsList.onEach {
-                    it.selected = state.data.postItem.favoriteCategories.contains(it.text)
+                    it.selected =
+                        state.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
                 },
             )
 
@@ -261,7 +263,7 @@ fun PreviewPostDetailsContent() {
             state = MyUiState(
                 PostItemUiState(
             postItem = GetFakePostDetailsUseCase()().copy(
-                category = "Food and beverages0",
+                categoryItem = CategoryItem("Food and beverages0"),
             )
                 )
         ), editInteractions = object : IEditPostInteractions {

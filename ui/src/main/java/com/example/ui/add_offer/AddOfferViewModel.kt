@@ -2,10 +2,11 @@ package com.example.ui.add_offer
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
-import com.example.domain.category.GetCategoriesNamesUseCase
+import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.OfferItem
 import com.example.domain.offer.AddOfferUseCase
 import com.example.ui.add_post.IAddPostInteractions
@@ -23,7 +24,7 @@ import javax.inject.Inject
 class AddOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
-    private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
+    private val getCategoriesUseCase: GetCategoriesUseCase,
     private val addOfferUseCase: AddOfferUseCase,
 ) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IAddPostInteractions {
 
@@ -40,14 +41,18 @@ class AddOfferViewModel @Inject constructor(
 
     private fun prepareChipsList() {
         tryToExecute(
-            call = { getCategoriesNamesUseCase() },
+            call = { getCategoriesUseCase() },
             onSuccess = ::onGetChipsDataSuccess,
         )
     }
 
-    private fun onGetChipsDataSuccess(categoriesNames: List<String>) {
-        val chipsList = List(categoriesNames.size) { index ->
-            ChipUiState(text = categoriesNames[index], selected = false, onClick = ::onCategoryChange)
+    private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
+        val chipsList = List(categoryItems.size) { index ->
+            ChipUiState(
+                categoryItem = categoryItems[index],
+                selected = false,
+                onClick = ::onCategoryChange
+            )
         }
         updateData {
             copy(chipsList = chipsList)
@@ -96,9 +101,9 @@ class AddOfferViewModel @Inject constructor(
         updatePostItem { copy(imageLink = selectedImageUri.toString()) }
     }
 
-    fun onCategoryChange(category: String) {
+    fun onCategoryChange(categoryItem: CategoryItem) {
         updateFieldError()
-        updatePostItem { copy(category = category) }
+        updatePostItem { copy(categoryItem = categoryItem) }
     }
 
 
