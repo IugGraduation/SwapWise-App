@@ -9,7 +9,7 @@ data class CategoryItem(
 
 ) : TopicItem() {
     companion object {
-        fun fromTopicItemDto(topicItemDto: TopicItemDto): TopicItem {
+        fun fromTopicItemDto(topicItemDto: TopicItemDto): CategoryItem {
             return CategoryItem(
                 uuid = topicItemDto.uuid.toString(),
                 title = topicItemDto.categoryName.toString(),

@@ -23,7 +23,7 @@ data class PostItem(
 ) : TopicItem() {
 
     companion object {
-        fun fromTopicItemDto(topicItemDto: TopicItemDto): TopicItem {
+        fun fromTopicItemDto(topicItemDto: TopicItemDto): PostItem {
             return PostItem(
                 uuid = topicItemDto.uuid ?: "",
                 user = User(
