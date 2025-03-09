@@ -11,6 +11,7 @@ import com.example.domain.model.OfferItem
 import com.example.domain.offer.DeleteOfferUseCase
 import com.example.domain.offer.EditOfferUseCase
 import com.example.domain.offer.GetOfferDetailsUseCase
+import com.example.domain.post.UploadImageUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.base.NavigateUpEffect
@@ -28,6 +29,7 @@ class EditOfferViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getOfferDetailsUseCase: GetOfferDetailsUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
     private val editOfferUseCase: EditOfferUseCase,
     private val deleteOfferUseCase: DeleteOfferUseCase,
 ) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IEditOfferInteractions {
@@ -113,6 +115,7 @@ class EditOfferViewModel @Inject constructor(
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
         updateOfferItem { copy(imageLink = selectedImageUri.toString()) }
+        uploadImageUseCase(selectedImageUri)
     }
 
     fun onCategoryChange(categoryItem: CategoryItem) {
@@ -123,7 +126,12 @@ class EditOfferViewModel @Inject constructor(
 
     override fun onClickSave() {
         tryToExecute(
-            call = { editOfferUseCase(state.value.data.offerItem) },
+            call = {
+                editOfferUseCase(
+                    uploadImageUseCase.getImageRequestBody(),
+                    state.value.data.offerItem
+                )
+            },
             onSuccess = { navigateUp() },
             onError = ::onSaveOfferFail
         )

@@ -35,14 +35,12 @@ interface OfferRemoteDataSource {
     @Multipart
     @POST("offer/update")
     suspend fun updateOffer(
-        @Part images: List<MultipartBody.Part>?,
+        @Part("image") image: MultipartBody.Part,
         @Part("name") name: RequestBody,
         @Part("place") place: RequestBody,
         @Part("details") details: RequestBody,
         @Part("category_uuid") categoryUuid: RequestBody,
-        @Part fcategory: List<MultipartBody.Part>?,
         @Part("offer_uuid") offerUuid: RequestBody,
-        @Part("status") status: RequestBody,
     ): Response<ApiResponseDto<Any>>
 
     @DELETE("offer/{offer_id}/delete")

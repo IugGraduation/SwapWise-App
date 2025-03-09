@@ -1,6 +1,5 @@
 package com.example.data.repository
 
-import com.example.data.model.response.OfferItemDto
 import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.util.checkResponse
 import com.example.data.util.fakeCheckResponse
@@ -32,9 +31,24 @@ class OfferRepository(
             )
         }
 
-    suspend fun editOffer(offerItemDto: OfferItemDto) =
-        fakeCheckResponse(true)
-
+    suspend fun editOffer(
+        image: MultipartBody.Part,
+        name: RequestBody,
+        place: RequestBody,
+        details: RequestBody,
+        categoryUuid: RequestBody,
+        offerUuid: RequestBody,
+    ) =
+        checkResponse {
+            offerRemoteDataSource.updateOffer(
+                image = image,
+                name = name,
+                place = place,
+                details = details,
+                categoryUuid = categoryUuid,
+                offerUuid = offerUuid,
+            )
+        }
 
     suspend fun deleteOffer(offerId: String) =
         fakeCheckResponse(true)
