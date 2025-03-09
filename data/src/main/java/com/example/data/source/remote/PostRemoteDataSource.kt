@@ -36,6 +36,19 @@ interface PostRemoteDataSource {
     @POST("post/update")
     suspend fun updatePost(@Body body: PostItemDto): Response<ApiResponseDto<Any>>
 
+    @Multipart
+    @POST("post/update")
+    suspend fun updatePost(
+        @Part images: List<MultipartBody.Part>?,
+        @Part("name") name: RequestBody,
+        @Part("place") place: RequestBody,
+        @Part("details") details: RequestBody,
+        @Part("category_uuid") categoryUuid: RequestBody,
+        @Part fcategory: List<MultipartBody.Part>?,
+        @Part("post_uuid") postUuid: RequestBody,
+        @Part("status") status: RequestBody,
+    ): Response<ApiResponseDto<Any>>
+
     @DELETE("post/{post_id}/delete")
     suspend fun deletePost(@Path("post_id") postId: String): Response<ApiResponseDto<Any>>
 

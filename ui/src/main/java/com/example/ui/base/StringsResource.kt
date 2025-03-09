@@ -20,4 +20,5 @@ interface StringsResource {
     val invalidTitle: String
     val invalidPlace: String
     val invalidDetails: String
+    val emptyImageMessage: String
 }

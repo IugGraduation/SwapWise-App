@@ -3,6 +3,7 @@ package com.example.ui.edit_post
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
+import com.example.domain.exception.EmptyImageException
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
@@ -11,6 +12,7 @@ import com.example.domain.model.PostItem
 import com.example.domain.post.DeletePostUseCase
 import com.example.domain.post.EditPostUseCase
 import com.example.domain.post.GetPostDetailsUseCase
+import com.example.domain.post.UploadImageUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.base.NavigateUpEffect
@@ -29,6 +31,7 @@ class EditPostViewModel @Inject constructor(
     private val getPostDetailsUseCase: GetPostDetailsUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val editPostUseCase: EditPostUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
     private val deletePostUseCase: DeletePostUseCase,
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IEditPostInteractions {
     private val args = EditPostArgs(savedStateHandle)
@@ -120,6 +123,7 @@ class EditPostViewModel @Inject constructor(
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
         updatePostItem { copy(imageLink = selectedImageUri.toString()) }
+        uploadImageUseCase(selectedImageUri)
     }
 
     fun onCategoryChange(categoryItem: CategoryItem) {
@@ -141,7 +145,7 @@ class EditPostViewModel @Inject constructor(
 
     override fun onClickSave() {
         tryToExecute(
-            call = { editPostUseCase(state.value.data.postItem) },
+            call = { editPostUseCase(uploadImageUseCase.getImageRequestBody(), state.value.data.postItem) },
             onSuccess = { navigateUp() },
             onError = ::onSavePostFail
         )
@@ -161,6 +165,9 @@ class EditPostViewModel @Inject constructor(
                 updateFieldError(detailsError = stringsResource.invalidDetails)
             }
 
+            is EmptyImageException -> {
+                onActionFail(Exception(stringsResource.emptyImageMessage))
+            }
             else -> onActionFail(throwable)
         }
     }

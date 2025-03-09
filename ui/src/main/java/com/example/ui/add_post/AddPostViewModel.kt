@@ -3,6 +3,7 @@ package com.example.ui.add_post
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
+import com.example.domain.exception.EmptyImageException
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
@@ -128,7 +129,7 @@ class AddPostViewModel @Inject constructor(
             call = {
                 addPostUseCase(
                     postItem = state.value.data.postItem,
-                    imageRequestBody = uploadImageUseCase.imageRequestBody
+                    imageRequestBody = uploadImageUseCase.getImageRequestBody()
                 )
             },
             onSuccess = { navigateUp() },
@@ -149,6 +150,10 @@ class AddPostViewModel @Inject constructor(
 
             is InvalidDetailsException -> {
                 updateFieldError(detailsError = stringsResource.invalidDetails)
+            }
+
+            is EmptyImageException -> {
+                onActionFail(Exception(stringsResource.emptyImageMessage))
             }
 
             else -> onActionFail(throwable)

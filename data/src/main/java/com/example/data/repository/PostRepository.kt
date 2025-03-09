@@ -30,15 +30,34 @@ class PostRepository(private val postRemoteDataSource: PostRemoteDataSource) {
             )
         }
 
-    suspend fun updatePost(postItemDto: PostItemDto) =
-        checkResponse { postRemoteDataSource.updatePost(postItemDto) }
-
+    suspend fun updatePost(
+        images: List<MultipartBody.Part>?,
+        name: RequestBody,
+        place: RequestBody,
+        details: RequestBody,
+        categoryUuid: RequestBody,
+        fcategory: List<MultipartBody.Part>?,
+        postUuid: RequestBody,
+        status: RequestBody,
+    ) =
+        checkResponse {
+            postRemoteDataSource.updatePost(
+                images = images,
+                name = name,
+                place = place,
+                details = details,
+                categoryUuid = categoryUuid,
+                fcategory = fcategory,
+                postUuid = postUuid,
+                status = status
+            )
+        }
 
     suspend fun deletePost(postId: String) =
         checkResponse { postRemoteDataSource.deletePost(postId) }
 
 
-    suspend fun searchPosts(searchValue: String, filterCategories: List<String>) =
+    suspend fun searchPosts(searchValue: String, filterCategoryIds: List<String>) =
         fakeCheckResponse(
             listOf(PostItemDto(), PostItemDto())
         )
