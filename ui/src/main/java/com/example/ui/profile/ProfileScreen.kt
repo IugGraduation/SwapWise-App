@@ -233,7 +233,7 @@ private fun UserInformationSection(
         SwapWiseTextField(
             value = state.profileInformationUiState.name,
             onValueChange = profileInteraction::onUsernameChange,
-            placeholder = stringResource(R.string.phone_number),
+            placeholder = stringResource(R.string.full_name),
             errorMessage = state.profileError.userNameErrorMessage,
             isEditable = isUserInfoEditable,
             leadingIcon = {

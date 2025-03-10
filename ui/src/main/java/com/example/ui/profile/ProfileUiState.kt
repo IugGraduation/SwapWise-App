@@ -15,7 +15,7 @@ data class ProfileUiState(
 )
 
 data class ProfileInformationUiState(
-    val imageUrl: String = String.empty(),
+    val imageUri: String = String.empty(),
     val name: String = String.empty(),
     val phoneNumber: String = String.empty(),
     val postsNumber: String = String.empty(),
@@ -59,7 +59,7 @@ fun User.toProfileUiState(): ProfileUiState {
     return ProfileUiState(
         id = this.uuid,
         profileInformationUiState = ProfileInformationUiState(
-            imageUrl = this.imageLink,
+            imageUri = this.imageLink,
             name = this.name,
             phoneNumber = this.phone,
             postsNumber = this.postsNumber.toString(),
