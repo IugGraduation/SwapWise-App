@@ -31,14 +31,14 @@ class SeeAllTopicsViewModel @Inject constructor(
 
     override fun onClickGoToDetails(topicId: String, isCategory: Boolean) {
         if (isCategory) {
-            navigateTo(SeeAllTopicsEffects.NavigateToSearchByCategory(topicId))
+            sendUiEffect(SeeAllTopicsEffects.NavigateToSearchByCategory(topicId))
         } else {
-            navigateTo(SeeAllTopicsEffects.NavigateToPostDetails(topicId))
+            sendUiEffect(SeeAllTopicsEffects.NavigateToPostDetails(topicId))
 
         }
     }
 
     override fun navigateUp() {
-        navigateTo(SeeAllTopicsEffects.NavigateUp)
+        sendUiEffect(SeeAllTopicsEffects.NavigateUp)
     }
 }

@@ -17,9 +17,9 @@ class HomeViewModel @Inject constructor(getHomeDataUseCase: GetHomeDataUseCase) 
 
     override fun onClickGoToDetails(topicId: String, isCategory: Boolean) {
         if (isCategory) {
-            navigateTo(HomeEffects.NavigateToSearchByCategory(topicId))
+            sendUiEffect(HomeEffects.NavigateToSearchByCategory(topicId))
         } else {
-            navigateTo(HomeEffects.NavigateToPostDetails(topicId))
+            sendUiEffect(HomeEffects.NavigateToPostDetails(topicId))
 
         }
     }

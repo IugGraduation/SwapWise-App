@@ -102,7 +102,7 @@ class SearchViewModel @Inject constructor(
     }
 
     override fun navigateToPostDetails(postId: String) {
-        navigateTo(SearchEffects.NavigateToPostDetails(postId))
+        sendUiEffect(SearchEffects.NavigateToPostDetails(postId))
     }
 
 }
