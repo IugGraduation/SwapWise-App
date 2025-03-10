@@ -20,7 +20,7 @@ interface OfferRemoteDataSource {
     @Multipart
     @POST("offer/store")
     suspend fun addOffer(
-        @Part("image") image: MultipartBody.Part,
+        @Part image: MultipartBody.Part,
         @Part("title") name: RequestBody,
         @Part("place") place: RequestBody,
         @Part("details") details: RequestBody,
@@ -31,7 +31,7 @@ interface OfferRemoteDataSource {
     @Multipart
     @POST("offer/update")
     suspend fun updateOffer(
-        @Part("image") image: MultipartBody.Part,
+        @Part image: MultipartBody.Part,
         @Part("title") name: RequestBody,
         @Part("place") place: RequestBody,
         @Part("details") details: RequestBody,

@@ -168,6 +168,7 @@ class EditPostViewModel @Inject constructor(
             is EmptyImageException -> {
                 onActionFail(Exception(stringsResource.emptyImageMessage))
             }
+
             else -> onActionFail(throwable)
         }
     }

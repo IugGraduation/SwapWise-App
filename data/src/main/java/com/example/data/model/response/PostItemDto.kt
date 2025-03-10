@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class PostItemDto(
     @SerializedName("category")
     val category: CategoryItemDto? = null,
-    @SerializedName("fav_categories")
+    @SerializedName("favorite_categories")
     val favoriteCategories: List<CategoryItemDto?>? = null,
     @SerializedName("num_offers")
     val numOffers: Int? = null,

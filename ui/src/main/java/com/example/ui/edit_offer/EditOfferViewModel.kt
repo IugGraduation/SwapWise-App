@@ -3,6 +3,7 @@ package com.example.ui.edit_offer
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
+import com.example.domain.exception.EmptyImageException
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
@@ -150,6 +151,10 @@ class EditOfferViewModel @Inject constructor(
 
             is InvalidDetailsException -> {
                 updateFieldError(detailsError = stringsResource.invalidDetails)
+            }
+
+            is EmptyImageException -> {
+                onActionFail(Exception(stringsResource.emptyImageMessage))
             }
 
             else -> onActionFail(throwable)
