@@ -38,6 +38,7 @@ import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
+import com.example.ui.edit_offer.navigateToEditOffer
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.offer_details.navigateToOfferDetails
@@ -67,6 +68,9 @@ fun PostDetailsScreen(
                     effect.offerId
                 )
 
+                is PostDetailsEffects.NavigateToEditOffer -> {
+                    navController.navigateToEditOffer(effect.offerId)
+                }
                 is PostDetailsEffects.NavigateUp -> navController.navigateUp()
             }
         }

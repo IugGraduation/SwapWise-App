@@ -2,6 +2,7 @@ package com.example.ui.post_details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.example.domain.authentication.GetAuthUseCase
 import com.example.domain.model.PostItem
 import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PostDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getPostDetailsUseCase: GetPostDetailsUseCase
+    private val getPostDetailsUseCase: GetPostDetailsUseCase,
+    private val getAuthUseCase: GetAuthUseCase
 ) : BaseViewModel<PostItemUiState, PostDetailsEffects>(PostItemUiState()), PostDetailsInteractions {
     private val args = PostDetailsArgs(savedStateHandle)
 
@@ -42,7 +44,11 @@ class PostDetailsViewModel @Inject constructor(
     }
 
     override fun navigateToOfferDetails(offerId: String) {
-        navigateTo(PostDetailsEffects.NavigateToOfferDetails(offerId))
+        tryToExecute(
+            call = { return@tryToExecute offerId == getAuthUseCase().userId },
+            onSuccess = { navigateTo(PostDetailsEffects.NavigateToEditOffer(offerId)) },
+            onError = { navigateTo(PostDetailsEffects.NavigateToOfferDetails(offerId)) },
+        )
     }
 
     override fun navigateUp() {
