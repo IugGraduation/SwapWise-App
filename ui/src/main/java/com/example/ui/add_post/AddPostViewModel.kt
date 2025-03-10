@@ -1,6 +1,7 @@
 package com.example.ui.add_post
 
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
@@ -128,7 +129,7 @@ class AddPostViewModel @Inject constructor(
             call = {
                 addPostUseCase(
                     postItem = state.value.data.postItem,
-                    imageRequestBody = uploadImageUseCase.imageRequestBody
+                    imageRequestBody = uploadImageUseCase(_state.value.data.postItem.imageLink.toUri())
                 )
             },
             onSuccess = { navigateUp() },
