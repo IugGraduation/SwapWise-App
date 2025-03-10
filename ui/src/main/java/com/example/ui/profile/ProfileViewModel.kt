@@ -1,13 +1,16 @@
 package com.example.ui.profile
 
 import android.net.Uri
+import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
 import com.example.domain.exception.InvalidUsernameException
+import com.example.domain.post.UploadImageUseCase
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.domain.profile.GetCurrentUserDataUseCase
-import com.example.domain.profile.ValidateUserInfoUseCase
+import com.example.domain.profile.UpdateUserInfoUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
 import com.example.ui.util.empty
@@ -22,8 +25,11 @@ class ProfileViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getCurrentUserData: GetCurrentUserDataUseCase,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
-    private val validateUserInfoUseCase: ValidateUserInfoUseCase,
+    private val updateUserInfoUseCase: UpdateUserInfoUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
 ) : BaseViewModel<ProfileUiState, ProfileEffect>(ProfileUiState()), ProfileInteraction {
+
+    private lateinit var originalProfileInformation: ProfileInformationUiState
 
     init {
         getCurrentUserInfo()
@@ -35,12 +41,13 @@ class ProfileViewModel @Inject constructor(
             call = { getCurrentUserData(getCurrentUserData.getCurrentUserId()).toProfileUiState() },
             onSuccess = ::onGetCurrentUserSuccess,
             onError = ::onGetCurrentUserFail
-
         )
     }
 
     private fun onGetCurrentUserSuccess(user: ProfileUiState) {
+        Log.e("bk", "onGetCurrentUserSuccess: ${user.profileInformationUiState}")
         updateData { copy(profileInformationUiState = user.profileInformationUiState) }
+        originalProfileInformation = user.profileInformationUiState
     }
 
     private fun onGetCurrentUserFail(throwable: Throwable) {
@@ -48,9 +55,17 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onUpdateProfileImage(imageUri: Uri) {
-        val resolvedUri = imageUri.toString()
-        updateProfileField { copy(imageUrl = resolvedUri) }
+        Log.e("bk", "image path from onUpdateProfileImage: ${imageUri.path}")
+        updateData {
+            copy(
+                profileInformationUiState = _state.value.data.profileInformationUiState.copy(
+                    imageUri = imageUri.toString()
+                )
+            )
+        }
+       // uploadImageUseCase(uri = imageUri)
     }
+
 
     override fun onEditButtonClicked() {
         manageUserInfoEdit(isEditable = true)
@@ -81,24 +96,55 @@ class ProfileViewModel @Inject constructor(
     override fun onCancelButtonClicked() {
         manageUserInfoEdit(isEditable = false)
         makeErrorMessagesEmpty()
-//        updateData {
-//            copy(profileInformationUiState = originalProfileInformation.profileInformationUiState)
-//        }
+        updateData {
+            copy(profileInformationUiState = originalProfileInformation)
+        }
     }
 
     override fun onSaveButtonClicked() {
+        Log.e("bk", "from onSaveButtonClicked image path: ${_state.value.data.profileInformationUiState.imageUri.toUri().path}")
+
         val lastUserInfo = _state.value.data.profileInformationUiState
         tryToExecute(
             call = {
-                validateUserInfoUseCase(
+                updateUserInfoUseCase(
                     name = lastUserInfo.name,
                     phoneNumber = lastUserInfo.phoneNumber,
-                    location = lastUserInfo.location
+                    location = lastUserInfo.location,
+                    imageRequestBody = uploadImageUseCase(_state.value.data.profileInformationUiState.imageUri.toUri()),
+                    bio = lastUserInfo.bio
                 )
             },
-            onSuccess = { onUpdateUserInfoSuccess() },
+            onSuccess = ::onUpdateUserInfoSuccess,
             onError = ::onUpdateUserInfoFail,
         )
+    }
+
+    private fun onUpdateUserInfoSuccess(isUpdated: Boolean) {
+        manageUserInfoEdit(isEditable = false)
+        makeErrorMessagesEmpty()
+        Log.e("bk", "onUpdateUserInfoSuccess: $isUpdated")
+        if(isUpdated) getCurrentUserInfo()
+    }
+
+    private fun onUpdateUserInfoFail(throwable: Throwable) {
+        Log.e("bk", "onUpdateUserInfoFail: ${throwable.message}, ${throwable.cause}")
+
+        when (throwable) {
+            is InvalidUsernameException -> {
+                updateFieldError(userNameError = stringsResource.invalidUsername)
+            }
+
+            is InvalidPhoneNumberException -> {
+                updateFieldError(phoneNumberError = stringsResource.invalidPhoneNumber)
+            }
+
+            is InvalidLocationException -> {
+                updateFieldError(locationError = stringsResource.invalidLocation)
+            }
+
+            else -> updateFieldError()
+        }
     }
 
     override fun onDarkMoodChange(isDarkMood: Boolean) {
@@ -130,30 +176,6 @@ class ProfileViewModel @Inject constructor(
             updateData {
                 copy(profileSettingsUiState = profileSettingsUiState.copy(isDarkTheme = isDark))
             }
-        }
-    }
-
-    private fun onUpdateUserInfoSuccess() {
-        manageUserInfoEdit(isEditable = false)
-        makeErrorMessagesEmpty()
-
-    }
-
-    private fun onUpdateUserInfoFail(throwable: Throwable) {
-        when (throwable) {
-            is InvalidUsernameException -> {
-                updateFieldError(userNameError = stringsResource.invalidUsername)
-            }
-
-            is InvalidPhoneNumberException -> {
-                updateFieldError(phoneNumberError = stringsResource.invalidPhoneNumber)
-            }
-
-            is InvalidLocationException -> {
-                updateFieldError(locationError = stringsResource.invalidLocation)
-            }
-
-            else -> updateFieldError()
         }
     }
 

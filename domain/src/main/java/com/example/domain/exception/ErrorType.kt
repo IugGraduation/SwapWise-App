@@ -25,3 +25,5 @@ class InvalidConfirmPasswordException: ValidationException()
 class InvalidDetailsException: ValidationException()
 class InvalidFullNameException: ValidationException()
 class InvalidBestBarterSpotException: ValidationException()
+
+class FailedToUpdateUserInfoException: SwapWiseException()
