@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -52,7 +51,7 @@ fun CustomLazyLayout(
     items: List<TopicItem> = listOf(),
     isCategoryCard: Boolean = false,
     isHorizontalLayout: Boolean = true,
-    onClickGoToDetails: (topicId: String, isCategory: Boolean) -> Unit,
+    onClickGoToDetails: (topicItem: TopicItem) -> Unit,
 ) {
     val card = getCard(isCategoryCard, isHorizontalLayout, onClickGoToDetails)
 
@@ -68,15 +67,13 @@ fun CustomLazyLayout(
 private fun getCard(
     isCategoryItem: Boolean = false,
     isHorizontal: Boolean = true,
-    onClickGoToDetails: (topicId: String, isCategory: Boolean) -> Unit,
+    onClickGoToDetails: (topicItem: TopicItem) -> Unit,
 ): @Composable (TopicItem) -> Unit {
-    return when (isCategoryItem) {
+    return when (isCategoryItem) { 
         true -> { item ->
             if (item is CategoryItem) {
                 CategoryCard(
-                    categoryImage = rememberAsyncImagePainter(item.imageLink),
-                    categoryId = item.uuid,
-                    title = item.title,
+                    categoryItem = item,
                     isHorizontal = isHorizontal,
                     onClickGoSearchByCategory = onClickGoToDetails,
                 )
@@ -91,7 +88,7 @@ private fun getCard(
                     username = item.user.name,
                     title = item.title,
                     details = item.details,
-                    onCardClick = { onClickGoToDetails(item.uuid, false) },
+                    onCardClick = { onClickGoToDetails(item) },
                     isHorizontalCard = isHorizontal,
                 )
             } else if (item is OfferItem) {
@@ -113,9 +110,7 @@ private fun getCard(
 
 @Composable
 fun CategoryCard(
-    categoryImage: Painter,
-    categoryId: String,
-    title: String,
+    categoryItem: CategoryItem,
     isHorizontal: Boolean = true,
     modifier: Modifier = if (isHorizontal) {
         Modifier.size(width = CategoryCardWidth, height = CategoryCardHorizontalHeight)
@@ -124,12 +119,12 @@ fun CategoryCard(
             .fillMaxWidth()
             .height(height = CategoryCardVerticalHeight)
     },
-    onClickGoSearchByCategory: (topicId: String, isCategory: Boolean) -> Unit,
+    onClickGoSearchByCategory: (topicItem: TopicItem) -> Unit,
 ) {
     BoxRounded(modifier = modifier, contentAlignment = Alignment.Center) {
         Image(
-            painter = categoryImage,
-            contentDescription = title,
+            painter = rememberAsyncImagePainter(categoryItem.imageLink),
+            contentDescription = categoryItem.title,
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxWidth(),
         )
@@ -138,14 +133,14 @@ fun CategoryCard(
                 .fillMaxSize()
                 .clip(RoundedCornerShape(RadiusLarge))
                 .background(color = PrimaryOverlay)
-                .clickable { onClickGoSearchByCategory(categoryId, true) },
+                .clickable { onClickGoSearchByCategory(categoryItem) },
         ) {}
 
         val textStyle = when (isHorizontal) {
             true -> TextStyles.smallCustomTitle
             false -> TextStyles.largeCustomTitle
         }
-        CardText(text = title, textStyle = textStyle)
+        CardText(text = categoryItem.title, textStyle = textStyle)
     }
 }
 

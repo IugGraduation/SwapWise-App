@@ -122,7 +122,7 @@ fun SearchContent(
                 items = state.data.topicsList,
                 isCategoryCard = false,
                 isHorizontalLayout = false,
-                onClickGoToDetails = { id, _ -> searchInteractions.navigateToPostDetails(id) }
+                onClickGoToDetails = { item -> searchInteractions.navigateToPostDetails(item.uuid) }
             )
         }
     }

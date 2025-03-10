@@ -1,7 +1,10 @@
 package com.example.ui.see_all_topics
 
 import androidx.lifecycle.SavedStateHandle
+import com.example.domain.authentication.GetAuthUseCase
 import com.example.domain.home.SeeAllTopicsUseCase
+import com.example.domain.model.CategoryItem
+import com.example.domain.model.TopicItem
 import com.example.domain.model.TopicsHolder
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
@@ -13,6 +16,7 @@ import javax.inject.Inject
 class SeeAllTopicsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     seeAllTopicsUseCase: SeeAllTopicsUseCase,
+    private val getAuthUseCase: GetAuthUseCase
 ) : BaseViewModel<TopicsHolderUiState, SeeAllTopicsEffects>(TopicsHolderUiState()),
     ISeeAllInteractions {
     private val args = SeeAllTopicsArgs(savedStateHandle)
@@ -29,12 +33,15 @@ class SeeAllTopicsViewModel @Inject constructor(
     }
 
 
-    override fun onClickGoToDetails(topicId: String, isCategory: Boolean) {
-        if (isCategory) {
-            navigateTo(SeeAllTopicsEffects.NavigateToSearchByCategory(topicId))
+    override fun onClickGoToDetails(topicItem: TopicItem) {
+        if (topicItem    is CategoryItem) {
+            navigateTo(SeeAllTopicsEffects.NavigateToSearchByCategory(topicItem.uuid))
         } else {
-            navigateTo(SeeAllTopicsEffects.NavigateToPostDetails(topicId))
-
+            tryToExecute(
+                call = { return@tryToExecute topicItem.uuid == getAuthUseCase().userId },
+                onSuccess = { navigateTo(SeeAllTopicsEffects.NavigateToEditPost(topicItem.uuid)) },
+                onError = { navigateTo(SeeAllTopicsEffects.NavigateToPostDetails(topicItem.uuid)) },
+            )
         }
     }
 

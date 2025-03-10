@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.category.GetFakeCategoriesUseCase
 import com.example.domain.model.PostItem
+import com.example.domain.model.TopicItem
 import com.example.domain.model.User
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
@@ -37,6 +38,7 @@ import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.templates.HomeTemplate
+import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.post_details.navigateToPostDetails
@@ -81,6 +83,11 @@ fun HomeScreen(
                 is HomeEffects.NavigateToSearchByCategory -> {
                     bottomNavigationViewModel.onItemSelected(1)
                     navController.navigateToSearch(effect.categoryId)
+                }
+
+                is HomeEffects.NavigateToEditPost -> {
+                    navController.navigateToEditPost(effect.postId)
+
                 }
             }
         }
@@ -160,10 +167,7 @@ fun HomeContent(
                     title = item.title,
                     details = item.details,
                     onCardClick = {
-                        homeInteractions.onClickGoToDetails(
-                            topicId = item.uuid,
-                            isCategory = false
-                        )
+                        homeInteractions.onClickGoToDetails(item)
                     },
                     isHorizontalCard = false,
                     modifier = Modifier.padding(horizontal = Spacing16)
@@ -250,7 +254,7 @@ fun PreviewHomeContent() {
             homeInteractions = object : IHomeInteractions {
                 override fun onNewPostFieldChange(newValue: String) {}
                 override fun navigateToAddPost(postTitle: String) {}
-                override fun onClickGoToDetails(topicId: String, isCategory: Boolean) {}
+                override fun onClickGoToDetails(topicItem: TopicItem) {}
             },
         )
     }

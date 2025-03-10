@@ -7,10 +7,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.domain.model.TopicItem
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.templates.TitledScreenTemplate
+import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.search.navigateToSearch
@@ -37,6 +39,10 @@ fun SeeAllTopicsScreen(
                     bottomNavigationViewModel.onItemSelected(1)
                     navController.navigateToSearch(effect.categoryId)
                 }
+
+                is SeeAllTopicsEffects.NavigateToEditPost -> navController.navigateToEditPost(
+                    effect.postId
+                )
 
                 SeeAllTopicsEffects.NavigateUp -> navController.navigateUp()
             }
@@ -85,7 +91,7 @@ fun PreviewAllTopicsContent() {
             )
         )
         SeeAllTopicsContent(state = state, seeAllTopicsInteractions = object : ISeeAllInteractions {
-            override fun onClickGoToDetails(topicId: String, isCategory: Boolean) {}
+            override fun onClickGoToDetails(topicItem: TopicItem) {}
             override fun navigateUp() {}
         })
 
