@@ -23,7 +23,7 @@ class SeeAllTopicsViewModel @Inject constructor(
 
     init {
         tryToExecute(
-            call = { seeAllTopicsUseCase(args.url) },
+            call = { seeAllTopicsUseCase(args.url, args.title) },
             onSuccess = ::onGetHomeDataSuccess,
         )
     }

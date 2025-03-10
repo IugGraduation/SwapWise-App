@@ -6,10 +6,11 @@ import com.example.domain.model.TopicsHolder
 import javax.inject.Inject
 
 class SeeAllTopicsUseCase @Inject constructor(private val homeRepository: HomeRepository) {
-    suspend operator fun invoke(url: String): TopicsHolder {
+    suspend operator fun invoke(url: String, title: String): TopicsHolder {
         return TopicsHolder.fromTopicDto(
             TopicDto(
                 url = url,
+                title = title,
                 topicItemsDto = homeRepository.seeAll(url)
             )
         )

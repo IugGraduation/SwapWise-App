@@ -61,7 +61,7 @@ fun HomeScreen(
     val state by homeViewModel.state.collectAsState()
     val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
     for (topic in state.data.topicsList) {
-        topic.onClickSeeAll = { navController.navigateToSeeAllTopics(topic.url) }
+        topic.onClickSeeAll = { navController.navigateToSeeAllTopics(topic.url, topic.title) }
     }
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,

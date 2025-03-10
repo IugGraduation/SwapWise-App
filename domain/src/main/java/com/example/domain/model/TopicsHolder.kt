@@ -11,7 +11,7 @@ data class TopicsHolder(
     companion object {
         fun fromTopicDto(topicDto: TopicDto): TopicsHolder {
             val items = topicDto.topicItemsDto?.map { topicItemDto ->
-                if (topicDto.title == "Categories" || topicDto.url == "category") {
+                if (topicDto.title == "Categories") {
                     CategoryItem.fromTopicItemDto(topicItemDto)
                 } else {
                     PostItem.fromTopicItemDto(topicItemDto)
