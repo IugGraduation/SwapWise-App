@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -101,7 +103,11 @@ fun OfferDetailsContent(
         onClickGoBack = offerDetailsInteractions::navigateUp,
         baseUiState = state.baseUiState,
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+        ) {
             ProductImage(state.data.offerItem.imageLink)
             VerticalSpacer(Spacing16)
             DetailsScreenUserHeader(
@@ -135,6 +141,7 @@ fun OfferDetailsContent(
                 onClickWhatsappButton = offerDetailsInteractions::navigateToWhatsapp,
                 onClickMessageButton = offerDetailsInteractions::navigateToMessages
             )
+            VerticalSpacer(Spacing16)
         }
 
     }

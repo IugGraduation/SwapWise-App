@@ -13,20 +13,6 @@ data class OfferItem(
     val categoryItem: CategoryItem = CategoryItem(),
     val date: String = "",
 ) : TopicItem() {
-    fun toOfferItemDto(): OfferItemDto {
-        return OfferItemDto(
-            uuid = uuid,
-            userName = user.name,
-            userImage = user.imageLink,
-            image = imageLink,
-            title = title,
-            details = details,
-//                place = "",
-//                category = "",
-                date = date,
-//                rate = "",
-        )
-    }
 
     companion object {
         fun fromOfferItemDto(offerItemDto: OfferItemDto): OfferItem {
@@ -35,6 +21,7 @@ data class OfferItem(
                 user = User(
                     name = offerItemDto.userName ?: "",
                     imageLink = offerItemDto.userImage ?: "",
+                    phone = offerItemDto.mobile ?: ""
                 ),
                 imageLink = offerItemDto.image ?: "",
                 title = offerItemDto.title ?: "",
@@ -52,10 +39,5 @@ data class OfferItem(
             } ?: listOf()
         }
 
-        fun toOfferItemDtoList(offerItemList: List<OfferItem>): List<OfferItemDto> {
-            return offerItemList.map {
-                it.toOfferItemDto()
-            }
-        }
     }
 }
