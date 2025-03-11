@@ -3,6 +3,7 @@ package com.example.data.source.remote
 import com.example.data.model.request.ResetPasswordRequest
 import com.example.data.model.response.ApiResponseDto
 import com.example.data.model.response.profile.ProfileDto
+import com.example.data.model.response.profile.ProfilePostItemDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -18,6 +19,9 @@ interface ProfileDataSource {
     @GET("profile/{user_id}")
     suspend fun getCurrentUserDataById(@Path("user_id") id: String)
             : Response<ApiResponseDto<ProfileDto>>
+
+    @GET("profile/posts")
+    suspend fun getCurrentUserPosts(): Response<ApiResponseDto<List<ProfilePostItemDto>>>
 
     @Multipart
     @POST("profile/update")

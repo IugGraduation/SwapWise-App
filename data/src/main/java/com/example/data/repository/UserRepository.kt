@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import com.example.data.model.request.ResetPasswordRequest
 import com.example.data.model.response.profile.ProfileDto
+import com.example.data.model.response.profile.ProfilePostItemDto
 import com.example.data.source.remote.ProfileDataSource
 import com.example.data.util.checkResponse
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +22,10 @@ class UserRepository @Inject constructor(
 
     suspend fun getCurrentUserById(id: String): ProfileDto? {
         return checkResponse { profileDataSource.getCurrentUserDataById(id) }
+    }
+
+    suspend fun getCurrentUserPosts(): List<ProfilePostItemDto>?{
+        return checkResponse { profileDataSource.getCurrentUserPosts() }
     }
 
     suspend fun updateUserInfo(

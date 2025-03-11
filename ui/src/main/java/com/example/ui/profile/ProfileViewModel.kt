@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
 import com.example.domain.exception.InvalidUsernameException
+import com.example.domain.model.PostItem
 import com.example.domain.post.UploadImageUseCase
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.domain.profile.GetCurrentUserDataUseCase
+import com.example.domain.profile.GetCurrentUserPostsUseCase
 import com.example.domain.profile.UpdateUserInfoUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
@@ -23,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val stringsResource: StringsResource,
-    private val getCurrentUserData: GetCurrentUserDataUseCase,
+    private val getCurrentUserDataUseCase: GetCurrentUserDataUseCase,
+    private val getCurrentUserPostsUseCase: GetCurrentUserPostsUseCase,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
@@ -32,20 +35,20 @@ class ProfileViewModel @Inject constructor(
     private lateinit var originalProfileInformation: ProfileInformationUiState
 
     init {
-        getCurrentUserInfo()
         viewModelScope.launch { isDarkTheme() }
+        getCurrentUserInfo()
+        getCurrentUserPosts()
     }
 
     private fun getCurrentUserInfo() {
         tryToExecute(
-            call = { getCurrentUserData(getCurrentUserData.getCurrentUserId()).toProfileUiState() },
+            call = { getCurrentUserDataUseCase(getCurrentUserDataUseCase.getCurrentUserId()).toProfileUiState() },
             onSuccess = ::onGetCurrentUserSuccess,
             onError = ::onGetCurrentUserFail
         )
     }
 
     private fun onGetCurrentUserSuccess(user: ProfileUiState) {
-        Log.e("bk", "onGetCurrentUserSuccess: ${user.profileInformationUiState}")
         updateData { copy(profileInformationUiState = user.profileInformationUiState) }
         originalProfileInformation = user.profileInformationUiState
     }
@@ -54,8 +57,25 @@ class ProfileViewModel @Inject constructor(
         updateData { copy(baseUiState = this.baseUiState.copy(errorMessage = throwable.message.toString())) }
     }
 
+    private fun getCurrentUserPosts() {
+        tryToExecute(
+            call = { getCurrentUserPostsUseCase() },
+            onSuccess = ::onGetCurrentUserPostsSuccess,
+            onError = ::onGetCurrentUserPostsFail
+        )
+    }
+
+    private fun onGetCurrentUserPostsSuccess(postItems: List<PostItem>) {
+        updateData { copy(userPosts = postItems.map { it.toPostItemUIState() }) }
+    }
+
+
+    private fun onGetCurrentUserPostsFail(throwable: Throwable) {
+
+    }
+
+
     override fun onUpdateProfileImage(imageUri: Uri) {
-        Log.e("bk", "image path from onUpdateProfileImage: ${imageUri.path}")
         updateData {
             copy(
                 profileInformationUiState = _state.value.data.profileInformationUiState.copy(
@@ -63,7 +83,6 @@ class ProfileViewModel @Inject constructor(
                 )
             )
         }
-       // uploadImageUseCase(uri = imageUri)
     }
 
 
@@ -102,8 +121,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onSaveButtonClicked() {
-        Log.e("bk", "from onSaveButtonClicked image path: ${_state.value.data.profileInformationUiState.imageUri.toUri().path}")
-
         val lastUserInfo = _state.value.data.profileInformationUiState
         tryToExecute(
             call = {
@@ -123,8 +140,7 @@ class ProfileViewModel @Inject constructor(
     private fun onUpdateUserInfoSuccess(isUpdated: Boolean) {
         manageUserInfoEdit(isEditable = false)
         makeErrorMessagesEmpty()
-        Log.e("bk", "onUpdateUserInfoSuccess: $isUpdated")
-        if(isUpdated) getCurrentUserInfo()
+        if (isUpdated) getCurrentUserInfo()
     }
 
     private fun onUpdateUserInfoFail(throwable: Throwable) {

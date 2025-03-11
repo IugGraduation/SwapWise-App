@@ -1,5 +1,6 @@
 package com.example.ui.profile
 
+import com.example.domain.model.PostItem
 import com.example.domain.model.User
 import com.example.ui.base.BaseUiState
 import com.example.ui.util.empty
@@ -27,7 +28,7 @@ data class ProfileInformationUiState(
 )
 
 data class PostItemUiState(
-    val id: Int = 0,
+    val id: String = String.empty(),
     val username: String = String.empty(),
     val userImageLink: String = String.empty(),
     val postImageLink: String = String.empty(),
@@ -67,6 +68,19 @@ fun User.toProfileUiState(): ProfileUiState {
             bio = this.bio,
             offersNumber = this.offersNumber.toString(),
         )
+    )
+}
+
+fun PostItem.toPostItemUIState(): PostItemUiState {
+    return PostItemUiState(
+        id = this.uuid,
+        username = this.user.name,
+        userImageLink = this.user.imageLink,
+        postImageLink = this.imageLink,
+        isThePostOpen = this.isOpen,
+        postTitle = this.title,
+        postDescription = this.details,
+        offersNumber = this.offers.size
     )
 }
 
