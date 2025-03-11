@@ -1,6 +1,7 @@
 package com.example.ui.edit_offer
 
 import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
@@ -67,7 +68,9 @@ class EditOfferViewModel @Inject constructor(
     private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
         val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
-                categoryItem = categoryItems[index], selected = false, onClick = ::onCategoryChange
+                categoryItem = categoryItems[index],
+                selected = mutableStateOf(false),
+                onClick = ::onCategoryChange
             )
         }
         updateData {

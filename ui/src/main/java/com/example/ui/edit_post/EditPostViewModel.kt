@@ -1,6 +1,7 @@
 package com.example.ui.edit_post
 
 import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
@@ -63,13 +64,17 @@ class EditPostViewModel @Inject constructor(
         val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
                 categoryItem = categoryItems[index],
-                selected = state.value.data.postItem.favoriteCategoryItems.contains(categoryItems[index]),
+                selected = mutableStateOf(
+                    state.value.data.postItem.favoriteCategoryItems.contains(
+                        categoryItems[index]
+                    )
+                ),
                 onClick = ::onCategoryChange
             )
         }
         val favoriteChipsList =
             chipsList.map { it.copy(categoryItem = it.categoryItem.copy(imageLink = "")) }.onEach {
-                it.selected =
+                it.selected.value =
                     state.value.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
             it.onClick = ::onFavoriteCategoryChange
         }

@@ -1,5 +1,6 @@
 package com.example.ui.search
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.domain.category.GetCategoriesUseCase
@@ -45,12 +46,12 @@ class SearchViewModel @Inject constructor(
             if (args.filterCategoryId == categoryItems[index].uuid) {
                 ChipUiState(
                     categoryItem = categoryItems[index],
-                    selected = true,
+                    selected = mutableStateOf(true),
                     onClick = { search() })
             } else {
                 ChipUiState(
                     categoryItem = categoryItems[index],
-                    selected = false,
+                    selected = mutableStateOf(false),
                     onClick = { search() })
             }
         }

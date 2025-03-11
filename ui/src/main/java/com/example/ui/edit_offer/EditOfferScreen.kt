@@ -133,7 +133,7 @@ fun EditOfferContent(
                 title = stringResource(R.string.category_of_the_offer),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
-                    it.selected = it.categoryItem == state.data.offerItem.categoryItem
+                    it.selected.value = it.categoryItem == state.data.offerItem.categoryItem
                 },
             )
         }

@@ -1,6 +1,7 @@
 package com.example.ui.add_offer
 
 import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.EmptyImageException
@@ -53,7 +54,7 @@ class AddOfferViewModel @Inject constructor(
         val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
                 categoryItem = categoryItems[index],
-                selected = false,
+                selected = mutableStateOf(false),
                 onClick = ::onCategoryChange
             )
         }

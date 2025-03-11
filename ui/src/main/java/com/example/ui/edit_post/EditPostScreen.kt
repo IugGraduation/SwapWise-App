@@ -154,7 +154,7 @@ fun EditOfferContent(
                 title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
-                    it.selected = it.categoryItem == state.data.postItem.categoryItem
+                    it.selected.value = it.categoryItem == state.data.postItem.categoryItem
                 },
             )
             VerticalSpacer(Spacing16)
@@ -162,7 +162,7 @@ fun EditOfferContent(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.favoriteChipsList.onEach {
-                    it.selected =
+                    it.selected.value =
                         state.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
                 },
             )

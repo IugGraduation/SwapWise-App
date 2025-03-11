@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -121,7 +122,11 @@ fun PostDetailsContent(
                     chipsList = state.data.postItem.favoriteCategoryItems.map {
                         ChipUiState(
                             categoryItem = it,
-                            selected = state.data.postItem.favoriteCategoryItems.contains(it),
+                            selected = mutableStateOf(
+                                state.data.postItem.favoriteCategoryItems.contains(
+                                    it
+                                )
+                            ),
                             onClick = {})
                     }
                 )

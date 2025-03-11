@@ -173,7 +173,7 @@ fun PreviewSearchContent() {
         val searchUiState = SearchUiState(
 //            topicsList = GetFakePostsUseCase()(),
             filterChipsList = GetFakeCategoriesUseCase()().map {
-                ChipUiState(categoryItem = it, onClick = { }, selected = false)
+                ChipUiState(categoryItem = it, onClick = { })
             },
 //            isLoading = true,
         )
