@@ -91,7 +91,8 @@ fun OtpContent(
                 imgPainter = painterResource(R.drawable.img_otp),
                 imgPainterDarkTheme = painterResource(R.drawable.img_otp_dark),
                 imgContentDescription = stringResource(R.string.image_otp),
-                isDarkTheme = state.data.isDarkTheme
+                isDarkTheme = state.data.isDarkTheme,
+                modifier = Modifier.focusable()
             )
             VerticalSpacer(Spacing8)
             Text(

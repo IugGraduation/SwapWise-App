@@ -1,6 +1,7 @@
 package com.example.ui.components.templates
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,6 +41,7 @@ fun HomeTemplate(
                 title = "Good Morning \uD83D\uDC4B",
                 subtitle = user.name,
                 imagePainter = rememberAsyncImagePainter(user.imageLink),
+                modifier = Modifier.focusable()
             )
         },
         bottomBarState = bottomBarState,

@@ -1,5 +1,6 @@
 package com.example.ui.signup
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -89,7 +90,8 @@ fun SignupContent(
                 imgPainter = painterResource(R.drawable.img_signup),
                 imgPainterDarkTheme = painterResource(R.drawable.img_signup_dark),
                 imgContentDescription = stringResource(R.string.image_signup),
-                isDarkTheme = state.data.isDarkTheme
+                isDarkTheme = state.data.isDarkTheme,
+                modifier = Modifier.focusable()
             )
             SignupForm(
                 state = state.data,

@@ -1,6 +1,7 @@
 package com.example.ui.login
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -96,7 +97,8 @@ fun LoginContent(
                 imgPainter = painterResource(R.drawable.img_login),
                 imgPainterDarkTheme = painterResource(R.drawable.img_login_dark),
                 imgContentDescription = stringResource(R.string.image_login),
-                isDarkTheme = state.data.isDarkTheme
+                isDarkTheme = state.data.isDarkTheme,
+                modifier = Modifier.focusable()
             )
             LoginForm(
                 state = state.data,
