@@ -26,17 +26,16 @@ suspend fun <T> checkResponse(function: suspend () -> Response<ApiResponseDto<T>
                 }
             }
             else -> {
-                Log.e("TAG", "checkResponse not successful code: ${result.code()}", )
-                Log.e("TAG", "checkResponse not successful message: ${result.message()}", )
+                Log.e("TAG", "checkResponse not successful code: ${result.code()}")
+                Log.e("TAG", "checkResponse not successful code: $result")
                 throw Exception(result.message())
             }
         }
     } catch (e: UnknownHostException) {
-        Log.e("TAG", "checkResponse Internet Error: ${e.message}")
+        Log.e("TAG", "checkResponse Internet Error: $e")
         throw UnknownHostException("Check your Internet Connection")
     } catch (e: Exception) {
-        Log.e("TAG", "checkResponse Error: ${e.message}")
-        Log.e("TAG", "checkResponse Error Object: $e")
+        Log.e("TAG", "checkResponse Error: $e")
         throw e
     }
 }
