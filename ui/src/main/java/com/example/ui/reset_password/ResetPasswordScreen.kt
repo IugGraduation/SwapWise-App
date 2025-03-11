@@ -98,7 +98,7 @@ private fun ResetPasswordContent(
 
             SwapWiseFilledButton(
                 modifier = Modifier.padding(Spacing16),
-                onClick = {},
+                onClick = interaction::onResetPasswordClick,
                 text = stringResource(R.string.reset)
             )
 

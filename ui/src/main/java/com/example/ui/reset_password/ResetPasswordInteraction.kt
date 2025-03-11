@@ -8,4 +8,5 @@ interface ResetPasswordInteraction {
     fun toggleCurrentPasswordVisibility()
     fun toggleNewPasswordVisibility()
     fun toggleConfirmNewPasswordVisibility()
+    fun onResetPasswordClick()
 }

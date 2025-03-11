@@ -1,10 +1,10 @@
 package com.example.data.repository
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import com.example.data.model.request.ResetPasswordRequest
 import com.example.data.model.response.profile.ProfileDto
 import com.example.data.source.remote.ProfileDataSource
 import com.example.data.util.checkResponse
@@ -20,7 +20,6 @@ class UserRepository @Inject constructor(
 ) {
 
     suspend fun getCurrentUserById(id: String): ProfileDto? {
-        Log.e("bk", "${profileDataSource.getCurrentUserDataById(id).body()}")
         return checkResponse { profileDataSource.getCurrentUserDataById(id) }
     }
 
@@ -31,9 +30,6 @@ class UserRepository @Inject constructor(
         image: MultipartBody.Part?,
         bio: RequestBody
     ): Boolean {
-
-
-        Log.e("bk", "from repo: image part${image}")
         val response = profileDataSource.updateUserInfo(
             image = image,
             name = name,
@@ -42,30 +38,24 @@ class UserRepository @Inject constructor(
             place = place
         )
 
-        Log.e("bk", "response body: ${response.body()}")
         return response.body()?.status ?: false
     }
 
-
-//    suspend fun updateUerInfo(
-//        image: String,
-//        name: String,
-//        mobile: String,
-//        bio: String,
-//        place: String
-//    ): Boolean {
-//        val response  = profileDataSource.updateUserInfo(
-//            UpdateUserInfoRequest(
-//                image = image,
-//                name = name,
-//                mobile = mobile,
-//                bio = bio,
-//                place = place
-//            )
-//        )
-//        Log.e("bk", " name: $name, response code: ${response.code()}, response body: ${response.body()}, error body: ${response.errorBody()?.string()}")
-//        return response.body()?.status ?: false
-//    }
+    suspend fun resetPassword(
+        currentPassword: String,
+        newPassword: String,
+        confirmNewPassword: String
+    ) {
+        checkResponse {
+            profileDataSource.resetPassword(
+                request = ResetPasswordRequest(
+                    currentPassword = currentPassword,
+                    newPassword = newPassword,
+                    confirmNewPassword = confirmNewPassword
+                )
+            )
+        }
+    }
 
     suspend fun updateDarkTheme(isDarkTheme: Boolean) {
         dataStore.edit { preferences ->

@@ -1,5 +1,6 @@
 package com.example.ui.reset_password
 
+import com.example.ui.base.BaseUiState
 import com.example.ui.util.empty
 
 data class ResetPasswordUiState(
@@ -7,7 +8,8 @@ data class ResetPasswordUiState(
     val newPassword: String = String.empty(),
     val confirmNewPassword: String = String.empty(),
     val resetPasswordErrorUiState: ResetPasswordErrorUiState = ResetPasswordErrorUiState(),
-    val resetPasswordVisibilityUiState: ResetPasswordVisibilityUiState = ResetPasswordVisibilityUiState()
+    val resetPasswordVisibilityUiState: ResetPasswordVisibilityUiState = ResetPasswordVisibilityUiState(),
+    val baseUiState: BaseUiState = BaseUiState()
 )
 
 data class ResetPasswordErrorUiState (
