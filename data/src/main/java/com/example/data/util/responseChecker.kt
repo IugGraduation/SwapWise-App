@@ -2,15 +2,8 @@ package com.example.data.util
 
 import android.util.Log
 import com.example.data.model.response.ApiResponseDto
-import kotlinx.coroutines.delay
 import retrofit2.Response
 import java.net.UnknownHostException
-
-
-suspend fun <T> fakeCheckResponse(value: T): T? {
-    delay(500)
-    return value
-}
 
 
 suspend fun <T> checkResponse(function: suspend () -> Response<ApiResponseDto<T>>): T? {
