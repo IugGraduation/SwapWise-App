@@ -4,6 +4,7 @@ import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
+import com.example.data.source.remote.SearchRemoteDataSource
 import com.example.data.util.StatusAwareConverterFactory
 import com.example.data.util.TokenInterceptor
 import com.google.gson.Gson
@@ -59,6 +60,12 @@ object NetworkModule {
     @Provides
     fun provideHomeApiService(retrofit: Retrofit): HomeRemoteDataSource {
         return retrofit.create(HomeRemoteDataSource::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSearchApiService(retrofit: Retrofit): SearchRemoteDataSource {
+        return retrofit.create(SearchRemoteDataSource::class.java)
     }
 
 

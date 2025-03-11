@@ -47,7 +47,6 @@ class SearchViewModel @Inject constructor(
                     categoryItem = categoryItems[index],
                     selected = true,
                     onClick = { search() })
-                    .also { search() }
             } else {
                 ChipUiState(
                     categoryItem = categoryItems[index],
@@ -61,6 +60,8 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun search() {
+        if (_state.value.data.search.isBlank()) return
+
         tryToExecute(
             call = {
                 updateErrorMessage()
@@ -69,7 +70,6 @@ class SearchViewModel @Inject constructor(
                 }
                 val filterChips =
                     _state.value.data.filterChipsList.map { it.toChip() }
-//                    _state.value.data.filterChipsList.filter { it.selected }.map { it.text }
                 getSearchResultUseCase(_state.value.data.search, filterChips)
             },
             onSuccess = ::onSearchSuccess,
