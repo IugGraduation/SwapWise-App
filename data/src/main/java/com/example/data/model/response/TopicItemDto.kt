@@ -4,6 +4,8 @@ package com.example.data.model.response
 import com.google.gson.annotations.SerializedName
 
 data class TopicItemDto(
+    @SerializedName("uuid")
+    val uuid: String? = null,
     @SerializedName("image")
     val categoryImage: String? = null,
     @SerializedName("num_offers")
@@ -24,6 +26,4 @@ data class TopicItemDto(
     val userName: String? = null,
     @SerializedName("user_uuid")
     val userUuid: String? = null,
-    @SerializedName("uuid")
-    val uuid: String? = null,
 )
