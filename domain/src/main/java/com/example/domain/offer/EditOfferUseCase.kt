@@ -15,7 +15,7 @@ class EditOfferUseCase @Inject constructor(
     private val validateOfferUseCase: ValidatePostUseCase,
     private val offerRepository: OfferRepository
 ) {
-    suspend operator fun invoke(imageRequestBody: RequestBody, offerItem: OfferItem) {
+    suspend operator fun invoke(imageRequestBody: RequestBody?, offerItem: OfferItem) {
         validateOfferUseCase(
             title = offerItem.title,
             place = offerItem.place,
@@ -31,12 +31,13 @@ class EditOfferUseCase @Inject constructor(
 
         val offerUuid = offerItem.uuid.toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val image = MultipartBody.Part.createFormData(
-            "images[0]",
-            "IMG_${UUID.randomUUID()}.jpg",
-            imageRequestBody,
-        )
-
+        val image = imageRequestBody?.let {
+            MultipartBody.Part.createFormData(
+                "image",
+                "IMG_${UUID.randomUUID()}.jpg",
+                it,
+            )
+        }
 
         offerRepository.editOffer(
             image = image,

@@ -113,7 +113,13 @@ class AddOfferViewModel @Inject constructor(
 
     override fun onClickAdd() {
         tryToExecute(
-            call = { addOfferUseCase(uploadImageUseCase.getImageRequestBody(), args.postId, state.value.data.offerItem) },
+            call = {
+                addOfferUseCase(
+                    uploadImageUseCase.getImageRequestBody()!!,
+                    args.postId,
+                    state.value.data.offerItem
+                )
+            },
             onSuccess = { navigateUp() },
             onError = ::onAddOfferFail
         )

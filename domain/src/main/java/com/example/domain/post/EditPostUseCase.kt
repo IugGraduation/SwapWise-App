@@ -14,7 +14,7 @@ class EditPostUseCase @Inject constructor(
     private val validatePostUseCase: ValidatePostUseCase,
     private val postRepository: PostRepository
 ) {
-    suspend operator fun invoke(imageRequestBody: RequestBody, postItem: PostItem) {
+    suspend operator fun invoke(imageRequestBody: RequestBody?, postItem: PostItem) {
         validatePostUseCase(
             title = postItem.title,
             place = postItem.place,
@@ -37,13 +37,15 @@ class EditPostUseCase @Inject constructor(
         val status =
             (if (postItem.isOpen) "1" else "0").toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val imagePart2 = MultipartBody.Part.createFormData(
-            "images[0]",
-            "IMG_${UUID.randomUUID()}.jpg",
-            imageRequestBody,
-        )
+        val image = imageRequestBody?.let {
+            MultipartBody.Part.createFormData(
+                "images[0]",
+                "IMG_${UUID.randomUUID()}.jpg",
+                it,
+            )
+        }
 
-        val images: List<MultipartBody.Part> = listOf(imagePart2)
+        val images: List<MultipartBody.Part>? = if (image != null) listOf(image) else null
 
         postRepository.updatePost(
             images = images,

@@ -129,7 +129,7 @@ class AddPostViewModel @Inject constructor(
             call = {
                 addPostUseCase(
                     postItem = state.value.data.postItem,
-                    imageRequestBody = uploadImageUseCase.getImageRequestBody()
+                    imageRequestBody = uploadImageUseCase.getImageRequestBody()!!
                 )
             },
             onSuccess = { navigateUp() },

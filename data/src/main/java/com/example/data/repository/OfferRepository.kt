@@ -31,7 +31,7 @@ class OfferRepository(
         }
 
     suspend fun editOffer(
-        image: MultipartBody.Part,
+        image: MultipartBody.Part?,
         name: RequestBody,
         place: RequestBody,
         details: RequestBody,

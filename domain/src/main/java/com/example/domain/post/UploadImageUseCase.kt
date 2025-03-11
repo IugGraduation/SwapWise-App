@@ -23,7 +23,7 @@ class UploadImageUseCase @Inject constructor(
         imageRequestBody = bytes.toRequestBody("image/*".toMediaTypeOrNull())
     }
 
-    fun getImageRequestBody(): RequestBody{
-        return imageRequestBody ?: throw EmptyImageException()
+    fun getImageRequestBody(acceptNull: Boolean = false): RequestBody? {
+        return imageRequestBody ?: if (acceptNull) null else throw EmptyImageException()
     }
 }
