@@ -69,8 +69,7 @@ class SearchViewModel @Inject constructor(
                 updateData {
                     copy(topicsList = listOf())
                 }
-                val filterChips =
-                    _state.value.data.filterChipsList.map { it.toChip() }
+                val filterChips = _state.value.data.filterChipsList.map { it.toChip() }
                 getSearchResultUseCase(_state.value.data.search, filterChips)
             },
             onSuccess = ::onSearchSuccess,
@@ -80,14 +79,14 @@ class SearchViewModel @Inject constructor(
 
     private fun onSearchSuccess(data: List<PostItem>) {
         updateData {
-            copy(topicsList = data)
+            copy(topicsList = data, emptyResult = data.isEmpty())
         }
     }
 
     private fun onSearchFail(throwable: Throwable) {
         onActionFail(throwable)
         updateData {
-            copy(topicsList = listOf())
+            copy(topicsList = listOf(), emptyResult = true)
         }
     }
 

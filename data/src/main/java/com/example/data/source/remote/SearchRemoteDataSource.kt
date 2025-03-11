@@ -1,17 +1,18 @@
 package com.example.data.source.remote
 
 import com.example.data.model.response.ApiResponseDto
-import com.example.data.model.response.PostItemDto
+import com.example.data.model.response.TopicItemDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface SearchRemoteDataSource {
 
     @GET("search")
     suspend fun search(
         @Query("search") search: String,
-        @Query("categories_uuid") categoriesIds: List<String>?,
-    ): Response<ApiResponseDto<List<PostItemDto>>>
+        @QueryMap categoriesIds: Map<String, String>?
+    ): Response<ApiResponseDto<List<TopicItemDto>>>
 
 }

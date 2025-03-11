@@ -5,7 +5,7 @@ import com.example.data.util.checkResponse
 
 class SearchRepository(private val searchRemoteDataSource: SearchRemoteDataSource) {
 
-    suspend fun search(search: String, categoriesIds: List<String>?) =
+    suspend fun search(search: String, categoriesIds: Map<String, String>?) =
         checkResponse {
             searchRemoteDataSource.search(
                 search = search,

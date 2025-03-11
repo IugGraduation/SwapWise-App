@@ -113,10 +113,10 @@ fun SearchContent(
         VerticalSpacer(Spacing8)
         TitledChipsList(chipsList = state.data.filterChipsList)
         VerticalSpacer(Spacing16)
-        if (state.baseUiState.errorMessage.isNotEmpty()) {
-            EmptyContent(searchInteractions::onClickTryAgain)
-        } else if (state.baseUiState.isLoading) {
+        if (state.baseUiState.isLoading) {
             LoadingContent()
+        } else if (state.data.emptyResult) {
+            EmptyContent(searchInteractions::onClickTryAgain)
         } else {
             CustomLazyLayout(
                 items = state.data.topicsList,
