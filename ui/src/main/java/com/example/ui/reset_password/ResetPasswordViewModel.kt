@@ -1,6 +1,5 @@
 package com.example.ui.reset_password
 
-import android.util.Log
 import com.example.domain.exception.EmptyConfirmPasswordException
 import com.example.domain.exception.EmptyNewPasswordException
 import com.example.domain.exception.EmptyPasswordException
@@ -19,8 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ResetPasswordViewModel @Inject constructor(
     private val resetPasswordUseCase: ResetPasswordUseCase,
-    private val stringsResource: StringsResource,
-
+    private val stringsResource: StringsResource
     ) : BaseViewModel<ResetPasswordUiState, ResetPasswordEffect>(ResetPasswordUiState()),
     ResetPasswordInteraction {
 
@@ -127,7 +125,9 @@ class ResetPasswordViewModel @Inject constructor(
                 )
             }
 
-            else -> {updateData { copy(baseUiState = baseUiState.copy(errorMessage = throwable.message.toString())) }}
+            else -> {
+                updateData { copy(baseUiState = baseUiState.copy(errorMessage = throwable.message.toString())) }
+            }
         }
     }
 
