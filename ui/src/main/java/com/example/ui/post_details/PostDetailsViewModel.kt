@@ -19,7 +19,6 @@ class PostDetailsViewModel @Inject constructor(
 ) : BaseViewModel<PostItemUiState, PostDetailsEffects>(PostItemUiState()), PostDetailsInteractions {
     private val args = PostDetailsArgs(savedStateHandle)
 
-
     init {
         getPostDetails()
     }

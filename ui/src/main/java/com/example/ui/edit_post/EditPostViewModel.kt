@@ -36,11 +36,6 @@ class EditPostViewModel @Inject constructor(
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IEditPostInteractions {
     private val args = EditPostArgs(savedStateHandle)
 
-    override fun navigateUp() {
-        navigateTo(NavigateUpEffect.NavigateUp)
-    }
-
-
     init {
         getPostDetails()
     }
@@ -68,10 +63,15 @@ class EditPostViewModel @Inject constructor(
     private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
         val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
-                categoryItem = categoryItems[index], selected = false, onClick = ::onCategoryChange
+                categoryItem = categoryItems[index],
+                selected = state.value.data.postItem.favoriteCategoryItems.contains(categoryItems[index]),
+                onClick = ::onCategoryChange
             )
         }
-        val favoriteChipsList = chipsList.map { it.copy() }.onEach {
+        val favoriteChipsList =
+            chipsList.map { it.copy(categoryItem = it.categoryItem.copy(imageLink = "")) }.onEach {
+                it.selected =
+                    state.value.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
             it.onClick = ::onFavoriteCategoryChange
         }
         updateData {
@@ -179,6 +179,11 @@ class EditPostViewModel @Inject constructor(
             call = { deletePostUseCase(state.value.data.postItem.uuid) },
             onSuccess = { navigateUp() },
         )
+    }
+
+
+    override fun navigateUp() {
+        navigateTo(NavigateUpEffect.NavigateUp)
     }
 
 
