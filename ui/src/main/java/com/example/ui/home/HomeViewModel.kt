@@ -4,6 +4,7 @@ import com.example.domain.authentication.GetAuthUseCase
 import com.example.domain.home.GetHomeDataUseCase
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.Home
+import com.example.domain.model.PostItem
 import com.example.domain.model.TopicItem
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
@@ -24,9 +25,9 @@ class HomeViewModel @Inject constructor(
     override fun onClickGoToDetails(topicItem: TopicItem) {
         if (topicItem is CategoryItem) {
             navigateTo(HomeEffects.NavigateToSearchByCategory(topicItem.uuid))
-        } else {
+        } else if (topicItem is PostItem) {
             tryToExecute(
-                call = { return@tryToExecute topicItem.uuid == getAuthUseCase().userId },
+                call = { if (topicItem.user.uuid != getAuthUseCase().userId) throw Exception() },
                 onSuccess = { navigateTo(HomeEffects.NavigateToEditPost(topicItem.uuid)) },
                 onError = { navigateTo(HomeEffects.NavigateToPostDetails(topicItem.uuid)) },
             )

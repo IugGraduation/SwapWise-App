@@ -3,6 +3,7 @@ package com.example.ui.post_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.domain.authentication.GetAuthUseCase
+import com.example.domain.model.OfferItem
 import com.example.domain.model.PostItem
 import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
@@ -43,11 +44,11 @@ class PostDetailsViewModel @Inject constructor(
         navigateTo(PostDetailsEffects.NavigateToAddOffer)
     }
 
-    override fun navigateToOfferDetails(offerId: String) {
+    override fun navigateToOfferDetails(offerItem: OfferItem) {
         tryToExecute(
-            call = { return@tryToExecute offerId == getAuthUseCase().userId },
-            onSuccess = { navigateTo(PostDetailsEffects.NavigateToEditOffer(offerId)) },
-            onError = { navigateTo(PostDetailsEffects.NavigateToOfferDetails(offerId)) },
+            call = { if (offerItem.user.uuid != getAuthUseCase().userId) throw Exception() },
+            onSuccess = { navigateTo(PostDetailsEffects.NavigateToEditOffer(offerItem.uuid)) },
+            onError = { navigateTo(PostDetailsEffects.NavigateToOfferDetails(offerItem.uuid)) },
         )
     }
 

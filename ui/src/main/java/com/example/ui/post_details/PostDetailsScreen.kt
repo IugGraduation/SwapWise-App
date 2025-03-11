@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
+import com.example.domain.model.OfferItem
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.add_offer.navigateToAddOffer
@@ -133,15 +134,15 @@ fun PostDetailsContent(
                 )
                 VerticalSpacer(Spacing8)
             }
-            items(state.data.postItem.offers) { offer ->
+            items(state.data.postItem.offers) { offerItem ->
                 PostCard(
-                    username = offer.user.name,
-                    userImage = rememberAsyncImagePainter(offer.user.imageLink),
-                    title = offer.title,
+                    username = offerItem.user.name,
+                    userImage = rememberAsyncImagePainter(offerItem.user.imageLink),
+                    title = offerItem.title,
                     isPostCard = false,
-                    details = offer.details,
-                    postImage = rememberAsyncImagePainter(offer.imageLink),
-                    onCardClick = { postDetailsInteractions.navigateToOfferDetails(offer.uuid) }
+                    details = offerItem.details,
+                    postImage = rememberAsyncImagePainter(offerItem.imageLink),
+                    onCardClick = { postDetailsInteractions.navigateToOfferDetails(offerItem) }
                 )
             }
 
@@ -209,7 +210,7 @@ fun PreviewPostDetailsContent() {
             state = MyUiState(PostItemUiState(postItem = GetFakePostDetailsUseCase()())),
             postDetailsInteractions = object : PostDetailsInteractions {
                 override fun navigateToAddOffer() {}
-                override fun navigateToOfferDetails(offerId: String) {}
+                override fun navigateToOfferDetails(offerItem: OfferItem) {}
                 override fun navigateUp() {}
             },
         )

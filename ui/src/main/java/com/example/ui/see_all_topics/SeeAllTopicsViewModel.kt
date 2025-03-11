@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.domain.authentication.GetAuthUseCase
 import com.example.domain.home.SeeAllTopicsUseCase
 import com.example.domain.model.CategoryItem
+import com.example.domain.model.PostItem
 import com.example.domain.model.TopicItem
 import com.example.domain.model.TopicsHolder
 import com.example.ui.base.BaseViewModel
@@ -36,9 +37,9 @@ class SeeAllTopicsViewModel @Inject constructor(
     override fun onClickGoToDetails(topicItem: TopicItem) {
         if (topicItem    is CategoryItem) {
             navigateTo(SeeAllTopicsEffects.NavigateToSearchByCategory(topicItem.uuid))
-        } else {
+        } else if (topicItem is PostItem) {
             tryToExecute(
-                call = { return@tryToExecute topicItem.uuid == getAuthUseCase().userId },
+                call = { if (topicItem.user.uuid != getAuthUseCase().userId) throw Exception() },
                 onSuccess = { navigateTo(SeeAllTopicsEffects.NavigateToEditPost(topicItem.uuid)) },
                 onError = { navigateTo(SeeAllTopicsEffects.NavigateToPostDetails(topicItem.uuid)) },
             )
