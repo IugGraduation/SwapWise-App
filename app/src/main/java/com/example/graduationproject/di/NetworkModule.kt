@@ -2,6 +2,7 @@ package com.example.graduationproject.di
 
 import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
+import com.example.data.source.remote.NotificationsRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import com.example.data.source.remote.SearchRemoteDataSource
@@ -66,6 +67,12 @@ object NetworkModule {
     @Provides
     fun provideSearchApiService(retrofit: Retrofit): SearchRemoteDataSource {
         return retrofit.create(SearchRemoteDataSource::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationsApiService(retrofit: Retrofit): NotificationsRemoteDataSource {
+        return retrofit.create(NotificationsRemoteDataSource::class.java)
     }
 
 
