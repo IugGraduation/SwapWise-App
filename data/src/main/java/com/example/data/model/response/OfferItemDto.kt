@@ -16,6 +16,8 @@ data class OfferItemDto(
     val userImage: String? = null,
     @SerializedName("user_name")
     val userName: String? = null,
+    @SerializedName("user_uuid")
+    val userUuid: String? = null,
     @SerializedName("uuid")
     val uuid: String? = null,
     @SerializedName("mobile")

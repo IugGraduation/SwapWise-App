@@ -21,7 +21,8 @@ data class OfferItem(
                 user = User(
                     name = offerItemDto.userName ?: "",
                     imageLink = offerItemDto.userImage ?: "",
-                    phone = offerItemDto.mobile ?: ""
+                    phone = offerItemDto.mobile ?: "",
+                    uuid = offerItemDto.userUuid ?: "",
                 ),
                 imageLink = offerItemDto.image ?: "",
                 title = offerItemDto.title ?: "",
