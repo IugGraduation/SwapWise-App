@@ -72,11 +72,14 @@ class EditPostViewModel @Inject constructor(
                 onClick = ::onCategoryChange
             )
         }
-        val favoriteChipsList =
-            chipsList.map { it.copy(categoryItem = it.categoryItem.copy(imageLink = "")) }.onEach {
-                it.selected.value =
+        val favoriteChipsList = chipsList.map {
+            it.copy(
+                categoryItem = it.categoryItem.copy(imageLink = ""),
+                selected = mutableStateOf(
                     state.value.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
-            it.onClick = ::onFavoriteCategoryChange
+                ),
+                onClick = ::onFavoriteCategoryChange
+            )
         }
         updateData {
             copy(chipsList = chipsList, favoriteChipsList = favoriteChipsList)

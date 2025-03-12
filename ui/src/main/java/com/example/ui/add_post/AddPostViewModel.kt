@@ -57,8 +57,11 @@ class AddPostViewModel @Inject constructor(
                 onClick = ::onCategoryChange
             )
         }
-        val favoriteChipsList = chipsList.map { it.copy() }.onEach {
-            it.onClick = ::onFavoriteCategoryChange
+        val favoriteChipsList = chipsList.map {
+            it.copy(
+                selected = mutableStateOf(false),
+                onClick = ::onFavoriteCategoryChange
+            )
         }
         updateData {
             copy(chipsList = chipsList, favoriteChipsList = favoriteChipsList)
