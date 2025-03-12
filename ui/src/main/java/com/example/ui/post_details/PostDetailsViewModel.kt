@@ -19,7 +19,7 @@ class PostDetailsViewModel @Inject constructor(
 ) : BaseViewModel<PostItemUiState, PostDetailsEffects>(PostItemUiState()), PostDetailsInteractions {
     private val args = PostDetailsArgs(savedStateHandle)
 
-    init {
+    fun onResume() {
         getPostDetails()
     }
 
@@ -27,6 +27,7 @@ class PostDetailsViewModel @Inject constructor(
         tryToExecute(
             call = { getPostDetailsUseCase(args.postId) },
             onSuccess = ::onGetPostDetailsSuccess,
+            shouldLoad = _state.value.data.postItem.uuid.isBlank()
         )
     }
 

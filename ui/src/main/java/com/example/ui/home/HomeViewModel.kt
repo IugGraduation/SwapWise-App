@@ -14,16 +14,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    getHomeDataUseCase: GetHomeDataUseCase,
+    private val getHomeDataUseCase: GetHomeDataUseCase,
     private val getAuthUseCase: GetAuthUseCase,
     private val getPostsFromCategoryUseCase: GetPostsFromCategoryUseCase,
 ) :
     BaseViewModel<HomeUiState, HomeEffects>(HomeUiState()), IHomeInteractions {
 
-    init {
+    fun onResume() {
         tryToExecute(
             call = { getHomeDataUseCase() },
             onSuccess = ::onGetHomeDataSuccess,
+            shouldLoad = _state.value.data.user.name.isBlank()
         )
     }
 

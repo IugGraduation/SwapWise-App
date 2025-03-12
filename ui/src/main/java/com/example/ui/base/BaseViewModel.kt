@@ -33,10 +33,11 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
         call: suspend () -> T,
         onSuccess: (T) -> Unit = {},
         onError: (Throwable) -> Unit = ::onActionFail,
+        shouldLoad: Boolean = true,
         dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
         viewModelScope.launch(dispatcher) {
-            isActionLoading(true)
+            isActionLoading(shouldLoad)
             try {
                 call().also(onSuccess)
                 isActionLoading(false)
