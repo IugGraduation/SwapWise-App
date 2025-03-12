@@ -58,28 +58,27 @@ fun OfferDetailsScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val phone = state.data.offerItem.user.phone
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 OfferDetailsEffects.NavigateToPhone -> {
                     val intent = Intent(Intent.ACTION_DIAL).apply {
-                        data = Uri.parse("tel:$phone")
+                        data = Uri.parse("tel:${state.data.offerItem.user.phone}")
                     }
                     context.startActivity(intent)
                 }
 
                 OfferDetailsEffects.NavigateToWhatsapp -> {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("https://wa.me/$phone")
+                        data = Uri.parse("https://wa.me/${state.data.offerItem.user.phone}")
                     }
                     context.startActivity(intent)
                 }
 
                 OfferDetailsEffects.NavigateToMessages -> {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("sms:$phone")
+                        data = Uri.parse("sms:${state.data.offerItem.user.phone}")
                     }
                     context.startActivity(intent)
                 }

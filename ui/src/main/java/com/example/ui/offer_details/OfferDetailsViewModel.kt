@@ -1,5 +1,6 @@
 package com.example.ui.offer_details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.OfferItem
@@ -19,6 +20,25 @@ class OfferDetailsViewModel @Inject constructor(
     OfferDetailsInteractions {
     private val args = OfferDetailsArgs(savedStateHandle)
 
+    init {
+        viewModelScope.launch {
+            getOfferDetails()
+            Log.e("TAG", "offer details viewmodel: ${state.value.data}")
+        }
+    }
+
+    private fun getOfferDetails() {
+        tryToExecute(
+            call = { getOfferDetailsUseCase(args.offerId) },
+            onSuccess = ::onGetOfferDetailsSuccess,
+        )
+    }
+
+    private fun onGetOfferDetailsSuccess(data: OfferItem) {
+        _state.value = MyUiState(OfferItemUiState(offerItem = data))
+    }
+
+
     override fun navigateUp() {
         navigateTo(OfferDetailsEffects.NavigateUp)
     }
@@ -35,21 +55,4 @@ class OfferDetailsViewModel @Inject constructor(
         navigateTo(OfferDetailsEffects.NavigateToMessages)
     }
 
-
-    init {
-        viewModelScope.launch {
-            getOfferDetails()
-        }
-    }
-
-    private fun getOfferDetails() {
-        tryToExecute(
-            call = { getOfferDetailsUseCase(args.offerId) },
-            onSuccess = ::onGetOfferDetailsSuccess,
-        )
-    }
-
-    private fun onGetOfferDetailsSuccess(data: OfferItem) {
-        _state.value = MyUiState(OfferItemUiState(offerItem = data))
-    }
 }
