@@ -127,7 +127,8 @@ fun PostDetailsContent(
                                     it
                                 )
                             ),
-                            onClick = {})
+                            clickable = false
+                        )
                     }
                 )
                 VerticalSpacer(Spacing24)
