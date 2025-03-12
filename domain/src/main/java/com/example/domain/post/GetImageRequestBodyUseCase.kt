@@ -14,6 +14,9 @@ class GetImageRequestBodyUseCase @Inject constructor(
     @ApplicationContext private val applicationContext: Context,
 ) {
     operator fun invoke(uri: Uri, acceptNull: Boolean = false): RequestBody? {
+        if (uri.scheme == "http" || uri.scheme == "https") {
+            return if (acceptNull) null else throw EmptyImageException()
+        }
         val contentResolver = applicationContext.contentResolver
         val inputStream = contentResolver.openInputStream(uri)
         val bytes = inputStream?.readBytes()
