@@ -148,7 +148,10 @@ fun PostDetailsContent(
                     isPostCard = false,
                     details = offerItem.details,
                     postImage = rememberAsyncImagePainter(offerItem.imageLink),
-                    onCardClick = { postDetailsInteractions.navigateToOfferDetails(offerItem) }
+                    onCardClick = { postDetailsInteractions.navigateToOfferDetails(offerItem) },
+                    modifier = Modifier
+                        .padding(horizontal = Spacing16)
+                        .padding(bottom = Spacing8)
                 )
             }
 
