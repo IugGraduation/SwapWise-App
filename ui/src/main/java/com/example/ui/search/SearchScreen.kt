@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.category.GetFakeCategoriesUseCase
+import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout
@@ -35,6 +36,7 @@ import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.MainTitledScreenTemplate
+import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.ChipUiState
 import com.example.ui.post_details.navigateToPostDetails
@@ -67,6 +69,7 @@ fun SearchScreen(
         searchViewModel.effect.collect { effect ->
             when (effect) {
                 is SearchEffects.NavigateToPostDetails -> navController.navigateToPostDetails(effect.postId)
+                is SearchEffects.NavigateToEditPost -> navController.navigateToEditPost(effect.postId)
             }
         }
     }
@@ -122,7 +125,7 @@ fun SearchContent(
                 items = state.data.topicsList,
                 isCategoryCard = false,
                 isHorizontalLayout = false,
-                onClickGoToDetails = { item -> searchInteractions.navigateToPostDetails(item.uuid) }
+                onClickGoToDetails = { item -> searchInteractions.navigateToPostDetails(item as PostItem) }
             )
         }
     }
@@ -183,7 +186,7 @@ fun PreviewSearchContent() {
             searchInteractions = object : ISearchInteractions {
                 override fun onSearchChange(newValue: String) {}
                 override fun onClickTryAgain() {}
-                override fun navigateToPostDetails(postId: String) {}
+                override fun navigateToPostDetails(postItem: PostItem) {}
             }
         )
     }

@@ -35,7 +35,7 @@ class SeeAllTopicsViewModel @Inject constructor(
 
 
     override fun onClickGoToDetails(topicItem: TopicItem) {
-        if (topicItem    is CategoryItem) {
+        if (topicItem is CategoryItem) {
             navigateTo(SeeAllTopicsEffects.NavigateToSearchByCategory(topicItem.uuid))
         } else if (topicItem is PostItem) {
             tryToExecute(
