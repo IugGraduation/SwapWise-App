@@ -2,6 +2,7 @@ package com.example.ui.edit_offer
 
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
@@ -12,7 +13,7 @@ import com.example.domain.model.OfferItem
 import com.example.domain.offer.DeleteOfferUseCase
 import com.example.domain.offer.EditOfferUseCase
 import com.example.domain.offer.GetOfferDetailsUseCase
-import com.example.domain.post.UploadImageUseCase
+import com.example.domain.post.GetImageRequestBodyUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.base.NavigateUpEffect
@@ -30,7 +31,7 @@ class EditOfferViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getOfferDetailsUseCase: GetOfferDetailsUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val uploadImageUseCase: UploadImageUseCase,
+    private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
     private val editOfferUseCase: EditOfferUseCase,
     private val deleteOfferUseCase: DeleteOfferUseCase,
 ) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IEditOfferInteractions {
@@ -118,7 +119,6 @@ class EditOfferViewModel @Inject constructor(
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
         updateOfferItem { copy(imageLink = selectedImageUri.toString()) }
-        uploadImageUseCase(selectedImageUri)
     }
 
     fun onCategoryChange(categoryItem: CategoryItem) {
@@ -131,7 +131,7 @@ class EditOfferViewModel @Inject constructor(
         tryToExecute(
             call = {
                 editOfferUseCase(
-                    uploadImageUseCase.getImageRequestBody(true),
+                    getImageRequestBodyUseCase(state.value.data.offerItem.imageLink.toUri(), true),
                     state.value.data.offerItem
                 )
             },

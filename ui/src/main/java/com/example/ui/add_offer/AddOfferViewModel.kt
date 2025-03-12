@@ -2,6 +2,7 @@ package com.example.ui.add_offer
 
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.EmptyImageException
@@ -11,7 +12,7 @@ import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.OfferItem
 import com.example.domain.offer.AddOfferUseCase
-import com.example.domain.post.UploadImageUseCase
+import com.example.domain.post.GetImageRequestBodyUseCase
 import com.example.ui.add_post.IAddPostInteractions
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.NavigateUpEffect
@@ -28,7 +29,7 @@ class AddOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
     private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val uploadImageUseCase: UploadImageUseCase,
+    private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
     private val addOfferUseCase: AddOfferUseCase,
 ) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IAddPostInteractions {
 
@@ -103,7 +104,6 @@ class AddOfferViewModel @Inject constructor(
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
         updatePostItem { copy(imageLink = selectedImageUri.toString()) }
-        uploadImageUseCase(selectedImageUri)
     }
 
     fun onCategoryChange(categoryItem: CategoryItem) {
@@ -116,7 +116,7 @@ class AddOfferViewModel @Inject constructor(
         tryToExecute(
             call = {
                 addOfferUseCase(
-                    uploadImageUseCase.getImageRequestBody()!!,
+                    getImageRequestBodyUseCase(state.value.data.offerItem.imageLink.toUri())!!,
                     args.postId,
                     state.value.data.offerItem
                 )

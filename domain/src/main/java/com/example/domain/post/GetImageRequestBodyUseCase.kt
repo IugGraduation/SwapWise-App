@@ -10,20 +10,15 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 
-class UploadImageUseCase @Inject constructor(
+class GetImageRequestBodyUseCase @Inject constructor(
     @ApplicationContext private val applicationContext: Context,
 ) {
-    private var imageRequestBody:  RequestBody? = null
-
-    operator fun invoke(uri: Uri) {
+    operator fun invoke(uri: Uri, acceptNull: Boolean = false): RequestBody? {
         val contentResolver = applicationContext.contentResolver
         val inputStream = contentResolver.openInputStream(uri)
-        val bytes = inputStream?.readBytes() ?: return
+        val bytes = inputStream?.readBytes()
 
-        imageRequestBody = bytes.toRequestBody("image/*".toMediaTypeOrNull())
-    }
-
-    fun getImageRequestBody(acceptNull: Boolean = false): RequestBody? {
+        val imageRequestBody = bytes?.toRequestBody("image/*".toMediaTypeOrNull())
         return imageRequestBody ?: if (acceptNull) null else throw EmptyImageException()
     }
 }
