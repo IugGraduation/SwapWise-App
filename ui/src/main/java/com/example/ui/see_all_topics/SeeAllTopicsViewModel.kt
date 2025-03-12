@@ -48,7 +48,7 @@ class SeeAllTopicsViewModel @Inject constructor(
             tryToExecute(
                 call = { getPostsFromCategoryUseCase(topicItem.uuid, topicItem.title) },
                 onSuccess = {
-                    navigateTo(
+                    sendUiEffect(
                         SeeAllTopicsEffects.NavigateSeeAllTopics(
                             topicItem.uuid,
                             topicItem.title
@@ -60,13 +60,13 @@ class SeeAllTopicsViewModel @Inject constructor(
         } else if (topicItem is PostItem) {
             tryToExecute(
                 call = { if (topicItem.user.uuid != getAuthUseCase().userId) throw Exception() },
-                onSuccess = { navigateTo(SeeAllTopicsEffects.NavigateToEditPost(topicItem.uuid)) },
-                onError = { navigateTo(SeeAllTopicsEffects.NavigateToPostDetails(topicItem.uuid)) },
+                onSuccess = { sendUiEffect(SeeAllTopicsEffects.NavigateToEditPost(topicItem.uuid)) },
+                onError = { sendUiEffect(SeeAllTopicsEffects.NavigateToPostDetails(topicItem.uuid)) },
             )
         }
     }
 
     override fun navigateUp() {
-        navigateTo(SeeAllTopicsEffects.NavigateUp)
+        sendUiEffect(SeeAllTopicsEffects.NavigateUp)
     }
 }

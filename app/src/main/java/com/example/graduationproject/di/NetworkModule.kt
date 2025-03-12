@@ -6,6 +6,7 @@ import com.example.data.source.remote.NotificationsRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import com.example.data.source.remote.SearchRemoteDataSource
+import com.example.data.source.remote.ProfileDataSource
 import com.example.data.util.StatusAwareConverterFactory
 import com.example.data.util.TokenInterceptor
 import com.google.gson.Gson
@@ -18,10 +19,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
     @Singleton
     @Provides
     fun provideRetrofit(tokenInterceptor: TokenInterceptor): Retrofit {
@@ -73,6 +74,12 @@ object NetworkModule {
     @Provides
     fun provideNotificationsApiService(retrofit: Retrofit): NotificationsRemoteDataSource {
         return retrofit.create(NotificationsRemoteDataSource::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideProfileApiService(retrofit: Retrofit): ProfileDataSource {
+        return retrofit.create(ProfileDataSource::class.java)
     }
 
 

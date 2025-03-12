@@ -53,11 +53,11 @@ class SignupViewModel @Inject constructor(
     }
 
     override fun navigateToLogin() {
-        navigateTo(SignupEffects.NavigateToLogin)
+        sendUiEffect(SignupEffects.NavigateToLogin)
     }
 
     private fun navigateToOtp() {
-        navigateTo(SignupEffects.NavigateToOtp)
+        sendUiEffect(SignupEffects.NavigateToOtp)
     }
 
     private fun onSignupFail(throwable: Throwable) {

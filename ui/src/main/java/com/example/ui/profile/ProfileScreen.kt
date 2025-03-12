@@ -17,11 +17,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,16 +42,23 @@ import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
 import com.example.ui.components.atoms.SwapWiseSwitch
 import com.example.ui.components.atoms.SwapWiseTextField
+import com.example.ui.components.atoms.TransparentStatusBar
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PostCard
+import com.example.ui.components.templates.BottomBarTemplate
+import com.example.ui.login.navigateToLogin
+import com.example.ui.models.BottomBarUiState
 import com.example.ui.profile.composable.EditIconButton
 import com.example.ui.profile.composable.GradientCircleBackground
+import com.example.ui.profile.composable.ProfileDialog
 import com.example.ui.profile.composable.ProfileHorizontalPager
 import com.example.ui.profile.composable.ProfileImage
 import com.example.ui.profile.composable.ProfileToggle
 import com.example.ui.profile.composable.SettingsRow
 import com.example.ui.profile.composable.UserActivitiesBar
 import com.example.ui.profile.composable.VerticalBoldAndLightText
+import com.example.ui.reset_password.navigateToResetPassword
+import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GradientCircleBackgroundSize
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -57,121 +66,155 @@ import com.example.ui.theme.Spacing40
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles.headingExtraLarge
 import com.example.ui.theme.color
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.example.ui.util.CollectUiEffect
 
 @Composable
 fun ProfileScreen(
     navController: NavController,
     viewModel: ProfileViewModel = hiltViewModel(),
+    bottomNavigationViewModel: BottomNavigationViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val pagerState = rememberPagerState(
-        initialPage = 0,
-        pageCount = { 3 },
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 },)
+    val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
+    val bottomBarState = BottomBarUiState(
+        selectedItem = selectedItem,
+        onItemSelected = bottomNavigationViewModel::onItemSelected,
+        navController = navController
     )
 
-    LaunchedEffect(pagerState.currentPage) {
-        viewModel.updatePagerNumber(pagerState.currentPage)
+    LaunchedEffect(pagerState.currentPage) { viewModel.updatePagerNumber(pagerState.currentPage) }
+
+    CollectUiEffect(viewModel.effect) { effect ->
+        when(effect){
+            ProfileEffect.NavigateToLoginScreen -> navController.navigateToLogin{
+                popUpTo(navController.graph.startDestinationId) { inclusive = true }
+            }
+
+            ProfileEffect.NavigateToResetPassword -> {
+                navController.navigateToResetPassword()
+            }
+        }
+
     }
 
-    ProfileContent(
-        state = state,
-        profileInteraction = viewModel,
-        pagerState = pagerState
-    )
+    if (!state.baseUiState.isLoading) {
+        ProfileContent(
+            state = state,
+            profileInteraction = viewModel,
+            pagerState = pagerState,
+            bottomBarState = bottomBarState
+        )
+    } else {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator(color = MaterialTheme.color.primary)
+        }
+    }
+
 }
 
 @Composable
 private fun ProfileContent(
     state: MyUiState<ProfileUiState>,
     profileInteraction: ProfileInteraction,
-    pagerState: PagerState
+    pagerState: PagerState,
+    bottomBarState: BottomBarUiState,
 ) {
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(color = MaterialTheme.color.transparent, darkIcons = false)
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxHeight()
-            .background(MaterialTheme.color.background)
-    ) {
-        item {
-            Box {
-                GradientCircleBackground(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(GradientCircleBackgroundSize)
-                )
+    TransparentStatusBar()
 
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(Spacing24),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = Spacing16, vertical = Spacing40)
-                ) {
-                    Row(
+    BottomBarTemplate(bottomBarState = bottomBarState) {
+        LazyColumn(modifier = Modifier.fillMaxHeight().background(MaterialTheme.color.background)) {
+            item {
+                Box {
+                    GradientCircleBackground(
+                        modifier = Modifier.fillMaxWidth().height(GradientCircleBackgroundSize)
+                    )
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(Spacing24),
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = Spacing24),
-                        verticalAlignment = Alignment.Top,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                            .fillMaxSize()
+                            .padding(horizontal = Spacing16, vertical = Spacing40)
                     ) {
-                        Text(
-                            text = stringResource(R.string.profile),
-                            color = MaterialTheme.color.background,
-                            style = headingExtraLarge,
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = Spacing24),
+                            verticalAlignment = Alignment.Top,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = stringResource(R.string.profile),
+                                color = MaterialTheme.color.background,
+                                style = headingExtraLarge,
+                            )
+
+                            AnimatedVisibility(pagerState.currentPage == 0) {
+                                EditIconButton(onClick = profileInteraction::onEditButtonClicked)
+                            }
+                        }
+
+                        ProfileImage(
+                            modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+                            state = state.data,
+                            onImageChangeClick = profileInteraction::onUpdateProfileImage
                         )
 
-                        AnimatedVisibility(pagerState.currentPage == 0) {
-                            EditIconButton(onClick = profileInteraction::onEditButtonClicked)
-                        }
+                        VerticalBoldAndLightText(
+                            modifier = Modifier.padding(top = Spacing16),
+                            boldText = state.data.profileInformationUiState.name,
+                            boldStyle = headingExtraLarge,
+                            lightText = state.data.profileInformationUiState.bio
+                        )
+
+                        UserActivitiesBar(
+                            postsNumber = state.data.profileInformationUiState.postsNumber,
+                            offersNumber = state.data.profileInformationUiState.offersNumber,
+                            exchangesNumber = state.data.profileInformationUiState.exchangesNumber
+                        )
+
+                        ProfileToggle(pagerState = pagerState)
+
+                        ProfileHorizontalPager(
+                            pagerState = pagerState,
+                            informationContent = {
+                                UserInformationSection(
+                                    state = state.data, profileInteraction = profileInteraction,
+                                )
+                            },
+
+                            postsContent = { UserPostsSection(state = state.data) },
+
+                            settingsContent = {
+                                SettingsSection(
+                                    state = state.data,
+                                    interaction = profileInteraction
+                                )
+                            }
+                        )
                     }
-
-                    ProfileImage(
-                        modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-                        state = state.data,
-                        onImageChangeClick = profileInteraction::onUpdateProfileImage
-                    )
-
-                    VerticalBoldAndLightText(
-                        modifier = Modifier.padding(top = Spacing16),
-                        boldText = state.data.profileInformationUiState.name,
-                        boldStyle = headingExtraLarge,
-                        lightText = state.data.profileInformationUiState.bio
-                    )
-
-                    UserActivitiesBar(
-                        postsNumber = state.data.profileInformationUiState.postsNumber,
-                        offersNumber = state.data.profileInformationUiState.offersNumber,
-                        exchangesNumber = state.data.profileInformationUiState.exchangesNumber
-                    )
-
-                    ProfileToggle(pagerState = pagerState)
-
-                    ProfileHorizontalPager(
-                        pagerState = pagerState,
-                        informationContent = {
-                            UserInformationSection(
-                                state = state.data, profileInteraction = profileInteraction,
-                            )
-                        },
-
-                        postsContent = { UserPostsSection(state = state.data) },
-
-                        settingsContent = {
-                            SettingsSection(
-                                onResetPasswordClick = {},
-                                onChangeLanguageClick = {},
-                                onLogOutClick = {},
-                                state = state.data,
-                                interaction = profileInteraction,
-                            )
-                        }
-                    )
                 }
             }
         }
     }
+
+    AnimatedVisibility(state.data.profileSettingsUiState.showLogoutDialog) {
+        ProfileDialog(
+            title = stringResource(R.string.logout_title),
+            text = stringResource(R.string.logout_content_message),
+            onDismissButtonClick = { profileInteraction.onUpdateLogoutDialogState(false) },
+            onConfirmButtonClick = {
+                profileInteraction.onUpdateLogoutDialogState(false)
+                profileInteraction.onLogoutClicked()
+            }
+        )
+    }
+
 }
 
 @Composable
@@ -190,7 +233,7 @@ private fun UserInformationSection(
         SwapWiseTextField(
             value = state.profileInformationUiState.name,
             onValueChange = profileInteraction::onUsernameChange,
-            placeholder = stringResource(R.string.phone_number),
+            placeholder = stringResource(R.string.full_name),
             errorMessage = state.profileError.userNameErrorMessage,
             isEditable = isUserInfoEditable,
             leadingIcon = {
@@ -296,11 +339,8 @@ private fun UserPostsSection(modifier: Modifier = Modifier, state: ProfileUiStat
 
 @Composable
 private fun SettingsSection(
-    onResetPasswordClick: () -> Unit,
-    onChangeLanguageClick: () -> Unit,
-    onLogOutClick: () -> Unit,
-    modifier: Modifier = Modifier,
     state: ProfileUiState,
+    modifier: Modifier = Modifier,
     interaction: ProfileInteraction,
 ) {
     Column(
@@ -321,20 +361,20 @@ private fun SettingsSection(
         )
         SettingsRow(
             title = stringResource(R.string.reset_Password),
-            onRowClick = onResetPasswordClick,
+            onRowClick = interaction::onResetPasswordClicked,
             leadingIconResource = painterResource(R.drawable.ic_reset_password),
         )
 
         SettingsRow(
             title = stringResource(R.string.language),
-            onRowClick = onChangeLanguageClick,
+            onRowClick = interaction::onChangeLanguageClicked,
             leadingIconResource = painterResource(R.drawable.ic_language),
         )
 
         SettingsRow(
             title = stringResource(R.string.log_out),
             contentColor = MaterialTheme.color.danger,
-            onRowClick = onLogOutClick,
+            onRowClick = { interaction.onUpdateLogoutDialogState(showDialog = true) },
             leadingIconResource = painterResource(R.drawable.ic_logout),
         )
 

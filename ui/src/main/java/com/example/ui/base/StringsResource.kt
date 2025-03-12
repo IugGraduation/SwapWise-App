@@ -10,15 +10,22 @@ interface StringsResource {
     val globalMessageError: String
     val enterValidEmailAddress: String
     val invalidEmailOrPassword: String
-    val invalidPassword: String
     val invalidBestBarterSpot: String
     val failedEmailWhenEmpty: String
     val failedFullNameWhenEmpty: String
     val invalidUsername: String
     val invalidEmail: String
-    val passwordMismatch: String
     val invalidTitle: String
     val invalidPlace: String
     val invalidDetails: String
     val emptyImageMessage: String
+    val passwordMismatch: String
+    val invalidPassword: String
+    val invalidNewPassword: String
+    val invalidConfirmPassword: String
+    val emptyPassword: String
+    val emptyNewPassword: String
+    val emptyConfirmPassword: String
+    val sameConfirmPassword: String
+
 }

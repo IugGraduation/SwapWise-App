@@ -1,13 +1,18 @@
 package com.example.ui.profile
 
 import android.net.Uri
+import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
 import com.example.domain.exception.InvalidUsernameException
+import com.example.domain.model.PostItem
+import com.example.domain.post.UploadImageUseCase
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.domain.profile.GetCurrentUserDataUseCase
-import com.example.domain.profile.ValidateUserInfoUseCase
+import com.example.domain.profile.GetCurrentUserPostsUseCase
+import com.example.domain.profile.UpdateUserInfoUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
 import com.example.ui.util.empty
@@ -20,60 +25,66 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val stringsResource: StringsResource,
-    private val getCurrentUserData: GetCurrentUserDataUseCase,
+    private val getCurrentUserDataUseCase: GetCurrentUserDataUseCase,
+    private val getCurrentUserPostsUseCase: GetCurrentUserPostsUseCase,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
-    private val validateUserInfoUseCase: ValidateUserInfoUseCase,
-) : BaseViewModel<ProfileUiState, Nothing>(ProfileUiState()), ProfileInteraction {
+    private val updateUserInfoUseCase: UpdateUserInfoUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
+) : BaseViewModel<ProfileUiState, ProfileEffect>(ProfileUiState()), ProfileInteraction {
 
-    private val originalProfileInformation: ProfileUiState by lazy {
-        getCurrentUserInfo()
-    }
+    private lateinit var originalProfileInformation: ProfileInformationUiState
 
     init {
-        updateData {
-            copy(
-                profileInformationUiState = originalProfileInformation.profileInformationUiState,
-                userPosts = originalProfileInformation.userPosts
-            )
-        }
-
         viewModelScope.launch { isDarkTheme() }
+        getCurrentUserInfo()
+        getCurrentUserPosts()
     }
 
-    private fun getCurrentUserInfo(): ProfileUiState {
-        //todo: get current user information from api
-        val postItem = PostItemUiState(
-            id = 6344,
-            username = "Kellie Bentley",
-            userImageLink = "https://media.istockphoto.com/id/1384257150/photo/stylish-compositon-of-modern-living-room-interior-with-frotte-armchair-wooden-commode-side.jpg?s=612x612&w=0&k=20&c=oYzzcYlPTEvDijxTd9CPMlRT6pIRlXTBU7VIJKsF4m8=",
-            postImageLink = "https://media.istockphoto.com/id/1384257150/photo/stylish-compositon-of-modern-living-room-interior-with-frotte-armchair-wooden-commode-side.jpg?s=612x612&w=0&k=20&c=oYzzcYlPTEvDijxTd9CPMlRT6pIRlXTBU7VIJKsF4m8=",
-            isThePostOpen = false,
-            postTitle = "A Sturdy Office Chair for Your Offer",
-            postDescription = "I have a comfortable and sturdy office chair in great condition that I’m looking to trade. It’s ergonomic, adjustable, and perfect for home offices or study spaces.",
-            offersNumber = 95
+    private fun getCurrentUserInfo() {
+        tryToExecute(
+            call = { getCurrentUserDataUseCase(getCurrentUserDataUseCase.getCurrentUserId()).toProfileUiState() },
+            onSuccess = ::onGetCurrentUserSuccess,
+            onError = ::onGetCurrentUserFail
         )
+    }
 
-        return ProfileUiState(
-            profileInformationUiState = ProfileInformationUiState(
-                imageUrl = "https://www.google.com/#q=non",
-                name = "Ines Wyatt",
-                phoneNumber = "(804) 890-6202",
-                postsNumber = "29",
-                location = "putent",
-                bio = "justo, justo, justo",
-                offersNumber = "55",
-                exchangesNumber = "12",
-                isUserInfoEditable = false,
-            ),
-            userPosts = listOf(postItem, postItem, postItem, postItem)
+    private fun onGetCurrentUserSuccess(user: ProfileUiState) {
+        updateData { copy(profileInformationUiState = user.profileInformationUiState) }
+        originalProfileInformation = user.profileInformationUiState
+    }
+
+    private fun onGetCurrentUserFail(throwable: Throwable) {
+        updateData { copy(baseUiState = this.baseUiState.copy(errorMessage = throwable.message.toString())) }
+    }
+
+    private fun getCurrentUserPosts() {
+        tryToExecute(
+            call = { getCurrentUserPostsUseCase() },
+            onSuccess = ::onGetCurrentUserPostsSuccess,
+            onError = ::onGetCurrentUserPostsFail
         )
+    }
+
+    private fun onGetCurrentUserPostsSuccess(postItems: List<PostItem>) {
+        updateData { copy(userPosts = postItems.map { it.toPostItemUIState() }) }
+    }
+
+
+    private fun onGetCurrentUserPostsFail(throwable: Throwable) {
 
     }
+
 
     override fun onUpdateProfileImage(imageUri: Uri) {
-        val resolvedUri = imageUri.toString()
-        updateProfileField { copy(imageUrl = resolvedUri) }
+        updateData {
+            copy(
+                profileInformationUiState = _state.value.data.profileInformationUiState.copy(
+                    imageUri = imageUri.toString()
+                )
+            )
+        }
     }
+
 
     override fun onEditButtonClicked() {
         manageUserInfoEdit(isEditable = true)
@@ -105,7 +116,7 @@ class ProfileViewModel @Inject constructor(
         manageUserInfoEdit(isEditable = false)
         makeErrorMessagesEmpty()
         updateData {
-            copy(profileInformationUiState = originalProfileInformation.profileInformationUiState)
+            copy(profileInformationUiState = originalProfileInformation)
         }
     }
 
@@ -113,39 +124,28 @@ class ProfileViewModel @Inject constructor(
         val lastUserInfo = _state.value.data.profileInformationUiState
         tryToExecute(
             call = {
-                validateUserInfoUseCase(
+                updateUserInfoUseCase(
                     name = lastUserInfo.name,
                     phoneNumber = lastUserInfo.phoneNumber,
-                    location = lastUserInfo.location
+                    location = lastUserInfo.location,
+                    imageRequestBody = uploadImageUseCase(_state.value.data.profileInformationUiState.imageUri.toUri()),
+                    bio = lastUserInfo.bio
                 )
             },
-            onSuccess = { onUpdateUserInfoSuccess() },
+            onSuccess = ::onUpdateUserInfoSuccess,
             onError = ::onUpdateUserInfoFail,
         )
     }
 
-    override fun onDarkMoodChange(isDarkMood: Boolean) {
-        updateData {
-            copy(profileSettingsUiState = profileSettingsUiState.copy(isDarkTheme = isDarkMood))
-        }
-        viewModelScope.launch(Dispatchers.IO) { customizeProfileSettings.updateDarkTheme(isDarkMood) }
-    }
-
-    private suspend fun isDarkTheme() {
-        customizeProfileSettings.isDarkThem().buffer().collect{ isDark ->
-            updateData {
-                copy(profileSettingsUiState = profileSettingsUiState.copy(isDarkTheme = isDark))
-            }
-        }
-    }
-
-    private fun onUpdateUserInfoSuccess() {
+    private fun onUpdateUserInfoSuccess(isUpdated: Boolean) {
         manageUserInfoEdit(isEditable = false)
         makeErrorMessagesEmpty()
-
+        if (isUpdated) getCurrentUserInfo()
     }
 
     private fun onUpdateUserInfoFail(throwable: Throwable) {
+        Log.e("bk", "onUpdateUserInfoFail: ${throwable.message}, ${throwable.cause}")
+
         when (throwable) {
             is InvalidUsernameException -> {
                 updateFieldError(userNameError = stringsResource.invalidUsername)
@@ -160,6 +160,38 @@ class ProfileViewModel @Inject constructor(
             }
 
             else -> updateFieldError()
+        }
+    }
+
+    override fun onDarkMoodChange(isDarkMood: Boolean) {
+        updateData {
+            copy(profileSettingsUiState = profileSettingsUiState.copy(isDarkTheme = isDarkMood))
+        }
+        viewModelScope.launch(Dispatchers.IO) { customizeProfileSettings.updateDarkTheme(isDarkMood) }
+    }
+
+    override fun onLogoutClicked() {
+        sendUiEffect(ProfileEffect.NavigateToLoginScreen)
+        //todo: clear stored user data
+    }
+
+    override fun onResetPasswordClicked() {
+        sendUiEffect(ProfileEffect.NavigateToResetPassword)
+    }
+
+    override fun onChangeLanguageClicked() {
+        //todo send show language dialog effect
+    }
+
+    override fun onUpdateLogoutDialogState(showDialog: Boolean) {
+        updateData { copy(profileSettingsUiState = ProfileSettingsUiState().copy(showLogoutDialog = showDialog)) }
+    }
+
+    private suspend fun isDarkTheme() {
+        customizeProfileSettings.isDarkThem().buffer().collect { isDark ->
+            updateData {
+                copy(profileSettingsUiState = profileSettingsUiState.copy(isDarkTheme = isDark))
+            }
         }
     }
 

@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun navigateToAddPost(postTitle: String) {
-        navigateTo(HomeEffects.NavigateToAddPost(postTitle))
+        sendUiEffect(HomeEffects.NavigateToAddPost(postTitle))
     }
 
     override fun onClickGoToDetails(topicItem: TopicItem) {
@@ -49,7 +49,7 @@ class HomeViewModel @Inject constructor(
             tryToExecute(
                 call = { getPostsFromCategoryUseCase(topicItem.uuid, topicItem.title) },
                 onSuccess = {
-                    navigateTo(
+                    sendUiEffect(
                         HomeEffects.NavigateSeeAllTopics(
                             topicItem.uuid,
                             topicItem.title
@@ -60,8 +60,8 @@ class HomeViewModel @Inject constructor(
         } else if (topicItem is PostItem) {
             tryToExecute(
                 call = { if (topicItem.user.uuid != getAuthUseCase().userId) throw Exception() },
-                onSuccess = { navigateTo(HomeEffects.NavigateToEditPost(topicItem.uuid)) },
-                onError = { navigateTo(HomeEffects.NavigateToPostDetails(topicItem.uuid)) },
+                onSuccess = { sendUiEffect(HomeEffects.NavigateToEditPost(topicItem.uuid)) },
+                onError = { sendUiEffect(HomeEffects.NavigateToPostDetails(topicItem.uuid)) },
             )
         }
     }

@@ -1,18 +1,22 @@
 package com.example.ui.profile
 
+import com.example.domain.model.PostItem
+import com.example.domain.model.User
+import com.example.ui.base.BaseUiState
 import com.example.ui.util.empty
 
 data class ProfileUiState(
-    val id: Int = 0,
+    val id: String = String.empty(),
     val profileInformationUiState: ProfileInformationUiState = ProfileInformationUiState(),
     val userPosts: List<PostItemUiState> = emptyList(),
     val profileSettingsUiState: ProfileSettingsUiState = ProfileSettingsUiState(),
     val pagerNumber: Int = 0,
     val profileError: ProfileErrorUiState = ProfileErrorUiState(),
+    val baseUiState: BaseUiState = BaseUiState()
 )
 
 data class ProfileInformationUiState(
-    val imageUrl: String = String.empty(),
+    val imageUri: String = String.empty(),
     val name: String = String.empty(),
     val phoneNumber: String = String.empty(),
     val postsNumber: String = String.empty(),
@@ -24,7 +28,7 @@ data class ProfileInformationUiState(
 )
 
 data class PostItemUiState(
-    val id: Int = 0,
+    val id: String = String.empty(),
     val username: String = String.empty(),
     val userImageLink: String = String.empty(),
     val postImageLink: String = String.empty(),
@@ -51,5 +55,33 @@ data class ProfileErrorUiState(
     val locationErrorMessage: String = String.empty(),
     val bioErrorMessage: String = String.empty(),
 )
+
+fun User.toProfileUiState(): ProfileUiState {
+    return ProfileUiState(
+        id = this.uuid,
+        profileInformationUiState = ProfileInformationUiState(
+            imageUri = this.imageLink,
+            name = this.name,
+            phoneNumber = this.phone,
+            postsNumber = this.postsNumber.toString(),
+            location = this.place,
+            bio = this.bio,
+            offersNumber = this.offersNumber.toString(),
+        )
+    )
+}
+
+fun PostItem.toPostItemUIState(): PostItemUiState {
+    return PostItemUiState(
+        id = this.uuid,
+        username = this.user.name,
+        userImageLink = this.user.imageLink,
+        postImageLink = this.imageLink,
+        isThePostOpen = this.isOpen,
+        postTitle = this.title,
+        postDescription = this.details,
+        offersNumber = this.offers.size
+    )
+}
 
 

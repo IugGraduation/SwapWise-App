@@ -14,6 +14,8 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
 
+    interface BaseUiEffect
+
     protected val _state: MutableStateFlow<MyUiState<STATE>> by lazy {
         MutableStateFlow(MyUiState(initialState))
     }
@@ -22,7 +24,7 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
     protected val _effect = MutableSharedFlow<EFFECT>()
     val effect: SharedFlow<EFFECT> = _effect
 
-    fun navigateTo(effect: EFFECT) {
+    fun sendUiEffect(effect: EFFECT) {
         viewModelScope.launch {
             _effect.emit(effect)
         }

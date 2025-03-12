@@ -106,8 +106,8 @@ class SearchViewModel @Inject constructor(
     override fun navigateToPostDetails(postItem: PostItem) {
         tryToExecute(
             call = { if (postItem.user.uuid != getAuthUseCase().userId) throw Exception() },
-            onSuccess = { navigateTo(SearchEffects.NavigateToEditPost(postItem.uuid)) },
-            onError = { navigateTo(SearchEffects.NavigateToPostDetails(postItem.uuid)) },
+            onSuccess = { sendUiEffect(SearchEffects.NavigateToEditPost(postItem.uuid)) },
+            onError = { sendUiEffect(SearchEffects.NavigateToPostDetails(postItem.uuid)) },
         )
     }
 

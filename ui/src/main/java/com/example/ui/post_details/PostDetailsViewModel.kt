@@ -37,19 +37,19 @@ class PostDetailsViewModel @Inject constructor(
 
 
     override fun navigateToAddOffer() {
-        navigateTo(PostDetailsEffects.NavigateToAddOffer)
+        sendUiEffect(PostDetailsEffects.NavigateToAddOffer)
     }
 
     override fun navigateToOfferDetails(offerItem: OfferItem) {
         tryToExecute(
             call = { if (offerItem.user.uuid != getAuthUseCase().userId) throw Exception() },
-            onSuccess = { navigateTo(PostDetailsEffects.NavigateToEditOffer(offerItem.uuid)) },
-            onError = { navigateTo(PostDetailsEffects.NavigateToOfferDetails(offerItem.uuid)) },
+            onSuccess = { sendUiEffect(PostDetailsEffects.NavigateToEditOffer(offerItem.uuid)) },
+            onError = { sendUiEffect(PostDetailsEffects.NavigateToOfferDetails(offerItem.uuid)) },
         )
     }
 
     override fun navigateUp() {
-        navigateTo(PostDetailsEffects.NavigateUp)
+        sendUiEffect(PostDetailsEffects.NavigateUp)
     }
 
 }

@@ -12,4 +12,9 @@ interface ProfileInteraction {
     fun onCancelButtonClicked()
     fun onSaveButtonClicked()
     fun onDarkMoodChange(isDarkMood: Boolean)
+    fun onLogoutClicked()
+    fun onResetPasswordClicked()
+    fun onChangeLanguageClicked()
+    fun onUpdateLogoutDialogState(showDialog: Boolean)
+
 }

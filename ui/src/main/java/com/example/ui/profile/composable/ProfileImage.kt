@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -55,7 +56,7 @@ fun ProfileImage(
 
     Box(modifier = modifier) {
         ProfileImageContent(
-            imageUrl = state.profileInformationUiState.imageUrl,
+            imageUrl = state.profileInformationUiState.imageUri,
             context = context,
             modifier = Modifier
                 .size(ImageSize120)
@@ -63,12 +64,14 @@ fun ProfileImage(
                 .clip(CircleShape)
         )
 
-        ImageChangeButton(
-            onClick = { imagePickerLauncher.launch("image/*") },
-            modifier = Modifier
-                .size(IconButtonSize32)
-                .align(Alignment.BottomEnd)
-        )
+        AnimatedVisibility(state.profileInformationUiState.isUserInfoEditable) {
+            ImageChangeButton(
+                onClick = { imagePickerLauncher.launch("image/*") },
+                modifier = Modifier
+                    .size(IconButtonSize32)
+                    .align(Alignment.BottomEnd)
+            )
+        }
     }
 }
 

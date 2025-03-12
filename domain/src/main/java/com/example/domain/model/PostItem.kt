@@ -4,6 +4,7 @@ import com.example.data.model.response.CategoryItemDto
 import com.example.data.model.response.PostImageDto
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.TopicItemDto
+import com.example.data.model.response.profile.ProfilePostItemDto
 
 
 data class PostItem(
@@ -62,6 +63,38 @@ data class PostItem(
             )
         }
     }
+}
+
+fun ProfilePostItemDto.fromProfilePostItemDto(): PostItem {
+    return PostItem(
+        uuid = this.uuid ?: "",
+        title = this.postName ?: "",
+        imageLink = this.postImage ?: "",
+        imageId = this.postImage ?: "",
+        user = User(
+            uuid = this.userUuid ?: "",
+            imageLink = this.userImage ?: "",
+            name = this.userName ?: "",
+            bio = "",
+            phone = "",
+            place = "",
+            offersNumber = 0,
+            postsNumber = 0,
+            imgContentDescription = ""
+        ),
+        place = "",
+        details = "",
+        categoryItem = CategoryItem(
+            uuid = "",
+            title = "",
+            imageLink = ""
+        ),
+        date = "",
+        favoriteCategoryItems = mutableListOf(),
+        isOpen = this.status == "Active",
+        rate = 0.0f,
+        offers = emptyList()
+    )
 }
 
 

@@ -191,7 +191,7 @@ class EditPostViewModel @Inject constructor(
 
 
     override fun navigateUp() {
-        navigateTo(NavigateUpEffect.NavigateUp)
+        sendUiEffect(NavigateUpEffect.NavigateUp)
     }
 
 

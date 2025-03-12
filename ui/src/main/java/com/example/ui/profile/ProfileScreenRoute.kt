@@ -5,13 +5,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
-
-private const val ROUTE = "profile"
+import com.example.ui.util.Screen
 
 fun NavController.navigateToProfile(builder: NavOptionsBuilder.() -> Unit = {}) {
-    navigate(ROUTE, builder)
+    navigate(Screen.Profile.route, builder)
 }
 
 fun NavGraphBuilder.profileRoute(navController: NavHostController){
-    composable(ROUTE) { ProfileScreen(navController) }
+    composable(Screen.Profile.route) { ProfileScreen(navController) }
 }
