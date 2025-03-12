@@ -15,8 +15,6 @@ import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.post_details.navigateToPostDetails
-import com.example.ui.search.navigateToSearch
-import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GraduationProjectTheme
 
 
@@ -24,7 +22,6 @@ import com.example.ui.theme.GraduationProjectTheme
 fun SeeAllTopicsScreen(
     navController: NavController,
     seeAllTopicsViewModel: SeeAllTopicsViewModel = hiltViewModel(),
-    bottomNavigationViewModel: BottomNavigationViewModel = hiltViewModel()
 ) {
     val state by seeAllTopicsViewModel.state.collectAsState()
 
@@ -35,9 +32,12 @@ fun SeeAllTopicsScreen(
                     effect.postId
                 )
 
-                is SeeAllTopicsEffects.NavigateToSearchByCategory -> {
-                    bottomNavigationViewModel.onItemSelected(1)
-                    navController.navigateToSearch(effect.categoryId)
+                is SeeAllTopicsEffects.NavigateSeeAllTopics -> {
+                    navController.navigateToSeeAllTopics(
+                        title = effect.categoryTitle,
+                        categoryId = effect.categoryId,
+                        url = ""
+                    )
                 }
 
                 is SeeAllTopicsEffects.NavigateToEditPost -> navController.navigateToEditPost(

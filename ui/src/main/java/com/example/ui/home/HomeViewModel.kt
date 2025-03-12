@@ -2,6 +2,7 @@ package com.example.ui.home
 
 import com.example.domain.authentication.GetAuthUseCase
 import com.example.domain.home.GetHomeDataUseCase
+import com.example.domain.home.GetPostsFromCategoryUseCase
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.Home
 import com.example.domain.model.PostItem
@@ -14,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     getHomeDataUseCase: GetHomeDataUseCase,
-    private val getAuthUseCase: GetAuthUseCase
+    private val getAuthUseCase: GetAuthUseCase,
+    private val getPostsFromCategoryUseCase: GetPostsFromCategoryUseCase,
 ) :
     BaseViewModel<HomeUiState, HomeEffects>(HomeUiState()), IHomeInteractions {
 
@@ -24,6 +26,7 @@ class HomeViewModel @Inject constructor(
             onSuccess = ::onGetHomeDataSuccess,
         )
     }
+
 
     private fun onGetHomeDataSuccess(data: Home) {
         _state.value = MyUiState(HomeUiState.fromHome(data))
@@ -42,7 +45,17 @@ class HomeViewModel @Inject constructor(
 
     override fun onClickGoToDetails(topicItem: TopicItem) {
         if (topicItem is CategoryItem) {
-            navigateTo(HomeEffects.NavigateToSearchByCategory(topicItem.uuid))
+            tryToExecute(
+                call = { getPostsFromCategoryUseCase(topicItem.uuid, topicItem.title) },
+                onSuccess = {
+                    navigateTo(
+                        HomeEffects.NavigateSeeAllTopics(
+                            topicItem.uuid,
+                            topicItem.title
+                        )
+                    )
+                },
+            )
         } else if (topicItem is PostItem) {
             tryToExecute(
                 call = { if (topicItem.user.uuid != getAuthUseCase().userId) throw Exception() },

@@ -42,7 +42,6 @@ import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.post_details.navigateToPostDetails
-import com.example.ui.search.navigateToSearch
 import com.example.ui.see_all_topics.navigateToSeeAllTopics
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GraduationProjectTheme
@@ -80,9 +79,12 @@ fun HomeScreen(
                     navController.navigateToPostDetails(effect.postId)
                 }
 
-                is HomeEffects.NavigateToSearchByCategory -> {
-                    bottomNavigationViewModel.onItemSelected(1)
-                    navController.navigateToSearch(effect.categoryId)
+                is HomeEffects.NavigateSeeAllTopics -> {
+                    navController.navigateToSeeAllTopics(
+                        title = effect.categoryTitle,
+                        categoryId = effect.categoryId,
+                        url = ""
+                    )
                 }
 
                 is HomeEffects.NavigateToEditPost -> {

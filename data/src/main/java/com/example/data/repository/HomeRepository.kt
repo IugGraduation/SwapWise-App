@@ -9,4 +9,7 @@ class HomeRepository(
     suspend fun getHomeDto() = checkResponse { homeRemoteDataSource.getHomeDto() }
 
     suspend fun seeAll(url: String) = checkResponse { homeRemoteDataSource.seeAll(url) }
+
+    suspend fun getPostsFromCategory(categoryId: String) =
+        checkResponse { homeRemoteDataSource.getPostsFromCategory(categoryId) }
 }
