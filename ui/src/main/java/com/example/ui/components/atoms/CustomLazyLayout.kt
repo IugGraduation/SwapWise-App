@@ -88,6 +88,7 @@ private fun getCard(
                     username = item.user.name,
                     title = item.title,
                     details = item.details,
+                    isOpen = item.isOpen,
                     onCardClick = { onClickGoToDetails(item) },
                     isHorizontalCard = isHorizontal,
                 )

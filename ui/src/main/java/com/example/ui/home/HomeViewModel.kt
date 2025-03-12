@@ -18,23 +18,6 @@ class HomeViewModel @Inject constructor(
 ) :
     BaseViewModel<HomeUiState, HomeEffects>(HomeUiState()), IHomeInteractions {
 
-    override fun navigateToAddPost(postTitle: String) {
-        navigateTo(HomeEffects.NavigateToAddPost(postTitle))
-    }
-
-    override fun onClickGoToDetails(topicItem: TopicItem) {
-        if (topicItem is CategoryItem) {
-            navigateTo(HomeEffects.NavigateToSearchByCategory(topicItem.uuid))
-        } else if (topicItem is PostItem) {
-            tryToExecute(
-                call = { if (topicItem.user.uuid != getAuthUseCase().userId) throw Exception() },
-                onSuccess = { navigateTo(HomeEffects.NavigateToEditPost(topicItem.uuid)) },
-                onError = { navigateTo(HomeEffects.NavigateToPostDetails(topicItem.uuid)) },
-            )
-        }
-    }
-
-
     init {
         tryToExecute(
             call = { getHomeDataUseCase() },
@@ -52,5 +35,22 @@ class HomeViewModel @Inject constructor(
             copy(newPost = newValue)
         }
     }
+
+    override fun navigateToAddPost(postTitle: String) {
+        navigateTo(HomeEffects.NavigateToAddPost(postTitle))
+    }
+
+    override fun onClickGoToDetails(topicItem: TopicItem) {
+        if (topicItem is CategoryItem) {
+            navigateTo(HomeEffects.NavigateToSearchByCategory(topicItem.uuid))
+        } else if (topicItem is PostItem) {
+            tryToExecute(
+                call = { if (topicItem.user.uuid != getAuthUseCase().userId) throw Exception() },
+                onSuccess = { navigateTo(HomeEffects.NavigateToEditPost(topicItem.uuid)) },
+                onError = { navigateTo(HomeEffects.NavigateToPostDetails(topicItem.uuid)) },
+            )
+        }
+    }
+
 
 }

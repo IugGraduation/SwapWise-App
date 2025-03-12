@@ -34,7 +34,7 @@ data class PostItem(
                 ),
                 imageLink = topicItemDto.postImage ?: "",
                 title = topicItemDto.postName ?: "",
-                isOpen = topicItemDto.status == "Active",
+                isOpen = topicItemDto.status == "1",
                 details = topicItemDto.postDetails ?: "",
             )
         }
@@ -51,7 +51,7 @@ data class PostItem(
                 imageId =image.uuid ?: "",
                 imageLink =image.attachment ?: "",
                 title = postItemDto.postName ?: "",
-                isOpen = postItemDto.status == "Active",
+                isOpen = postItemDto.status == "1",
                 details = postItemDto.postDetails ?: "",
                 place = postItemDto.place ?: "",
                 categoryItem = CategoryItem.fromCategoryItemDto(postItemDto.category ?: CategoryItemDto()),
