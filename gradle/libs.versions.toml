@@ -6,6 +6,7 @@ coilCompose = "3.0.4"
 converterGson = "2.9.0"
 datastorePreferences = "1.1.2"
 foundation = "1.7.6"
+gson = "2.10.1"
 hiltAndroidVersion = "2.51.1"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.0.0"
@@ -19,7 +20,6 @@ activityCompose = "1.9.3"
 composeBom = "2024.04.01"
 activityKtx = "1.9.3"
 appcompat = "1.7.0"
-magotp = "1.0.5"
 material = "1.12.0"
 navigationCompose = "2.8.4"
 okhttp = "4.12.0"
@@ -47,6 +47,7 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCo
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

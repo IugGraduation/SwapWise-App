@@ -8,7 +8,7 @@ class GetCategoriesUseCase @Inject constructor(
     private val homeRepository: HomeRepository
 ) {
     suspend operator fun invoke(): List<CategoryItem> {
-         return homeRepository.seeAll("category")?.map {
+        return homeRepository.getCategories()?.map {
            CategoryItem.fromTopicItemDto(it)
         } ?: listOf()
     }

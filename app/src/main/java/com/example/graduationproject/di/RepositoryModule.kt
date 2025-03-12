@@ -33,8 +33,11 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideHomeRepository(homeRemoteDataSource: HomeRemoteDataSource) =
-        HomeRepository(homeRemoteDataSource)
+    fun provideHomeRepository(
+        homeRemoteDataSource: HomeRemoteDataSource,
+        dataStore: DataStore<Preferences>
+    ) =
+        HomeRepository(homeRemoteDataSource, dataStore)
 
     @Singleton
     @Provides
