@@ -143,10 +143,11 @@ fun EditOfferContent(
                 title = stringResource(R.string.category_of_the_offer),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
-                    it.selected.value = it.categoryItem == state.data.offerItem.categoryItem
+                    it.selected.value =
+                        it.categoryItem.uuid == state.data.offerItem.categoryItem.uuid
                 },
             )
-        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -167,11 +168,12 @@ fun EditOfferContent(
             )
         }
 
+        }
     }
 }
 
 
-@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
+@Preview(showBackground = true, device = "spec:width=1080px,height=1540px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {

@@ -1,7 +1,6 @@
 package com.example.ui.edit_offer
 
 import android.net.Uri
-import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
@@ -70,7 +69,7 @@ class EditOfferViewModel @Inject constructor(
         val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
                 categoryItem = categoryItems[index],
-                selected = mutableStateOf(false),
+//                selected = mutableStateOf(false),
                 onClick = ::onCategoryChange
             )
         }
