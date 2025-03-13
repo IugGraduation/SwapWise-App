@@ -66,12 +66,11 @@ class EditPostViewModel @Inject constructor(
             ChipUiState(
                 categoryItem = categoryItems[index],
                 selected = mutableStateOf(
-                    state.value.data.postItem.favoriteCategoryItems.contains(
-                        categoryItems[index]
-                    )
+                    categoryItems[index].uuid == state.value.data.postItem.categoryItem.uuid
                 ),
                 onClick = ::onCategoryChange
             )
+
         }
         val favoriteChipsList = chipsList.map {
             it.copy(

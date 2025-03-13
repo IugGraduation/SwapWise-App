@@ -164,7 +164,8 @@ fun EditOfferContent(
                 title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
-                    it.selected.value = it.categoryItem == state.data.postItem.categoryItem
+                    it.selected.value =
+                        it.categoryItem.uuid == state.data.postItem.categoryItem.uuid
                 },
             )
             VerticalSpacer(Spacing16)
