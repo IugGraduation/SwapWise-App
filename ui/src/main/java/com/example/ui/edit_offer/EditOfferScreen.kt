@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,8 +20,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -88,6 +93,9 @@ fun EditOfferContent(
                 style = TextStyles.headingLarge,
                 color = MaterialTheme.color.textPrimary
             )
+
+            val focusManager = LocalFocusManager.current
+
             SwapWiseTextField(
                 value = state.data.offerItem.title,
                 onValueChange = editInteractions::onTitleChange,
@@ -99,6 +107,8 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 errorMessage = state.data.offerError.titleError,
             )
             SwapWiseTextField(
@@ -112,6 +122,8 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 errorMessage = state.data.offerError.placeError,
             )
             SwapWiseTextField(
