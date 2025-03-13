@@ -1,8 +1,6 @@
 package com.example.ui.edit_offer
 
 import android.net.Uri
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -80,11 +79,10 @@ fun EditOfferContent(
             state.data.offerItem.imageLink,
             onImagePicked = editInteractions::onSelectedImageChange
         )
-        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .scrollable(scrollState, orientation = Orientation.Vertical)
+                .verticalScroll(rememberScrollState())
                 .padding(Spacing16),
             verticalArrangement = Arrangement.spacedBy(Spacing8)
         ) {

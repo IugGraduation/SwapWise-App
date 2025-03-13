@@ -89,11 +89,10 @@ fun EditOfferContent(
         ProductImage(
             state.data.postItem.imageLink, onImagePicked = editInteractions::onSelectedImageChange
         )
-        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(scrollState)
+                .verticalScroll(rememberScrollState())
                 .padding(Spacing16),
             verticalArrangement = Arrangement.spacedBy(Spacing8)
         ) {

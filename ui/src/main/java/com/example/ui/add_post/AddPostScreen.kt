@@ -81,11 +81,10 @@ fun AddPostContent(
             state.data.postItem.imageLink,
             onImagePicked = addInteractions::onSelectedImageChange
         )
-        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(scrollState)
+                .verticalScroll(rememberScrollState())
                 .padding(Spacing16)
         ) {
             Text(
