@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,28 +58,27 @@ fun OfferDetailsScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val phone = state.data.offerItem.user.phone
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 OfferDetailsEffects.NavigateToPhone -> {
                     val intent = Intent(Intent.ACTION_DIAL).apply {
-                        data = Uri.parse("tel:$phone")
+                        data = Uri.parse("tel:${state.data.offerItem.user.phone}")
                     }
                     context.startActivity(intent)
                 }
 
                 OfferDetailsEffects.NavigateToWhatsapp -> {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("https://wa.me/$phone")
+                        data = Uri.parse("https://wa.me/${state.data.offerItem.user.phone}")
                     }
                     context.startActivity(intent)
                 }
 
                 OfferDetailsEffects.NavigateToMessages -> {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("sms:$phone")
+                        data = Uri.parse("sms:${state.data.offerItem.user.phone}")
                     }
                     context.startActivity(intent)
                 }
@@ -101,7 +104,11 @@ fun OfferDetailsContent(
         onClickGoBack = offerDetailsInteractions::navigateUp,
         baseUiState = state.baseUiState,
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+        ) {
             ProductImage(state.data.offerItem.imageLink)
             VerticalSpacer(Spacing16)
             DetailsScreenUserHeader(
@@ -116,7 +123,7 @@ fun OfferDetailsContent(
                 chipsList = listOf(
                     ChipUiState(
                         categoryItem = state.data.offerItem.categoryItem,
-                        selected = true,
+                        selected = remember { mutableStateOf(true) },
                         clickable = false
                     )
                 )
@@ -135,6 +142,7 @@ fun OfferDetailsContent(
                 onClickWhatsappButton = offerDetailsInteractions::navigateToWhatsapp,
                 onClickMessageButton = offerDetailsInteractions::navigateToMessages
             )
+            VerticalSpacer(Spacing16)
         }
 
     }

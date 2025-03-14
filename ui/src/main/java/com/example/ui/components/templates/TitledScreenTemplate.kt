@@ -1,5 +1,6 @@
 package com.example.ui.components.templates
 
+import androidx.compose.foundation.focusable
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
@@ -10,6 +11,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.DefaultTintColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,6 +43,7 @@ fun TitledScreenTemplate(
                         )
                     }
                 },
+                modifier = Modifier.focusable(),
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.color.background)
             )
         },

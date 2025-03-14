@@ -4,6 +4,8 @@ package com.example.data.model.response
 import com.google.gson.annotations.SerializedName
 
 data class PostItemDto(
+    @SerializedName("category")
+    val category: CategoryItemDto? = null,
     @SerializedName("favorite_categories")
     val favoriteCategories: List<CategoryItemDto?>? = null,
     @SerializedName("num_offers")
@@ -16,6 +18,8 @@ data class PostItemDto(
     val postImages: List<PostImageDto?>? = null,
     @SerializedName("post_name")
     val postName: String? = null,
+    @SerializedName("place")
+    val place: String? = null,
     @SerializedName("status")
     val status: String? = null,
     @SerializedName("user_image")

@@ -18,6 +18,7 @@ interface StringsResource {
     val invalidTitle: String
     val invalidPlace: String
     val invalidDetails: String
+    val emptyImageMessage: String
     val passwordMismatch: String
     val invalidPassword: String
     val invalidNewPassword: String

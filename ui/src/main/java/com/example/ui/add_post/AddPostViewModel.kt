@@ -1,16 +1,18 @@
 package com.example.ui.add_post
 
 import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
+import com.example.domain.exception.EmptyImageException
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.post.AddPostUseCase
-import com.example.domain.post.UploadImageUseCase
+import com.example.domain.post.GetImageRequestBodyUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.NavigateUpEffect
 import com.example.ui.base.StringsResource
@@ -27,7 +29,7 @@ class AddPostViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val addPostUseCase: AddPostUseCase,
-    private val uploadImageUseCase: UploadImageUseCase,
+    private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IAddPostInteractions {
     private val args = AddPostArgs(savedStateHandle)
 
@@ -52,12 +54,15 @@ class AddPostViewModel @Inject constructor(
         val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
                 categoryItem = categoryItems[index],
-                selected = false,
+                selected = mutableStateOf(false),
                 onClick = ::onCategoryChange
             )
         }
-        val favoriteChipsList = chipsList.map { it.copy() }.onEach {
-            it.onClick = ::onFavoriteCategoryChange
+        val favoriteChipsList = chipsList.map {
+            it.copy(
+                selected = mutableStateOf(false),
+                onClick = ::onFavoriteCategoryChange
+            )
         }
         updateData {
             copy(chipsList = chipsList, favoriteChipsList = favoriteChipsList)
@@ -104,7 +109,6 @@ class AddPostViewModel @Inject constructor(
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
         updatePostItem { copy(imageLink = selectedImageUri.toString()) }
-        uploadImageUseCase(selectedImageUri)
     }
 
     fun onCategoryChange(categoryItem: CategoryItem) {
@@ -129,7 +133,7 @@ class AddPostViewModel @Inject constructor(
             call = {
                 addPostUseCase(
                     postItem = state.value.data.postItem,
-                    imageRequestBody = uploadImageUseCase(_state.value.data.postItem.imageLink.toUri())
+                    imageRequestBody = getImageRequestBodyUseCase(state.value.data.postItem.imageLink.toUri())!!
                 )
             },
             onSuccess = { navigateUp() },
@@ -150,6 +154,10 @@ class AddPostViewModel @Inject constructor(
 
             is InvalidDetailsException -> {
                 updateFieldError(detailsError = stringsResource.invalidDetails)
+            }
+
+            is EmptyImageException -> {
+                onActionFail(Exception(stringsResource.emptyImageMessage))
             }
 
             else -> onActionFail(throwable)

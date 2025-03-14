@@ -1,5 +1,6 @@
 package com.example.domain.model
 
+import com.example.data.model.response.CategoryItemDto
 import com.example.data.model.response.PostImageDto
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.TopicItemDto
@@ -36,13 +37,6 @@ data class PostItem(
                 title = topicItemDto.postName ?: "",
                 isOpen = topicItemDto.status == "Active",
                 details = topicItemDto.postDetails ?: "",
-//                place = "",
-//                category = "",
-//                date = "",
-//                favoriteCategories ="",
-//                rate = "",
-//                offers = "",
-
             )
         }
 
@@ -60,39 +54,15 @@ data class PostItem(
                 title = postItemDto.postName ?: "",
                 isOpen = postItemDto.status == "Active",
                 details = postItemDto.postDetails ?: "",
-//                place = "",
-//                category = "",
+                place = postItemDto.place ?: "",
+                categoryItem = CategoryItem.fromCategoryItemDto(postItemDto.category ?: CategoryItemDto()),
                 date = postItemDto.date ?: "",
-//                favoriteCategories ="",
+                favoriteCategoryItems = CategoryItem.fromCategoryItemDtoList(postItemDto.favoriteCategories).toMutableList(),
 //                rate = "",
                 offers = OfferItem.fromOfferItemDtoList(postItemDto.offers),
             )
         }
     }
-
-
-    //todo: delete this after implement edit post
-    fun toPostItemDto(): PostItemDto {
-        return PostItemDto(
-            uuid = uuid,
-            userImage = user.imageLink,
-            userName = user.name,
-            userUuid = user.uuid,
-            postImages = listOf(PostImageDto(attachment = imageLink, uuid = imageId)),
-            postName = title,
-            status = if (isOpen) "Active" else "Closed",
-            postDetails = details,
-//                place = "",
-            //todo: add category here
-//                category = "",
-            date = date,
-//                favoriteCategories ="",
-//                rate = "",
-            offers = OfferItem.toOfferItemDtoList(offers),
-
-            )
-    }
-
 }
 
 fun ProfilePostItemDto.fromProfilePostItemDto(): PostItem {

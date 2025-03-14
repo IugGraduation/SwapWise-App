@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -181,6 +182,7 @@ fun SwipeableNotificationCard(
                     Image(
                         painter = rememberAsyncImagePainter(notification.userImage),
                         contentDescription = stringResource(R.string.user_image),
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .padding(Spacing4)
                             .size(48.dp)

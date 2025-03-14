@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,9 +27,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -84,11 +89,10 @@ fun EditOfferContent(
         ProductImage(
             state.data.postItem.imageLink, onImagePicked = editInteractions::onSelectedImageChange
         )
-        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(scrollState)
+                .verticalScroll(rememberScrollState())
                 .padding(Spacing16),
             verticalArrangement = Arrangement.spacedBy(Spacing8)
         ) {
@@ -108,6 +112,8 @@ fun EditOfferContent(
                 )
             }
 
+            val focusManager = LocalFocusManager.current
+
             SwapWiseTextField(
                 value = state.data.postItem.title,
                 onValueChange = editInteractions::onTitleChange,
@@ -119,6 +125,8 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 errorMessage = state.data.postError.titleError,
             )
 
@@ -133,6 +141,8 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 errorMessage = state.data.postError.placeError,
             )
             SwapWiseTextField(
@@ -154,7 +164,8 @@ fun EditOfferContent(
                 title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
-                    it.selected = it.categoryItem == state.data.postItem.categoryItem
+                    it.selected.value =
+                        it.categoryItem.uuid == state.data.postItem.categoryItem.uuid
                 },
             )
             VerticalSpacer(Spacing16)
@@ -162,7 +173,7 @@ fun EditOfferContent(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.favoriteChipsList.onEach {
-                    it.selected =
+                    it.selected.value =
                         state.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
                 },
             )

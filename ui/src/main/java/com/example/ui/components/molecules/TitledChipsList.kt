@@ -56,19 +56,19 @@ fun TitledChipsList(
 
 @Composable
 private fun SwapWiseChip(chip: ChipUiState, modifier: Modifier = Modifier) {
-    val myModifier = if (!chip.selected) modifier.shadow(
+    val myModifier = if (!chip.selected.value) modifier.shadow(
         elevation = 4.dp,
         shape = RoundedCornerShape(RadiusLarge),
         spotColor = Color.Black.copy(alpha = 0.8f),
         ambientColor = Color.Black.copy(alpha = 0.8f)
     ) else modifier
-    val backgroundColor = if (chip.selected) Secondary else MaterialTheme.color.onBackground
+    val backgroundColor = if (chip.selected.value) Secondary else MaterialTheme.color.onBackground
     val textColor =
-        if (chip.selected && isSystemInDarkTheme()) MaterialTheme.color.background else MaterialTheme.color.textSecondary
+        if (chip.selected.value && isSystemInDarkTheme()) MaterialTheme.color.background else MaterialTheme.color.textSecondary
 
     BoxRounded(
         modifier = myModifier.clickable(enabled = chip.clickable) {
-            chip.selected = !chip.selected
+            chip.selected.value = !chip.selected.value
             chip.onClick(chip.categoryItem)
         },
         color = backgroundColor,

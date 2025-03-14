@@ -2,15 +2,13 @@ package com.example.domain.notifications
 
 import com.example.data.repository.NotificationsRepository
 import com.example.domain.model.Notification
-import kotlinx.coroutines.delay
 import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 
 class GetNotificationsUseCase @Inject constructor(private val notificationsRepository: NotificationsRepository) {
     suspend operator fun invoke(): List<Notification> {
-        delay(500)
-        return GetFakeNotificationsUseCase()()
+        return Notification.fromNotificationDtoList(notificationsRepository.getNotifications())
     }
 }
 
@@ -18,7 +16,7 @@ class GetNotificationsUseCase @Inject constructor(private val notificationsRepos
 class GetFakeNotificationsUseCase {
     operator fun invoke(): List<Notification> {
         val notification = Notification(
-            id = "1", message = "message", date = Date()
+            id = "1", message = "message", date = Date().toString()
         )
         val notificationsList = listOf(
             notification,
@@ -32,7 +30,7 @@ class GetFakeNotificationsUseCase {
             item.copy(
                 id = index.toString(),
                 message = item.message + " " + index,
-                date = calendar.time
+                date = calendar.time.toString()
             )
         }
         return notificationsList

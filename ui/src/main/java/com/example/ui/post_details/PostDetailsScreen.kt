@@ -14,17 +14,23 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
+import com.example.domain.model.OfferItem
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.add_offer.navigateToAddOffer
@@ -38,6 +44,7 @@ import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
+import com.example.ui.edit_offer.navigateToEditOffer
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.offer_details.navigateToOfferDetails
@@ -59,6 +66,21 @@ fun PostDetailsScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.onResume()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -67,6 +89,9 @@ fun PostDetailsScreen(
                     effect.offerId
                 )
 
+                is PostDetailsEffects.NavigateToEditOffer -> {
+                    navController.navigateToEditOffer(effect.offerId)
+                }
                 is PostDetailsEffects.NavigateUp -> navController.navigateUp()
             }
         }
@@ -116,8 +141,13 @@ fun PostDetailsContent(
                     chipsList = state.data.postItem.favoriteCategoryItems.map {
                         ChipUiState(
                             categoryItem = it,
-                            selected = state.data.postItem.favoriteCategoryItems.contains(it),
-                            onClick = {})
+                            selected = mutableStateOf(
+                                state.data.postItem.favoriteCategoryItems.contains(
+                                    it
+                                )
+                            ),
+                            clickable = false
+                        )
                     }
                 )
                 VerticalSpacer(Spacing24)
@@ -129,15 +159,18 @@ fun PostDetailsContent(
                 )
                 VerticalSpacer(Spacing8)
             }
-            items(state.data.postItem.offers) { offer ->
+            items(state.data.postItem.offers) { offerItem ->
                 PostCard(
-                    username = offer.user.name,
-                    userImage = rememberAsyncImagePainter(offer.user.imageLink),
-                    title = offer.title,
+                    username = offerItem.user.name,
+                    userImage = rememberAsyncImagePainter(offerItem.user.imageLink),
+                    title = offerItem.title,
                     isPostCard = false,
-                    details = offer.details,
-                    postImage = rememberAsyncImagePainter(offer.imageLink),
-                    onCardClick = { postDetailsInteractions.navigateToOfferDetails(offer.uuid) }
+                    details = offerItem.details,
+                    postImage = rememberAsyncImagePainter(offerItem.imageLink),
+                    onCardClick = { postDetailsInteractions.navigateToOfferDetails(offerItem) },
+                    modifier = Modifier
+                        .padding(horizontal = Spacing16)
+                        .padding(bottom = Spacing8)
                 )
             }
 
@@ -205,7 +238,7 @@ fun PreviewPostDetailsContent() {
             state = MyUiState(PostItemUiState(postItem = GetFakePostDetailsUseCase()())),
             postDetailsInteractions = object : PostDetailsInteractions {
                 override fun navigateToAddOffer() {}
-                override fun navigateToOfferDetails(offerId: String) {}
+                override fun navigateToOfferDetails(offerItem: OfferItem) {}
                 override fun navigateUp() {}
             },
         )

@@ -1,23 +1,55 @@
 package com.example.data.repository
 
-import com.example.data.model.response.OfferItemDto
-import com.example.data.util.fakeCheckResponse
+import com.example.data.source.remote.OfferRemoteDataSource
+import com.example.data.util.checkResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class OfferRepository(
-//    private val fakePostLocalDataSource: FakePostLocalDataSource,
+    private val offerRemoteDataSource: OfferRemoteDataSource,
 ) {
     suspend fun getOfferDetails(offerId: String) =
-        fakeCheckResponse(OfferItemDto())
+        checkResponse { offerRemoteDataSource.getOffer(offerId) }
 
+    suspend fun addOffer(
+        image: MultipartBody.Part,
+        name: RequestBody,
+        place: RequestBody,
+        details: RequestBody,
+        categoryUuid: RequestBody,
+        postUuid: RequestBody,
+    ) =
+        checkResponse {
+            offerRemoteDataSource.addOffer(
+                image = image,
+                name = name,
+                place = place,
+                details = details,
+                categoryUuid = categoryUuid,
+                postUuid = postUuid,
+            )
+        }
 
-    suspend fun addOffer(postId: String, offerItemDto: OfferItemDto) =
-        fakeCheckResponse(true)
-
-
-    suspend fun editOffer(offerItemDto: OfferItemDto) =
-        fakeCheckResponse(true)
-
+    suspend fun editOffer(
+        image: MultipartBody.Part?,
+        name: RequestBody,
+        place: RequestBody,
+        details: RequestBody,
+        categoryUuid: RequestBody,
+        offerUuid: RequestBody,
+    ) =
+        checkResponse {
+            offerRemoteDataSource.updateOffer(
+                image = image,
+                name = name,
+                place = place,
+                details = details,
+                categoryUuid = categoryUuid,
+                offerUuid = offerUuid,
+            )
+        }
 
     suspend fun deleteOffer(offerId: String) =
-        fakeCheckResponse(true)
+        checkResponse { offerRemoteDataSource.deleteOffer(offerId) }
+
 }

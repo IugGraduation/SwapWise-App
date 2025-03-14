@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,10 +23,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.category.GetFakeCategoriesUseCase
 import com.example.domain.model.PostItem
+import com.example.domain.model.TopicItem
 import com.example.domain.model.User
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
@@ -37,10 +42,10 @@ import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.templates.HomeTemplate
+import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.post_details.navigateToPostDetails
-import com.example.ui.search.navigateToSearch
 import com.example.ui.see_all_topics.navigateToSeeAllTopics
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GraduationProjectTheme
@@ -59,13 +64,28 @@ fun HomeScreen(
     val state by homeViewModel.state.collectAsState()
     val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
     for (topic in state.data.topicsList) {
-        topic.onClickSeeAll = { navController.navigateToSeeAllTopics(topic.url) }
+        topic.onClickSeeAll = { navController.navigateToSeeAllTopics(topic.url, topic.title) }
     }
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,
         onItemSelected = bottomNavigationViewModel::onItemSelected,
         navController = navController,
     )
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                homeViewModel.onResume()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 
     LaunchedEffect(homeViewModel.effect) {
         homeViewModel.effect.collect { effect ->
@@ -78,9 +98,17 @@ fun HomeScreen(
                     navController.navigateToPostDetails(effect.postId)
                 }
 
-                is HomeEffects.NavigateToSearchByCategory -> {
-                    bottomNavigationViewModel.onItemSelected(1)
-                    navController.navigateToSearch(effect.categoryId)
+                is HomeEffects.NavigateSeeAllTopics -> {
+                    navController.navigateToSeeAllTopics(
+                        title = effect.categoryTitle,
+                        categoryId = effect.categoryId,
+                        url = ""
+                    )
+                }
+
+                is HomeEffects.NavigateToEditPost -> {
+                    navController.navigateToEditPost(effect.postId)
+
                 }
             }
         }
@@ -159,11 +187,9 @@ fun HomeContent(
                     username = item.user.name,
                     title = item.title,
                     details = item.details,
+                    isOpen = item.isOpen,
                     onCardClick = {
-                        homeInteractions.onClickGoToDetails(
-                            topicId = item.uuid,
-                            isCategory = false
-                        )
+                        homeInteractions.onClickGoToDetails(item)
                     },
                     isHorizontalCard = false,
                     modifier = Modifier.padding(horizontal = Spacing16)
@@ -250,7 +276,7 @@ fun PreviewHomeContent() {
             homeInteractions = object : IHomeInteractions {
                 override fun onNewPostFieldChange(newValue: String) {}
                 override fun navigateToAddPost(postTitle: String) {}
-                override fun onClickGoToDetails(topicId: String, isCategory: Boolean) {}
+                override fun onClickGoToDetails(topicItem: TopicItem) {}
             },
         )
     }

@@ -1,6 +1,8 @@
 package com.example.ui.edit_post
 
 import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
@@ -10,6 +12,7 @@ import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.post.DeletePostUseCase
 import com.example.domain.post.EditPostUseCase
+import com.example.domain.post.GetImageRequestBodyUseCase
 import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
@@ -29,14 +32,10 @@ class EditPostViewModel @Inject constructor(
     private val getPostDetailsUseCase: GetPostDetailsUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val editPostUseCase: EditPostUseCase,
+    private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
     private val deletePostUseCase: DeletePostUseCase,
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IEditPostInteractions {
     private val args = EditPostArgs(savedStateHandle)
-
-    override fun navigateUp() {
-        sendUiEffect(NavigateUpEffect.NavigateUp)
-    }
-
 
     init {
         getPostDetails()
@@ -65,11 +64,22 @@ class EditPostViewModel @Inject constructor(
     private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
         val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
-                categoryItem = categoryItems[index], selected = false, onClick = ::onCategoryChange
+                categoryItem = categoryItems[index],
+                selected = mutableStateOf(
+                    categoryItems[index].uuid == state.value.data.postItem.categoryItem.uuid
+                ),
+                onClick = ::onCategoryChange
             )
+
         }
-        val favoriteChipsList = chipsList.map { it.copy() }.onEach {
-            it.onClick = ::onFavoriteCategoryChange
+        val favoriteChipsList = chipsList.map {
+            it.copy(
+                categoryItem = it.categoryItem.copy(imageLink = ""),
+                selected = mutableStateOf(
+                    state.value.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
+                ),
+                onClick = ::onFavoriteCategoryChange
+            )
         }
         updateData {
             copy(chipsList = chipsList, favoriteChipsList = favoriteChipsList)
@@ -141,7 +151,12 @@ class EditPostViewModel @Inject constructor(
 
     override fun onClickSave() {
         tryToExecute(
-            call = { editPostUseCase(state.value.data.postItem) },
+            call = {
+                editPostUseCase(
+                    getImageRequestBodyUseCase(state.value.data.postItem.imageLink.toUri(), true),
+                    state.value.data.postItem
+                )
+            },
             onSuccess = { navigateUp() },
             onError = ::onSavePostFail
         )
@@ -171,6 +186,11 @@ class EditPostViewModel @Inject constructor(
             call = { deletePostUseCase(state.value.data.postItem.uuid) },
             onSuccess = { navigateUp() },
         )
+    }
+
+
+    override fun navigateUp() {
+        sendUiEffect(NavigateUpEffect.NavigateUp)
     }
 
 

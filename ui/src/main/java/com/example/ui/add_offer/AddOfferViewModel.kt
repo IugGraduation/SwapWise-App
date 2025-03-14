@@ -1,14 +1,18 @@
 package com.example.ui.add_offer
 
 import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
+import com.example.domain.exception.EmptyImageException
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.OfferItem
 import com.example.domain.offer.AddOfferUseCase
+import com.example.domain.post.GetImageRequestBodyUseCase
 import com.example.ui.add_post.IAddPostInteractions
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.NavigateUpEffect
@@ -25,6 +29,7 @@ class AddOfferViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
     private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
     private val addOfferUseCase: AddOfferUseCase,
 ) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IAddPostInteractions {
 
@@ -50,7 +55,7 @@ class AddOfferViewModel @Inject constructor(
         val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
                 categoryItem = categoryItems[index],
-                selected = false,
+                selected = mutableStateOf(false),
                 onClick = ::onCategoryChange
             )
         }
@@ -109,14 +114,20 @@ class AddOfferViewModel @Inject constructor(
 
     override fun onClickAdd() {
         tryToExecute(
-            call = { addOfferUseCase(args.postId, state.value.data.offerItem) },
+            call = {
+                addOfferUseCase(
+                    getImageRequestBodyUseCase(state.value.data.offerItem.imageLink.toUri())!!,
+                    args.postId,
+                    state.value.data.offerItem
+                )
+            },
             onSuccess = { navigateUp() },
-            onError = ::onAddPostFail
+            onError = ::onAddOfferFail
         )
     }
 
 
-    private fun onAddPostFail(throwable: Throwable) {
+    private fun onAddOfferFail(throwable: Throwable) {
         when (throwable) {
             is InvalidTitleException -> {
                 updateFieldError(titleError = stringsResource.invalidTitle)
@@ -128,6 +139,10 @@ class AddOfferViewModel @Inject constructor(
 
             is InvalidDetailsException -> {
                 updateFieldError(detailsError = stringsResource.invalidDetails)
+            }
+
+            is EmptyImageException -> {
+                onActionFail(Exception(stringsResource.emptyImageMessage))
             }
 
             else -> onActionFail(throwable)

@@ -1,6 +1,7 @@
 package com.example.ui.edit_offer
 
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
@@ -11,6 +12,7 @@ import com.example.domain.model.OfferItem
 import com.example.domain.offer.DeleteOfferUseCase
 import com.example.domain.offer.EditOfferUseCase
 import com.example.domain.offer.GetOfferDetailsUseCase
+import com.example.domain.post.GetImageRequestBodyUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.base.NavigateUpEffect
@@ -28,6 +30,7 @@ class EditOfferViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getOfferDetailsUseCase: GetOfferDetailsUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
     private val editOfferUseCase: EditOfferUseCase,
     private val deleteOfferUseCase: DeleteOfferUseCase,
 ) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IEditOfferInteractions {
@@ -65,7 +68,9 @@ class EditOfferViewModel @Inject constructor(
     private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
         val chipsList = List(categoryItems.size) { index ->
             ChipUiState(
-                categoryItem = categoryItems[index], selected = false, onClick = ::onCategoryChange
+                categoryItem = categoryItems[index],
+//                selected = mutableStateOf(false),
+                onClick = ::onCategoryChange
             )
         }
         updateData {
@@ -123,7 +128,12 @@ class EditOfferViewModel @Inject constructor(
 
     override fun onClickSave() {
         tryToExecute(
-            call = { editOfferUseCase(state.value.data.offerItem) },
+            call = {
+                editOfferUseCase(
+                    getImageRequestBodyUseCase(state.value.data.offerItem.imageLink.toUri(), true),
+                    state.value.data.offerItem
+                )
+            },
             onSuccess = { navigateUp() },
             onError = ::onSaveOfferFail
         )

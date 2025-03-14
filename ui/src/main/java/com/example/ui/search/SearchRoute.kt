@@ -8,31 +8,30 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.domain.model.CategoryItem
 
 private const val ROUTE = "search"
 
 fun NavController.navigateToSearch(
-    filterCategoryName: String = "",
+    filterCategoryId: String = "",
     builder: NavOptionsBuilder.() -> Unit = {}
 ) {
-    navigate("$ROUTE/$filterCategoryName", builder)
+    navigate("$ROUTE/$filterCategoryId", builder)
 }
 
 fun NavGraphBuilder.searchRoute(navController: NavHostController){
     composable(
-        route = "$ROUTE/{${SearchArgs.FILTER_CATEGORY_NAME_ARG}}",
+        route = "$ROUTE/{${SearchArgs.FILTER_CATEGORY_ID_ARG}}",
         arguments = listOf(
-            navArgument(SearchArgs.FILTER_CATEGORY_NAME_ARG) { NavType.StringType },
+            navArgument(SearchArgs.FILTER_CATEGORY_ID_ARG) { NavType.StringType },
         )
     ) { SearchScreen(navController) }
 }
 
 //todo: change categoryItem to string, id
 class SearchArgs(savedStateHandle: SavedStateHandle) {
-    val filterCategoryItem: CategoryItem = checkNotNull(savedStateHandle[FILTER_CATEGORY_NAME_ARG])
+    val filterCategoryId: String = checkNotNull(savedStateHandle[FILTER_CATEGORY_ID_ARG])
 
     companion object {
-        const val FILTER_CATEGORY_NAME_ARG = "filter_category_name"
+        const val FILTER_CATEGORY_ID_ARG = "filter_category_id"
     }
 }

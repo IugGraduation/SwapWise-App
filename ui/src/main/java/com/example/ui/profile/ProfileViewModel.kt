@@ -1,14 +1,12 @@
 package com.example.ui.profile
 
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
 import com.example.domain.exception.InvalidUsernameException
 import com.example.domain.model.PostItem
-import com.example.domain.post.UploadImageUseCase
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.domain.profile.GetCurrentUserDataUseCase
 import com.example.domain.profile.GetCurrentUserPostsUseCase
@@ -31,6 +29,7 @@ class ProfileViewModel @Inject constructor(
     private val getCurrentUserPostsUseCase: GetCurrentUserPostsUseCase,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
+    private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseViewModel<ProfileUiState, ProfileEffect>(ProfileUiState()), ProfileInteraction {
@@ -115,7 +114,10 @@ class ProfileViewModel @Inject constructor(
                     name = lastUserInfo.name,
                     phoneNumber = lastUserInfo.phoneNumber,
                     location = lastUserInfo.location,
-                    imageRequestBody = uploadImageUseCase(_state.value.data.profileInformationUiState.imageUri.toUri()),
+                    imageRequestBody = getImageRequestBodyUseCase(
+                        _state.value.data.profileInformationUiState.imageUri.toUri(),
+                        acceptNull = true
+                    ),
                     bio = lastUserInfo.bio
                 )
             },

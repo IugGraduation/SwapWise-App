@@ -1,7 +1,9 @@
 package com.example.ui.search
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.example.domain.authentication.GetAuthUseCase
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
@@ -21,7 +23,8 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getSearchResultUseCase: GetSearchResultUseCase,
-    private val getCategoriesUseCase: GetCategoriesUseCase
+    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getAuthUseCase: GetAuthUseCase
 ) : BaseViewModel<SearchUiState, SearchEffects>(SearchUiState()), ISearchInteractions {
     private val args = SearchArgs(savedStateHandle)
 
@@ -42,16 +45,15 @@ class SearchViewModel @Inject constructor(
 
     private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
         val chipsList = List(categoryItems.size) { index ->
-            if (args.filterCategoryItem == categoryItems[index]) {
+            if (args.filterCategoryId == categoryItems[index].uuid) {
                 ChipUiState(
                     categoryItem = categoryItems[index],
-                    selected = true,
+                    selected = mutableStateOf(true),
                     onClick = { search() })
-                    .also { search() }
             } else {
                 ChipUiState(
                     categoryItem = categoryItems[index],
-                    selected = false,
+                    selected = mutableStateOf(false),
                     onClick = { search() })
             }
         }
@@ -61,15 +63,15 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun search() {
+        if (_state.value.data.search.isBlank()) return
+
         tryToExecute(
             call = {
                 updateErrorMessage()
                 updateData {
                     copy(topicsList = listOf())
                 }
-                val filterChips =
-                    _state.value.data.filterChipsList.map { it.toChip() }
-//                    _state.value.data.filterChipsList.filter { it.selected }.map { it.text }
+                val filterChips = _state.value.data.filterChipsList.map { it.toChip() }
                 getSearchResultUseCase(_state.value.data.search, filterChips)
             },
             onSuccess = ::onSearchSuccess,
@@ -79,14 +81,14 @@ class SearchViewModel @Inject constructor(
 
     private fun onSearchSuccess(data: List<PostItem>) {
         updateData {
-            copy(topicsList = data)
+            copy(topicsList = data, emptyResult = data.isEmpty())
         }
     }
 
     private fun onSearchFail(throwable: Throwable) {
         onActionFail(throwable)
         updateData {
-            copy(topicsList = listOf())
+            copy(topicsList = listOf(), emptyResult = true)
         }
     }
 
@@ -101,8 +103,12 @@ class SearchViewModel @Inject constructor(
         search()
     }
 
-    override fun navigateToPostDetails(postId: String) {
-        sendUiEffect(SearchEffects.NavigateToPostDetails(postId))
+    override fun navigateToPostDetails(postItem: PostItem) {
+        tryToExecute(
+            call = { if (postItem.user.uuid != getAuthUseCase().userId) throw Exception() },
+            onSuccess = { sendUiEffect(SearchEffects.NavigateToEditPost(postItem.uuid)) },
+            onError = { sendUiEffect(SearchEffects.NavigateToPostDetails(postItem.uuid)) },
+        )
     }
 
 }

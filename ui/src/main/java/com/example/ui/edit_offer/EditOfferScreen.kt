@@ -1,14 +1,15 @@
 package com.example.ui.edit_offer
 
 import android.net.Uri
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,8 +19,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -75,11 +79,10 @@ fun EditOfferContent(
             state.data.offerItem.imageLink,
             onImagePicked = editInteractions::onSelectedImageChange
         )
-        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .scrollable(scrollState, orientation = Orientation.Vertical)
+                .verticalScroll(rememberScrollState())
                 .padding(Spacing16),
             verticalArrangement = Arrangement.spacedBy(Spacing8)
         ) {
@@ -88,6 +91,9 @@ fun EditOfferContent(
                 style = TextStyles.headingLarge,
                 color = MaterialTheme.color.textPrimary
             )
+
+            val focusManager = LocalFocusManager.current
+
             SwapWiseTextField(
                 value = state.data.offerItem.title,
                 onValueChange = editInteractions::onTitleChange,
@@ -99,6 +105,8 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 errorMessage = state.data.offerError.titleError,
             )
             SwapWiseTextField(
@@ -112,6 +120,8 @@ fun EditOfferContent(
                         tint = MaterialTheme.color.textTertiary
                     )
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 errorMessage = state.data.offerError.placeError,
             )
             SwapWiseTextField(
@@ -133,10 +143,11 @@ fun EditOfferContent(
                 title = stringResource(R.string.category_of_the_offer),
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
-                    it.selected = it.categoryItem == state.data.offerItem.categoryItem
+                    it.selected.value =
+                        it.categoryItem.uuid == state.data.offerItem.categoryItem.uuid
                 },
             )
-        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -157,11 +168,12 @@ fun EditOfferContent(
             )
         }
 
+        }
     }
 }
 
 
-@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
+@Preview(showBackground = true, device = "spec:width=1080px,height=1540px,dpi=440")
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {

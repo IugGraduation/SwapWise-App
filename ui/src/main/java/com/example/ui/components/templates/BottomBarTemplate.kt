@@ -105,7 +105,7 @@ private fun SwapWiseBottomNavigationBar(selectedItem: Int, onClickItem: (itemNum
                 icon = {
                     Icon(
                         painter = painterResource(R.drawable.ic_bell),
-                        contentDescription = stringResource(R.string.notifications)
+                        contentDescription = stringResource(R.string.notification)
                     )
                 },
                 selected = selectedItem == 2,
