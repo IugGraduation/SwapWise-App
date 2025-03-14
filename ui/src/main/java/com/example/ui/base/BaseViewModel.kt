@@ -50,6 +50,25 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
         }
     }
 
+    fun tryToExecute(
+        call: suspend () -> Unit,
+        onSuccess: () -> Unit = {},
+        onError: (Throwable) -> Unit = ::onActionFail,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ) {
+        viewModelScope.launch(dispatcher) {
+            isActionLoading(true)
+            try {
+                call()
+                onSuccess()
+            } catch (throwable: Throwable) {
+                onError(throwable)
+            } finally {
+                isActionLoading(false)
+            }
+        }
+    }
+
 
     protected fun updateData(update: STATE.() -> STATE) {
         _state.update {

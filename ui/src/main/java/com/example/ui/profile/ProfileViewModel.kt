@@ -1,18 +1,18 @@
 package com.example.ui.profile
 
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
 import com.example.domain.exception.InvalidUsernameException
 import com.example.domain.model.PostItem
-import com.example.domain.post.GetImageRequestBodyUseCase
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.domain.profile.GetCurrentUserDataUseCase
 import com.example.domain.profile.GetCurrentUserPostsUseCase
+import com.example.domain.profile.LogoutUseCase
 import com.example.domain.profile.UpdateUserInfoUseCase
+import com.example.ui.base.BaseUiState
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
 import com.example.ui.util.empty
@@ -30,6 +30,8 @@ class ProfileViewModel @Inject constructor(
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
     private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
+    private val logoutUseCase: LogoutUseCase,
 ) : BaseViewModel<ProfileUiState, ProfileEffect>(ProfileUiState()), ProfileInteraction {
 
     private lateinit var originalProfileInformation: ProfileInformationUiState
@@ -53,9 +55,8 @@ class ProfileViewModel @Inject constructor(
         originalProfileInformation = user.profileInformationUiState
     }
 
-    private fun onGetCurrentUserFail(throwable: Throwable) {
-        updateData { copy(baseUiState = this.baseUiState.copy(errorMessage = throwable.message.toString())) }
-    }
+    private fun onGetCurrentUserFail(throwable: Throwable) =
+        updateBaseErrorMessage(throwable.message)
 
     private fun getCurrentUserPosts() {
         tryToExecute(
@@ -70,10 +71,8 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-    private fun onGetCurrentUserPostsFail(throwable: Throwable) {
-
-    }
-
+    private fun onGetCurrentUserPostsFail(throwable: Throwable) =
+        updateBaseErrorMessage(throwable.message)
 
     override fun onUpdateProfileImage(imageUri: Uri) {
         updateData {
@@ -85,39 +84,26 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    override fun onEditButtonClicked() = manageUserInfoEdit(isEditable = true)
 
-    override fun onEditButtonClicked() {
-        manageUserInfoEdit(isEditable = true)
-    }
+    override fun onUsernameChange(newName: String) = updateProfileField { copy(name = newName) }
 
-    override fun onUsernameChange(newName: String) {
-        updateProfileField { copy(name = newName) }
-    }
-
-    override fun onPhoneNumberChange(newNumber: String) {
+    override fun onPhoneNumberChange(newNumber: String) =
         updateProfileField { copy(phoneNumber = newNumber) }
-    }
 
-    override fun onLocationChange(location: String) {
+    override fun onLocationChange(location: String) =
         updateProfileField { copy(location = location) }
-    }
 
-    override fun onBioChange(bio: String) {
-        updateProfileField { copy(bio = bio) }
-    }
+    override fun onBioChange(bio: String) = updateProfileField { copy(bio = bio) }
 
     private fun updateProfileField(update: ProfileInformationUiState.() -> ProfileInformationUiState) {
-        updateData {
-            copy(profileInformationUiState = profileInformationUiState.update())
-        }
+        updateData { copy(profileInformationUiState = profileInformationUiState.update()) }
     }
 
     override fun onCancelButtonClicked() {
         manageUserInfoEdit(isEditable = false)
         makeErrorMessagesEmpty()
-        updateData {
-            copy(profileInformationUiState = originalProfileInformation)
-        }
+        updateData { copy(profileInformationUiState = originalProfileInformation) }
     }
 
     override fun onSaveButtonClicked() {
@@ -147,40 +133,34 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onUpdateUserInfoFail(throwable: Throwable) {
-        Log.e("bk", "onUpdateUserInfoFail: ${throwable.message}, ${throwable.cause}")
-
         when (throwable) {
-            is InvalidUsernameException -> {
-                updateFieldError(userNameError = stringsResource.invalidUsername)
-            }
-
-            is InvalidPhoneNumberException -> {
-                updateFieldError(phoneNumberError = stringsResource.invalidPhoneNumber)
-            }
-
-            is InvalidLocationException -> {
-                updateFieldError(locationError = stringsResource.invalidLocation)
-            }
-
+            is InvalidUsernameException -> updateFieldError(userNameError = stringsResource.invalidUsername)
+            is InvalidPhoneNumberException -> updateFieldError(phoneNumberError = stringsResource.invalidPhoneNumber)
+            is InvalidLocationException -> updateFieldError(locationError = stringsResource.invalidLocation)
             else -> updateFieldError()
         }
     }
 
     override fun onDarkMoodChange(isDarkMood: Boolean) {
-        updateData {
-            copy(profileSettingsUiState = profileSettingsUiState.copy(isDarkTheme = isDarkMood))
-        }
+        updateData { copy(profileSettingsUiState = profileSettingsUiState.copy(isDarkTheme = isDarkMood)) }
         viewModelScope.launch(Dispatchers.IO) { customizeProfileSettings.updateDarkTheme(isDarkMood) }
     }
 
     override fun onLogoutClicked() {
-        sendUiEffect(ProfileEffect.NavigateToLoginScreen)
-        //todo: clear stored user data
+        tryToExecute(
+            call = logoutUseCase::invoke,
+            onSuccess = {onLogoutSuccess()},
+            onError = ::onLogoutFail,
+        )
     }
 
-    override fun onResetPasswordClicked() {
-        sendUiEffect(ProfileEffect.NavigateToResetPassword)
+    private fun onLogoutSuccess() = sendUiEffect(ProfileEffect.NavigateToLoginScreen)
+
+    private fun onLogoutFail(throwable: Throwable) {
+        updateBaseErrorMessage(throwable.message)
     }
+
+    override fun onResetPasswordClicked() = sendUiEffect(ProfileEffect.NavigateToResetPassword)
 
     override fun onChangeLanguageClicked() {
         //todo send show language dialog effect
@@ -242,6 +222,16 @@ class ProfileViewModel @Inject constructor(
     fun updatePagerNumber(currentPage: Int) {
         updateData {
             copy(pagerNumber = currentPage)
+        }
+    }
+
+    private fun updateBaseErrorMessage(message: String?) {
+        updateData {
+            copy(
+                baseUiState = BaseUiState(
+                    errorMessage = message ?: stringsResource.globalMessageError
+                )
+            )
         }
     }
 }

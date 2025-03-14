@@ -57,6 +57,7 @@ class AuthRepository(
         }
     }
 
+    suspend fun clearUserData() = dataStore.edit { it.clear() }
 
     suspend fun getAuthDto(): AuthDto {
         return dataStore.data.map {
