@@ -33,6 +33,7 @@ import com.example.ui.theme.TextStyles
 fun HomeTemplate(
     user: User,
     bottomBarState: BottomBarUiState,
+    floatingActionButton: @Composable () -> Unit = {},
     baseUiState: BaseUiState = BaseUiState(),
     content: @Composable () -> Unit
 ) {
@@ -46,6 +47,7 @@ fun HomeTemplate(
             )
         },
         bottomBarState = bottomBarState,
+        floatingActionButton = floatingActionButton,
         baseUiState = baseUiState,
     ) {
         content()

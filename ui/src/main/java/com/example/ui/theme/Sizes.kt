@@ -43,6 +43,7 @@ val BorderHeight24 = 24.dp
 //endregion
 
 //region Icon ButtonSizes
+val IconButtonSize60 = 60.dp
 val IconButtonSize40 = 40.dp
 val IconButtonSize32 = 32.dp
 //endregion

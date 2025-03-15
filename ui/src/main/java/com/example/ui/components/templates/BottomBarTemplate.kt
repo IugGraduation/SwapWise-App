@@ -29,6 +29,7 @@ import com.example.ui.theme.color
 @Composable
 fun BottomBarTemplate(
     bottomBarState: BottomBarUiState,
+    floatingActionButton: @Composable () -> Unit = {},
     topBar: @Composable () -> Unit = {},
     baseUiState: BaseUiState = BaseUiState(),
     content: @Composable () -> Unit,
@@ -49,6 +50,7 @@ fun BottomBarTemplate(
                 }
             )
         },
+        floatingActionButton = floatingActionButton,
         baseUiState = baseUiState,
     ) {
         content()

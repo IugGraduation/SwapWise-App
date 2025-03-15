@@ -43,6 +43,7 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.templates.HomeTemplate
 import com.example.ui.edit_post.navigateToEditPost
+import com.example.ui.home.composable.AddIconButton
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.post_details.navigateToPostDetails
@@ -131,8 +132,11 @@ fun HomeContent(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     HomeTemplate(
-        state.data.user,
+        user = state.data.user,
         bottomBarState = bottomBarState,
+        floatingActionButton = {
+            AddIconButton { homeInteractions.navigateToAddPost() }
+        },
         baseUiState = state.baseUiState,
     ) {
         LazyColumn(
