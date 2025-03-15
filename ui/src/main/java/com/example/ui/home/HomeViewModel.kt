@@ -1,6 +1,5 @@
 package com.example.ui.home
 
-import com.example.domain.authentication.GetAuthUseCase
 import com.example.domain.home.GetHomeDataUseCase
 import com.example.domain.home.GetPostsFromCategoryUseCase
 import com.example.domain.model.CategoryItem
@@ -15,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getHomeDataUseCase: GetHomeDataUseCase,
-    private val getAuthUseCase: GetAuthUseCase,
     private val getPostsFromCategoryUseCase: GetPostsFromCategoryUseCase,
 ) :
     BaseViewModel<HomeUiState, HomeEffects>(HomeUiState()), IHomeInteractions {
@@ -62,11 +60,7 @@ class HomeViewModel @Inject constructor(
                 },
             )
         } else if (topicItem is PostItem) {
-            tryToExecute(
-                call = { if (topicItem.user.uuid != getAuthUseCase().userId) throw Exception() },
-                onSuccess = { sendUiEffect(HomeEffects.NavigateToEditPost(topicItem.uuid)) },
-                onError = { sendUiEffect(HomeEffects.NavigateToPostDetails(topicItem.uuid)) },
-            )
+            sendUiEffect(HomeEffects.NavigateToPostDetails(topicItem.uuid))
         }
     }
 

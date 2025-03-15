@@ -19,6 +19,14 @@ class PostDetailsViewModel @Inject constructor(
 ) : BaseViewModel<PostItemUiState, PostDetailsEffects>(PostItemUiState()), PostDetailsInteractions {
     private val args = PostDetailsArgs(savedStateHandle)
 
+    init {
+        tryToExecute(
+            call = { if (state.value.data.postItem.user.uuid != getAuthUseCase().userId) throw Exception() },
+            onSuccess = { updateData { copy(showEditPostButton = true) } },
+        )
+    }
+
+
     fun onResume() {
         getPostDetails()
     }
@@ -43,10 +51,19 @@ class PostDetailsViewModel @Inject constructor(
 
     override fun navigateToOfferDetails(offerItem: OfferItem) {
         tryToExecute(
-            call = { if (offerItem.user.uuid != getAuthUseCase().userId) throw Exception() },
-            onSuccess = { sendUiEffect(PostDetailsEffects.NavigateToEditOffer(offerItem.uuid)) },
-            onError = { sendUiEffect(PostDetailsEffects.NavigateToOfferDetails(offerItem.uuid)) },
+            call = { getAuthUseCase().userId },
+            onSuccess = { currentUserId ->
+                if (currentUserId == state.value.data.postItem.user.uuid) {
+                    sendUiEffect(PostDetailsEffects.NavigateToOfferDetails(offerItem.uuid))
+                } else if (currentUserId == offerItem.user.uuid) {
+                    sendUiEffect(PostDetailsEffects.NavigateToEditOffer(offerItem.uuid))
+                }
+            },
         )
+    }
+
+    override fun navigateToEditPost(postId: String) {
+        sendUiEffect(PostDetailsEffects.NavigateToEditPost(postId = postId))
     }
 
     override fun navigateUp() {

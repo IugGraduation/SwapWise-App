@@ -150,7 +150,7 @@ class ProfileViewModel @Inject constructor(
 
     override fun onLogoutClicked() {
         tryToExecute(
-            call = logoutUseCase::invoke,
+            call = { logoutUseCase() },
             onSuccess = {onLogoutSuccess()},
             onError = ::onLogoutFail,
         )

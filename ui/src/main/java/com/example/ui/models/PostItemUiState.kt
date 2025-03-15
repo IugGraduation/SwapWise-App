@@ -6,6 +6,7 @@ data class PostItemUiState(
     val postItem: PostItem = PostItem(),
     val chipsList: List<ChipUiState> = listOf(),
     val favoriteChipsList: List<ChipUiState> = listOf(),
+    val showEditPostButton: Boolean = false,
     val postError: PostErrorUiState = PostErrorUiState(),
 )
 

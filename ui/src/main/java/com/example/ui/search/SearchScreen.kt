@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.category.GetFakeCategoriesUseCase
-import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout
@@ -125,7 +124,7 @@ fun SearchContent(
                 items = state.data.topicsList,
                 isCategoryCard = false,
                 isHorizontalLayout = false,
-                onClickGoToDetails = { item -> searchInteractions.navigateToPostDetails(item as PostItem) }
+                onClickGoToDetails = { item -> searchInteractions.navigateToPostDetails(item.uuid) }
             )
         }
     }
@@ -186,7 +185,7 @@ fun PreviewSearchContent() {
             searchInteractions = object : ISearchInteractions {
                 override fun onSearchChange(newValue: String) {}
                 override fun onClickTryAgain() {}
-                override fun navigateToPostDetails(postItem: PostItem) {}
+                override fun navigateToPostDetails(postId: String) {}
             }
         )
     }

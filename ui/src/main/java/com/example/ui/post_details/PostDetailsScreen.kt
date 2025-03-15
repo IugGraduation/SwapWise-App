@@ -1,5 +1,6 @@
 package com.example.ui.post_details
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,9 +46,11 @@ import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.edit_offer.navigateToEditOffer
+import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.offer_details.navigateToOfferDetails
+import com.example.ui.profile.composable.EditIconButton
 import com.example.ui.theme.BlackFourth
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.RadiusLarge
@@ -84,14 +87,22 @@ fun PostDetailsScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is PostDetailsEffects.NavigateToAddOffer -> navController.navigateToAddOffer(state.data.postItem.uuid)
-                is PostDetailsEffects.NavigateToOfferDetails -> navController.navigateToOfferDetails(
-                    effect.offerId
-                )
+                is PostDetailsEffects.NavigateToAddOffer -> {
+                    navController.navigateToAddOffer(state.data.postItem.uuid)
+                }
+
+                is PostDetailsEffects.NavigateToOfferDetails -> {
+                    navController.navigateToOfferDetails(effect.offerId)
+                }
 
                 is PostDetailsEffects.NavigateToEditOffer -> {
                     navController.navigateToEditOffer(effect.offerId)
                 }
+
+                is PostDetailsEffects.NavigateToEditPost -> {
+                    navController.navigateToEditPost(effect.postId)
+                }
+
                 is PostDetailsEffects.NavigateUp -> navController.navigateUp()
             }
         }
@@ -116,6 +127,11 @@ fun PostDetailsContent(
                 text = stringResource(R.string.add_offer),
                 modifier = Modifier.padding(horizontal = Spacing16)
             )
+        },
+        actions = {
+            AnimatedVisibility(state.data.showEditPostButton) {
+                EditIconButton { postDetailsInteractions.navigateToEditPost(state.data.postItem.uuid) }
+            }
         },
         baseUiState = state.baseUiState,
     ) {
@@ -239,6 +255,7 @@ fun PreviewPostDetailsContent() {
             postDetailsInteractions = object : PostDetailsInteractions {
                 override fun navigateToAddOffer() {}
                 override fun navigateToOfferDetails(offerItem: OfferItem) {}
+                override fun navigateToEditPost(postId: String) {}
                 override fun navigateUp() {}
             },
         )

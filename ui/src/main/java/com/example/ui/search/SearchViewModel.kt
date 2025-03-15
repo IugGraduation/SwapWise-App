@@ -3,7 +3,6 @@ package com.example.ui.search
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.domain.authentication.GetAuthUseCase
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
@@ -24,7 +23,6 @@ class SearchViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val getAuthUseCase: GetAuthUseCase
 ) : BaseViewModel<SearchUiState, SearchEffects>(SearchUiState()), ISearchInteractions {
     private val args = SearchArgs(savedStateHandle)
 
@@ -103,12 +101,8 @@ class SearchViewModel @Inject constructor(
         search()
     }
 
-    override fun navigateToPostDetails(postItem: PostItem) {
-        tryToExecute(
-            call = { if (postItem.user.uuid != getAuthUseCase().userId) throw Exception() },
-            onSuccess = { sendUiEffect(SearchEffects.NavigateToEditPost(postItem.uuid)) },
-            onError = { sendUiEffect(SearchEffects.NavigateToPostDetails(postItem.uuid)) },
-        )
+    override fun navigateToPostDetails(postId: String) {
+        sendUiEffect(SearchEffects.NavigateToPostDetails(postId))
     }
 
 }
