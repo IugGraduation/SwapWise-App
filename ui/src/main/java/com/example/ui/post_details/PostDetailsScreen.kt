@@ -3,6 +3,7 @@ package com.example.ui.post_details
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -175,23 +176,39 @@ fun PostDetailsContent(
                 )
                 VerticalSpacer(Spacing8)
             }
-            items(state.data.postItem.offers) { offerItem ->
-                PostCard(
-                    username = offerItem.user.name,
-                    userImage = rememberAsyncImagePainter(offerItem.user.imageLink),
-                    title = offerItem.title,
-                    isPostCard = false,
-                    details = offerItem.details,
-                    postImage = rememberAsyncImagePainter(offerItem.imageLink),
-                    onCardClick = { postDetailsInteractions.navigateToOfferDetails(offerItem) },
+
+            items(state.data.postItem.offers.chunked(2)) { rowItems ->
+                Row(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .padding(horizontal = Spacing16)
-                        .padding(bottom = Spacing8)
-                )
+                        .padding(bottom = Spacing8),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing16)
+                ) {
+                    rowItems.forEach { offerItem ->
+                        Box(modifier = Modifier.weight(1f)) {
+                            PostCard(
+                                username = offerItem.user.name,
+                                userImage = rememberAsyncImagePainter(offerItem.user.imageLink),
+                                title = offerItem.title,
+                                isPostCard = false,
+                                details = offerItem.details,
+                                postImage = rememberAsyncImagePainter(offerItem.imageLink),
+                                onCardClick = {
+                                    postDetailsInteractions.navigateToOfferDetails(offerItem)
+                                }
+                            )
+                        }
+                    }
+                    // In case the last row has only one item, add a spacer to balance the row.
+                    if (rowItems.size < 2) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
             }
 
             item {
-                VerticalSpacer(Spacing80) //space for floating button at down
+                VerticalSpacer(Spacing80) //space for floating button at the bottom
             }
         }
     }

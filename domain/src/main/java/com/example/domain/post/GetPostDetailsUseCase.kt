@@ -28,7 +28,7 @@ class GetFakePostDetailsUseCase{
             details = "Looking for a sweet deal? I have 10 kilograms of high-quality sugar that I’d like to exchange for something useful like 10 kilograms of high-quality salt or 10 kilograms of high-quality rice or 10 kilograms of high-quality anything else that I’d like to exchange for something useful",
             categoryItem = CategoryItem("Category"),
             date = "Wed, Nov 20",
-            offers = listOf(GetFakeOfferDetailsUseCase()()),
+            offers = List(7) { GetFakeOfferDetailsUseCase()() },
             favoriteCategoryItems = GetFakeCategoriesUseCase()().toMutableList(),
             rate = 4.8f,
         )
