@@ -180,9 +180,7 @@ private fun SwapWiseOtpTextField(
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     maxLines = 1,
-                    textStyle = MaterialTheme.typography.headlineLarge.copy(
-                        textAlign = TextAlign.Center
-                    ),
+                    textStyle = TextStyles.headingLarge.copy(textAlign = TextAlign.Center),
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(focusRequesters[index]),
@@ -196,12 +194,14 @@ private fun SwapWiseOtpTextField(
 }
 
 
-@Preview(showSystemUi = false, showBackground = true,)
+@Preview(
+    showSystemUi = false, showBackground = true,
+)
 @Composable
 fun PreviewOtpContent() {
     GraduationProjectTheme {
         OtpContent(
-            state = MyUiState(OtpUiState()),
+            state = MyUiState(OtpUiState(otp = "11")),
             otpInteractions = object : IOtpInteractions {
                 override fun onOtpChange(newOtp: String) {}
                 override fun onClickConfirm() {}
