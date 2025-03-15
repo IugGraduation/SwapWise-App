@@ -22,14 +22,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.OfferItem
@@ -39,6 +37,7 @@ import com.example.ui.components.molecules.PostCard
 import com.example.ui.theme.CategoryCardHorizontalHeight
 import com.example.ui.theme.CategoryCardVerticalHeight
 import com.example.ui.theme.CategoryCardWidth
+import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.PrimaryOverlay
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Spacing16
@@ -75,7 +74,7 @@ private fun getCard(
                 CategoryCard(
                     categoryItem = item,
                     isHorizontal = isHorizontal,
-                    onClickGoSearchByCategory = onClickGoToDetails,
+                    onClickGoShowAllCategoryPosts = onClickGoToDetails,
                 )
             }
         }
@@ -120,7 +119,7 @@ fun CategoryCard(
             .fillMaxWidth()
             .height(height = CategoryCardVerticalHeight)
     },
-    onClickGoSearchByCategory: (topicItem: TopicItem) -> Unit,
+    onClickGoShowAllCategoryPosts: (topicItem: TopicItem) -> Unit,
 ) {
     BoxRounded(modifier = modifier, contentAlignment = Alignment.Center) {
         Image(
@@ -134,7 +133,7 @@ fun CategoryCard(
                 .fillMaxSize()
                 .clip(RoundedCornerShape(RadiusLarge))
                 .background(color = PrimaryOverlay)
-                .clickable { onClickGoSearchByCategory(categoryItem) },
+                .clickable { onClickGoShowAllCategoryPosts(categoryItem) },
         ) {}
 
         val textStyle = when (isHorizontal) {
@@ -152,14 +151,19 @@ fun CardText(
     modifier: Modifier = Modifier
 ) {
     Text(
+        text = text,
+        style = textStyle.copy(
+            color = MaterialTheme.color.background,
+            drawStyle = Stroke(width = 5F)
+        ),
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+    )
+
+    Text(
         modifier = modifier.fillMaxWidth(),
         text = text,
         style = textStyle.copy(
-            shadow = Shadow(
-                color = Color(0x99000000),
-                offset = Offset(4f, 4f),
-                blurRadius = 8f
-            ),
             color = MaterialTheme.color.textPrimary,
             drawStyle = Stroke(width = 1.2f, join = StrokeJoin.Round),
         ),
@@ -197,5 +201,13 @@ private fun CustomLazyColumn(content: LazyListScope.() -> Unit) {
         verticalArrangement = Arrangement.spacedBy(Spacing8)
     ) {
         content()
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewCategoryCard() {
+    GraduationProjectTheme {
+        CategoryCard(categoryItem = CategoryItem(title = "Category")) { }
     }
 }
