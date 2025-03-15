@@ -31,7 +31,7 @@ class SeeAllTopicsViewModel @Inject constructor(
             onSuccess = ::onGetHomeDataSuccess,
         )
         } else {
-            tryToExecute(
+            tryToExecute<TopicsHolder>(
                 call = { getPostsFromCategoryUseCase(args.categoryId, args.title) },
                 onSuccess = { onGetHomeDataSuccess(it) },
             )
