@@ -36,16 +36,17 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
         onSuccess: (T) -> Unit = {},
         onError: (Throwable) -> Unit = ::onActionFail,
         shouldLoad: Boolean = true,
+        shouldHideContent: Boolean = false,
         dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
         viewModelScope.launch(dispatcher) {
-            isActionLoading(shouldLoad)
+            isActionLoading(shouldLoad, shouldHideContent)
             try {
                 call().also(onSuccess)
-                isActionLoading(false)
             } catch (throwable: Throwable) {
-                isActionLoading(false)
                 onError(throwable)
+            } finally {
+                isActionLoading(isLoading = false, shouldHideContent = false)
             }
         }
     }
@@ -54,17 +55,19 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
         call: suspend () -> Unit,
         onSuccess: () -> Unit = {},
         onError: (Throwable) -> Unit = ::onActionFail,
+        shouldLoad: Boolean = true,
+        shouldHideContent: Boolean = false,
         dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
         viewModelScope.launch(dispatcher) {
-            isActionLoading(true)
+            isActionLoading(shouldLoad, shouldHideContent)
             try {
                 call()
                 onSuccess()
             } catch (throwable: Throwable) {
                 onError(throwable)
             } finally {
-                isActionLoading(false)
+                isActionLoading(isLoading = false, shouldHideContent = false)
             }
         }
     }
@@ -83,8 +86,8 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
         }
     }
 
-    protected fun isActionLoading(isLoading: Boolean = true) {
-        updateBaseUiState { copy(isLoading = isLoading) }
+    private fun isActionLoading(isLoading: Boolean = true, shouldHideContent: Boolean = false) {
+        updateBaseUiState { copy(isLoading = isLoading, shouldHideContent = shouldHideContent) }
     }
 
     protected fun onActionFail(throwable: Throwable) {

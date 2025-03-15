@@ -21,13 +21,17 @@ class HomeViewModel @Inject constructor(
     BaseViewModel<HomeUiState, HomeEffects>(HomeUiState()), IHomeInteractions {
 
     fun onResume() {
+        getHomeData()
+    }
+
+    private fun getHomeData() {
         tryToExecute(
             call = { getHomeDataUseCase() },
             onSuccess = ::onGetHomeDataSuccess,
-            shouldLoad = _state.value.data.user.name.isBlank()
+            shouldLoad = _state.value.data.user.name.isBlank(),
+            shouldHideContent = true
         )
     }
-
 
     private fun onGetHomeDataSuccess(data: Home) {
         _state.value = MyUiState(HomeUiState.fromHome(data))

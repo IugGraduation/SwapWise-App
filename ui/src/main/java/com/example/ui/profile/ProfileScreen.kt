@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -95,26 +94,14 @@ fun ProfileScreen(
                 navController.navigateToResetPassword()
             }
         }
-
     }
 
-    if (!state.baseUiState.isLoading) {
-        ProfileContent(
-            state = state,
-            profileInteraction = viewModel,
-            pagerState = pagerState,
-            bottomBarState = bottomBarState
-        )
-    } else {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator(color = MaterialTheme.color.primary)
-        }
-    }
-
+    ProfileContent(
+        state = state,
+        profileInteraction = viewModel,
+        pagerState = pagerState,
+        bottomBarState = bottomBarState
+    )
 }
 
 @Composable
@@ -126,12 +113,18 @@ private fun ProfileContent(
 ) {
     TransparentStatusBar()
 
-    BottomBarTemplate(bottomBarState = bottomBarState) {
-        LazyColumn(modifier = Modifier.fillMaxHeight().background(MaterialTheme.color.background)) {
+    BottomBarTemplate(bottomBarState = bottomBarState, baseUiState = state.baseUiState) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(MaterialTheme.color.background)
+        ) {
             item {
                 Box {
                     GradientCircleBackground(
-                        modifier = Modifier.fillMaxWidth().height(GradientCircleBackgroundSize)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(GradientCircleBackgroundSize)
                     )
 
                     Column(

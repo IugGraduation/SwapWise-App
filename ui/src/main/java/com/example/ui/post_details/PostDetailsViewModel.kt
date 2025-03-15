@@ -27,7 +27,8 @@ class PostDetailsViewModel @Inject constructor(
         tryToExecute(
             call = { getPostDetailsUseCase(args.postId) },
             onSuccess = ::onGetPostDetailsSuccess,
-            shouldLoad = _state.value.data.postItem.uuid.isBlank()
+            shouldLoad = _state.value.data.postItem.uuid.isBlank(),
+            shouldHideContent = true
         )
     }
 
