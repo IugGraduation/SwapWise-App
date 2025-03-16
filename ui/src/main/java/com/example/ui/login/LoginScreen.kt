@@ -55,9 +55,7 @@ fun LoginScreen(
     LaunchedEffect(loginViewModel.effect) {
         loginViewModel.effect.collect { effect ->
             when (effect) {
-                is LoginEffects.NavigateToHome -> navController.navigateToHome {
-                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                }
+                is LoginEffects.NavigateToHome -> navController.navigateToHome()
 
                 is LoginEffects.NavigateToSignup -> navController.navigateToSignup {
                     popUpTo(navController.graph.startDestinationId) { inclusive = true }

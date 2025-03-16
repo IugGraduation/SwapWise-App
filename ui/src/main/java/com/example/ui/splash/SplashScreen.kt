@@ -35,9 +35,7 @@ fun SplashScreen(
     LaunchedEffect(splashViewModel.effect) {
         splashViewModel.effect.collect { effect ->
             when (effect) {
-                SplashEffects.NavigateToHome -> navController.navigateToHome {
-                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                }
+                SplashEffects.NavigateToHome -> navController.navigateToHome()
 
                 SplashEffects.NavigateToOtp -> {
                     navController.navigateToLogin {

@@ -60,9 +60,7 @@ fun OtpScreen(navController: NavController, viewModel: OtpViewModel = hiltViewMo
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is OtpEffects.NavigateToHome -> navController.navigateToHome {
-                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                }
+                is OtpEffects.NavigateToHome -> navController.navigateToHome()
             }
         }
     }
