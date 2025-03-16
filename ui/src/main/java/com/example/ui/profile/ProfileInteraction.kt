@@ -1,5 +1,6 @@
 package com.example.ui.profile
 
+import android.content.Context
 import android.net.Uri
 
 interface ProfileInteraction {
@@ -14,7 +15,7 @@ interface ProfileInteraction {
     fun onDarkMoodChange(isDarkMood: Boolean)
     fun onLogoutClicked()
     fun onResetPasswordClicked()
-    fun onChangeLanguageClicked()
     fun onUpdateLogoutDialogState(showDialog: Boolean)
-
+    fun updateLanguageDialogState(showDialog: Boolean)
+    fun onUpdateLanguage(language: String)
 }

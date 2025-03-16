@@ -38,8 +38,17 @@ class ProfileViewModel @Inject constructor(
 
     init {
         viewModelScope.launch { isDarkTheme() }
+        getLastSelectedAppLanguage()
         getCurrentUserInfo()
         getCurrentUserPosts()
+    }
+
+    private fun getLastSelectedAppLanguage() {
+        viewModelScope.launch {
+            customizeProfileSettings.getLatestSelectedAppLanguage().collect(){ language ->
+                updateData { copy(profileSettingsUiState = profileSettingsUiState.copy(lastAppLanguage = language)) }
+            }
+        }
     }
 
     private fun getCurrentUserInfo() {
@@ -149,7 +158,7 @@ class ProfileViewModel @Inject constructor(
     override fun onLogoutClicked() {
         tryToExecute(
             call = logoutUseCase::invoke,
-            onSuccess = {onLogoutSuccess()},
+            onSuccess = { onLogoutSuccess() },
             onError = ::onLogoutFail,
         )
     }
@@ -162,8 +171,38 @@ class ProfileViewModel @Inject constructor(
 
     override fun onResetPasswordClicked() = sendUiEffect(ProfileEffect.NavigateToResetPassword)
 
-    override fun onChangeLanguageClicked() {
-        //todo send show language dialog effect
+
+    override fun updateLanguageDialogState(showDialog: Boolean) {
+        updateData {
+            copy(
+                profileSettingsUiState = _state.value.data.profileSettingsUiState.copy(
+                    showLanguageDialog = showDialog
+                )
+            )
+        }
+    }
+
+    override fun onUpdateLanguage(language: String) {
+        updateData {
+            copy(
+                profileSettingsUiState = _state.value.data.profileSettingsUiState.copy(
+                    lastAppLanguage = language
+                )
+            )
+        }
+        tryToExecute(
+            call = { customizeProfileSettings.updateAppLanguage(language) },
+            onSuccess = ::onUpdateLanguageSuccess,
+            onError = ::onUpdateLanguageFail,
+        )
+    }
+
+    private fun onUpdateLanguageSuccess() {
+        updateLanguageDialogState(false)
+    }
+
+    private fun onUpdateLanguageFail(throwable: Throwable) {
+        updateLanguageDialogState(false)
     }
 
     override fun onUpdateLogoutDialogState(showDialog: Boolean) {

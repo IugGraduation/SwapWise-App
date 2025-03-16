@@ -33,7 +33,9 @@ class SeeAllTopicsViewModel @Inject constructor(
         } else {
             tryToExecute(
                 call = { getPostsFromCategoryUseCase(args.categoryId, args.title) },
-                onSuccess = { onGetHomeDataSuccess(it) },
+                onSuccess = { data ->
+                    onGetHomeDataSuccess(data)
+                            },
             )
         }
     }

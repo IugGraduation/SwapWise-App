@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val state by mainViewModel.state.collectAsState()
-
+            InstallSavedAppLanguage(this)
             GraduationProjectTheme(darkTheme = state.data) {
                 val navController = rememberNavController()
                 AppNavGraph(navController)
