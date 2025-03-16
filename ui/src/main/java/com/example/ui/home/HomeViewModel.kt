@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
             call = { getHomeDataUseCase() },
             onSuccess = ::onGetHomeDataSuccess,
             shouldLoad = _state.value.data.user.name.isBlank(),
-            shouldHideContent = true
+            shouldHideContent = _state.value.data.user.name.isBlank(),
         )
     }
 
