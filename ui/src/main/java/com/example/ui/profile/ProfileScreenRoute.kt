@@ -1,14 +1,21 @@
 package com.example.ui.profile
 
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.example.ui.util.Screen
 
-fun NavController.navigateToProfile(builder: NavOptionsBuilder.() -> Unit = {}) {
-    navigate(Screen.Profile.route, builder)
+fun NavController.navigateToProfile() {
+    navigate(Screen.Profile.route) {
+        popUpTo(graph.findStartDestination().id) {
+            inclusive = true
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
 
 fun NavGraphBuilder.profileRoute(navController: NavHostController){
