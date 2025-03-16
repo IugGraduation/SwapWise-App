@@ -43,7 +43,11 @@ val WhiteTertiary = Color(0x7AFFFFFF)
 val WhiteFourth = Color(0x33FFFFFF)
 
 val GradientBrush = Brush.horizontalGradient(listOf(Purple, Primary))
-
+val DiameterGradientBrush = Brush.linearGradient(
+    listOf(Purple, Primary),
+    start = androidx.compose.ui.geometry.Offset(0f, 1000f), // Bottom left
+    end = androidx.compose.ui.geometry.Offset(1000f, 0f) // Top right
+)
 @Immutable
 data class CustomColorsPalette(
     val primary: Color = Primary,
