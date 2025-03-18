@@ -1,7 +1,6 @@
 package com.example.ui.search
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.model.CategoryItem
@@ -20,11 +19,9 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
 ) : BaseViewModel<SearchUiState, SearchEffects>(SearchUiState()), ISearchInteractions {
-    private val args = SearchArgs(savedStateHandle)
 
     init {
         prepareChipsList()
@@ -43,17 +40,11 @@ class SearchViewModel @Inject constructor(
 
     private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
         val chipsList = List(categoryItems.size) { index ->
-            if (args.filterCategoryId == categoryItems[index].uuid) {
-                ChipUiState(
-                    categoryItem = categoryItems[index],
-                    selected = mutableStateOf(true),
-                    onClick = { search() })
-            } else {
-                ChipUiState(
-                    categoryItem = categoryItems[index],
-                    selected = mutableStateOf(false),
-                    onClick = { search() })
-            }
+            ChipUiState(
+                categoryItem = categoryItems[index],
+                selected = mutableStateOf(false),
+                onClick = { search() }
+            )
         }
         updateData {
             copy(filterChipsList = chipsList)
