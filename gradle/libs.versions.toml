@@ -5,6 +5,7 @@ coil = "2.3.0"
 coilCompose = "3.0.4"
 converterGson = "2.9.0"
 datastorePreferences = "1.1.2"
+datastorePreferencesVersion = "1.0.0"
 foundation = "1.7.6"
 gson = "2.10.1"
 hiltAndroidVersion = "2.51.1"
@@ -37,6 +38,7 @@ datastorePreferencesAndroid = "1.1.2"
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-datastore-preferences-v100 = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferencesVersion" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }

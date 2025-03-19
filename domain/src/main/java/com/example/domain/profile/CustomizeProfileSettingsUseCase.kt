@@ -9,4 +9,8 @@ class CustomizeProfileSettingsUseCase @Inject constructor(
     suspend fun updateDarkTheme(isDarkTheme: Boolean) = repository.updateDarkTheme(isDarkTheme)
 
     suspend fun isDarkThem() = repository.isDarkThemeEnabled()
+
+    suspend fun updateAppLanguage(newLanguage: String) = repository.updateAppLanguage(newLanguage)
+
+    fun getLatestSelectedAppLanguage() = repository.getLatestSelectedAppLanguage()
 }
