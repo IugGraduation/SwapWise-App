@@ -68,7 +68,8 @@ fun PostCard(
 
     Card(
         modifier = modifier
-            .height(CardHeight).then (
+            .height(CardHeight)
+            .then(
                 if (isHorizontalCard) {
                     Modifier.width(width = CardWidth)
                 } else {
@@ -184,27 +185,29 @@ private fun PostInfoSection(
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.weight(1f))
-            BoxRounded(
-                modifier = Modifier
-                    .wrapContentWidth(),
-                color = MaterialTheme.color.background
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = Spacing8, vertical = Spacing4),
-                    horizontalArrangement = Arrangement.spacedBy(Spacing4),
-                    verticalAlignment = Alignment.CenterVertically
+            AnimatedVisibility(isPostCard) {
+                BoxRounded(
+                    modifier = Modifier
+                        .wrapContentWidth(),
+                    color = MaterialTheme.color.background
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_offer),
-                        contentDescription = offersNumber + stringResource(R.string.offers),
-                        modifier = Modifier.size(IconSizeSmall),
-                        tint = MaterialTheme.color.textSecondary
-                    )
-                    Text(
-                        text = offersNumber + " " + stringResource(R.string.offers),
-                        style = TextStyles.captionSmall,
-                        color = MaterialTheme.color.textSecondary
-                    )
+                    Row(
+                        modifier = Modifier.padding(horizontal = Spacing8, vertical = Spacing4),
+                        horizontalArrangement = Arrangement.spacedBy(Spacing4),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_offer),
+                            contentDescription = offersNumber + stringResource(R.string.offers),
+                            modifier = Modifier.size(IconSizeSmall),
+                            tint = MaterialTheme.color.textSecondary
+                        )
+                        Text(
+                            text = offersNumber + " " + stringResource(R.string.offers),
+                            style = TextStyles.captionSmall,
+                            color = MaterialTheme.color.textSecondary
+                        )
+                    }
                 }
             }
         }
