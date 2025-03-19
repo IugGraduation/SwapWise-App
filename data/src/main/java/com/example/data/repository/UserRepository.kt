@@ -4,9 +4,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.data.model.request.ResetPasswordRequest
 import com.example.data.model.response.profile.ProfileDto
 import com.example.data.model.response.profile.ProfilePostItemDto
+import com.example.data.repository.UserRepository.PreferencesKeys.LOCAL_LANGUAGE
 import com.example.data.source.remote.ProfileDataSource
 import com.example.data.util.checkResponse
 import kotlinx.coroutines.flow.Flow
@@ -74,7 +76,20 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun updateAppLanguage(newLanguage: String) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.LOCAL_LANGUAGE] = newLanguage
+        }
+    }
+
+    fun getLatestSelectedAppLanguage(): Flow<String> {
+        return dataStore.data.map {
+            it[LOCAL_LANGUAGE] ?: PreferencesKeys.ENGLISH
+        }
+    }
     private object PreferencesKeys {
         val IS_DARK_THEME = booleanPreferencesKey("is_dark_theme")
+        val LOCAL_LANGUAGE = stringPreferencesKey("LOCAL_LANGUAGE")
+         const val ENGLISH = "en"
     }
 }

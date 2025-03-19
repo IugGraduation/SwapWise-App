@@ -33,7 +33,7 @@ fun UserActivitiesBar(
         InfoBoarder(modifier = Modifier.align(Alignment.CenterVertically))
         VerticalBoldAndLightText(boldText = offersNumber, lightText = stringResource(R.string.offers))
         InfoBoarder(modifier = Modifier.align(Alignment.CenterVertically))
-        VerticalBoldAndLightText(boldText = exchangesNumber, lightText = stringResource(R.string.exchanges))
+        VerticalBoldAndLightText(boldText = exchangesNumber.ifEmpty { "0" }, lightText = stringResource(R.string.exchanges))
     }
 }
 

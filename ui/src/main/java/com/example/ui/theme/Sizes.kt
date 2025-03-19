@@ -70,4 +70,6 @@ val GradientCircleBackgroundSize = 124.dp
 
 val ProfileToggleHeight = 52.dp
 
+val RadioButtonsSize = 300.dp
+
 

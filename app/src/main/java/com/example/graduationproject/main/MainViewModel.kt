@@ -14,10 +14,12 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel<Boolean, Nothing>(false) {
     init { viewModelScope.launch(Dispatchers.IO) { isDarkTheme() } }
 
-
     private suspend fun isDarkTheme() {
         customizeProfileSettings.isDarkThem().collect{ isDark ->
             updateData { isDark }
         }
     }
+
+    fun getLastSelectedAppLanguage() =
+        customizeProfileSettings.getLatestSelectedAppLanguage()
 }

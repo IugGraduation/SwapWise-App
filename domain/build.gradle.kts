@@ -53,5 +53,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     implementation(libs.okhttp)
+    implementation(libs.androidx.datastore.preferences.v100)
+
 
 }

@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,12 +38,14 @@ import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
 import com.example.ui.R
 import com.example.ui.base.MyUiState
+import com.example.ui.components.atoms.MultiChoiceDialog
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
 import com.example.ui.components.atoms.SwapWiseSwitch
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.TransparentStatusBar
 import com.example.ui.components.atoms.VerticalSpacer
+import com.example.ui.components.atoms.updateResources
 import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.templates.BottomBarTemplate
 import com.example.ui.login.navigateToLogin
@@ -66,6 +69,7 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles.headingExtraLarge
 import com.example.ui.theme.color
 import com.example.ui.util.CollectUiEffect
+import java.util.Locale
 
 @Composable
 fun ProfileScreen(
@@ -74,7 +78,7 @@ fun ProfileScreen(
     bottomNavigationViewModel: BottomNavigationViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 },)
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
     val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
     val bottomBarState = BottomBarUiState(
         selectedItem = selectedItem,
@@ -85,8 +89,8 @@ fun ProfileScreen(
     LaunchedEffect(pagerState.currentPage) { viewModel.updatePagerNumber(pagerState.currentPage) }
 
     CollectUiEffect(viewModel.effect) { effect ->
-        when(effect){
-            ProfileEffect.NavigateToLoginScreen -> navController.navigateToLogin{
+        when (effect) {
+            ProfileEffect.NavigateToLoginScreen -> navController.navigateToLogin {
                 popUpTo(navController.graph.startDestinationId) { inclusive = true }
             }
 
@@ -205,6 +209,27 @@ private fun ProfileContent(
                 profileInteraction.onUpdateLogoutDialogState(false)
                 profileInteraction.onLogoutClicked()
             }
+        )
+    }
+
+    AnimatedVisibility(state.data.profileSettingsUiState.showLanguageDialog) {
+        val englishLanguageCode = stringResource(R.string.english_language_code)
+        val context = LocalContext.current
+        val profileSettingsState = state.data.profileSettingsUiState
+        MultiChoiceDialog(
+            onClickDone = { language ->
+                profileInteraction.updateLanguageDialogState(false)
+                val languageCode = profileSettingsState.languageMap[language] ?: englishLanguageCode
+                profileInteraction.onUpdateLanguage(languageCode)
+                updateResources(context = context, localeLanguage = Locale(languageCode))
+            },
+            onDismissRequest = { profileInteraction.updateLanguageDialogState(false) },
+            choices = profileSettingsState.languageMap.keys.toList(),
+            oldSelectedChoice = if (profileSettingsState.lastAppLanguage == profileSettingsState.languageMap[LocalLanguage.Arabic.name])
+                LocalLanguage.Arabic.name
+            else
+                LocalLanguage.English.name
+
         )
     }
 
@@ -360,7 +385,7 @@ private fun SettingsSection(
 
         SettingsRow(
             title = stringResource(R.string.language),
-            onRowClick = interaction::onChangeLanguageClicked,
+            onRowClick = { interaction.updateLanguageDialogState(true) },
             leadingIconResource = painterResource(R.drawable.ic_language),
         )
 
