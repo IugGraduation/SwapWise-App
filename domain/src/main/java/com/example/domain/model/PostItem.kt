@@ -37,6 +37,7 @@ data class PostItem(
                 title = topicItemDto.postName ?: "",
                 isOpen = topicItemDto.status == "Active",
                 details = topicItemDto.postDetails ?: "",
+                offers = List(topicItemDto.numOffers ?: 0){ OfferItem() },
             )
         }
 

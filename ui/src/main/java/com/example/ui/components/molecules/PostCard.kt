@@ -48,7 +48,6 @@ import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 import com.example.ui.theme.color
-import com.example.ui.util.empty
 
 @Composable
 fun PostCard(
@@ -58,7 +57,7 @@ fun PostCard(
     title: String,
     details: String,
     modifier: Modifier = Modifier,
-    offersNumber: String = String.empty(),
+    offersNumber: String = "0",
     isOpen: Boolean = true,
     isPostCard: Boolean = true,
     isHorizontalCard: Boolean = false,

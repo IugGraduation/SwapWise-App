@@ -195,6 +195,7 @@ fun HomeContent(
                     onCardClick = {
                         homeInteractions.onClickGoToDetails(item)
                     },
+                    offersNumber = item.offers.size.toString(),
                     isHorizontalCard = false,
                     modifier = Modifier.padding(horizontal = Spacing16)
                 )
