@@ -20,9 +20,11 @@ class PostDetailsViewModel @Inject constructor(
     private val args = PostDetailsArgs(savedStateHandle)
 
     init {
+        isActionLoading(isLoading = true, shouldHideContent = true)
         tryToExecute(
             call = { if (state.value.data.postItem.user.uuid != getAuthUseCase().userId) throw Exception() },
             onSuccess = { updateData { copy(showEditPostButton = true) } },
+            isLoadableAction = false
         )
     }
 

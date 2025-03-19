@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.ui.base.BaseUiState
 import com.example.ui.theme.BlackTertiary
@@ -26,16 +27,14 @@ fun ShowContentWithState(state: BaseUiState, content: @Composable () -> Unit) {
         }
         when {
             state.isLoading -> {
-                if (state.shouldHideContent.not()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(BlackTertiary),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = MaterialTheme.color.primary)
-                    }
-                } else {
+                val backgroundColor =
+                    if (state.shouldHideContent.not()) BlackTertiary else Color.Transparent
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(backgroundColor),
+                    contentAlignment = Alignment.Center
+                ) {
                     CircularProgressIndicator(color = MaterialTheme.color.primary)
                 }
             }

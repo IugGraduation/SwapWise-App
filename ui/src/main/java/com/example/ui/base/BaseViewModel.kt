@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -40,8 +39,8 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
         shouldHideContent: Boolean = false,
         dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
+        isActionLoading(shouldLoad, shouldHideContent)
         viewModelScope.launch(dispatcher) {
-            isActionLoading(shouldLoad, shouldHideContent)
             try {
                 call().also(onSuccess)
             } catch (throwable: Throwable) {
@@ -58,17 +57,18 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
         onError: (Throwable) -> Unit = ::onActionFail,
         shouldLoad: Boolean = true,
         shouldHideContent: Boolean = false,
+        isLoadableAction: Boolean = true,
         dispatcher: CoroutineDispatcher = Dispatchers.IO
     ) {
+        if (isLoadableAction) isActionLoading(shouldLoad, shouldHideContent)
         viewModelScope.launch(dispatcher) {
-            isActionLoading(shouldLoad, shouldHideContent)
             try {
                 call()
                 onSuccess()
             } catch (throwable: Throwable) {
                 onError(throwable)
             } finally {
-                isActionLoading(isLoading = false, shouldHideContent = false)
+                if (isLoadableAction) isActionLoading(isLoading = false, shouldHideContent = false)
             }
         }
     }
@@ -86,7 +86,7 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
         }
     }
 
-    private fun isActionLoading(isLoading: Boolean = true, shouldHideContent: Boolean = false) {
+    protected fun isActionLoading(isLoading: Boolean = true, shouldHideContent: Boolean = false) {
         updateBaseUiState { copy(isLoading = isLoading, shouldHideContent = shouldHideContent) }
     }
 

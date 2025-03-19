@@ -18,6 +18,11 @@ class HomeViewModel @Inject constructor(
 ) :
     BaseViewModel<HomeUiState, HomeEffects>(HomeUiState()), IHomeInteractions {
 
+    init {
+        isActionLoading(isLoading = true, shouldHideContent = true)
+    }
+
+
     fun onResume() {
         getHomeData()
     }
