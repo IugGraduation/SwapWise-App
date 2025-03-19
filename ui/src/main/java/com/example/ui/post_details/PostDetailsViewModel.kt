@@ -21,11 +21,6 @@ class PostDetailsViewModel @Inject constructor(
 
     init {
         isActionLoading(isLoading = true, shouldHideContent = true)
-        tryToExecute(
-            call = { if (state.value.data.postItem.user.uuid != getAuthUseCase().userId) throw Exception() },
-            onSuccess = { updateData { copy(showEditPostButton = true) } },
-            isLoadableAction = false
-        )
     }
 
 
@@ -44,8 +39,16 @@ class PostDetailsViewModel @Inject constructor(
 
     private fun onGetPostDetailsSuccess(data: PostItem) {
         _state.value = MyUiState(PostItemUiState(postItem = data))
+        showEditButtonIfNeeded()
     }
 
+    private fun showEditButtonIfNeeded() {
+        tryToExecute(
+            call = { if (state.value.data.postItem.user.uuid != getAuthUseCase().userId) throw Exception() },
+            onSuccess = { updateData { copy(showEditPostButton = true) } },
+            isLoadableAction = false
+        )
+    }
 
     override fun navigateToAddOffer() {
         sendUiEffect(PostDetailsEffects.NavigateToAddOffer)
