@@ -123,11 +123,13 @@ fun PostDetailsContent(
         title = stringResource(R.string.post_details),
         onClickGoBack = postDetailsInteractions::navigateUp,
         floatingActionButton = {
-            SwapWiseFilledButton(
-                onClick = postDetailsInteractions::navigateToAddOffer,
-                text = stringResource(R.string.add_offer),
-                modifier = Modifier.padding(horizontal = Spacing16)
-            )
+            AnimatedVisibility(!state.data.showEditPostButton) {
+                SwapWiseFilledButton(
+                    onClick = postDetailsInteractions::navigateToAddOffer,
+                    text = stringResource(R.string.add_offer),
+                    modifier = Modifier.padding(horizontal = Spacing16)
+                )
+            }
         },
         actions = {
             AnimatedVisibility(state.data.showEditPostButton) {
