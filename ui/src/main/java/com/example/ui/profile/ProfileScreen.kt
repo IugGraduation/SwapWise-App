@@ -1,5 +1,6 @@
 package com.example.ui.profile
 
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -63,6 +65,7 @@ import com.example.ui.profile.composable.VerticalBoldAndLightText
 import com.example.ui.reset_password.navigateToResetPassword
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GradientCircleBackgroundSize
+import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing40
@@ -413,3 +416,35 @@ private fun SettingsSection(
 }
 
 
+@Preview(showBackground = true, device = "spec:width=1080px,height=2540px,dpi=440")
+@Composable
+fun PreviewPostDetailsContent() {
+    GraduationProjectTheme {
+        val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
+
+        ProfileContent(
+            state = MyUiState(
+                ProfileUiState()
+            ),
+            profileInteraction = object : ProfileInteraction {
+                override fun onUpdateProfileImage(imageUri: Uri) {}
+                override fun onEditButtonClicked() {}
+                override fun onUsernameChange(newName: String) {}
+                override fun onPhoneNumberChange(newNumber: String) {}
+                override fun onLocationChange(location: String) {}
+                override fun onBioChange(bio: String) {}
+                override fun onCancelButtonClicked() {}
+                override fun onSaveButtonClicked() {}
+                override fun onDarkMoodChange(isDarkMood: Boolean) {}
+                override fun onLogoutClicked() {}
+                override fun onResetPasswordClicked() {}
+                override fun onUpdateLogoutDialogState(showDialog: Boolean) {}
+                override fun updateLanguageDialogState(showDialog: Boolean) {}
+                override fun onUpdateLanguage(language: String) {}
+                override fun navigateToPostDetails(postId: String) {}
+            },
+            pagerState = pagerState,
+            bottomBarState = BottomBarUiState(),
+        )
+    }
+}
