@@ -50,6 +50,7 @@ import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.templates.BottomBarTemplate
 import com.example.ui.login.navigateToLogin
 import com.example.ui.models.BottomBarUiState
+import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.profile.composable.EditIconButton
 import com.example.ui.profile.composable.GradientCircleBackground
 import com.example.ui.profile.composable.ProfileDialog
@@ -96,6 +97,10 @@ fun ProfileScreen(
 
             ProfileEffect.NavigateToResetPassword -> {
                 navController.navigateToResetPassword()
+            }
+
+            is ProfileEffect.NavigateToPostDetails -> {
+                navController.navigateToPostDetails(effect.postId)
             }
         }
     }
@@ -185,7 +190,11 @@ private fun ProfileContent(
                                 )
                             },
 
-                            postsContent = { UserPostsSection(state = state.data) },
+                            postsContent = {
+                                UserPostsSection(
+                                    state = state.data, profileInteraction = profileInteraction,
+                                )
+                            },
 
                             settingsContent = {
                                 SettingsSection(
@@ -333,7 +342,11 @@ private fun UserInformationSection(
 }
 
 @Composable
-private fun UserPostsSection(modifier: Modifier = Modifier, state: ProfileUiState) {
+private fun UserPostsSection(
+    state: ProfileUiState,
+    profileInteraction: ProfileInteraction,
+    modifier: Modifier = Modifier,
+) {
     LazyColumn(
         modifier = modifier.heightIn(max = LocalConfiguration.current.screenHeightDp.dp),
         verticalArrangement = Arrangement.spacedBy(Spacing8)
@@ -348,7 +361,7 @@ private fun UserPostsSection(modifier: Modifier = Modifier, state: ProfileUiStat
                 details = postItem.postDescription,
                 offersNumber = postItem.offersNumber.toString(),
                 postImage = rememberAsyncImagePainter(postItem.postImageLink),
-                onCardClick = {}
+                onCardClick = { profileInteraction.navigateToPostDetails(postItem.id) }
             )
 
         }

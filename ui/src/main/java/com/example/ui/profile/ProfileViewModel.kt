@@ -199,6 +199,10 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    override fun navigateToPostDetails(postId: String) {
+        sendUiEffect(ProfileEffect.NavigateToPostDetails(postId))
+    }
+
     private fun onUpdateLanguageSuccess() {
         updateLanguageDialogState(false)
     }
