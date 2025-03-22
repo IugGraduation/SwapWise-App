@@ -84,7 +84,7 @@ fun ProfilePostItemDto.fromProfilePostItemDto(): PostItem {
             imgContentDescription = ""
         ),
         place = "",
-        details = "",
+        details = this.postDetails ?: "",
         categoryItem = CategoryItem(
             uuid = "",
             title = "",
