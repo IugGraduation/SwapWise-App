@@ -1,7 +1,9 @@
 # 🔄 SwapWise  
 
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.0-blue?logo=kotlin)](https://kotlinlang.org/)  
-[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.6.0-4285F4?logo=jetpack-compose)](https://developer.android.com/jetpack/compose)  
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.0-blue?logo=kotlin)](https://kotlinlang.org/)  
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-2.0.0-4285F4?logo=jetpack-compose)](https://developer.android.com/jetpack/compose)  
+[![Hilt](https://img.shields.io/badge/Hilt-Dependency%20Injection-FF8C42?logo=hilt)](https://dagger.dev/hilt/)  
+[![MVVM](https://img.shields.io/badge/Architecture-MVVM-6A1B9A)](https://developer.android.com/jetpack/guide)  
 [![GitHub Commits](https://img.shields.io/badge/Commits-250%2B-brightgreen)](https://github.com/IugGraduation/Android/commits/main)  
 
 **An offer-based bartering app showcasing modern Android development with Jetpack Compose & Recommended app Architecture**  
@@ -86,10 +88,10 @@ graph TD
 ---
 
 ## 🚀 Development Highlights  
-- **15% faster state management** with reusable `BaseViewModel` & `BaseUiState` for centralized logic.  
+- **15% faster state management** with reusable `BaseViewModel` & `BaseUiState` for centralized state & error handling.  
 - **Enhanced UX** with debounced search and custom swipe gestures for seamless interactions.  
 - **Efficient navigation** using Jetpack Compose `NavController` for smooth app flow.  
-- **100+ structured commits** managed via GitHub, Trello, and Figma for streamlined collaboration.
+- **250+ structured commits** managed via GitHub, Trello, and Figma for streamlined collaboration.
 
 ---
 
