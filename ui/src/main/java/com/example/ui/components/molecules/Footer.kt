@@ -1,5 +1,6 @@
 package com.example.ui.components.molecules
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
-import com.example.ui.components.atoms.CustomTextButton
+import com.example.ui.components.atoms.SwapWiseTextButton
 import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing4
@@ -35,13 +36,13 @@ fun Footer(footerText: String, buttonText: String, onClickButton: () -> Unit) {
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             Text(footerText, style = TextStyles.hint)
             HorizontalSpacer(Spacing4)
-            CustomTextButton(onClick = onClickButton, text = buttonText)
+            SwapWiseTextButton(onClick = onClickButton, text = buttonText, modifier = Modifier.focusable())
         }
     }}
 }
 
 
-//@Preview(showSystemUi = true, showBackground = true)
+@Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewFooter() {
     Footer(

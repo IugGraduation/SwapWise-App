@@ -4,13 +4,20 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.example.ui.util.Screen
 
-private const val ROUTE = "search"
 
-fun NavController.navigateToSearch(){
-    navigate(ROUTE)
+fun NavController.navigateToSearch() {
+    navigate(Screen.Search.route) {
+        popUpTo(graph.id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
 
 fun NavGraphBuilder.searchRoute(navController: NavHostController){
-    composable(ROUTE) { SearchScreen(navController) }
+    composable(route = Screen.Search.route) { SearchScreen(navController) }
 }
+

@@ -1,126 +1,167 @@
 package com.example.ui.add_post
 
 import android.net.Uri
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.domain.AddPostUseCase
-import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.IOfferValidationUseCase
+import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
+import androidx.lifecycle.SavedStateHandle
+import com.example.domain.category.GetCategoriesUseCase
+import com.example.domain.exception.EmptyImageException
+import com.example.domain.exception.InvalidDetailsException
+import com.example.domain.exception.InvalidPlaceException
+import com.example.domain.exception.InvalidTitleException
+import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
-import com.example.domain.model.State
+import com.example.domain.post.AddPostUseCase
+import com.example.domain.post.GetImageRequestBodyUseCase
+import com.example.ui.base.BaseViewModel
+import com.example.ui.base.NavigateUpEffect
+import com.example.ui.base.StringsResource
+import com.example.ui.models.ChipUiState
+import com.example.ui.models.PostErrorUiState
 import com.example.ui.models.PostItemUiState
+import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddPostViewModel @Inject constructor(
-    private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase,
-    private val postValidationUseCase: IOfferValidationUseCase,
+    savedStateHandle: SavedStateHandle,
+    private val stringsResource: StringsResource,
+    private val getCategoriesUseCase: GetCategoriesUseCase,
     private val addPostUseCase: AddPostUseCase,
-) : ViewModel() {
-    private val _state = MutableStateFlow(PostItemUiState())
-    val state = _state.asStateFlow()
+    private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
+) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IAddPostInteractions {
+    private val args = AddPostArgs(savedStateHandle)
+
+    override fun navigateUp() {
+        sendUiEffect(NavigateUpEffect.NavigateUp)
+    }
 
 
     init {
-        viewModelScope.launch {
-            getAllCategories()
-        }
+        updatePostItem { copy(title = args.postTitle) }
+        prepareChipsList()
     }
 
-    private suspend fun getAllCategories() {
-        _state.update { it.copy(isLoading = true) }
-        _state.update {
-            it.copy(
-                postItem = _state.value.postItem.copy(allCategories = getCategoriesNamesUseCase()),
-                isLoading = false
+    private fun prepareChipsList() {
+        tryToExecute(
+            call = { getCategoriesUseCase() },
+            onSuccess = ::onGetChipsDataSuccess,
+        )
+    }
+
+    private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
+        val chipsList = List(categoryItems.size) { index ->
+            ChipUiState(
+                categoryItem = categoryItems[index],
+                selected = mutableStateOf(false),
+                onClick = ::onCategoryChange
             )
         }
+        val favoriteChipsList = chipsList.map {
+            it.copy(
+                selected = mutableStateOf(false),
+                onClick = ::onFavoriteCategoryChange
+            )
+        }
+        updateData {
+            copy(chipsList = chipsList, favoriteChipsList = favoriteChipsList)
+        }
     }
 
 
-    fun onTitleChange(title: String) {
-        _state.update {
-            it.copy(
-                postItem = _state.value.postItem.copy(
-                    title = title,
-                    titleError = null
+    private fun updatePostItem(update: PostItem.() -> PostItem) {
+        updateData {
+            copy(postItem = postItem.update())
+        }
+    }
+
+    private fun updateFieldError(
+        titleError: String = String.empty(),
+        placeError: String = String.empty(),
+        detailsError: String = String.empty(),
+    ) {
+        updateData {
+            copy(
+                postError = PostErrorUiState(
+                    titleError = titleError,
+                    placeError = placeError,
+                    detailsError = detailsError,
                 )
             )
         }
     }
 
-    fun onDetailsChange(details: String) {
-        _state.update {
-            it.copy(
-                postItem = _state.value.postItem.copy(
-                    details = details,
-                    detailsError = null
+    override fun onTitleChange(title: String) {
+        updateFieldError()
+        updatePostItem { copy(title = title) }
+    }
+
+    override fun onDetailsChange(details: String) {
+        updateFieldError()
+        updatePostItem { copy(details = details) }
+    }
+
+    override fun onPlaceChange(place: String) {
+        updateFieldError()
+        updatePostItem { copy(place = place) }
+    }
+
+    override fun onSelectedImageChange(selectedImageUri: Uri) {
+        updatePostItem { copy(imageLink = selectedImageUri.toString()) }
+    }
+
+    fun onCategoryChange(categoryItem: CategoryItem) {
+        updateFieldError()
+        updatePostItem { copy(categoryItem = categoryItem) }
+    }
+
+    fun onFavoriteCategoryChange(categoryItem: CategoryItem) {
+        val newFavoriteChipList =
+            if (state.value.data.postItem.favoriteCategoryItems.contains(categoryItem)) {
+                _state.value.data.postItem.favoriteCategoryItems - categoryItem
+        } else {
+                _state.value.data.postItem.favoriteCategoryItems + categoryItem
+        }
+
+        updatePostItem { copy(favoriteCategoryItems = newFavoriteChipList.toMutableList()) }
+    }
+
+
+    override fun onClickAdd() {
+        tryToExecute(
+            call = {
+                addPostUseCase(
+                    postItem = state.value.data.postItem,
+                    imageRequestBody = getImageRequestBodyUseCase(state.value.data.postItem.imageLink.toUri())!!
                 )
-            )
-        }
-    }
-
-    fun onPlaceChange(place: String) {
-        _state.update {
-            it.copy(
-                postItem = _state.value.postItem.copy(
-                    place = place,
-                    placeError = null
-                )
-            )
-        }
-    }
-
-    fun onSelectedImageChange(selectedImageUri: Uri) {
-        _state.update { it.copy(postItem = _state.value.postItem.copy(image = selectedImageUri.toString())) }
-    }
-
-    fun onCategoryChange(category: String) {
-        _state.update {
-            it.copy(
-                postItem = _state.value.postItem.copy(
-                    category = category,
-                    categoryError = null
-                )
-            )
-        }
-    }
-
-    fun onFavoriteCategoryChange(category: String) {
-        if (state.value.postItem.favoriteCategories.contains(category)) {
-            _state.value.postItem.favoriteCategories.remove(category)
-        }else{
-            _state.value.postItem.favoriteCategories.add(category)
-        }
+            },
+            onSuccess = { navigateUp() },
+            onError = ::onAddPostFail
+        )
     }
 
 
-    fun onClickAddPost() {
-        viewModelScope.launch {
-            if (validateForm()) {
-                addPostUseCase(state.value.postItem).collect { apiState ->
-                    when (apiState) {
-                        is State.Error -> _state.update { it.copy(error = apiState.message) }
-                        State.Loading -> _state.update { it.copy(isLoading = true) }
-                        is State.Success -> {
-                            _state.update { it.copy(isLoading = false, shouldNavigateUp = true) }
-                        }
-                    }
-                }
+    private fun onAddPostFail(throwable: Throwable) {
+        when (throwable) {
+            is InvalidTitleException -> {
+                updateFieldError(titleError = stringsResource.invalidTitle)
             }
+
+            is InvalidPlaceException -> {
+                updateFieldError(placeError = stringsResource.invalidPlace)
+            }
+
+            is InvalidDetailsException -> {
+                updateFieldError(detailsError = stringsResource.invalidDetails)
+            }
+
+            is EmptyImageException -> {
+                onActionFail(Exception(stringsResource.emptyImageMessage))
+            }
+
+            else -> onActionFail(throwable)
         }
     }
-
-    private fun validateForm(): Boolean {
-        val newPostState = postValidationUseCase(state.value.postItem)
-        _state.value = PostItemUiState(postItem = newPostState as PostItem)
-        return newPostState.isSuccess()
-    }
-
 
 }

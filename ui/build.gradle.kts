@@ -40,6 +40,8 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.foundation.android)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -76,7 +78,10 @@ dependencies {
     // Coil lib
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation (libs.coil)
 
-
+    implementation(libs.accompanist.systemuicontroller)
+    implementation (libs.androidx.foundation)
+    implementation (libs.ui)
 
 }

@@ -9,8 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.domain.model.UiState
+import com.example.ui.base.BaseUiState
 import com.example.ui.components.atoms.ShowContentWithState
+import com.example.ui.theme.color
 
 @Composable
 fun ScreenTemplate(
@@ -18,10 +19,7 @@ fun ScreenTemplate(
     bottomBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
-    contentState: UiState = object : UiState {
-        override val isLoading: Boolean = false
-        override val error: String? = null
-    },
+    baseUiState: BaseUiState = BaseUiState(),
     content: @Composable () -> Unit
 ) {
     Scaffold(
@@ -31,14 +29,14 @@ fun ScreenTemplate(
         floatingActionButtonPosition = floatingActionButtonPosition,
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.color.background),
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            ShowContentWithState(contentState) {
+            ShowContentWithState(baseUiState) {
                 content()
             }
         }

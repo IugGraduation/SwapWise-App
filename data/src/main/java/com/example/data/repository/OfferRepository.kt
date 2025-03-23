@@ -1,29 +1,55 @@
 package com.example.data.repository
 
-import com.example.data.model.OfferItemDto
-import com.example.data.model.StateDto
-import com.example.data.util.fakeWrapWithFlow
-import com.example.data.util.wrapWithFlow
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import retrofit2.Response
+import com.example.data.source.remote.OfferRemoteDataSource
+import com.example.data.util.checkResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class OfferRepository(
-//    private val fakePostLocalDataSource: FakePostLocalDataSource,
+    private val offerRemoteDataSource: OfferRemoteDataSource,
 ) {
-    suspend fun getOfferDetails(offerId: String): Flow<StateDto<OfferItemDto?>> =
-        wrapWithFlow { Response.success(OfferItemDto()) }
+    suspend fun getOfferDetails(offerId: String) =
+        checkResponse { offerRemoteDataSource.getOffer(offerId) }
 
+    suspend fun addOffer(
+        image: MultipartBody.Part,
+        name: RequestBody,
+        place: RequestBody,
+        details: RequestBody,
+        categoryUuid: RequestBody,
+        postUuid: RequestBody,
+    ) =
+        checkResponse {
+            offerRemoteDataSource.addOffer(
+                image = image,
+                name = name,
+                place = place,
+                details = details,
+                categoryUuid = categoryUuid,
+                postUuid = postUuid,
+            )
+        }
 
-    suspend fun addOffer(postId: String, offerItemDto: OfferItemDto): Flow<StateDto<Boolean>> =
-        fakeWrapWithFlow(true)
+    suspend fun editOffer(
+        image: MultipartBody.Part?,
+        name: RequestBody,
+        place: RequestBody,
+        details: RequestBody,
+        categoryUuid: RequestBody,
+        offerUuid: RequestBody,
+    ) =
+        checkResponse {
+            offerRemoteDataSource.updateOffer(
+                image = image,
+                name = name,
+                place = place,
+                details = details,
+                categoryUuid = categoryUuid,
+                offerUuid = offerUuid,
+            )
+        }
 
+    suspend fun deleteOffer(offerId: String) =
+        checkResponse { offerRemoteDataSource.deleteOffer(offerId) }
 
-    suspend fun editOffer(offerItemDto: OfferItemDto): Flow<StateDto<Boolean>> =
-        fakeWrapWithFlow(true)
-
-
-    suspend fun deleteOffer(offerId: String): Flow<StateDto<Boolean>> =
-        fakeWrapWithFlow(true)
 }

@@ -51,4 +51,9 @@ dependencies {
     // Hilt for Dependency Injection
     implementation(libs.dagger.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    implementation(libs.okhttp)
+    implementation(libs.androidx.datastore.preferences.v100)
+
+
 }

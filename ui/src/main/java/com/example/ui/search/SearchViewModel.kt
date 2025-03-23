@@ -1,18 +1,18 @@
 package com.example.ui.search
 
-import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.example.domain.GetCategoriesNamesUseCase
-import com.example.domain.GetSearchResultUseCase
-import com.example.domain.model.State
+import com.example.domain.category.GetCategoriesUseCase
+import com.example.domain.model.CategoryItem
+import com.example.domain.model.PostItem
+import com.example.domain.search.GetSearchResultUseCase
+import com.example.ui.base.BaseViewModel
+import com.example.ui.models.ChipUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,68 +20,80 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val getSearchResultUseCase: GetSearchResultUseCase,
-    private val getCategoriesNamesUseCase: GetCategoriesNamesUseCase
-) :
-    ViewModel() {
-    private val _state = MutableStateFlow(SearchUiState())
-    val state = _state.asStateFlow()
+    private val getCategoriesUseCase: GetCategoriesUseCase,
+) : BaseViewModel<SearchUiState, SearchEffects>(SearchUiState()), ISearchInteractions {
 
     init {
+        prepareChipsList()
         viewModelScope.launch {
-            val categoriesNames = getCategoriesNamesUseCase()
-            _state.value.filterChipsList.forEachIndexed { index, chip ->
-                chip.text = categoriesNames[index]
-                chip.selected = false
-                chip.onClick = {
-                    chip.selected = !chip.selected
-                    search()
-                }
-            }
-
-            _state.map { it.search }.debounce(500L).distinctUntilChanged()
+            _state.map { it.data.search }.debounce(500L).distinctUntilChanged()
                 .collect { if (it.isNotBlank()) search() }
         }
     }
 
+    private fun prepareChipsList() {
+        tryToExecute(
+            call = { getCategoriesUseCase() },
+            onSuccess = ::onGetChipsDataSuccess,
+        )
+    }
+
+    private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
+        val chipsList = List(categoryItems.size) { index ->
+            ChipUiState(
+                categoryItem = categoryItems[index],
+                selected = mutableStateOf(false),
+                onClick = { search() }
+            )
+        }
+        updateData {
+            copy(filterChipsList = chipsList)
+        }
+    }
+
     private fun search() {
-        viewModelScope.launch {
-            getSearchResultUseCase(_state.value.search).collect { searchResult ->
-                when (searchResult) {
-                    is State.Loading -> _state.update {
-                        it.copy(
-                            isLoading = true,
-                            topicsList = listOf(),
-                            error = null
-                        )
-                    }
+        if (_state.value.data.search.isBlank()) return
 
-                    is State.Success -> _state.update {
-                        it.copy(
-                            isLoading = false,
-                            topicsList = searchResult.data,
-                            error = null
-                        )
-                    }
-
-                    is State.Error -> _state.update {
-                        it.copy(
-                            isLoading = false,
-                            topicsList = listOf(),
-                            error = searchResult.message
-                        )
-                    }
+        tryToExecute(
+            call = {
+                updateErrorMessage()
+                updateData {
+                    copy(topicsList = listOf())
                 }
-            }
+                val filterChips = _state.value.data.filterChipsList.map { it.toChip() }
+                getSearchResultUseCase(_state.value.data.search, filterChips)
+            },
+            onSuccess = ::onSearchSuccess,
+            onError = ::onSearchFail
+        )
+    }
+
+    private fun onSearchSuccess(data: List<PostItem>) {
+        updateData {
+            copy(topicsList = data, emptyResult = data.isEmpty())
+        }
+    }
+
+    private fun onSearchFail(throwable: Throwable) {
+        onActionFail(throwable)
+        updateData {
+            copy(topicsList = listOf(), emptyResult = true)
         }
     }
 
 
-    fun onSearchChange(newValue: String) {
-        _state.update { it.copy(search = newValue) }
+    override fun onSearchChange(newValue: String) {
+        updateData {
+            copy(search = newValue)
+        }
     }
 
-    fun onClickTryAgain() {
+    override fun onClickTryAgain() {
         search()
+    }
+
+    override fun navigateToPostDetails(postId: String) {
+        sendUiEffect(SearchEffects.NavigateToPostDetails(postId))
     }
 
 }

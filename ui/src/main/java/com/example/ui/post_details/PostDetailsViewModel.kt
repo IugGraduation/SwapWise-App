@@ -1,38 +1,78 @@
 package com.example.ui.post_details
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.domain.GetPostDetailsUseCase
-import com.example.domain.model.State
+import com.example.domain.authentication.GetAuthUseCase
+import com.example.domain.model.OfferItem
+import com.example.domain.model.PostItem
+import com.example.domain.post.GetPostDetailsUseCase
+import com.example.ui.base.BaseViewModel
+import com.example.ui.base.MyUiState
 import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PostDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getPostDetailsUseCase: GetPostDetailsUseCase
-) : ViewModel() {
-    private val _state = MutableStateFlow(PostItemUiState())
-    val state = _state.asStateFlow()
-
-    val args = PostDetailsArgs(savedStateHandle)
-
+    private val getPostDetailsUseCase: GetPostDetailsUseCase,
+    private val getAuthUseCase: GetAuthUseCase
+) : BaseViewModel<PostItemUiState, PostDetailsEffects>(PostItemUiState()), PostDetailsInteractions {
+    private val args = PostDetailsArgs(savedStateHandle)
 
     init {
-        viewModelScope.launch {
-            getPostDetailsUseCase(args.uuid).collect { state ->
-                _state.value = when (state) {
-                    is State.Loading -> PostItemUiState(isLoading = true)
-                    is State.Success -> PostItemUiState(postItem = state.data)
-                    is State.Error -> PostItemUiState(error = state.message)
+        isActionLoading(isLoading = true, shouldHideContent = true)
+    }
+
+
+    fun onResume() {
+        getPostDetails()
+    }
+
+    private fun getPostDetails() {
+        tryToExecute(
+            call = { getPostDetailsUseCase(args.postId) },
+            onSuccess = ::onGetPostDetailsSuccess,
+            shouldLoad = _state.value.data.postItem.uuid.isBlank(),
+            shouldHideContent = _state.value.data.postItem.uuid.isBlank(),
+        )
+    }
+
+    private fun onGetPostDetailsSuccess(data: PostItem) {
+        _state.value = MyUiState(PostItemUiState(postItem = data))
+        showEditButtonIfNeeded()
+    }
+
+    private fun showEditButtonIfNeeded() {
+        tryToExecute(
+            call = { if (state.value.data.postItem.user.uuid != getAuthUseCase().userId) throw Exception() },
+            onSuccess = { updateData { copy(showEditPostButton = true) } },
+            isLoadableAction = false
+        )
+    }
+
+    override fun navigateToAddOffer() {
+        sendUiEffect(PostDetailsEffects.NavigateToAddOffer)
+    }
+
+    override fun navigateToOfferDetails(offerItem: OfferItem) {
+        tryToExecute(
+            call = { getAuthUseCase().userId },
+            onSuccess = { currentUserId ->
+                if (currentUserId == state.value.data.postItem.user.uuid) {
+                    sendUiEffect(PostDetailsEffects.NavigateToOfferDetails(offerItem.uuid))
+                } else if (currentUserId == offerItem.user.uuid) {
+                    sendUiEffect(PostDetailsEffects.NavigateToEditOffer(offerItem.uuid))
                 }
-            }
-        }
+            },
+        )
+    }
+
+    override fun navigateToEditPost(postId: String) {
+        sendUiEffect(PostDetailsEffects.NavigateToEditPost(postId = postId))
+    }
+
+    override fun navigateUp() {
+        sendUiEffect(PostDetailsEffects.NavigateUp)
     }
 
 }

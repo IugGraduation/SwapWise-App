@@ -1,14 +1,67 @@
 package com.example.data.repository
 
-import com.example.data.model.HomeDto
-import com.example.data.model.StateDto
-import com.example.data.source.local.FakeHomeData
-import com.example.data.util.wrapWithFlow
-import kotlinx.coroutines.flow.Flow
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import com.example.data.model.response.TopicItemDto
+import com.example.data.source.remote.HomeRemoteDataSource
+import com.example.data.util.checkResponse
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 class HomeRepository(
-    private val fakeHomeLocalDataSource: FakeHomeData
+    private val homeRemoteDataSource: HomeRemoteDataSource,
+    private val dataStore: DataStore<Preferences>,
 ) {
+    suspend fun getHomeDto() = checkResponse { homeRemoteDataSource.getHomeDto() }
 
-    suspend fun getHomeData(): Flow<StateDto<HomeDto?>> = wrapWithFlow(fakeHomeLocalDataSource::getHomeData)
+    suspend fun seeAll(url: String) = checkResponse { homeRemoteDataSource.seeAll(url) }
+
+    suspend fun getPostsFromCategory(categoryId: String) =
+        checkResponse { homeRemoteDataSource.getPostsFromCategory(categoryId) }
+
+    suspend fun getCategories(): List<TopicItemDto>? {
+        if (checkIsCategoriesStored()) {
+            return getCategoriesFromDataStore()
+        } else {
+            val categories = checkResponse { homeRemoteDataSource.seeAll("category") }
+            saveCategoriesToDataStore(categories ?: emptyList())
+            return categories
+        }
+    }
+
+
+    private suspend fun checkIsCategoriesStored(): Boolean {
+        return dataStore.data.map {
+            !it[PreferencesKeys.topics].isNullOrEmpty()
+        }.first()
+    }
+
+    private suspend fun saveCategoriesToDataStore(topics: List<TopicItemDto>) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.topics] =
+                Gson().toJson(topics, object : TypeToken<List<TopicItemDto>>() {}.type)
+        }
+    }
+
+    suspend fun getCategoriesFromDataStore(): List<TopicItemDto> {
+        return dataStore.data.map { preferences ->
+            try {
+                Gson().fromJson<List<TopicItemDto>>(
+                    preferences[PreferencesKeys.topics] ?: "",
+                    object : TypeToken<List<TopicItemDto>>() {}.type
+                ) ?: emptyList()
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }.first()
+    }
+
+    private object PreferencesKeys {
+        val topics = stringPreferencesKey("topics")
+    }
 }
+

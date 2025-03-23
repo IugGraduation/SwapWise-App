@@ -1,61 +1,44 @@
 package com.example.domain.model
 
-import com.example.data.model.OfferItemDto
+import com.example.data.model.response.CategoryItemDto
+import com.example.data.model.response.OfferItemDto
 
 data class OfferItem(
     override val uuid: String = "",
-    override val image: String = "",
-    override val imgContentDescription: String = "",
-    override val user: User = User(),
+    override val imageLink: String = "",
+    val user: User = User(),
     override val title: String = "",
-    override val details: String = "",
-    override val place: String = "",
-    override val category: String = "",
-    override val allCategories: List<String> = listOf(),
-    override val date: String = "",
-
-    override val imgResIdError: String? = null,
-    override val imgContentDescriptionError: String? = null,
-    override val titleError: String? = null,
-    override val placeError: String? = null,
-    override val detailsError: String? = null,
-    override val categoryError: String? = null,
-) : IOffer {
-    fun toOfferItemDto(): OfferItemDto {
-        return OfferItemDto(
-            uuid = uuid,
-            userName = user.name,
-            userImage = user.image,
-            image = image,
-            title = title,
-            details = details,
-//                place = "",
-//                category = "",
-//                date = "",
-//                favoriteCategories ="",
-//                rate = "",
-//                offers = "",
-        )
-    }
+    val details: String = "",
+    val place: String = "",
+    val categoryItem: CategoryItem = CategoryItem(),
+    val date: String = "",
+) : TopicItem() {
 
     companion object {
         fun fromOfferItemDto(offerItemDto: OfferItemDto): OfferItem {
             return OfferItem(
-                uuid = offerItemDto.uuid.toString(),
+                uuid = offerItemDto.uuid ?: "",
                 user = User(
-                    name = offerItemDto.userName.toString(),
-                    image = offerItemDto.userImage.toString(),
+                    name = offerItemDto.userName ?: "",
+                    imageLink = offerItemDto.userImage ?: "",
+                    phone = offerItemDto.mobile ?: "",
+                    uuid = offerItemDto.userUuid ?: "",
                 ),
-                image = offerItemDto.image.toString(),
-                title = offerItemDto.title.toString(),
-                details = offerItemDto.details.toString(),
+                imageLink = offerItemDto.image ?: "",
+                title = offerItemDto.title ?: "",
+                details = offerItemDto.details ?: "",
+                categoryItem = CategoryItem.fromCategoryItemDto(offerItemDto.category ?: CategoryItemDto()),
 //                place = "",
-//                category = "",
-//                date = "",
-//                favoriteCategories ="",
+                date = offerItemDto.date ?: "",
 //                rate = "",
-//                offers = "",
             )
         }
+
+        fun fromOfferItemDtoList(offerItemDtoList: List<OfferItemDto?>?): List<OfferItem> {
+            return offerItemDtoList?.filterNotNull()?.map {
+                fromOfferItemDto(it)
+            } ?: listOf()
+        }
+
     }
 }

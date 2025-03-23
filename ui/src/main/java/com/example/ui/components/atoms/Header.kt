@@ -1,5 +1,7 @@
 package com.example.ui.components.atoms
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,13 +14,14 @@ fun Header(
     title: String,
     imgPainter: Painter,
     imgContentDescription: String?,
+    isDarkTheme: Boolean,
+    modifier: Modifier = Modifier,
     imgPainterDarkTheme: Painter = imgPainter,
-    modifier: Modifier = Modifier
 ) {
-    ImageWithMaxWidth(
-        painter = imgPainter,
-        painterDarkTheme = imgPainterDarkTheme,
+    Image(
+        painter =  if(isDarkTheme) imgPainterDarkTheme else imgPainter,
         contentDescription = imgContentDescription,
+        modifier = modifier.fillMaxWidth(),
     )
     VerticalSpacer(Spacing24)
     Text(

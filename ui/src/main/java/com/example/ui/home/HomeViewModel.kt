@@ -1,35 +1,73 @@
 package com.example.ui.home
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.domain.GetHomeDataUseCase
-import com.example.domain.model.State
+import com.example.domain.home.GetHomeDataUseCase
+import com.example.domain.home.GetPostsFromCategoryUseCase
+import com.example.domain.model.CategoryItem
+import com.example.domain.model.Home
+import com.example.domain.model.PostItem
+import com.example.domain.model.TopicItem
+import com.example.ui.base.BaseViewModel
+import com.example.ui.base.MyUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(getHomeDataUseCase: GetHomeDataUseCase) : ViewModel() {
-    private val _state = MutableStateFlow(HomeUiState())
-    val state = _state.asStateFlow()
+class HomeViewModel @Inject constructor(
+    private val getHomeDataUseCase: GetHomeDataUseCase,
+    private val getPostsFromCategoryUseCase: GetPostsFromCategoryUseCase,
+) :
+    BaseViewModel<HomeUiState, HomeEffects>(HomeUiState()), IHomeInteractions {
 
     init {
-       viewModelScope.launch {
-           getHomeDataUseCase().collect { state ->
-               _state.value = when (state) {
-                   is State.Loading -> HomeUiState(isLoading = true)
-                   is State.Success -> HomeUiState.fromHome(state.data)
-                   is State.Error -> HomeUiState(error = state.message)
-               }
-           }
-       }
+        isActionLoading(isLoading = true, shouldHideContent = true)
     }
 
-    fun onNewPostFieldChange(newValue: String) {
-        _state.update { it.copy(newPost = newValue) }
+
+    fun onResume() {
+        getHomeData()
     }
+
+    private fun getHomeData() {
+        tryToExecute(
+            call = { getHomeDataUseCase() },
+            onSuccess = ::onGetHomeDataSuccess,
+            shouldLoad = _state.value.data.user.name.isBlank(),
+            shouldHideContent = _state.value.data.user.name.isBlank(),
+        )
+    }
+
+    private fun onGetHomeDataSuccess(data: Home) {
+        _state.value = MyUiState(HomeUiState.fromHome(data))
+    }
+
+
+    override fun onNewPostFieldChange(newValue: String) {
+        updateData {
+            copy(newPost = newValue)
+        }
+    }
+
+    override fun navigateToAddPost(postTitle: String) {
+        sendUiEffect(HomeEffects.NavigateToAddPost(postTitle))
+    }
+
+    override fun onClickGoToDetails(topicItem: TopicItem) {
+        if (topicItem is CategoryItem) {
+            tryToExecute(
+                call = { getPostsFromCategoryUseCase(topicItem.uuid, topicItem.title) },
+                onSuccess = {
+                    sendUiEffect(
+                        HomeEffects.NavigateSeeAllTopics(
+                            topicItem.uuid,
+                            topicItem.title
+                        )
+                    )
+                },
+            )
+        } else if (topicItem is PostItem) {
+            sendUiEffect(HomeEffects.NavigateToPostDetails(topicItem.uuid))
+        }
+    }
+
 
 }

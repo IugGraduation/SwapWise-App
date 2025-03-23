@@ -5,14 +5,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 
 private const val ROUTE = "add_offer"
 
-fun NavController.navigateToAddOffer(postId: String) {
-    navigate("$ROUTE/$postId")
+fun NavController.navigateToAddOffer(postId: String, builder: NavOptionsBuilder.() -> Unit = {}) {
+    navigate("$ROUTE/$postId", builder)
 }
 
 fun NavGraphBuilder.addOfferRoute(navController: NavHostController) {
