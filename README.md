@@ -76,9 +76,9 @@ graph TD
 
 <table>
   <tr>
-    <th>Home Screen</th>
-    <th>Search</th>
-    <th>Notifications</th>
+    <th>Home Screen 🏠</th>
+    <th>Search 🔍</th>
+    <th>Notifications 🔔</th>
   </tr>
   <tr>
     <td valign="top"><img src="https://github.com/user-attachments/assets/b272f355-d3a8-461d-adc3-321d1de8d488" /></td>
@@ -86,15 +86,23 @@ graph TD
     <td valign="top"><img src="https://github.com/user-attachments/assets/d796820e-0446-4954-8573-cac6b287e76b" /></td>
   </tr>
   <tr>
-    <th>Post Details</th>
-    <th>Profile</th>
-    <th>Settings</th>
+    <th>Post Details 📄</th>
+    <th>Profile 👤</th>
+    <th>Settings ⚙️</th>
   </tr>
   <tr>
     <td valign="top"><img src="https://github.com/user-attachments/assets/e6f7000c-fc85-42ae-a92e-24e72f878819" /></td>
     <td valign="top"><img src="https://github.com/user-attachments/assets/8f585ad9-81e6-43fa-a3a1-2a73e8b337d5" /></td>
     <td valign="top"><img src="https://github.com/user-attachments/assets/53c02ffc-32b0-4347-9980-948552d5e32c" /></td>
-  </tr>
+   </tr>
+   <tr>
+    <th colspan="3">App Demo 🎥</th>
+   </tr>
+   <tr>
+    <td colspan="3" align="center">
+      <video src="https://github.com/user-attachments/assets/ca80705d-34ea-4e67-95c4-582be9aff461" controls></video>
+    </td>
+   </tr>
 </table>
 
 ---
