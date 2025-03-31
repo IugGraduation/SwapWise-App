@@ -74,11 +74,28 @@ graph TD
 
 ## UI Preview 📸
 
-| Home Screen |Search | Notifications |
-|----------|----------|----------|
-| ![home screen rounded](https://github.com/user-attachments/assets/b272f355-d3a8-461d-adc3-321d1de8d488) | ![search](https://github.com/user-attachments/assets/7d81eef9-7d1d-42ae-a9bc-04c02cf1a164) |![Notification Screen](https://github.com/user-attachments/assets/f4fe517c-3843-4991-83aa-62c8b0161fb1) |
-| Post Details | Profile | Settings |
-| ![Post Detiles Screen](https://github.com/user-attachments/assets/e6f7000c-fc85-42ae-a92e-24e72f878819) | ![Profile Screen](https://github.com/user-attachments/assets/8f585ad9-81e6-43fa-a3a1-2a73e8b337d5) | ![Profile Screen (1)](https://github.com/user-attachments/assets/53c02ffc-32b0-4347-9980-948552d5e32c) |
+<table>
+  <tr>
+    <th>Home Screen</th>
+    <th>Search</th>
+    <th>Notifications</th>
+  </tr>
+  <tr>
+    <td valign="top"><img src="https://github.com/user-attachments/assets/b272f355-d3a8-461d-adc3-321d1de8d488" /></td>
+    <td valign="top"><img src="https://github.com/user-attachments/assets/3c645f42-b7ee-4ba4-975d-476931721521" /></td>
+    <td valign="top"><img src="https://github.com/user-attachments/assets/d796820e-0446-4954-8573-cac6b287e76b" /></td>
+  </tr>
+  <tr>
+    <th>Post Details</th>
+    <th>Profile</th>
+    <th>Settings</th>
+  </tr>
+  <tr>
+    <td valign="top"><img src="https://github.com/user-attachments/assets/e6f7000c-fc85-42ae-a92e-24e72f878819" /></td>
+    <td valign="top"><img src="https://github.com/user-attachments/assets/8f585ad9-81e6-43fa-a3a1-2a73e8b337d5" /></td>
+    <td valign="top"><img src="https://github.com/user-attachments/assets/53c02ffc-32b0-4347-9980-948552d5e32c" /></td>
+  </tr>
+</table>
 
 ---
 
@@ -97,5 +114,10 @@ graph TD
 - **Trello** for task tracking and project management.  
 - **WhatsApp** for real-time team communication and coordination.
 
+---
 
+## 📬 Contact
 
+For questions or feedback, reach out at:
+- [Email](mailto:SameerMMurtaja@gmail.com "Email SameerMMurtaja@gmail.com")
+- [LinkedIn](https://www.linkedin.com/in/sameer-murtaja/ "View Sameer's LinkedIn")
