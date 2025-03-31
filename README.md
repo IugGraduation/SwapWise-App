@@ -76,7 +76,7 @@ graph TD
 
 | Home Screen |Search | Notifications |
 |----------|----------|----------|
-| ![home screen](https://github.com/user-attachments/assets/ba559534-54b7-444b-8b45-10ad85026b75) | ![search](https://github.com/user-attachments/assets/7d81eef9-7d1d-42ae-a9bc-04c02cf1a164) |![Notification Screen](https://github.com/user-attachments/assets/f4fe517c-3843-4991-83aa-62c8b0161fb1) |
+| ![home screen rounded](https://github.com/user-attachments/assets/b272f355-d3a8-461d-adc3-321d1de8d488) | ![search](https://github.com/user-attachments/assets/7d81eef9-7d1d-42ae-a9bc-04c02cf1a164) |![Notification Screen](https://github.com/user-attachments/assets/f4fe517c-3843-4991-83aa-62c8b0161fb1) |
 | Post Details | Profile | Settings |
 | ![Post Detiles Screen](https://github.com/user-attachments/assets/e6f7000c-fc85-42ae-a92e-24e72f878819) | ![Profile Screen](https://github.com/user-attachments/assets/8f585ad9-81e6-43fa-a3a1-2a73e8b337d5) | ![Profile Screen (1)](https://github.com/user-attachments/assets/53c02ffc-32b0-4347-9980-948552d5e32c) |
 
