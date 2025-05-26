@@ -58,4 +58,10 @@ dependencies {
 
     implementation(libs.gson)
 
+    //firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+    implementation(libs.google.firebase.auth.ktx)
+
 }
