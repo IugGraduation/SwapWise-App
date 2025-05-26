@@ -8,7 +8,7 @@ class GetAuthUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(): Auth {
-        return Auth.fromAuthDto(authRepository.getAuthDto())
+        return Auth.fromAuthDto(authRepository.getStoredAuthData())
     }
 
 }

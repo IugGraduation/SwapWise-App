@@ -14,5 +14,5 @@ class GetCurrentUserDataUseCase @Inject constructor(
         return User.fromData(profileData = response)
     }
 
-    suspend fun getCurrentUserId(): String = authRepository.getAuthDto().uuid ?: ""
+    suspend fun getCurrentUserId(): String = authRepository.getStoredAuthData().uuid ?: ""
 }
