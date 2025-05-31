@@ -1,6 +1,6 @@
 package com.example.graduationproject.di
 
-import com.example.data.source.remote.AuthRemoteDataSource
+import com.example.data.source.remote.AuthRetrofitDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.NotificationsRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
@@ -22,7 +22,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object RetrofitModule {
 
     @Singleton
     @Provides
@@ -62,8 +62,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideAuthenticationApiService(retrofit: Retrofit): AuthRemoteDataSource {
-        return retrofit.create(AuthRemoteDataSource::class.java)
+    fun provideAuthenticationApiService(retrofit: Retrofit): AuthRetrofitDataSource {
+        return retrofit.create(AuthRetrofitDataSource::class.java)
     }
 
     @Singleton
