@@ -3,8 +3,8 @@ package com.example.data.model.request
 import com.google.gson.annotations.SerializedName
 
 data class LoginRequest(
-    @SerializedName("mobile")
-    val mobile: String,
+    val email: String,
+
     @SerializedName("password")
     val password: String,
     @SerializedName("fcm_device")

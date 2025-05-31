@@ -7,6 +7,7 @@ import com.example.data.model.request.VerifyCodeRequest
 import com.example.data.model.response.AuthDto
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -15,7 +16,7 @@ class AuthFirebaseDataSourceImpl : AuthRemoteDataSource {
 
     private val firebaseAuth: FirebaseAuth = Firebase.auth
 
-    // --- Getters for current Firebase state ---
+    // region Getters for current Firebase state
     fun getCurrentFirebaseUser(): FirebaseUser? {
         return firebaseAuth.currentUser
     }
@@ -23,15 +24,17 @@ class AuthFirebaseDataSourceImpl : AuthRemoteDataSource {
     fun getCurrentFirebaseUserId(): String? {
         return firebaseAuth.currentUser?.uid
     }
+    //endregion
 
-
-    // --- Authentication Methods ---
-    private suspend fun signUpWithEmailPassword(email: String, password: String): FirebaseUser {
+    //region Firebase Authentication Methods
+    private suspend fun signUpWithEmailPassword(
+        email: String, name: String, phoneNumber: String, password: String
+    ): FirebaseUser {
         return try {
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             authResult.user?.let {
                 //todo: update phone number from params to firebase
-                //todo: return auth object instead
+                it.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())
                 it
             } ?: throw Exception("Firebase user was null after sign up.")
         } catch (e: Exception) {
@@ -39,6 +42,7 @@ class AuthFirebaseDataSourceImpl : AuthRemoteDataSource {
             throw e
         }
     }
+
 
     private suspend fun signInWithEmailPassword(email: String, password: String): FirebaseUser {
         return try {
@@ -54,8 +58,10 @@ class AuthFirebaseDataSourceImpl : AuthRemoteDataSource {
     fun signOut() {
         firebaseAuth.signOut()
     }
+    //endregion
 
-    suspend fun FirebaseUser.toAuthDto(): AuthDto {
+
+    private suspend fun FirebaseUser.toAuthDto(): AuthDto {
         return AuthDto(
             image = photoUrl.toString(),
             name = displayName,
@@ -66,13 +72,16 @@ class AuthFirebaseDataSourceImpl : AuthRemoteDataSource {
 
     override suspend fun signup(body: SignupRequest): AuthDto {
         return signUpWithEmailPassword(
-            email = body.mobile, password = body.password
+            email = body.email,
+            password = body.password,
+            name = body.name,
+            phoneNumber = body.mobile
         ).toAuthDto()
     }
 
     override suspend fun login(body: LoginRequest): AuthDto {
         return signInWithEmailPassword(
-            email = body.mobile, password = body.password
+            email = body.email, password = body.password
         ).toAuthDto()
     }
 

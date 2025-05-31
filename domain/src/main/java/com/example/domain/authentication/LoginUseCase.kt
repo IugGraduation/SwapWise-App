@@ -17,7 +17,7 @@ class LoginUseCase @Inject constructor(
         validatePassword(password)
 
         val loginRequest = LoginRequest(
-            mobile = phone,
+            email = phone,
             password = password,
             fcmDevice = "android",
             fcmToken = "0"
