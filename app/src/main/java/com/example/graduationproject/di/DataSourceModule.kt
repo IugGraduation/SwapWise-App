@@ -4,6 +4,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.example.data.source.local.AuthDataStoreSourceImpl
 import com.example.data.source.local.AuthLocalDataSource
+import com.example.data.source.remote.AuthFirebaseDataSourceImpl
+import com.example.data.source.remote.AuthRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +21,11 @@ object DataSourceModule {
     @Provides
     fun provideAuthLocalDataSource(dataStore: DataStore<Preferences>): AuthLocalDataSource =
         AuthDataStoreSourceImpl(dataStore)
+
+    @Singleton
+    @Provides
+    fun provideAuthRemoteDataSource(): AuthRemoteDataSource =
+        AuthFirebaseDataSourceImpl()
 
 
 }
