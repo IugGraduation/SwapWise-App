@@ -8,12 +8,13 @@ import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
 import com.example.data.repository.SearchRepository
 import com.example.data.repository.UserRepository
+import com.example.data.source.local.AuthLocalDataSource
 import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
-import com.example.data.source.remote.SearchRemoteDataSource
 import com.example.data.source.remote.ProfileDataSource
+import com.example.data.source.remote.SearchRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,9 +29,8 @@ object RepositoryModule {
     @Provides
     fun provideAuthenticationRepository(
         authRemoteDataSource: AuthRemoteDataSource,
-        dataStore: DataStore<Preferences>
-    ) = AuthRepository(authRemoteDataSource, dataStore)
-
+        authLocalDataSource: AuthLocalDataSource
+    ) = AuthRepository(authRemoteDataSource, authLocalDataSource)
 
     @Singleton
     @Provides
@@ -39,6 +39,7 @@ object RepositoryModule {
         dataStore: DataStore<Preferences>
     ) =
         HomeRepository(homeRemoteDataSource, dataStore)
+
 
     @Singleton
     @Provides
