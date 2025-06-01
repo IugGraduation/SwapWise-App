@@ -1,6 +1,6 @@
 package com.example.graduationproject.di
 
-import com.example.data.source.remote.ProfileDataSource
+import com.example.data.source.remote.ProfileRetrofitDataSource
 import com.example.ui.base.StringsResource
 import com.example.ui.util.StringsResourceImpl
 import dagger.Binds
@@ -19,5 +19,5 @@ abstract class ResourcesModule {
 
     @Singleton
     @Binds
-    abstract fun bindBindProfileDataSource(profileDataSource: ProfileDataSource): ProfileDataSource
+    abstract fun bindBindProfileDataSource(profileRetrofitDataSource: ProfileRetrofitDataSource): ProfileRetrofitDataSource
 }

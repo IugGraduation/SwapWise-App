@@ -9,7 +9,7 @@ import com.example.data.model.request.ResetPasswordRequest
 import com.example.data.model.response.profile.ProfileDto
 import com.example.data.model.response.profile.ProfilePostItemDto
 import com.example.data.repository.UserRepository.PreferencesKeys.LOCAL_LANGUAGE
-import com.example.data.source.remote.ProfileDataSource
+import com.example.data.source.remote.ProfileRetrofitDataSource
 import com.example.data.util.checkResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -19,15 +19,15 @@ import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>,
-    private val profileDataSource: ProfileDataSource
+    private val profileRetrofitDataSource: ProfileRetrofitDataSource
 ) {
 
     suspend fun getCurrentUserById(id: String): ProfileDto? {
-        return checkResponse { profileDataSource.getCurrentUserDataById(id) }
+        return checkResponse { profileRetrofitDataSource.getCurrentUserDataById(id) }
     }
 
     suspend fun getCurrentUserPosts(): List<ProfilePostItemDto>?{
-        return checkResponse { profileDataSource.getCurrentUserPosts() }
+        return checkResponse { profileRetrofitDataSource.getCurrentUserPosts() }
     }
 
     suspend fun updateUserInfo(
@@ -37,7 +37,7 @@ class UserRepository @Inject constructor(
         image: MultipartBody.Part?,
         bio: RequestBody
     ): Boolean {
-        val response = profileDataSource.updateUserInfo(
+        val response = profileRetrofitDataSource.updateUserInfo(
             image = image,
             name = name,
             mobile = mobile,
@@ -54,7 +54,7 @@ class UserRepository @Inject constructor(
         confirmNewPassword: String
     ) {
         checkResponse {
-            profileDataSource.resetPassword(
+            profileRetrofitDataSource.resetPassword(
                 request = ResetPasswordRequest(
                     currentPassword = currentPassword,
                     newPassword = newPassword,

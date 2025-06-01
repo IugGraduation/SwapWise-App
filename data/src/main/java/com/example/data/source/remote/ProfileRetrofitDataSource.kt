@@ -14,7 +14,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 
-interface ProfileDataSource {
+interface ProfileRetrofitDataSource {
 
     @GET("profile/{user_id}")
     suspend fun getCurrentUserDataById(@Path("user_id") id: String)
