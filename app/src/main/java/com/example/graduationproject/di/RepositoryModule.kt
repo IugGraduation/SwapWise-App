@@ -13,6 +13,7 @@ import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
+import com.example.data.source.remote.ProfileRemoteDataSource
 import com.example.data.source.remote.ProfileRetrofitDataSource
 import com.example.data.source.remote.SearchRemoteDataSource
 import dagger.Module
@@ -54,11 +55,13 @@ object RepositoryModule {
     @Provides
     fun provideUserRepository(
         dataStore: DataStore<Preferences>,
-        profileRetrofitDataSource: ProfileRetrofitDataSource
+        profileRetrofitDataSource: ProfileRetrofitDataSource,
+        profileRemoteDataSource: ProfileRemoteDataSource
     ): UserRepository {
         return UserRepository(
             dataStore = dataStore,
-            profileRetrofitDataSource = profileRetrofitDataSource
+            profileRetrofitDataSource = profileRetrofitDataSource,
+            profileRemoteDataSource = profileRemoteDataSource
         )
     }
 

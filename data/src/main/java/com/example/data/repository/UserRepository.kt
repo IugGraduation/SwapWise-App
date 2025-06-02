@@ -9,6 +9,7 @@ import com.example.data.model.request.ResetPasswordRequest
 import com.example.data.model.response.profile.ProfileDto
 import com.example.data.model.response.profile.ProfilePostItemDto
 import com.example.data.repository.UserRepository.PreferencesKeys.LOCAL_LANGUAGE
+import com.example.data.source.remote.ProfileRemoteDataSource
 import com.example.data.source.remote.ProfileRetrofitDataSource
 import com.example.data.util.checkResponse
 import kotlinx.coroutines.flow.Flow
@@ -19,15 +20,16 @@ import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>,
-    private val profileRetrofitDataSource: ProfileRetrofitDataSource
+    private val profileRetrofitDataSource: ProfileRetrofitDataSource,
+    private val profileRemoteDataSource: ProfileRemoteDataSource,
 ) {
 
     suspend fun getCurrentUserById(id: String): ProfileDto? {
-        return checkResponse { profileRetrofitDataSource.getCurrentUserDataById(id) }
+        return ProfileDto(profileRemoteDataSource.getCurrentUserDataById(id))
     }
 
     suspend fun getCurrentUserPosts(): List<ProfilePostItemDto>?{
-        return checkResponse { profileRetrofitDataSource.getCurrentUserPosts() }
+        return profileRemoteDataSource.getCurrentUserPosts()
     }
 
     suspend fun updateUserInfo(

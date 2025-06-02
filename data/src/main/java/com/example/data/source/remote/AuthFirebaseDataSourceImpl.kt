@@ -12,7 +12,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-class AuthFirebaseDataSourceImpl : AuthRemoteDataSource {
+class AuthFirebaseDataSourceImpl(private val profileFirebaseDataSourceImpl: ProfileFirebaseDataSourceImpl) :
+    AuthRemoteDataSource {
 
     private val firebaseAuth: FirebaseAuth = Firebase.auth
 
@@ -28,14 +29,18 @@ class AuthFirebaseDataSourceImpl : AuthRemoteDataSource {
 
     //region Firebase Authentication Methods
     private suspend fun signUpWithEmailPassword(
-        email: String, name: String, phoneNumber: String, password: String
+        email: String, name: String, mobile: String, location: String, password: String
     ): FirebaseUser {
-        return try {
+        try {
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             authResult.user?.let {
-                //todo: update phone number from params to firebase
                 it.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())
-                it
+                profileFirebaseDataSourceImpl.createUser(
+                    firebaseUser = it,
+                    mobile = mobile,
+                    location = location
+                )
+                return it
             } ?: throw Exception("Firebase user was null after sign up.")
         } catch (e: Exception) {
             Log.e("FirebaseAuthSource", "signUpWithEmailPassword failed", e)
@@ -75,7 +80,8 @@ class AuthFirebaseDataSourceImpl : AuthRemoteDataSource {
             email = body.email,
             password = body.password,
             name = body.name,
-            phoneNumber = body.mobile
+            mobile = body.mobile,
+            location = body.location
         ).toAuthDto()
     }
 

@@ -1,23 +1,24 @@
 package com.example.data.model.response.profile
 
+import com.google.firebase.firestore.ServerTimestamp
+import java.util.Date
 
-import com.google.gson.annotations.SerializedName
 
 data class Item(
-    @SerializedName("bio")
-    val bio: String? = null,
-    @SerializedName("image")
-    val image: String? = null,
-    @SerializedName("mobile")
-    val mobile: String? = null,
-    @SerializedName("name")
+    val uuid: String = "", // Matches Firebase Auth UID and Document ID
     val name: String? = null,
-    @SerializedName("offers")
+    val image: String? = null,
+    val email: String? = null,
+    var mobile: String? = null,
+    var place: String? = null,
+    val bio: String? = null,
+    // val role: String = "member",
+
+    @ServerTimestamp
+    val createdAt: Date? = null,
+    var lastLoginAt: Date? = null,
+
+
     val offers: Int? = null,
-    @SerializedName("place")
-    val place: String? = null,
-    @SerializedName("posts")
     val posts: Int? = null,
-    @SerializedName("uuid")
-    val uuid: String? = null
 )
