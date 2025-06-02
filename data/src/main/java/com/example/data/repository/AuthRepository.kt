@@ -13,7 +13,7 @@ class AuthRepository(
 ) {
     suspend fun signup(body: SignupRequest) {
         val authDto = authRemoteDataSource.signup(body)
-        //todo: enable verify code, then use these 2 lines and delete last 2 lines in this functions
+        //todo: when you enable code verification, use replace the last 2 lines with these comments
 //        authLocalDataSource.saveAccountState(false)
 //        authLocalDataSource.saveMobile(body.mobile)
 
