@@ -4,7 +4,7 @@ import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
 
 
-data class Item(
+data class ProfileItemDto(
     val uuid: String = "", // Matches Firebase Auth UID and Document ID
     val name: String? = null,
     val image: String? = null,

@@ -2,7 +2,7 @@ package com.example.data.source.remote
 
 import android.util.Log
 import com.example.data.model.request.ResetPasswordRequest
-import com.example.data.model.response.profile.Item
+import com.example.data.model.response.profile.ProfileItemDto
 import com.example.data.model.response.profile.ProfilePostItemDto
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -31,7 +31,7 @@ class ProfileFirebaseDataSourceImpl : ProfileRemoteDataSource {
         location: String? = null,
     ) {
         try {
-            val userProfile = Item(
+            val userProfile = ProfileItemDto(
                 uuid = firebaseUser.uid,
                 email = firebaseUser.email,
                 name = firebaseUser.displayName,
@@ -51,10 +51,10 @@ class ProfileFirebaseDataSourceImpl : ProfileRemoteDataSource {
     }
 
 
-    suspend override fun getCurrentUserDataById(id: String): Item? {
+    suspend override fun getCurrentUserDataById(id: String): ProfileItemDto? {
         return try {
             val documentSnapshot = usersCollection.document(id).get().await()
-            val profileDto = documentSnapshot.toObject<Item>()
+            val profileDto = documentSnapshot.toObject<ProfileItemDto>()
 
             Log.d("TAG", "User profile fetched for UID: $id \n User: $profileDto")
             profileDto

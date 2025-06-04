@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class ProfileDto(
     @SerializedName("item")
-    val item: Item? = null
+    val profileItemDto: ProfileItemDto? = null
 )
