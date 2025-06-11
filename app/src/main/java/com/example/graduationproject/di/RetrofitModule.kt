@@ -4,7 +4,7 @@ import com.example.data.source.remote.AuthRetrofitDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.NotificationsRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
-import com.example.data.source.remote.PostRemoteDataSource
+import com.example.data.source.remote.PostRetrofitDataSource
 import com.example.data.source.remote.ProfileRetrofitDataSource
 import com.example.data.source.remote.SearchRemoteDataSource
 import com.example.data.util.StatusAwareConverterFactory
@@ -50,8 +50,8 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun providePostApiService(retrofit: Retrofit): PostRemoteDataSource {
-        return retrofit.create(PostRemoteDataSource::class.java)
+    fun providePostApiService(retrofit: Retrofit): PostRetrofitDataSource {
+        return retrofit.create(PostRetrofitDataSource::class.java)
     }
 
     @Singleton

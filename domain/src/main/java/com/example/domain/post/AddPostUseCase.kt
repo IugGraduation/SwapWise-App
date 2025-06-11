@@ -39,12 +39,12 @@ class AddPostUseCase @Inject constructor(
         val images: List<MultipartBody.Part> = listOf(image)
 
         postRepository.addPost(
-            images = images,
+            image = images,
             name = name,
             place = place,
             details = details,
-            categoryUuid = categoryUuid,
-            fcategory = fcategory
+            categoryId = categoryUuid,
+            favoriteCategoryIds = fcategory
         )
     }
 

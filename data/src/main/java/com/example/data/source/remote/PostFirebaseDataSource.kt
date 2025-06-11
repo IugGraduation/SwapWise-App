@@ -3,20 +3,24 @@ package com.example.data.source.remote
 import android.net.Uri
 import com.example.data.model.response.PostItemDto
 
-interface PostRemoteDataSource {
+class PostFirebaseDataSource : PostRemoteDataSource {
 
-    suspend fun getPostDetails(postId: String): PostItemDto
+    override suspend fun getPostDetails(postId: String): PostItemDto {
+        TODO()
+    }
 
-    suspend fun addPost(
+    override suspend fun addPost(
         image: Uri,
         name: String,
         place: String,
         details: String,
         categoryId: String,
         favoriteCategoryIds: List<String>?
-    ): Any
+    ): Any {
+        TODO()
+    }
 
-    suspend fun updatePost(
+    override suspend fun updatePost(
         image: Uri,
         name: String,
         place: String,
@@ -25,8 +29,12 @@ interface PostRemoteDataSource {
         favoriteCategoryIds: List<String>?,
         postId: String,
         status: String,
-    ): Any
+    ): Any {
+        TODO()
+    }
 
-    suspend fun deletePost(postId: String): Any
+    override suspend fun deletePost(postId: String): Any {
+        TODO()
+    }
 
 }

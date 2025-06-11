@@ -48,13 +48,13 @@ class EditPostUseCase @Inject constructor(
         val images: List<MultipartBody.Part>? = if (image != null) listOf(image) else null
 
         postRepository.updatePost(
-            images = images,
+            image = images,
             name = name,
             place = place,
             details = details,
-            categoryUuid = categoryUuid,
-            fcategory = fcategory,
-            postUuid = postUuid,
+            categoryId = categoryUuid,
+            favoriteCategoryIds = fcategory,
+            postId = postUuid,
             status = status
         )
     }

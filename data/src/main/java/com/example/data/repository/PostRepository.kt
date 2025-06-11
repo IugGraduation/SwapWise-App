@@ -1,58 +1,54 @@
 package com.example.data.repository
 
+import android.net.Uri
 import com.example.data.source.remote.PostRemoteDataSource
-import com.example.data.util.checkResponse
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
-class PostRepository(private val postRemoteDataSource: PostRemoteDataSource) {
+class PostRepository(
+    private val postRemoteDataSource: PostRemoteDataSource,
+) {
 
     suspend fun getPostDetails(postId: String) =
-        checkResponse { postRemoteDataSource.getPost(postId) }
+        postRemoteDataSource.getPostDetails(postId)
 
     suspend fun addPost(
-        images: List<MultipartBody.Part>?,
-        name: RequestBody,
-        place: RequestBody,
-        details: RequestBody,
-        categoryUuid: RequestBody,
-        fcategory: List<MultipartBody.Part>?
+        image: Uri,
+        name: String,
+        place: String,
+        details: String,
+        categoryId: String,
+        favoriteCategoryIds: List<String>?
     ) =
-        checkResponse {
-            postRemoteDataSource.addPost(
-                images = images,
-                name = name,
-                place = place,
-                details = details,
-                categoryUuid = categoryUuid,
-                fcategory = fcategory
-            )
-        }
+        postRemoteDataSource.addPost(
+            image = image,
+            name = name,
+            place = place,
+            details = details,
+            categoryId = categoryId,
+            favoriteCategoryIds = favoriteCategoryIds
+        )
 
     suspend fun updatePost(
-        images: List<MultipartBody.Part>?,
-        name: RequestBody,
-        place: RequestBody,
-        details: RequestBody,
-        categoryUuid: RequestBody,
-        fcategory: List<MultipartBody.Part>?,
-        postUuid: RequestBody,
-        status: RequestBody,
+        image: Uri,
+        name: String,
+        place: String,
+        details: String,
+        categoryId: String,
+        favoriteCategoryIds: List<String>?,
+        postId: String,
+        status: String,
     ) =
-        checkResponse {
-            postRemoteDataSource.updatePost(
-                images = images,
-                name = name,
-                place = place,
-                details = details,
-                categoryUuid = categoryUuid,
-                fcategory = fcategory,
-                postUuid = postUuid,
-                status = status
-            )
-        }
+        postRemoteDataSource.updatePost(
+            image = image,
+            name = name,
+            place = place,
+            details = details,
+            categoryId = categoryId,
+            favoriteCategoryIds = favoriteCategoryIds,
+            postId = postId,
+            status = status
+        )
 
     suspend fun deletePost(postId: String) =
-        checkResponse { postRemoteDataSource.deletePost(postId) }
+        postRemoteDataSource.deletePost(postId)
 
 }
