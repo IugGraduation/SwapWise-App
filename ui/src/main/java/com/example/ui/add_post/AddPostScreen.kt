@@ -47,6 +47,7 @@ import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
 import com.example.ui.theme.color
+import com.example.ui.util.toByteArray
 
 @Composable
 fun AddPostScreen(navController: NavController, viewModel: AddPostViewModel = hiltViewModel()) {
@@ -167,8 +168,9 @@ fun AddPostContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
+                val imageByteArray = state.data.postItem.imageLink.toByteArray()
                 SwapWiseFilledButton(
-                    onClick = addInteractions::onClickAdd,
+                    onClick = { addInteractions.onClickAdd(imageByteArray) },
                     text = stringResource(R.string.post),
                     modifier = Modifier.padding(horizontal = Spacing16)
                 )
@@ -200,7 +202,7 @@ fun PreviewPostDetailsContent() {
                 override fun onPlaceChange(place: String) {}
                 override fun onDetailsChange(details: String) {}
                 override fun onSelectedImageChange(selectedImageUri: Uri) {}
-                override fun onClickAdd() {}
+                override fun onClickAdd(imageByteArray: ByteArray?) {}
                 override fun navigateUp() {}
             },
         )

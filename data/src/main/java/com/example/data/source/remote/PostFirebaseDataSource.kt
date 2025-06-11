@@ -10,7 +10,7 @@ class PostFirebaseDataSource : PostRemoteDataSource {
     }
 
     override suspend fun addPost(
-        image: Uri,
+        imageByteArray: ByteArray,
         name: String,
         place: String,
         details: String,

@@ -17,6 +17,7 @@ import com.example.ui.base.StringsResource
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostErrorUiState
 import com.example.ui.models.PostItemUiState
+import com.example.ui.util.checkImageNotNull
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -125,10 +126,13 @@ class AddPostViewModel @Inject constructor(
     }
 
 
-    override fun onClickAdd() {
+    override fun onClickAdd(imageByteArray: ByteArray?) {
         tryToExecute(
             call = {
-                addPostUseCase(postItem = state.value.data.postItem)
+                addPostUseCase(
+                    postItem = state.value.data.postItem,
+                    imageByteArray = imageByteArray.checkImageNotNull()
+                )
             },
             onSuccess = { navigateUp() },
             onError = ::onAddPostFail

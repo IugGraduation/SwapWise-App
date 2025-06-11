@@ -8,7 +8,7 @@ interface PostRemoteDataSource {
     suspend fun getPostDetails(postId: String): PostItemDto
 
     suspend fun addPost(
-        image: Uri,
+        imageByteArray: ByteArray,
         name: String,
         place: String,
         details: String,

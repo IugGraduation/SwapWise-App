@@ -11,7 +11,7 @@ class PostRepository(
         postRemoteDataSource.getPostDetails(postId)
 
     suspend fun addPost(
-        image: Uri,
+        imageByteArray: ByteArray,
         name: String,
         place: String,
         details: String,
@@ -19,7 +19,7 @@ class PostRepository(
         favoriteCategoryIds: List<String>?
     ) =
         postRemoteDataSource.addPost(
-            image = image,
+            imageByteArray = imageByteArray,
             name = name,
             place = place,
             details = details,

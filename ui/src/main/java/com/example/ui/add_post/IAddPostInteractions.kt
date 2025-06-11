@@ -8,5 +8,5 @@ interface IAddPostInteractions : INavigateUp {
     fun onPlaceChange(place: String)
     fun onDetailsChange(details: String)
     fun onSelectedImageChange(selectedImageUri: Uri)
-    fun onClickAdd()
+    fun onClickAdd(imageByteArray: ByteArray? = null)
 }
