@@ -28,7 +28,9 @@ class SignupUseCase @Inject constructor(
             mobile = phone,
             name = fullName,
             password = password,
-            confirmPassword = confirmPassword
+            confirmPassword = confirmPassword,
+            email = TODO(),
+            location = TODO()
         )
         authRepository.signup(signupRequest)
     }
