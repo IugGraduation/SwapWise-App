@@ -2,7 +2,6 @@ package com.example.ui.add_post
 
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.EmptyImageException
@@ -131,10 +130,7 @@ class AddPostViewModel @Inject constructor(
     override fun onClickAdd() {
         tryToExecute(
             call = {
-                addPostUseCase(
-                    postItem = state.value.data.postItem,
-                    imageRequestBody = getImageRequestBodyUseCase(state.value.data.postItem.imageLink.toUri())!!
-                )
+                addPostUseCase(postItem = state.value.data.postItem)
             },
             onSuccess = { navigateUp() },
             onError = ::onAddPostFail

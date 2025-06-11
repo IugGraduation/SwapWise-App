@@ -20,6 +20,7 @@ class GetImageRequestBodyUseCase @Inject constructor(
         val contentResolver = applicationContext.contentResolver
         val inputStream = contentResolver.openInputStream(uri)
         val bytes = inputStream?.readBytes()
+        //todo: maybe return bytes? a ByteArray
 
         val imageRequestBody = bytes?.toRequestBody("image/*".toMediaTypeOrNull())
         return imageRequestBody ?: if (acceptNull) null else throw EmptyImageException()
