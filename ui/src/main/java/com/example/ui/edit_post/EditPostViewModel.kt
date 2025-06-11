@@ -2,7 +2,6 @@ package com.example.ui.edit_post
 
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
@@ -153,7 +152,7 @@ class EditPostViewModel @Inject constructor(
         tryToExecute(
             call = {
                 editPostUseCase(
-                    getImageRequestBodyUseCase(state.value.data.postItem.imageLink.toUri(), true),
+                    //todo: check if accepts null image, and check the reverse in adding post
                     state.value.data.postItem
                 )
             },
