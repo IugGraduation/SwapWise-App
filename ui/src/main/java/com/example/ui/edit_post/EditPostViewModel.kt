@@ -11,7 +11,6 @@ import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.post.DeletePostUseCase
 import com.example.domain.post.EditPostUseCase
-import com.example.domain.post.GetImageRequestBodyUseCase
 import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
@@ -31,7 +30,6 @@ class EditPostViewModel @Inject constructor(
     private val getPostDetailsUseCase: GetPostDetailsUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val editPostUseCase: EditPostUseCase,
-    private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
     private val deletePostUseCase: DeletePostUseCase,
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IEditPostInteractions {
     private val args = EditPostArgs(savedStateHandle)

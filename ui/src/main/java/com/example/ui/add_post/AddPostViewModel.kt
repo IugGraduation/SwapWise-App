@@ -11,7 +11,6 @@ import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.post.AddPostUseCase
-import com.example.domain.post.GetImageRequestBodyUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.NavigateUpEffect
 import com.example.ui.base.StringsResource
@@ -28,7 +27,6 @@ class AddPostViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val addPostUseCase: AddPostUseCase,
-    private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IAddPostInteractions {
     private val args = AddPostArgs(savedStateHandle)
 
