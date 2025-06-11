@@ -1,6 +1,5 @@
 package com.example.data.repository
 
-import android.net.Uri
 import com.example.data.source.remote.PostRemoteDataSource
 
 class PostRepository(
@@ -28,7 +27,7 @@ class PostRepository(
         )
 
     suspend fun updatePost(
-        image: Uri,
+        imageByteArray: ByteArray?,
         name: String,
         place: String,
         details: String,
@@ -38,7 +37,7 @@ class PostRepository(
         status: String,
     ) =
         postRemoteDataSource.updatePost(
-            image = image,
+            imageByteArray = imageByteArray,
             name = name,
             place = place,
             details = details,

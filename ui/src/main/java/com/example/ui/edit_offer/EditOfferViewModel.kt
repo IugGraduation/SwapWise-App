@@ -33,7 +33,7 @@ class EditOfferViewModel @Inject constructor(
     private val getImageRequestBodyUseCase: GetImageRequestBodyUseCase,
     private val editOfferUseCase: EditOfferUseCase,
     private val deleteOfferUseCase: DeleteOfferUseCase,
-) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IEditOfferInteractions {
+) : BaseViewModel<OfferItemUiState, NavigateUpEffect>(OfferItemUiState()), IEditPostInteractions {
     private val args = EditOfferArgs(savedStateHandle)
 
     override fun navigateUp() {
@@ -126,7 +126,7 @@ class EditOfferViewModel @Inject constructor(
     }
 
 
-    override fun onClickSave() {
+    override fun onClickSave(imageByteArray: ByteArray?) {
         tryToExecute(
             call = {
                 editOfferUseCase(

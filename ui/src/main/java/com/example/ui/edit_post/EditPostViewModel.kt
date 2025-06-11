@@ -146,12 +146,12 @@ class EditPostViewModel @Inject constructor(
     }
 
 
-    override fun onClickSave() {
+    override fun onClickSave(imageByteArray: ByteArray?) {
         tryToExecute(
             call = {
                 editPostUseCase(
-                    //todo: check if accepts null image, and check the reverse in adding post
-                    state.value.data.postItem
+                    postItem = state.value.data.postItem,
+                    imageByteArray = imageByteArray
                 )
             },
             onSuccess = { navigateUp() },

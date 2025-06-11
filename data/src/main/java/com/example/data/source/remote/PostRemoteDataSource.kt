@@ -1,6 +1,5 @@
 package com.example.data.source.remote
 
-import android.net.Uri
 import com.example.data.model.response.PostItemDto
 
 interface PostRemoteDataSource {
@@ -17,7 +16,7 @@ interface PostRemoteDataSource {
     ): Any
 
     suspend fun updatePost(
-        image: Uri,
+        imageByteArray: ByteArray?,
         name: String,
         place: String,
         details: String,

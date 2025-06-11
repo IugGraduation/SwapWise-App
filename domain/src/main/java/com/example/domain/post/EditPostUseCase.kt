@@ -1,6 +1,5 @@
 package com.example.domain.post
 
-import androidx.core.net.toUri
 import com.example.data.repository.PostRepository
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
@@ -11,7 +10,7 @@ class EditPostUseCase @Inject constructor(
     private val validatePostUseCase: ValidatePostUseCase,
     private val postRepository: PostRepository
 ) {
-    suspend operator fun invoke(postItem: PostItem) {
+    suspend operator fun invoke(imageByteArray: ByteArray?, postItem: PostItem) {
         validatePostUseCase(
             title = postItem.title,
             place = postItem.place,
@@ -19,7 +18,7 @@ class EditPostUseCase @Inject constructor(
         )
 
         postRepository.updatePost(
-            image = postItem.imageLink.toUri(),
+            imageByteArray = imageByteArray,
             name = postItem.title,
             place = postItem.place,
             details = postItem.details,

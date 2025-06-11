@@ -1,6 +1,5 @@
 package com.example.data.source.remote
 
-import android.net.Uri
 import com.example.data.model.response.PostItemDto
 
 class PostFirebaseDataSource : PostRemoteDataSource {
@@ -21,7 +20,7 @@ class PostFirebaseDataSource : PostRemoteDataSource {
     }
 
     override suspend fun updatePost(
-        image: Uri,
+        imageByteArray: ByteArray?,
         name: String,
         place: String,
         details: String,

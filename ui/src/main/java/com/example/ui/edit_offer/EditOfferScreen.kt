@@ -68,7 +68,7 @@ fun EditOfferScreen(navController: NavController, viewModel: EditOfferViewModel 
 @Composable
 fun EditOfferContent(
     state: MyUiState<OfferItemUiState>,
-    editInteractions: IEditOfferInteractions,
+    editInteractions: IEditPostInteractions,
 ) {
     TitledScreenTemplate(
         title = stringResource(R.string.edit_offer),
@@ -185,12 +185,12 @@ fun PreviewPostDetailsContent() {
                     )
                 )
             ),
-            editInteractions = object : IEditOfferInteractions {
+            editInteractions = object : IEditPostInteractions {
                 override fun onTitleChange(title: String) {}
                 override fun onPlaceChange(place: String) {}
                 override fun onDetailsChange(details: String) {}
                 override fun onSelectedImageChange(selectedImageUri: Uri) {}
-                override fun onClickSave() {}
+                override fun onClickSave(imageByteArray: ByteArray?) {}
                 override fun onClickDelete() {}
                 override fun navigateUp() {}
             },
