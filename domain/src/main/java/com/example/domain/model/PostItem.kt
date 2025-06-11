@@ -66,7 +66,7 @@ data class PostItem(
     }
 }
 
-fun ProfilePostItemDto.fromProfilePostItemDto(): PostItem {
+fun ProfilePostItemDto.toPostItem(): PostItem {
     return PostItem(
         uuid = this.uuid ?: "",
         title = this.postName ?: "",
