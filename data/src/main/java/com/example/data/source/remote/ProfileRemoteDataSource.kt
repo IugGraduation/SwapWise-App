@@ -8,7 +8,7 @@ interface ProfileRemoteDataSource {
 
     suspend fun getCurrentUserDataById(id: String): ProfileDto?
 
-    suspend fun getCurrentUserPosts(): List<ProfilePostItemDto>
+    suspend fun getCurrentUserPosts(): List<ProfilePostItemDto>?
 
     suspend fun updateUserInfo(
         name: String,
