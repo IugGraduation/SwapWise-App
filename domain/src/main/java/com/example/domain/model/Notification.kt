@@ -7,23 +7,21 @@ data class Notification(
     val userImage: String = "",
     val message: String = "",
     val date: String = "",
-) {
-    companion object {
-        private fun fromNotificationDto(notificationDto: NotificationDto): Notification {
-            return Notification(
-                id = notificationDto.uuid ?: "",
-                userImage = notificationDto.icon ?: "",
-                message = notificationDto.content ?: "",
-                date = notificationDto.createdAt ?: ""
-            )
-        }
+)
 
-        fun fromNotificationDtoList(notificationDtoList: List<NotificationDto?>?): List<Notification> {
-            return notificationDtoList?.filterNotNull()?.map {
-                fromNotificationDto(it)
-            } ?: listOf()
-        }
-    }
+fun NotificationDto.toNotification(): Notification {
+    return Notification(
+        id = uuid.orEmpty(),
+        userImage = icon.orEmpty(),
+        message = content.orEmpty(),
+        date = createdAt.orEmpty()
+    )
+}
+
+fun List<NotificationDto?>?.toNotificationList(): List<Notification> {
+    return this?.filterNotNull()?.map {
+        it.toNotification()
+    } ?: listOf()
 }
 
 

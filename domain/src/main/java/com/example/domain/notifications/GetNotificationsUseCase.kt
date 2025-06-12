@@ -2,13 +2,14 @@ package com.example.domain.notifications
 
 import com.example.data.repository.NotificationsRepository
 import com.example.domain.model.Notification
+import com.example.domain.model.toNotificationList
 import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 
 class GetNotificationsUseCase @Inject constructor(private val notificationsRepository: NotificationsRepository) {
     suspend operator fun invoke(): List<Notification> {
-        return Notification.fromNotificationDtoList(notificationsRepository.getNotifications())
+        return notificationsRepository.getNotifications().toNotificationList()
     }
 }
 
