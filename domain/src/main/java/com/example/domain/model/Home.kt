@@ -16,3 +16,11 @@ data class Home(
         }
     }
 }
+
+fun HomeDto.toHome(): Home {
+    val topicsList = topicsData?.map { topicDto ->
+        topicDto.toTopicsHolder()
+    }
+    val user = User.fromUserDto(user)
+    return Home(topicsList ?: listOf(), user)
+}
