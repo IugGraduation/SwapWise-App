@@ -112,7 +112,7 @@ class AddOfferViewModel @Inject constructor(
     }
 
 
-    override fun onClickAdd() {
+    override fun onClickAdd(imageByteArray: ByteArray?) {
         tryToExecute(
             call = {
                 addOfferUseCase(
