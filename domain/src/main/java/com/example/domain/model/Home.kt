@@ -9,7 +9,7 @@ data class Home(
     companion object {
         fun fromHomeDto(homeDto: HomeDto): Home {
             val topicsList = homeDto.topicsData?.map { topicDto ->
-                TopicsHolder.fromTopicDto(topicDto)
+                topicDto.toTopicsHolder()
             }
             val user = User.fromUserDto(homeDto.user)
             return Home(topicsList ?: listOf(), user)

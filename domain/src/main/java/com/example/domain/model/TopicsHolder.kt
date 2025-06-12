@@ -7,22 +7,21 @@ data class TopicsHolder(
     val title: String = "",
     val items: List<TopicItem> = listOf(),
     val url: String = ""
-) {
-    companion object {
-        fun fromTopicDto(topicDto: TopicDto): TopicsHolder {
-            val items = topicDto.topicItemsDto?.map { topicItemDto ->
-                if (topicDto.title == "Categories") {
-                    CategoryItem.fromTopicItemDto(topicItemDto)
-                } else {
-                    PostItem.fromTopicItemDto(topicItemDto)
-                }
+)
 
-            }
-            return TopicsHolder(
-                title = topicDto.title.toString(),
-                items = items ?: listOf(),
-                url = topicDto.url.toString()
-            )
+
+fun TopicDto.toTopicsHolder(): TopicsHolder {
+    val items = topicItemsDto?.map { topicItemDto ->
+        if (title == "Categories") {
+            CategoryItem.fromTopicItemDto(topicItemDto)
+        } else {
+            PostItem.fromTopicItemDto(topicItemDto)
         }
+
     }
+    return TopicsHolder(
+        title = title.toString(),
+        items = items ?: listOf(),
+        url = url.toString()
+    )
 }
