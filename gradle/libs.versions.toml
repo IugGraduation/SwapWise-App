@@ -6,7 +6,6 @@ coilCompose = "3.0.4"
 converterGson = "2.9.0"
 datastorePreferences = "1.1.2"
 datastorePreferencesVersion = "1.0.0"
-firebaseBom = "33.14.0"
 foundation = "1.7.6"
 gson = "2.10.1"
 hiltAndroidVersion = "2.51.1"
@@ -51,10 +50,6 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCo
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
-firebase-storage = { module = "com.google.firebase:firebase-storage" }
-google-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
