@@ -10,13 +10,11 @@ data class HomeUiState(
     val user: User = User(),
     val newPost: String = "",
     val topicsList: List<TopicsHolderUiState> = listOf(),
-){
-    companion object {
-        fun fromHome(home: Home): HomeUiState {
-            val topicsList = home.topicsList.map { topic ->
-                topic.toTopicsHolderUiState()
-            }
-            return HomeUiState(topicsList = topicsList, user = home.user)
-        }
+)
+
+fun Home.toHomeUiState(): HomeUiState {
+    val topicsList = topicsList.map { topic ->
+        topic.toTopicsHolderUiState()
     }
+    return HomeUiState(topicsList = topicsList, user = user)
 }

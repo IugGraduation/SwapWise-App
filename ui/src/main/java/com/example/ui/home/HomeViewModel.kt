@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onGetHomeDataSuccess(data: Home) {
-        _state.value = MyUiState(HomeUiState.fromHome(data))
+        _state.value = MyUiState(data.toHomeUiState())
     }
 
 
