@@ -11,7 +11,6 @@ import com.example.domain.profile.GetCurrentUserDataUseCase
 import com.example.domain.profile.GetCurrentUserPostsUseCase
 import com.example.domain.profile.LogoutUseCase
 import com.example.domain.profile.UpdateUserInfoUseCase
-import com.example.ui.base.BaseUiState
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
 import com.example.ui.util.empty
@@ -52,7 +51,6 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             call = { getCurrentUserDataUseCase(getCurrentUserDataUseCase.getCurrentUserId()).toProfileUiState() },
             onSuccess = ::onGetCurrentUserSuccess,
-            onError = ::onGetCurrentUserFail,
             shouldLoad = true,
             shouldHideContent = true
         )
@@ -63,14 +61,10 @@ class ProfileViewModel @Inject constructor(
         originalProfileInformation = user.profileInformationUiState
     }
 
-    private fun onGetCurrentUserFail(throwable: Throwable) =
-        updateBaseErrorMessage(throwable.message)
-
     private fun getCurrentUserPosts() {
         tryToExecute(
             call = { getCurrentUserPostsUseCase() },
             onSuccess = ::onGetCurrentUserPostsSuccess,
-            onError = ::onGetCurrentUserPostsFail
         )
     }
 
@@ -78,9 +72,6 @@ class ProfileViewModel @Inject constructor(
         updateData { copy(userPosts = postItems.map { it.toPostItemUIState() }) }
     }
 
-
-    private fun onGetCurrentUserPostsFail(throwable: Throwable) =
-        updateBaseErrorMessage(throwable.message)
 
     override fun onUpdateProfileImage(imageUri: Uri) {
         updateData {
@@ -155,15 +146,11 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             call = logoutUseCase::invoke,
             onSuccess = { onLogoutSuccess() },
-            onError = ::onLogoutFail,
         )
     }
 
     private fun onLogoutSuccess() = sendUiEffect(ProfileEffect.NavigateToLoginScreen)
 
-    private fun onLogoutFail(throwable: Throwable) {
-        updateBaseErrorMessage(throwable.message)
-    }
 
     override fun onResetPasswordClicked() = sendUiEffect(ProfileEffect.NavigateToResetPassword)
 
@@ -264,13 +251,4 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun updateBaseErrorMessage(message: String?) {
-        updateData {
-            copy(
-                baseUiState = BaseUiState(
-                    errorMessage = message ?: stringsResource.globalMessageError
-                )
-            )
-        }
-    }
 }

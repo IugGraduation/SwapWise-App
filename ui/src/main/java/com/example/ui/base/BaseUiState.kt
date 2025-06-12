@@ -1,9 +1,9 @@
 package com.example.ui.base
 
-import com.example.ui.util.empty
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 data class BaseUiState(
-    val errorMessage: String = String.empty(),
+    val errorSharedFlow: MutableSharedFlow<String> = MutableSharedFlow(),
     val isLoading: Boolean = false,
     val shouldHideContent: Boolean = false,
 )

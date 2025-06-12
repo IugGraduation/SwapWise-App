@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,10 +39,13 @@ fun ShowContentWithState(state: BaseUiState, content: @Composable () -> Unit) {
                     CircularProgressIndicator(color = MaterialTheme.color.primary)
                 }
             }
-
-            state.errorMessage.isNotBlank() -> {
-                Toast.makeText(LocalContext.current, state.errorMessage, Toast.LENGTH_LONG).show()
+        }
+        val context = LocalContext.current
+        LaunchedEffect(state.errorSharedFlow) {
+            state.errorSharedFlow.collect { errorMessage ->
+                Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
             }
         }
+
     }
 }

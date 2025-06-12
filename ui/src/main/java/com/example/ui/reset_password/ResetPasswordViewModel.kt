@@ -125,9 +125,7 @@ class ResetPasswordViewModel @Inject constructor(
                 )
             }
 
-            else -> {
-                updateData { copy(baseUiState = baseUiState.copy(errorMessage = throwable.message.toString())) }
-            }
+            else -> onActionFail(throwable)
         }
     }
 

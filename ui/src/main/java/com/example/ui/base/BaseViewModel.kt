@@ -91,10 +91,12 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
     }
 
     protected fun onActionFail(throwable: Throwable) {
-        updateBaseUiState { copy(errorMessage = throwable.message ?: "") }
+        updateErrorMessage(throwable.message.orEmpty())
     }
 
     protected fun updateErrorMessage(errorMessage: String = "") {
-        updateBaseUiState { copy(errorMessage = errorMessage) }
+        viewModelScope.launch {
+            _state.value.baseUiState.errorSharedFlow.emit(errorMessage)
+        }
     }
 }
