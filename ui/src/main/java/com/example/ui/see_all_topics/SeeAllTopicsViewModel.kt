@@ -10,6 +10,7 @@ import com.example.domain.model.TopicsHolder
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.models.TopicsHolderUiState
+import com.example.ui.models.toTopicsHolderUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -37,7 +38,7 @@ class SeeAllTopicsViewModel @Inject constructor(
     }
 
     private fun onGetHomeDataSuccess(data: TopicsHolder) {
-        _state.value = MyUiState(TopicsHolderUiState.fromTopicsHolder(data))
+        _state.value = MyUiState(data.toTopicsHolderUiState())
     }
 
 

@@ -10,14 +10,12 @@ data class TopicsHolderUiState(
     val isHorizontal: Boolean = true,
     var onClickSeeAll: () -> Unit = {},
     val url: String = "",
-){
-    companion object {
-        fun fromTopicsHolder(topic: TopicsHolder): TopicsHolderUiState {
-            return TopicsHolderUiState(
-                title = topic.title,
-                items = topic.items,
-                url = topic.url
-            )
-        }
-    }
+)
+
+fun TopicsHolder.toTopicsHolderUiState(): TopicsHolderUiState {
+    return TopicsHolderUiState(
+        title = title,
+        items = items,
+        url = url
+    )
 }
