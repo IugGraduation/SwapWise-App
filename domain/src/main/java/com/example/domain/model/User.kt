@@ -21,21 +21,19 @@ data class User(
                 imageLink = userDto?.image.toString(),
             )
         }
-
-        fun fromData(profileData: ProfileDto?): User {
-            val item = profileData?.item
-
-                return User(
-                    uuid = item?.uuid.orEmpty(),
-                    imageLink = item?.image.orEmpty(),
-                    name = item?.name.orEmpty(),
-                    bio = item?.bio.orEmpty(),
-                    phone = item?.mobile.orEmpty(),
-                    place = item?.place.orEmpty(),
-                    offersNumber = item?.offers ?: 0,
-                    postsNumber = item?.posts ?: 0,
-                )
-            }
-
     }
+
+}
+
+fun ProfileDto?.toUser(): User {
+    return User(
+        uuid = this?.uuid.orEmpty(),
+        imageLink = this?.image.orEmpty(),
+        name = this?.name.orEmpty(),
+        bio = this?.bio.orEmpty(),
+        phone = this?.mobile.orEmpty(),
+        place = this?.place.orEmpty(),
+        offersNumber = this?.offers ?: 0,
+        postsNumber = this?.posts ?: 0,
+    )
 }

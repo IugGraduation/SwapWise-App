@@ -1,13 +1,13 @@
 package com.example.data.source.remote
 
 import com.example.data.model.request.ResetPasswordRequest
-import com.example.data.model.response.profile.ProfileItemDto
+import com.example.data.model.response.profile.ProfileDto
 import com.example.data.model.response.profile.ProfilePostItemDto
 import java.net.URI
 
 interface ProfileRemoteDataSource {
 
-    suspend fun getCurrentUserDataById(id: String): ProfileItemDto?
+    suspend fun getCurrentUserDataById(id: String): ProfileDto?
 
     suspend fun getCurrentUserPosts(): List<ProfilePostItemDto>
 

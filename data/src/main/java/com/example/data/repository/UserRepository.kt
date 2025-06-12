@@ -25,7 +25,7 @@ class UserRepository @Inject constructor(
 ) {
 
     suspend fun getCurrentUserById(id: String): ProfileDto? {
-        return ProfileDto(profileRemoteDataSource.getCurrentUserDataById(id))
+        return profileRemoteDataSource.getCurrentUserDataById(id)
     }
 
     suspend fun getCurrentUserPosts(): List<ProfilePostItemDto>?{
