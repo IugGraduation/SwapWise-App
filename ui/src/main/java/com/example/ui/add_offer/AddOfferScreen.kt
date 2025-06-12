@@ -188,7 +188,7 @@ fun PreviewPostDetailsContent() {
                 override fun onPlaceChange(place: String) {}
                 override fun onDetailsChange(details: String) {}
                 override fun onSelectedImageChange(selectedImageUri: Uri) {}
-                override fun onClickAdd() {}
+                override fun onClickAdd(imageByteArray: ByteArray?) {}
                 override fun navigateUp() {}
             },
         )
