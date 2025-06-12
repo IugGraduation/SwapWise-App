@@ -13,8 +13,7 @@ class GetSearchResultUseCase @Inject constructor(private val searchRepository: S
         val filterCategoryIds = if (filterChipsList.isEmpty()) null
         else {
             filterChipsList.filter { it.selected }
-                .mapIndexed { index, chip -> "category_uuid[$index]" to chip.categoryItem.uuid }
-                .toMap()
+                .map { it.categoryItem.uuid }
         }
         val result = searchRepository.search(searchValue, filterCategoryIds)
         val postItemList = result?.map {
