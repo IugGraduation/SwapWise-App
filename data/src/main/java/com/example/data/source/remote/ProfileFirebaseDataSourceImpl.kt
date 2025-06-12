@@ -11,7 +11,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
-import java.net.URI
 import java.util.Date
 
 
@@ -51,7 +50,7 @@ class ProfileFirebaseDataSourceImpl : ProfileRemoteDataSource {
     }
 
 
-    suspend override fun getCurrentUserDataById(id: String): ProfileDto? {
+    override suspend fun getCurrentUserDataById(id: String): ProfileDto? {
         return try {
             val documentSnapshot = usersCollection.document(id).get().await()
             val profileDto = documentSnapshot.toObject<ProfileDto>()
@@ -91,11 +90,11 @@ class ProfileFirebaseDataSourceImpl : ProfileRemoteDataSource {
     }
 
     override suspend fun updateUserInfo(
-        image: URI?,
         name: String,
         mobile: String,
+        place: String,
+        imageByteArray: ByteArray?,
         bio: String,
-        place: String
     ): Boolean {
         TODO("Not yet implemented")
     }
