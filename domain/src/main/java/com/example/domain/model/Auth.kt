@@ -7,15 +7,14 @@ data class Auth(
     val name: String,
     val token: String,
     val userId: String
-) {
-    companion object {
-        fun fromAuthDto(authDto: AuthDto): Auth {
-            return Auth(
-                imageLink = authDto.image ?: "",
-                name = authDto.name ?: "",
-                token = authDto.token ?: "",
-                userId = authDto.uuid ?: ""
-            )
-        }
-    }
+)
+
+
+fun AuthDto.toAuth(): Auth {
+    return Auth(
+        imageLink = image ?: "",
+        name = name ?: "",
+        token = token ?: "",
+        userId = uuid ?: ""
+    )
 }
