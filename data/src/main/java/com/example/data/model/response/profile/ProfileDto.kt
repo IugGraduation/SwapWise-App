@@ -1,11 +1,9 @@
 package com.example.data.model.response.profile
 
-import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
 
-
 data class ProfileDto(
-    val uuid: String = "", // Matches Firebase Auth UID and Document ID
+    val uuid: String = "",
     val name: String? = null,
     val image: String? = null,
     val email: String? = null,
@@ -14,8 +12,7 @@ data class ProfileDto(
     val bio: String? = null,
     // val role: String = "member",
 
-    @ServerTimestamp
-    val createdAt: Date? = null,
+    val createdAt: Date? = Date(),
     var lastLoginAt: Date? = null,
 
 
