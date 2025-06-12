@@ -10,15 +10,12 @@ import com.example.data.model.response.profile.ProfileDto
 import com.example.data.model.response.profile.ProfilePostItemDto
 import com.example.data.repository.UserRepository.PreferencesKeys.LOCAL_LANGUAGE
 import com.example.data.source.remote.ProfileRemoteDataSource
-import com.example.data.source.remote.ProfileRetrofitDataSource
-import com.example.data.util.checkResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>,
-    private val profileRetrofitDataSource: ProfileRetrofitDataSource,
     private val profileRemoteDataSource: ProfileRemoteDataSource,
 ) {
 
@@ -37,16 +34,13 @@ class UserRepository @Inject constructor(
         imageByteArray: ByteArray?,
         bio: String
     ): Boolean {
-        return true
-//        val response = profileRetrofitDataSource.updateUserInfo(
-//            image = image,
-//            name = name,
-//            mobile = mobile,
-//            bio = bio,
-//            place = place
-//        )
-//
-//        return response.body()?.status ?: false
+        return profileRemoteDataSource.updateUserInfo(
+            name = name,
+            mobile = mobile,
+            place = place,
+            imageByteArray = imageByteArray,
+            bio = bio,
+        )
     }
 
     suspend fun resetPassword(
@@ -54,15 +48,13 @@ class UserRepository @Inject constructor(
         newPassword: String,
         confirmNewPassword: String
     ) {
-        checkResponse {
-            profileRetrofitDataSource.resetPassword(
-                request = ResetPasswordRequest(
-                    currentPassword = currentPassword,
-                    newPassword = newPassword,
-                    confirmNewPassword = confirmNewPassword
-                )
+        profileRemoteDataSource.resetPassword(
+            request = ResetPasswordRequest(
+                currentPassword = currentPassword,
+                newPassword = newPassword,
+                confirmNewPassword = confirmNewPassword
             )
-        }
+        )
     }
 
     suspend fun updateDarkTheme(isDarkTheme: Boolean) {
@@ -79,7 +71,7 @@ class UserRepository @Inject constructor(
 
     suspend fun updateAppLanguage(newLanguage: String) {
         dataStore.edit { preferences ->
-            preferences[PreferencesKeys.LOCAL_LANGUAGE] = newLanguage
+            preferences[LOCAL_LANGUAGE] = newLanguage
         }
     }
 
