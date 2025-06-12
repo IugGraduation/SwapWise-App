@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.data.model.response.TopicItemDto
 import com.example.data.source.remote.HomeRemoteDataSource
-import com.example.data.util.checkResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.first
@@ -16,18 +15,18 @@ class HomeRepository(
     private val homeRemoteDataSource: HomeRemoteDataSource,
     private val dataStore: DataStore<Preferences>,
 ) {
-    suspend fun getHomeDto() = checkResponse { homeRemoteDataSource.getHomeDto() }
+    suspend fun getHomeDto() = homeRemoteDataSource.getHomeDto()
 
-    suspend fun seeAll(url: String) = checkResponse { homeRemoteDataSource.seeAll(url) }
+    suspend fun seeAll(url: String) = homeRemoteDataSource.seeAll(url)
 
     suspend fun getPostsFromCategory(categoryId: String) =
-        checkResponse { homeRemoteDataSource.getPostsFromCategory(categoryId) }
+        homeRemoteDataSource.getPostsFromCategory(categoryId)
 
     suspend fun getCategories(): List<TopicItemDto>? {
         if (checkIsCategoriesStored()) {
             return getCategoriesFromDataStore()
         } else {
-            val categories = checkResponse { homeRemoteDataSource.seeAll("category") }
+            val categories = homeRemoteDataSource.seeAll("category")
             saveCategoriesToDataStore(categories ?: emptyList())
             return categories
         }
