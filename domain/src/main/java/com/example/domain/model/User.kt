@@ -13,16 +13,13 @@ data class User(
     val offersNumber: Int = 0,
     val postsNumber: Int = 0,
     val imgContentDescription: String = "",
-) {
-    companion object {
-        fun fromUserDto(userDto: UserDto?): User {
-            return User(
-                name = userDto?.name.toString(),
-                imageLink = userDto?.image.toString(),
-            )
-        }
-    }
+)
 
+fun UserDto?.toUser(): User {
+    return User(
+        name = this?.name.toString(),
+        imageLink = this?.image.toString(),
+    )
 }
 
 fun ProfileDto?.toUser(): User {

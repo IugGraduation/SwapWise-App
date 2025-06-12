@@ -11,6 +11,7 @@ fun HomeDto.toHome(): Home {
     val topicsList = topicsData?.map { topicDto ->
         topicDto.toTopicsHolder()
     }
-    val user = User.fromUserDto(user)
+    val user = userDto.toUser()
+
     return Home(topicsList ?: listOf(), user)
 }

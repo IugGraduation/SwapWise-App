@@ -7,5 +7,5 @@ data class HomeDto(
     @SerializedName("data")
     val topicsData: List<TopicDto>? = null,
     @SerializedName("user")
-    val user: UserDto? = null,
+    val userDto: UserDto? = null,
 )
