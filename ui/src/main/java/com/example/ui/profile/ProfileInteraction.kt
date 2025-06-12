@@ -10,7 +10,7 @@ interface ProfileInteraction {
     fun onLocationChange(location: String)
     fun onBioChange(bio: String)
     fun onCancelButtonClicked()
-    fun onSaveButtonClicked()
+    fun onSaveButtonClicked(imageByteArray: ByteArray? = null)
     fun onDarkMoodChange(isDarkMood: Boolean)
     fun onLogoutClicked()
     fun onResetPasswordClicked()

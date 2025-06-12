@@ -73,6 +73,7 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles.headingExtraLarge
 import com.example.ui.theme.color
 import com.example.ui.util.CollectUiEffect
+import com.example.ui.util.toByteArray
 import java.util.Locale
 
 @Composable
@@ -276,7 +277,7 @@ private fun UserInformationSection(
         )
 
         SwapWiseTextField(
-            value = state.profileInformationUiState.phoneNumber,
+            value = state.profileInformationUiState.mobile,
             onValueChange = profileInteraction::onPhoneNumberChange,
             isEditable = isUserInfoEditable,
             placeholder = stringResource(R.string.phone_number),
@@ -329,8 +330,10 @@ private fun UserInformationSection(
                 verticalArrangement = Arrangement.spacedBy(Spacing8)
             ) {
                 VerticalSpacer(Spacing8)
+                //todo: check if image is being saved correctly in state when clicking save. do same check at post add,edit
+                val imageByteArray = state.profileInformationUiState.imageUri.toByteArray()
                 SwapWiseFilledButton(
-                    onClick = profileInteraction::onSaveButtonClicked,
+                    onClick = { profileInteraction.onSaveButtonClicked(imageByteArray) },
                     text = stringResource(R.string.save)
                 )
 
@@ -434,7 +437,7 @@ fun PreviewPostDetailsContent() {
                 override fun onLocationChange(location: String) {}
                 override fun onBioChange(bio: String) {}
                 override fun onCancelButtonClicked() {}
-                override fun onSaveButtonClicked() {}
+                override fun onSaveButtonClicked(imageByteArray: ByteArray?) {}
                 override fun onDarkMoodChange(isDarkMood: Boolean) {}
                 override fun onLogoutClicked() {}
                 override fun onResetPasswordClicked() {}

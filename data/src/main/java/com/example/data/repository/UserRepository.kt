@@ -14,8 +14,6 @@ import com.example.data.source.remote.ProfileRetrofitDataSource
 import com.example.data.util.checkResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -33,21 +31,22 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun updateUserInfo(
-        name: RequestBody,
-        mobile: RequestBody,
-        place: RequestBody,
-        image: MultipartBody.Part?,
-        bio: RequestBody
+        name: String,
+        mobile: String,
+        place: String,
+        imageByteArray: ByteArray?,
+        bio: String
     ): Boolean {
-        val response = profileRetrofitDataSource.updateUserInfo(
-            image = image,
-            name = name,
-            mobile = mobile,
-            bio = bio,
-            place = place
-        )
-
-        return response.body()?.status ?: false
+        return true
+//        val response = profileRetrofitDataSource.updateUserInfo(
+//            image = image,
+//            name = name,
+//            mobile = mobile,
+//            bio = bio,
+//            place = place
+//        )
+//
+//        return response.body()?.status ?: false
     }
 
     suspend fun resetPassword(

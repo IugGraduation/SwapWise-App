@@ -1,7 +1,6 @@
 package com.example.ui.profile
 
 import android.net.Uri
-import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
@@ -100,7 +99,7 @@ class ProfileViewModel @Inject constructor(
     override fun onUsernameChange(newName: String) = updateProfileField { copy(name = newName) }
 
     override fun onPhoneNumberChange(newNumber: String) =
-        updateProfileField { copy(phoneNumber = newNumber) }
+        updateProfileField { copy(mobile = newNumber) }
 
     override fun onLocationChange(location: String) =
         updateProfileField { copy(location = location) }
@@ -117,18 +116,15 @@ class ProfileViewModel @Inject constructor(
         updateData { copy(profileInformationUiState = originalProfileInformation) }
     }
 
-    override fun onSaveButtonClicked() {
+    override fun onSaveButtonClicked(imageByteArray: ByteArray?) {
         val lastUserInfo = _state.value.data.profileInformationUiState
         tryToExecute(
             call = {
                 updateUserInfoUseCase(
                     name = lastUserInfo.name,
-                    phoneNumber = lastUserInfo.phoneNumber,
+                    mobile = lastUserInfo.mobile,
                     location = lastUserInfo.location,
-                    imageRequestBody = getImageRequestBodyUseCase(
-                        _state.value.data.profileInformationUiState.imageUri.toUri(),
-                        acceptNull = true
-                    ),
+                    imageByteArray = imageByteArray,
                     bio = lastUserInfo.bio
                 )
             },
