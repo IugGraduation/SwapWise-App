@@ -13,7 +13,7 @@ class AuthRepository(
 ) {
     suspend fun signup(body: SignupRequest) {
         val authDto = authRemoteDataSource.signup(body)
-        //todo: when you enable code verification, use replace the last 2 lines with these comments
+        //todo: when you enable code verification, replace the last 2 lines with these comments
 //        authLocalDataSource.saveAccountState(false)
 //        authLocalDataSource.saveMobile(body.mobile)
 
@@ -42,7 +42,7 @@ class AuthRepository(
     }
 
     suspend fun checkIsAuthDtoStored(): Boolean {
-        return authLocalDataSource.getToken()?.isNotBlank() == true
+        return authLocalDataSource.getStoredAuthData().uuid?.isNotBlank() == true
     }
 
     suspend fun checkIsAccountActive(): Boolean {
