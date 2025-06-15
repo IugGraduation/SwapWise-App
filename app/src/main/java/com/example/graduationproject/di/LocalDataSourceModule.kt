@@ -13,27 +13,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataSourceModule {
+object LocalDataSourceModule {
 
     @Singleton
     @Provides
     fun provideAuthLocalDataSource(dataStore: DataStore<Preferences>): AuthLocalDataSource =
         AuthDataStoreSourceImpl(dataStore)
-
-//    @Singleton
-//    @Provides
-//    fun provideAuthRemoteDataSource(profileFirebaseDataSourceImpl: ProfileFirebaseDataSourceImpl): AuthRemoteDataSource =
-//        AuthFirebaseDataSourceImpl(profileFirebaseDataSourceImpl)
-//
-//    @Singleton
-//    @Provides
-//    fun provideProfileRemoteDataSource(): ProfileRemoteDataSource =
-//        ProfileFirebaseDataSourceImpl()
-//
-//    @Singleton
-//    @Provides
-//    fun providePostRemoteDataSource(): PostRemoteDataSource =
-//        PostFirebaseDataSource()
-
-
 }
