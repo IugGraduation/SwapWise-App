@@ -92,7 +92,6 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
     }
 
     protected fun onActionFail(throwable: Throwable) {
-        Log.e("TAG", "onActionFail: Error: $throwable")
         Log.e("TAG", "onActionFail: Error tree: ${throwable.stackTraceToString()}")
         updateErrorMessage(throwable.message.orEmpty())
     }
