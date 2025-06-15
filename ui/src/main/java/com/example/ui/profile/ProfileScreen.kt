@@ -277,7 +277,7 @@ private fun UserInformationSection(
         )
 
         SwapWiseTextField(
-            value = state.profileInformationUiState.mobile,
+            value = state.profileInformationUiState.phone,
             onValueChange = profileInteraction::onPhoneNumberChange,
             isEditable = isUserInfoEditable,
             placeholder = stringResource(R.string.phone_number),

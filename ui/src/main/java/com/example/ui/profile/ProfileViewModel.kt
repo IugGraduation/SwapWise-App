@@ -88,7 +88,7 @@ class ProfileViewModel @Inject constructor(
     override fun onUsernameChange(newName: String) = updateProfileField { copy(name = newName) }
 
     override fun onPhoneNumberChange(newNumber: String) =
-        updateProfileField { copy(mobile = newNumber) }
+        updateProfileField { copy(phone = newNumber) }
 
     override fun onLocationChange(location: String) =
         updateProfileField { copy(location = location) }
@@ -111,7 +111,7 @@ class ProfileViewModel @Inject constructor(
             call = {
                 updateUserInfoUseCase(
                     name = lastUserInfo.name,
-                    mobile = lastUserInfo.mobile,
+                    phone = lastUserInfo.phone,
                     location = lastUserInfo.location,
                     imageByteArray = imageByteArray,
                     bio = lastUserInfo.bio

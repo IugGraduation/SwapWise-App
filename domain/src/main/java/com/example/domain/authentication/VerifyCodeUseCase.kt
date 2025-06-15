@@ -11,7 +11,7 @@ class VerifyCodeUseCase @Inject constructor(
         otp: String,
     ) {
         val verifyCodeRequest = VerifyCodeRequest(
-            mobile = authRepository.getMobile(),
+            phone = authRepository.getPhone(),
             code = otp,
             fcmDevice = "android",
             fcmToken = "0"

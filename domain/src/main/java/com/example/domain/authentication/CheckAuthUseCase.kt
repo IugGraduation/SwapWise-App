@@ -10,7 +10,7 @@ class CheckAuthUseCase @Inject constructor(
 ) {
     suspend operator fun invoke() {
         if (authRepository.checkIsAuthDtoStored().not()) {
-            if (authRepository.checkIsAccountActive().not() && authRepository.getMobile()
+            if (authRepository.checkIsAccountActive().not() && authRepository.getPhone()
                     .isNotBlank()
             ) throw InactiveAccountException()
             throw EmptyDataException()

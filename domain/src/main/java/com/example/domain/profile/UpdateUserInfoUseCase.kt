@@ -12,16 +12,16 @@ class UpdateUserInfoUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         name: String,
-        mobile: String,
+        phone: String,
         location: String,
         imageByteArray: ByteArray?,
         bio: String
     ): Boolean {
-        if (!validateUserInfo(name, mobile, location)) throw FailedToUpdateUserInfoException()
+        if (!validateUserInfo(name, phone, location)) throw FailedToUpdateUserInfoException()
 
         return userRepository.updateUserInfo(
             name = name,
-            mobile = mobile,
+            phone = phone,
             place = location,
             imageByteArray = imageByteArray,
             bio = bio

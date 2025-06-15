@@ -28,7 +28,7 @@ fun ProfileDto?.toUser(): User {
         imageLink = this?.image.orEmpty(),
         name = this?.name.orEmpty(),
         bio = this?.bio.orEmpty(),
-        phone = this?.mobile.orEmpty(),
+        phone = this?.phone.orEmpty(),
         place = this?.place.orEmpty(),
         offersNumber = this?.offers ?: 0,
         postsNumber = this?.posts ?: 0,

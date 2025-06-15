@@ -20,8 +20,8 @@ data class OfferItemDto(
     val userUuid: String? = null,
     @SerializedName("uuid")
     val uuid: String? = null,
-    @SerializedName("mobile")
-    val mobile: String? = null,
+    @SerializedName("phone")
+    val phone: String? = null,
     @SerializedName("date")
     val date: String? = null,
 )

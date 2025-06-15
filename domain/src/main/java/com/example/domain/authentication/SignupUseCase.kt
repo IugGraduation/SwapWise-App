@@ -25,7 +25,7 @@ class SignupUseCase @Inject constructor(
         validateBestBarterSpot(bestBarterSpot)
 
         val signupRequest = SignupRequest(
-            mobile = phone,
+            phone = phone,
             name = fullName,
             password = password,
             confirmPassword = confirmPassword,

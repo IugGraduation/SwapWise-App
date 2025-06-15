@@ -7,7 +7,7 @@ data class ProfileDto(
     val name: String? = null,
     val image: String? = null,
     val email: String? = null,
-    var mobile: String? = null,
+    var phone: String? = null,
     var place: String? = null,
     val bio: String? = null,
     // val role: String = "member",

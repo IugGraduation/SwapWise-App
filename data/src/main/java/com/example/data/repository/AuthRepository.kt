@@ -15,7 +15,7 @@ class AuthRepository(
         val authDto = authRemoteDataSource.signup(body)
         //todo: when you enable code verification, replace the last 2 lines with these comments
 //        authLocalDataSource.saveAccountState(false)
-//        authLocalDataSource.saveMobile(body.mobile)
+//        authLocalDataSource.savePhone(body.phone)
 
         authLocalDataSource.saveUserData(authDto)
         authLocalDataSource.saveAccountState(true)
@@ -49,8 +49,8 @@ class AuthRepository(
         return authLocalDataSource.getIsAccountActive()
     }
 
-    suspend fun getMobile(): String {
-        return authLocalDataSource.getMobile()
+    suspend fun getPhone(): String {
+        return authLocalDataSource.getPhone()
     }
 
 }

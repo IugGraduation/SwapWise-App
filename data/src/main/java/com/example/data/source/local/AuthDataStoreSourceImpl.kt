@@ -20,7 +20,7 @@ class AuthDataStoreSourceImpl(
         val userId = stringPreferencesKey("user_id")
         val token = stringPreferencesKey(Constants.TOKEN)
         val isAccountActive = booleanPreferencesKey("is_account_active")
-        val mobile = stringPreferencesKey("mobile")
+        val phone = stringPreferencesKey("phone")
     }
 
     override suspend fun saveUserData(authDto: AuthDto?) {
@@ -38,9 +38,9 @@ class AuthDataStoreSourceImpl(
         }
     }
 
-    override suspend fun saveMobile(mobile: String) {
+    override suspend fun savePhone(phone: String) {
         dataStore.edit { preferences ->
-            preferences[PreferencesKeys.mobile] = mobile
+            preferences[PreferencesKeys.phone] = phone
         }
     }
 
@@ -57,9 +57,9 @@ class AuthDataStoreSourceImpl(
 
     }
 
-    override suspend fun getMobile(): String {
+    override suspend fun getPhone(): String {
         return dataStore.data.map {
-            it[PreferencesKeys.mobile] ?: ""
+            it[PreferencesKeys.phone] ?: ""
         }.first()
     }
 
