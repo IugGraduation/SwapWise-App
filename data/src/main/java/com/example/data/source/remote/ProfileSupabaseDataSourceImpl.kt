@@ -4,8 +4,10 @@ import com.example.data.model.request.ResetPasswordRequest
 import com.example.data.model.response.profile.ProfileDto
 import com.example.data.model.response.profile.ProfilePostItemDto
 import io.github.jan.supabase.SupabaseClient
+import javax.inject.Inject
 
-class ProfileSupabaseDataSourceImpl(supabaseClient: SupabaseClient) : ProfileRemoteDataSource {
+class ProfileSupabaseDataSourceImpl @Inject constructor(supabaseClient: SupabaseClient) :
+    ProfileRemoteDataSource {
     override suspend fun getCurrentUserDataById(id: String): ProfileDto? {
 
         //todo: implement the getUser fun

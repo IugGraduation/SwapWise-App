@@ -8,8 +8,9 @@ import com.example.data.model.response.AuthDto
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Phone
+import javax.inject.Inject
 
-class AuthSupabaseDataSourceImpl(
+class AuthSupabaseDataSourceImpl @Inject constructor(
     private val supabaseClient: SupabaseClient,
     private val profileRemoteDataSource: ProfileRemoteDataSource
 ) :
