@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt.android)
     id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -57,5 +58,10 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     implementation(libs.gson)
+
+    // Supabase
+    implementation(platform(libs.supabase.bom))
+    implementation(libs.postgrest.kt)
+    implementation(libs.ktor.client.android)
 
 }
