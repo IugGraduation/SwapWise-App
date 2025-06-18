@@ -6,8 +6,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.data.model.response.TopicItemDto
 import com.example.data.source.remote.HomeRemoteDataSource
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -41,22 +39,23 @@ class HomeRepository(
 
     private suspend fun saveCategoriesToDataStore(topics: List<TopicItemDto>) {
         dataStore.edit { preferences ->
-            preferences[PreferencesKeys.topics] =
-                Gson().toJson(topics, object : TypeToken<List<TopicItemDto>>() {}.type)
+            preferences[PreferencesKeys.topics] = TODO()
+            //   Gson().toJson(topics, object : TypeToken<List<TopicItemDto>>() {}.type)
         }
     }
 
     suspend fun getCategoriesFromDataStore(): List<TopicItemDto> {
-        return dataStore.data.map { preferences ->
-            try {
-                Gson().fromJson<List<TopicItemDto>>(
-                    preferences[PreferencesKeys.topics] ?: "",
-                    object : TypeToken<List<TopicItemDto>>() {}.type
-                ) ?: emptyList()
-            } catch (e: Exception) {
-                emptyList()
-            }
-        }.first()
+//        return dataStore.data.map { preferences ->
+//            try {
+//                Gson().fromJson<List<TopicItemDto>>(
+//                    preferences[PreferencesKeys.topics] ?: "",
+//                    object : TypeToken<List<TopicItemDto>>() {}.type
+//                ) ?: emptyList()
+//            } catch (e: Exception) {
+//                emptyList()
+//            }
+//        }.first()
+        TODO()
     }
 
     private object PreferencesKeys {
