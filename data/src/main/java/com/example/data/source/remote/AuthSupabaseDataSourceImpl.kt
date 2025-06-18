@@ -22,13 +22,10 @@ class AuthSupabaseDataSourceImpl @Inject constructor(
         }
 
         Log.e("TAG", "signup: user id: ${userInfo?.id}")
-        val user = profileRemoteDataSource.getCurrentUserDataById(userInfo?.id.orEmpty())
 
         return AuthDto(
-            uuid = user?.uuid,
-            image = user?.image,
-            name = user?.name,
-            token = null,
+            uuid = userInfo?.id,
+            name = body.name,
         )
     }
 
