@@ -1,14 +1,10 @@
 package com.example.data.source.remote
 
-import com.example.data.model.response.ApiResponseDto
 import com.example.data.model.response.HomeDto
 import com.example.data.model.response.NotificationDto
 import com.example.data.model.response.OfferItemDto
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.TopicItemDto
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import retrofit2.Response
 import javax.inject.Inject
 
 class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
@@ -30,35 +26,6 @@ class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
         TODO("Not yet implemented")
     }
 
-    override suspend fun getOffer(offerId: String): Response<ApiResponseDto<OfferItemDto>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun addOffer(
-        image: MultipartBody.Part,
-        name: RequestBody,
-        place: RequestBody,
-        details: RequestBody,
-        categoryUuid: RequestBody,
-        postUuid: RequestBody
-    ): Response<ApiResponseDto<Any>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateOffer(
-        image: MultipartBody.Part?,
-        name: RequestBody,
-        place: RequestBody,
-        details: RequestBody,
-        categoryUuid: RequestBody,
-        offerUuid: RequestBody
-    ): Response<ApiResponseDto<Any>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteOffer(offerId: String): Response<ApiResponseDto<Any>> {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun getPostDetails(postId: String): PostItemDto {
         TODO("Not yet implemented")
@@ -93,6 +60,36 @@ class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
     }
 
     override suspend fun search(search: String, categoriesIds: List<String>?): List<TopicItemDto>? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getOffer(offerId: String): OfferItemDto {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun addOffer(
+        image: ByteArray,
+        name: String,
+        place: String,
+        details: String,
+        categoryUuid: String,
+        postUuid: String
+    ): Any {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateOffer(
+        image: Byte,
+        name: String,
+        place: String,
+        details: String,
+        categoryUuid: String,
+        offerUuid: String
+    ): Any {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteOffer(offerId: String): Any {
         TODO("Not yet implemented")
     }
 
