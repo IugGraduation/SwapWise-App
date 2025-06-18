@@ -46,10 +46,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
 
@@ -57,11 +53,12 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     kapt(libs.hilt.android.compiler)
 
-    implementation(libs.gson)
-
     // Supabase
     implementation(platform(libs.supabase.bom))
     implementation(libs.postgrest.kt)
     implementation(libs.ktor.client.android)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.kotlinx.serialization.json)
 
 }

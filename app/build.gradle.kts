@@ -69,10 +69,6 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
-    // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-
     // Hilt for Dependency Injection
     implementation(libs.dagger.hilt.android)
     kapt(libs.hilt.android.compiler)
@@ -88,5 +84,9 @@ dependencies {
     implementation(platform(libs.supabase.bom))
     implementation(libs.postgrest.kt)
     implementation(libs.ktor.client.android)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.kotlinx.serialization.json)
+
 
 }
