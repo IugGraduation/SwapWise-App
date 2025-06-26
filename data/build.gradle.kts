@@ -27,6 +27,9 @@ android {
         }
     }
     compileOptions {
+        // fix for Time.Instant not found, for Supabase
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -56,9 +59,11 @@ dependencies {
     // Supabase
     implementation(platform(libs.supabase.bom))
     implementation(libs.postgrest.kt)
+    implementation(libs.auth.kt)
     implementation(libs.ktor.client.android)
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.kotlinx.serialization.json)
+
+    // fix for Time.Instant not found, for Supabase
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
 
 }
