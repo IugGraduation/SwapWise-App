@@ -16,15 +16,16 @@ class AuthSupabaseDataSourceImpl @Inject constructor(
 ) :
     AuthRemoteDataSource {
     override suspend fun signup(body: SignupRequest): AuthDto {
-        val userInfo = supabaseClient.auth.signUpWith(Phone) {
+        supabaseClient.auth.signUpWith(Phone) {
             phone = body.phone
             password = body.password
         }
 
-        Log.e("TAG", "signup: user id: ${userInfo?.id}")
+        val user = supabaseClient.auth.currentUserOrNull()
+        Log.e("TAG", "signup: user id: ${user?.id}")
 
         return AuthDto(
-            uuid = userInfo?.id,
+            uuid = user?.id,
             name = body.name,
         )
     }
@@ -35,15 +36,15 @@ class AuthSupabaseDataSourceImpl @Inject constructor(
             password = body.password
         }
 
-        val userInfo = supabaseClient.auth.currentUserOrNull()
+        val user = supabaseClient.auth.currentUserOrNull()
 
-        Log.e("TAG", "login: user id: ${userInfo?.id}")
-        val user = profileRemoteDataSource.getCurrentUserDataById(userInfo?.id.orEmpty())
+        Log.e("TAG", "login: user id: ${user?.id}")
+        val userProfile = profileRemoteDataSource.getCurrentUserDataById(user?.id.orEmpty())
 
         return AuthDto(
-            uuid = user?.uuid,
-            image = user?.image,
-            name = user?.name,
+            uuid = userProfile?.uuid,
+            image = userProfile?.image,
+            name = userProfile?.name,
             token = null,
         )
     }
