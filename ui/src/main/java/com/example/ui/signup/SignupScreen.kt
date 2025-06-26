@@ -35,8 +35,8 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.Footer
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.templates.ScreenTemplate
+import com.example.ui.home.navigateToHome
 import com.example.ui.login.navigateToLogin
-import com.example.ui.otp.navigateToOtp
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -58,9 +58,7 @@ fun SignupScreen(
                     popUpTo(navController.graph.startDestinationId) { inclusive = true }
                 }
 
-                SignupEffects.NavigateToOtp -> navController.navigateToOtp {
-                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                }
+                SignupEffects.NavigateToHome -> navController.navigateToHome()
             }
         }
     }

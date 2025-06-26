@@ -47,7 +47,7 @@ class SignupViewModel @Inject constructor(
                     bestBarterSpot = state.value.data.bestBarterSpot,
                 )
             },
-            onSuccess = { navigateToOtp() },
+            onSuccess = { navigateToHome() },
             onError = ::onSignupFail
         )
     }
@@ -56,8 +56,8 @@ class SignupViewModel @Inject constructor(
         sendUiEffect(SignupEffects.NavigateToLogin)
     }
 
-    private fun navigateToOtp() {
-        sendUiEffect(SignupEffects.NavigateToOtp)
+    private fun navigateToHome() {
+        sendUiEffect(SignupEffects.NavigateToHome)
     }
 
     private fun onSignupFail(throwable: Throwable) {
