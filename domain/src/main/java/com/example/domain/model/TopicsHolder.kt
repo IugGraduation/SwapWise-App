@@ -11,7 +11,7 @@ data class TopicsHolder(
 
 
 fun TopicDto.toTopicsHolder(): TopicsHolder {
-    val items = topicItemsDto?.map { topicItemDto ->
+    val items = topicItemDtos?.map { topicItemDto ->
         if (title == "Categories") {
             CategoryItem.fromTopicItemDto(topicItemDto)
         } else {

@@ -8,7 +8,7 @@ data class Home(
 )
 
 fun HomeDto.toHome(): Home {
-    val topicsList = topicsData?.map { topicDto ->
+    val topicsList = topicDtos?.map { topicDto ->
         topicDto.toTopicsHolder()
     }
     val user = userDto.toUser()

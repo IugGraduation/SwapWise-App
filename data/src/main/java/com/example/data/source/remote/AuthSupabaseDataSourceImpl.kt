@@ -11,17 +11,17 @@ import io.github.jan.supabase.auth.providers.builtin.Phone
 import javax.inject.Inject
 
 class AuthSupabaseDataSourceImpl @Inject constructor(
-    private val supabaseClient: SupabaseClient,
+    private val supabase: SupabaseClient,
     private val profileRemoteDataSource: ProfileRemoteDataSource
 ) :
     AuthRemoteDataSource {
     override suspend fun signup(body: SignupRequest): AuthDto {
-        supabaseClient.auth.signUpWith(Phone) {
+        supabase.auth.signUpWith(Phone) {
             phone = body.phone
             password = body.password
         }
 
-        val user = supabaseClient.auth.currentUserOrNull()
+        val user = supabase.auth.currentUserOrNull()
         Log.e("TAG", "signup: user id: ${user?.id}")
 
         return AuthDto(
@@ -31,12 +31,12 @@ class AuthSupabaseDataSourceImpl @Inject constructor(
     }
 
     override suspend fun login(body: LoginRequest): AuthDto {
-        supabaseClient.auth.signInWith(Phone) {
+        supabase.auth.signInWith(Phone) {
             phone = body.phone
             password = body.password
         }
 
-        val user = supabaseClient.auth.currentUserOrNull()
+        val user = supabase.auth.currentUserOrNull()
 
         Log.e("TAG", "login: user id: ${user?.id}")
         val userProfile = profileRemoteDataSource.getCurrentUserDataById(user?.id.orEmpty())

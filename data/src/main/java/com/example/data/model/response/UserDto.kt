@@ -1,7 +1,12 @@
 package com.example.data.model.response
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class UserDto(
-    val image: String? = null,
+    @SerialName("image")
+    val imageUrl: String? = null,
+    @SerialName("name")
     val name: String? = null,
-    val welcome: String? = null,
 )

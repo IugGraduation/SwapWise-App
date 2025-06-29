@@ -1,7 +1,12 @@
 package com.example.data.model.response
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class TopicItemDto(
-    val uuid: String? = null,
+    @SerialName("id")
+    val id: String? = null,
     val categoryImage: String? = null,
     val numOffers: Int? = null,
     val categoryName: String? = null,

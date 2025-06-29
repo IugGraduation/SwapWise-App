@@ -11,7 +11,7 @@ class SeeAllTopicsUseCase @Inject constructor(private val homeRepository: HomeRe
         return TopicDto(
                 url = url,
                 title = title,
-                topicItemsDto = homeRepository.seeAll(url)
+                topicItemDtos = homeRepository.seeAll(url)
         ).toTopicsHolder()
     }
 }

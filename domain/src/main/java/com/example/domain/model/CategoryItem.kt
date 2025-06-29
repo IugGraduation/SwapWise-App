@@ -12,7 +12,7 @@ data class CategoryItem(
     companion object {
         fun fromTopicItemDto(topicItemDto: TopicItemDto): CategoryItem {
             return CategoryItem(
-                uuid = topicItemDto.uuid ?: "",
+                uuid = topicItemDto.id ?: "",
                 title = topicItemDto.categoryName ?: "",
                 imageLink = topicItemDto.categoryImage ?: "",
             )

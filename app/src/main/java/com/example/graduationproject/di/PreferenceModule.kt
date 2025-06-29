@@ -33,5 +33,5 @@ object PreferenceModule {
     @Singleton
     fun provideDataStoreFileName(): String = "AppPrefStorage"
 
-    private const val DATASTORE_FILE_NAME = "swipWiseDataStore"
+    private const val DATASTORE_FILE_NAME = "swapWiseDataStore"
 }

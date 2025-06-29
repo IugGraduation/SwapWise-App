@@ -10,7 +10,7 @@ class GetPostsFromCategoryUseCase @Inject constructor(private val homeRepository
     suspend operator fun invoke(categoryId: String, title: String): TopicsHolder {
         return TopicDto(
             title = title,
-            topicItemsDto = homeRepository.getPostsFromCategory(categoryId)
+            topicItemDtos = homeRepository.getPostsFromCategory(categoryId)
         ).toTopicsHolder()
     }
 }

@@ -18,7 +18,7 @@ data class User(
 fun UserDto?.toUser(): User {
     return User(
         name = this?.name.toString(),
-        imageLink = this?.image.toString(),
+        imageLink = this?.imageUrl.toString(),
     )
 }
 

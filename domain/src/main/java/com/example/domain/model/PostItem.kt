@@ -27,7 +27,7 @@ data class PostItem(
     companion object {
         fun fromTopicItemDto(topicItemDto: TopicItemDto): PostItem {
             return PostItem(
-                uuid = topicItemDto.uuid ?: "",
+                uuid = topicItemDto.id ?: "",
                 user = User(
                     uuid = topicItemDto.userUuid ?: "",
                     name = topicItemDto.userName ?: "",
@@ -44,17 +44,17 @@ data class PostItem(
         fun fromPostItemDto(postItemDto: PostItemDto): PostItem {
             val image = postItemDto.postImages?.get(0) ?: PostImageDto()
             return PostItem(
-                uuid = postItemDto.uuid ?: "",
+                uuid = postItemDto.id ?: "",
                 user = User(
-                    uuid = postItemDto.userUuid ?: "",
+                    uuid = postItemDto.userId ?: "",
                     name = postItemDto.userName ?: "",
                     imageLink = postItemDto.userImage ?: "",
                 ),
                 imageId =image.uuid ?: "",
                 imageLink =image.attachment ?: "",
-                title = postItemDto.postName ?: "",
+                title = postItemDto.name ?: "",
                 isOpen = postItemDto.status == "Active",
-                details = postItemDto.postDetails ?: "",
+                details = postItemDto.details ?: "",
                 place = postItemDto.place ?: "",
                 categoryItem = CategoryItem.fromCategoryItemDto(postItemDto.category ?: CategoryItemDto()),
                 date = postItemDto.date ?: "",
