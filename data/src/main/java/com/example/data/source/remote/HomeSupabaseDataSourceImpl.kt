@@ -12,7 +12,7 @@ import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
 import javax.inject.Inject
 
-class HomeSupabaseDataSource @Inject constructor(
+class HomeSupabaseDataSourceImpl @Inject constructor(
     private val supabase: SupabaseClient,
     ) : HomeRemoteDataSource{
     override suspend fun getHomeDto(): HomeDto? {

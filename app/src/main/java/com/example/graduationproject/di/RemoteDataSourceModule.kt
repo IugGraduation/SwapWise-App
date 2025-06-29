@@ -3,6 +3,7 @@ package com.example.graduationproject.di
 import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.AuthSupabaseDataSourceImpl
 import com.example.data.source.remote.HomeRemoteDataSource
+import com.example.data.source.remote.HomeSupabaseDataSourceImpl
 import com.example.data.source.remote.MockDataSourceImpl
 import com.example.data.source.remote.NotificationsRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
@@ -33,7 +34,7 @@ abstract class RemoteDataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun provideHomeRemoteDataSource(mockDataSourceImpl: MockDataSourceImpl): HomeRemoteDataSource
+    abstract fun provideHomeRemoteDataSource(homeSupabaseDataSourceImpl: HomeSupabaseDataSourceImpl): HomeRemoteDataSource
 
     @Binds
     @Singleton
@@ -46,5 +47,6 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun provideNotificationsRemoteDataSource(mockDataSourceImpl: MockDataSourceImpl): NotificationsRemoteDataSource
+
 
 }
