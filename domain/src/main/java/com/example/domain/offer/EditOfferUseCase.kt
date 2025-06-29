@@ -13,7 +13,7 @@ class EditOfferUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(imageRequestBody: RequestBody?, offerItem: OfferItem) {
         validateOfferUseCase(
-            title = offerItem.title,
+            title = offerItem.name,
             place = offerItem.place,
             details = offerItem.details
         )

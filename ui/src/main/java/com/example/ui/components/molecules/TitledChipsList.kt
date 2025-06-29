@@ -74,7 +74,7 @@ private fun SwapWiseChip(chip: ChipUiState, modifier: Modifier = Modifier) {
         color = backgroundColor,
     ) {
         Text(
-            chip.categoryItem.title,
+            chip.categoryItem.name,
             style = TextStyles.hint,
             color = textColor,
             modifier = Modifier.padding(horizontal = Spacing16, vertical = Spacing8)

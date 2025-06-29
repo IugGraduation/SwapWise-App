@@ -79,7 +79,7 @@ fun AddPostContent(
         baseUiState = state.baseUiState,
     ) {
         ProductImage(
-            state.data.postItem.imageLink,
+            state.data.postItem.imageUrl,
             onImagePicked = addInteractions::onSelectedImageChange
         )
         Column(
@@ -98,7 +98,7 @@ fun AddPostContent(
             val focusManager = LocalFocusManager.current
 
             SwapWiseTextField(
-                value = state.data.postItem.title,
+                value = state.data.postItem.name,
                 onValueChange = addInteractions::onTitleChange,
                 placeholder = stringResource(R.string.post_title),
                 leadingIcon = {
@@ -168,7 +168,7 @@ fun AddPostContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
-                val imageByteArray = state.data.postItem.imageLink.toByteArray()
+                val imageByteArray = state.data.postItem.imageUrl.toByteArray()
                 SwapWiseFilledButton(
                     onClick = { addInteractions.onClickAdd(imageByteArray) },
                     text = stringResource(R.string.post),
@@ -193,7 +193,7 @@ fun PreviewPostDetailsContent() {
                         ChipUiState(categoryItem = it)
                 },
                 postItem = PostItem(
-                    categoryItem = CategoryItem(title = "Category")
+                    categoryItem = CategoryItem(name = "Category")
                 )
                 )
             ),

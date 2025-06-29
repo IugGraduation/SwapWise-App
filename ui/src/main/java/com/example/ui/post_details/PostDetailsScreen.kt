@@ -89,7 +89,7 @@ fun PostDetailsScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is PostDetailsEffects.NavigateToAddOffer -> {
-                    navController.navigateToAddOffer(state.data.postItem.uuid)
+                    navController.navigateToAddOffer(state.data.postItem.id)
                 }
 
                 is PostDetailsEffects.NavigateToOfferDetails -> {
@@ -133,14 +133,14 @@ fun PostDetailsContent(
         },
         actions = {
             AnimatedVisibility(state.data.showEditPostButton) {
-                EditIconButton { postDetailsInteractions.navigateToEditPost(state.data.postItem.uuid) }
+                EditIconButton { postDetailsInteractions.navigateToEditPost(state.data.postItem.id) }
             }
         },
         baseUiState = state.baseUiState,
     ) {
         LazyColumn {
             item {
-                ProductImage(state.data.postItem.imageLink)
+                ProductImage(state.data.postItem.imageUrl)
                 VerticalSpacer(Spacing16)
                 DetailsScreenUserHeader(
                     user = state.data.postItem.user,
@@ -153,7 +153,7 @@ fun PostDetailsContent(
                     isOpen = state.data.postItem.isOpen
                 )
                 VerticalSpacer(Spacing24)
-                DetailsScreenBody(state.data.postItem.title, state.data.postItem.details)
+                DetailsScreenBody(state.data.postItem.name, state.data.postItem.details)
                 VerticalSpacer(Spacing24)
                 TitledChipsList(
                     title = stringResource(R.string.favorite_categories),
@@ -192,10 +192,10 @@ fun PostDetailsContent(
                             PostCard(
                                 username = offerItem.user.name,
                                 userImage = rememberAsyncImagePainter(offerItem.user.imageLink),
-                                title = offerItem.title,
+                                title = offerItem.name,
                                 isPostCard = false,
                                 details = offerItem.details,
-                                postImage = rememberAsyncImagePainter(offerItem.imageLink),
+                                postImage = rememberAsyncImagePainter(offerItem.imageUrl),
                                 onCardClick = {
                                     postDetailsInteractions.navigateToOfferDetails(offerItem)
                                 }

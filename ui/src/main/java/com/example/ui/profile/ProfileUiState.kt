@@ -73,12 +73,12 @@ fun User.toProfileUiState(): ProfileUiState {
 
 fun PostItem.toPostItemUIState(): PostItemUiState {
     return PostItemUiState(
-        id = this.uuid,
+        id = this.id,
         username = this.user.name,
         userImageLink = this.user.imageLink,
-        postImageLink = this.imageLink,
+        postImageLink = this.imageUrl,
         isThePostOpen = this.isOpen,
-        postTitle = this.title,
+        postTitle = this.name,
         postDescription = this.details,
         offersNumber = this.offers.size
     )

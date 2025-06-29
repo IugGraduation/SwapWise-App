@@ -88,7 +88,7 @@ fun EditOfferContent(
         baseUiState = state.baseUiState,
     ) {
         ProductImage(
-            state.data.postItem.imageLink, onImagePicked = editInteractions::onSelectedImageChange
+            state.data.postItem.imageUrl, onImagePicked = editInteractions::onSelectedImageChange
         )
         Column(
             modifier = Modifier
@@ -116,7 +116,7 @@ fun EditOfferContent(
             val focusManager = LocalFocusManager.current
 
             SwapWiseTextField(
-                value = state.data.postItem.title,
+                value = state.data.postItem.name,
                 onValueChange = editInteractions::onTitleChange,
                 placeholder = stringResource(R.string.post_title),
                 leadingIcon = {
@@ -166,7 +166,7 @@ fun EditOfferContent(
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
                     it.selected.value =
-                        it.categoryItem.uuid == state.data.postItem.categoryItem.uuid
+                        it.categoryItem.id == state.data.postItem.categoryItem.id
                 },
             )
             VerticalSpacer(Spacing16)
@@ -186,7 +186,7 @@ fun EditOfferContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
-                val imageByteArray = state.data.postItem.imageLink.toByteArray()
+                val imageByteArray = state.data.postItem.imageUrl.toByteArray()
                 SwapWiseFilledButton(
                     onClick = { editInteractions.onClickSave(imageByteArray) },
                     text = stringResource(R.string.save),

@@ -24,7 +24,7 @@ class GetFakeOfferDetailsUseCase {
                 name = "Cameron Williamson",
                 phone = "1231231231"
             ),
-            title = "10kg of Sugar Up for 10kg of Rice",
+            name = "10kg of Sugar Up for 10kg of Rice",
             details = "Looking for a sweet deal? I have 10 kilograms of high-quality sugar that I’d like to exchange for something useful",
             categoryItem = CategoryItem("Category"),
             date = "11/11/11"

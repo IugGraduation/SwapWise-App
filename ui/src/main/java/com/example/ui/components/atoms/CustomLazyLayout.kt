@@ -83,9 +83,9 @@ private fun getCard(
             if (item is PostItem) {
                 PostCard(
                     userImage = rememberAsyncImagePainter(item.user.imageLink),
-                    postImage = rememberAsyncImagePainter(item.imageLink),
+                    postImage = rememberAsyncImagePainter(item.imageUrl),
                     username = item.user.name,
-                    title = item.title,
+                    title = item.name,
                     details = item.details,
                     isOpen = item.isOpen,
                     offersNumber = item.offers.size.toString(),
@@ -95,9 +95,9 @@ private fun getCard(
             } else if (item is OfferItem) {
                 PostCard(
                     userImage = rememberAsyncImagePainter(item.user.imageLink),
-                    postImage = rememberAsyncImagePainter(item.imageLink),
+                    postImage = rememberAsyncImagePainter(item.imageUrl),
                     username = item.user.name,
-                    title = item.title,
+                    title = item.name,
                     details = item.details,
                     isPostCard = false,
                     isHorizontalCard = isHorizontal,
@@ -124,8 +124,8 @@ fun CategoryCard(
 ) {
     BoxRounded(modifier = modifier, contentAlignment = Alignment.Center) {
         Image(
-            painter = rememberAsyncImagePainter(categoryItem.imageLink),
-            contentDescription = categoryItem.title,
+            painter = rememberAsyncImagePainter(categoryItem.imageUrl),
+            contentDescription = categoryItem.name,
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxWidth(),
         )
@@ -141,7 +141,7 @@ fun CategoryCard(
             true -> TextStyles.smallCustomTitle
             false -> TextStyles.largeCustomTitle
         }
-        CardText(text = categoryItem.title, textStyle = textStyle)
+        CardText(text = categoryItem.name, textStyle = textStyle)
     }
 }
 
@@ -209,6 +209,6 @@ private fun CustomLazyColumn(content: LazyListScope.() -> Unit) {
 @Composable
 private fun PreviewCategoryCard() {
     GraduationProjectTheme {
-        CategoryCard(categoryItem = CategoryItem(title = "Category")) { }
+        CategoryCard(categoryItem = CategoryItem(name = "Category")) { }
     }
 }

@@ -18,11 +18,11 @@ class GetCategoriesUseCase @Inject constructor(
 class GetFakeCategoriesUseCase {
     operator fun invoke(): List<CategoryItem> {
         val categoryItem = CategoryItem(
-            title = "Food and beverages",
+            name = "Food and beverages",
         )
         return listOf(
             categoryItem, categoryItem, categoryItem,
             categoryItem, categoryItem, categoryItem,
-        ).mapIndexed { index, item -> item.copy(title = item.title + " " + index) }
+        ).mapIndexed { index, item -> item.copy(name = item.name + " " + index) }
     }
 }

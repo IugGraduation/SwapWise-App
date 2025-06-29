@@ -1,16 +1,15 @@
 package com.example.domain.model
 
 import com.example.data.model.response.CategoryItemDto
-import com.example.data.model.response.PostImageDto
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.TopicItemDto
 import com.example.data.model.response.profile.ProfilePostItemDto
 
 
 data class PostItem(
-    override val uuid: String = "",
-    override val title: String = "",
-    override val imageLink: String = "",
+    override val id: String = "",
+    override val name: String = "",
+    override val imageUrl: String = "",
 
     val imageId: String = "",
     val user: User = User(),
@@ -27,37 +26,35 @@ data class PostItem(
     companion object {
         fun fromTopicItemDto(topicItemDto: TopicItemDto): PostItem {
             return PostItem(
-                uuid = topicItemDto.id ?: "",
+                id = topicItemDto.id.orEmpty(),
                 user = User(
-                    uuid = topicItemDto.userUuid ?: "",
-                    name = topicItemDto.userName ?: "",
-                    imageLink = topicItemDto.userImage ?: "",
+                    uuid = topicItemDto.userUuid.orEmpty(),
+                    name = topicItemDto.userName.orEmpty(),
+                    imageLink = topicItemDto.userImage.orEmpty(),
                 ),
-                imageLink = topicItemDto.postImage ?: "",
-                title = topicItemDto.postName ?: "",
-                isOpen = topicItemDto.status == "Active",
-                details = topicItemDto.postDetails ?: "",
+                imageUrl = topicItemDto.postImage.orEmpty(),
+                name = topicItemDto.postName.orEmpty(),
+                isOpen = topicItemDto.status == "1",
+                details = topicItemDto.postDetails.orEmpty(),
                 offers = List(topicItemDto.numOffers ?: 0){ OfferItem() },
             )
         }
 
         fun fromPostItemDto(postItemDto: PostItemDto): PostItem {
-            val image = postItemDto.postImages?.get(0) ?: PostImageDto()
             return PostItem(
-                uuid = postItemDto.id ?: "",
+                id = postItemDto.id.orEmpty(),
                 user = User(
-                    uuid = postItemDto.userId ?: "",
-                    name = postItemDto.userName ?: "",
-                    imageLink = postItemDto.userImage ?: "",
+                    uuid = postItemDto.userId.orEmpty(),
+                    name = postItemDto.userName.orEmpty(),
+                    imageLink = postItemDto.userImage.orEmpty(),
                 ),
-                imageId =image.uuid ?: "",
-                imageLink =image.attachment ?: "",
-                title = postItemDto.name ?: "",
-                isOpen = postItemDto.status == "Active",
-                details = postItemDto.details ?: "",
-                place = postItemDto.place ?: "",
+                imageUrl = postItemDto.imageUrl.orEmpty(),
+                name = postItemDto.name.orEmpty(),
+                isOpen = postItemDto.status == "1",
+                details = postItemDto.details.orEmpty(),
+                place = postItemDto.place.orEmpty(),
                 categoryItem = CategoryItem.fromCategoryItemDto(postItemDto.category ?: CategoryItemDto()),
-                date = postItemDto.date ?: "",
+                date = postItemDto.created_at.orEmpty(),
                 favoriteCategoryItems = CategoryItem.fromCategoryItemDtoList(postItemDto.favoriteCategories).toMutableList(),
 //                rate = "",
                 offers = OfferItem.fromOfferItemDtoList(postItemDto.offers),
@@ -68,14 +65,14 @@ data class PostItem(
 
 fun ProfilePostItemDto.toPostItem(): PostItem {
     return PostItem(
-        uuid = this.uuid ?: "",
-        title = this.postName ?: "",
-        imageLink = this.postImage ?: "",
-        imageId = this.postImage ?: "",
+        id = this.uuid.orEmpty(),
+        name = this.postName.orEmpty(),
+        imageUrl = this.postImage.orEmpty(),
+        imageId = this.postImage.orEmpty(),
         user = User(
-            uuid = this.userUuid ?: "",
-            imageLink = this.userImage ?: "",
-            name = this.userName ?: "",
+            uuid = this.userUuid.orEmpty(),
+            imageLink = this.userImage.orEmpty(),
+            name = this.userName.orEmpty(),
             bio = "",
             phone = "",
             place = "",
@@ -84,11 +81,11 @@ fun ProfilePostItemDto.toPostItem(): PostItem {
             imgContentDescription = ""
         ),
         place = "",
-        details = this.postDetails ?: "",
+        details = this.postDetails.orEmpty(),
         categoryItem = CategoryItem(
-            uuid = "",
-            title = "",
-            imageLink = ""
+            id = "",
+            name = "",
+            imageUrl = ""
         ),
         date = "",
         favoriteCategoryItems = mutableListOf(),

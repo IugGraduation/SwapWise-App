@@ -187,9 +187,9 @@ fun HomeContent(
             items(lastTopic.items) { item ->
                 PostCard(
                     userImage = rememberAsyncImagePainter((item as PostItem).user.imageLink),
-                    postImage = rememberAsyncImagePainter(item.imageLink),
+                    postImage = rememberAsyncImagePainter(item.imageUrl),
                     username = item.user.name,
-                    title = item.title,
+                    title = item.name,
                     details = item.details,
                     isOpen = item.isOpen,
                     onCardClick = {

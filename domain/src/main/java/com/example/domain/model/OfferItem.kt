@@ -4,10 +4,10 @@ import com.example.data.model.response.CategoryItemDto
 import com.example.data.model.response.OfferItemDto
 
 data class OfferItem(
-    override val uuid: String = "",
-    override val imageLink: String = "",
+    override val id: String = "",
+    override val imageUrl: String = "",
     val user: User = User(),
-    override val title: String = "",
+    override val name: String = "",
     val details: String = "",
     val place: String = "",
     val categoryItem: CategoryItem = CategoryItem(),
@@ -17,15 +17,15 @@ data class OfferItem(
     companion object {
         fun fromOfferItemDto(offerItemDto: OfferItemDto): OfferItem {
             return OfferItem(
-                uuid = offerItemDto.uuid ?: "",
+                id = offerItemDto.uuid ?: "",
                 user = User(
                     name = offerItemDto.userName ?: "",
                     imageLink = offerItemDto.userImage ?: "",
                     phone = offerItemDto.phone ?: "",
                     uuid = offerItemDto.userUuid ?: "",
                 ),
-                imageLink = offerItemDto.image ?: "",
-                title = offerItemDto.title ?: "",
+                imageUrl = offerItemDto.image ?: "",
+                name = offerItemDto.title ?: "",
                 details = offerItemDto.details ?: "",
                 categoryItem = CategoryItem.fromCategoryItemDto(offerItemDto.category ?: CategoryItemDto()),
 //                place = "",

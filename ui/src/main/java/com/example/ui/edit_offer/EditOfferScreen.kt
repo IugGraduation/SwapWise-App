@@ -76,7 +76,7 @@ fun EditOfferContent(
         baseUiState = state.baseUiState,
     ) {
         ProductImage(
-            state.data.offerItem.imageLink,
+            state.data.offerItem.imageUrl,
             onImagePicked = editInteractions::onSelectedImageChange
         )
         Column(
@@ -95,7 +95,7 @@ fun EditOfferContent(
             val focusManager = LocalFocusManager.current
 
             SwapWiseTextField(
-                value = state.data.offerItem.title,
+                value = state.data.offerItem.name,
                 onValueChange = editInteractions::onTitleChange,
                 placeholder = stringResource(R.string.offer_title),
                 leadingIcon = {
@@ -144,7 +144,7 @@ fun EditOfferContent(
                 textStyle = TextStyles.headingLarge,
                 chipsList = state.data.chipsList.onEach {
                     it.selected.value =
-                        it.categoryItem.uuid == state.data.offerItem.categoryItem.uuid
+                        it.categoryItem.id == state.data.offerItem.categoryItem.id
                 },
             )
 

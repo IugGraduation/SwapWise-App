@@ -63,7 +63,7 @@ class EditPostViewModel @Inject constructor(
             ChipUiState(
                 categoryItem = categoryItems[index],
                 selected = mutableStateOf(
-                    categoryItems[index].uuid == state.value.data.postItem.categoryItem.uuid
+                    categoryItems[index].id == state.value.data.postItem.categoryItem.id
                 ),
                 onClick = ::onCategoryChange
             )
@@ -71,7 +71,7 @@ class EditPostViewModel @Inject constructor(
         }
         val favoriteChipsList = chipsList.map {
             it.copy(
-                categoryItem = it.categoryItem.copy(imageLink = ""),
+                categoryItem = it.categoryItem.copy(imageUrl = ""),
                 selected = mutableStateOf(
                     state.value.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
                 ),
@@ -108,7 +108,7 @@ class EditPostViewModel @Inject constructor(
 
     override fun onTitleChange(title: String) {
         updateFieldError()
-        updatePostItem { copy(title = title) }
+        updatePostItem { copy(name = title) }
     }
 
     override fun onDetailsChange(details: String) {
@@ -126,7 +126,7 @@ class EditPostViewModel @Inject constructor(
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
-        updatePostItem { copy(imageLink = selectedImageUri.toString()) }
+        updatePostItem { copy(imageUrl = selectedImageUri.toString()) }
     }
 
     fun onCategoryChange(categoryItem: CategoryItem) {
@@ -180,7 +180,7 @@ class EditPostViewModel @Inject constructor(
 
     override fun onClickDelete() {
         tryToExecute(
-            call = { deletePostUseCase(state.value.data.postItem.uuid) },
+            call = { deletePostUseCase(state.value.data.postItem.id) },
             onSuccess = { navigateUp() },
         )
     }

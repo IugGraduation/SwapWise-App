@@ -103,7 +103,7 @@ class EditOfferViewModel @Inject constructor(
 
     override fun onTitleChange(title: String) {
         updateFieldError()
-        updateOfferItem { copy(title = title) }
+        updateOfferItem { copy(name = title) }
     }
 
     override fun onDetailsChange(details: String) {
@@ -117,7 +117,7 @@ class EditOfferViewModel @Inject constructor(
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
-        updateOfferItem { copy(imageLink = selectedImageUri.toString()) }
+        updateOfferItem { copy(imageUrl = selectedImageUri.toString()) }
     }
 
     fun onCategoryChange(categoryItem: CategoryItem) {
@@ -130,7 +130,7 @@ class EditOfferViewModel @Inject constructor(
         tryToExecute(
             call = {
                 editOfferUseCase(
-                    getImageRequestBodyUseCase(state.value.data.offerItem.imageLink.toUri(), true),
+                    getImageRequestBodyUseCase(state.value.data.offerItem.imageUrl.toUri(), true),
                     state.value.data.offerItem
                 )
             },
@@ -161,7 +161,7 @@ class EditOfferViewModel @Inject constructor(
 
     override fun onClickDelete() {
         tryToExecute(
-            call = { deleteOfferUseCase(state.value.data.offerItem.uuid) },
+            call = { deleteOfferUseCase(state.value.data.offerItem.id) },
             onSuccess = { navigateUp() },
         )
     }

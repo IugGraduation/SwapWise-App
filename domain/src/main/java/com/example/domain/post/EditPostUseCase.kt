@@ -12,19 +12,19 @@ class EditPostUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(imageByteArray: ByteArray?, postItem: PostItem) {
         validatePostUseCase(
-            title = postItem.title,
+            title = postItem.name,
             place = postItem.place,
             details = postItem.details
         )
 
         postRepository.updatePost(
             imageByteArray = imageByteArray,
-            name = postItem.title,
+            name = postItem.name,
             place = postItem.place,
             details = postItem.details,
-            categoryId = postItem.categoryItem.uuid,
-            favoriteCategoryIds = postItem.favoriteCategoryItems.map(CategoryItem::uuid),
-            postId = postItem.uuid,
+            categoryId = postItem.categoryItem.id,
+            favoriteCategoryIds = postItem.favoriteCategoryItems.map(CategoryItem::id),
+            postId = postItem.id,
             status = if (postItem.isOpen) "1" else "0"
         )
     }

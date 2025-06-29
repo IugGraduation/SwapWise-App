@@ -1,7 +1,6 @@
 package com.example.data.source.remote
 
 import com.example.data.model.response.HomeDto
-import com.example.data.model.response.PostImageDto
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.TopicDto
 import com.example.data.model.response.TopicItemDto
@@ -10,7 +9,6 @@ import com.example.data.util.Constants
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Columns
 import javax.inject.Inject
 
@@ -18,14 +16,20 @@ class HomeSupabaseDataSource @Inject constructor(
     private val supabase: SupabaseClient,
     ) : HomeRemoteDataSource{
     override suspend fun getHomeDto(): HomeDto? {
-        val categories = supabase.from(Constants.Supabase.categories).select().decodeList<TopicItemDto>()
+        val categories = supabase.from(Constants.Supabase.categories).select(
+            Columns.list(
+                Constants.Supabase.id,
+                Constants.Supabase.name,
+                Constants.Supabase.imageUrl,
+            )
+        ).decodeList<PostItemDto>()
         val categoriesTopicDto = TopicDto(
             topicItemDtos = categories,
             title = "Categories",
         )
 
-        val recentPosts = supabase.postgrest.rpc(Constants.Supabase.getRecentPosts)
-            .decodeList<TopicItemDto>()
+        val recentPosts = supabase.from(Constants.Supabase.detailedPosts).select()
+            .decodeList<PostItemDto>()
         val topInteractiveTopicDto = TopicDto(
             topicItemDtos = recentPosts,
             title = "Top Interactive",

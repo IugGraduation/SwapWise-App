@@ -78,7 +78,7 @@ fun AddOfferContent(
         baseUiState = state.baseUiState,
     ) {
         ProductImage(
-            state.data.offerItem.imageLink,
+            state.data.offerItem.imageUrl,
             onImagePicked = addInteractions::onSelectedImageChange
         )
         val scrollState = rememberScrollState()
@@ -98,7 +98,7 @@ fun AddOfferContent(
             val focusManager = LocalFocusManager.current
 
             SwapWiseTextField(
-                value = state.data.offerItem.title,
+                value = state.data.offerItem.name,
                 onValueChange = addInteractions::onTitleChange,
                 placeholder = stringResource(R.string.offer_title),
                 leadingIcon = {

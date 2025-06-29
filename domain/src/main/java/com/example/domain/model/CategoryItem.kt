@@ -1,27 +1,36 @@
 package com.example.domain.model
 
 import com.example.data.model.response.CategoryItemDto
+import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.TopicItemDto
 
 data class CategoryItem(
-    override val uuid: String = "",
-    override val title: String = "",
-    override val imageLink: String = "",
+    override val id: String = "",
+    override val name: String = "",
+    override val imageUrl: String = "",
 
-) : TopicItem() {
+    ) : TopicItem() {
     companion object {
         fun fromTopicItemDto(topicItemDto: TopicItemDto): CategoryItem {
             return CategoryItem(
-                uuid = topicItemDto.id ?: "",
-                title = topicItemDto.categoryName ?: "",
-                imageLink = topicItemDto.categoryImage ?: "",
+                id = topicItemDto.id ?: "",
+                name = topicItemDto.categoryName ?: "",
+                imageUrl = topicItemDto.categoryImage ?: "",
+            )
+        }
+
+        fun fromPostItemDto(postItemDto: PostItemDto): CategoryItem {
+            return CategoryItem(
+                id = postItemDto.id ?: "",
+                name = postItemDto.name ?: "",
+                imageUrl = postItemDto.imageUrl ?: "",
             )
         }
 
         fun fromCategoryItemDto(categoryItemDto: CategoryItemDto): CategoryItem {
             return CategoryItem(
-                uuid = categoryItemDto.categoryUuid ?: "",
-                title = categoryItemDto.categoryName ?: "",
+                id = categoryItemDto.categoryUuid ?: "",
+                name = categoryItemDto.categoryName ?: "",
             )
         }
 

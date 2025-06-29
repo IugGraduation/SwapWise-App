@@ -89,7 +89,7 @@ class AddOfferViewModel @Inject constructor(
 
     override fun onTitleChange(title: String) {
         updateFieldError()
-        updatePostItem { copy(title = title) }
+        updatePostItem { copy(name = title) }
     }
 
     override fun onDetailsChange(details: String) {
@@ -103,7 +103,7 @@ class AddOfferViewModel @Inject constructor(
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
-        updatePostItem { copy(imageLink = selectedImageUri.toString()) }
+        updatePostItem { copy(imageUrl = selectedImageUri.toString()) }
     }
 
     fun onCategoryChange(categoryItem: CategoryItem) {
@@ -116,7 +116,7 @@ class AddOfferViewModel @Inject constructor(
         tryToExecute(
             call = {
                 addOfferUseCase(
-                    getImageRequestBodyUseCase(state.value.data.offerItem.imageLink.toUri())!!,
+                    getImageRequestBodyUseCase(state.value.data.offerItem.imageUrl.toUri())!!,
                     args.postId,
                     state.value.data.offerItem
                 )

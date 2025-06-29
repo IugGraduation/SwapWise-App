@@ -37,7 +37,7 @@ class AddPostViewModel @Inject constructor(
 
 
     init {
-        updatePostItem { copy(title = args.postTitle) }
+        updatePostItem { copy(name = args.postTitle) }
         prepareChipsList()
     }
 
@@ -92,7 +92,7 @@ class AddPostViewModel @Inject constructor(
 
     override fun onTitleChange(title: String) {
         updateFieldError()
-        updatePostItem { copy(title = title) }
+        updatePostItem { copy(name = title) }
     }
 
     override fun onDetailsChange(details: String) {
@@ -106,7 +106,7 @@ class AddPostViewModel @Inject constructor(
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
-        updatePostItem { copy(imageLink = selectedImageUri.toString()) }
+        updatePostItem { copy(imageUrl = selectedImageUri.toString()) }
     }
 
     fun onCategoryChange(categoryItem: CategoryItem) {

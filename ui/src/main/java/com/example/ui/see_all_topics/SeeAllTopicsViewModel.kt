@@ -45,16 +45,16 @@ class SeeAllTopicsViewModel @Inject constructor(
     override fun onClickGoToDetails(topicItem: TopicItem) {
         if (topicItem is CategoryItem) {
             tryToExecute(
-                call = { getPostsFromCategoryUseCase(topicItem.uuid, topicItem.title) },
+                call = { getPostsFromCategoryUseCase(topicItem.id, topicItem.name) },
                 onSuccess = {
                     sendUiEffect(
-                        SeeAllTopicsEffects.NavigateSeeAllTopics(topicItem.uuid, topicItem.title)
+                        SeeAllTopicsEffects.NavigateSeeAllTopics(topicItem.id, topicItem.name)
                     )
                 },
             )
 
         } else if (topicItem is PostItem) {
-            sendUiEffect(SeeAllTopicsEffects.NavigateToPostDetails(topicItem.uuid))
+            sendUiEffect(SeeAllTopicsEffects.NavigateToPostDetails(topicItem.id))
         }
     }
 

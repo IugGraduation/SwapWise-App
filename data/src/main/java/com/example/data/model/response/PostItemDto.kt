@@ -11,20 +11,19 @@ data class PostItemDto(
     val details: String? = null,
     @SerialName("is_active")
     val status: String? = null,
-    @SerialName("user_id")
-    val userId: String? = null,
-    @SerialName("location")
+    @SerialName("place")
     val place: String? = null,
     @SerialName("created_at")
-    val date: String? = null,
-
-    //needs work
-    val postImages: List<PostImageDto?>? = null,
+    val created_at: String? = null,
+    @SerialName("image_url")
+    val imageUrl: String? = null,
+    @SerialName("category")
     val category: CategoryItemDto? = null,
+    @SerialName("favorite_categories")
     val favoriteCategories: List<CategoryItemDto?>? = null,
+    @SerialName("user")
+    val user: UserDto? = null,
 
-    val userImage: String? = null,
-    val userName: String? = null,
 
     //todo: delete later
     val numOffers: Int? = null,

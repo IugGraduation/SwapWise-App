@@ -12,18 +12,18 @@ class AddPostUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(imageByteArray: ByteArray, postItem: PostItem) {
         validatePostUseCase(
-            title = postItem.title,
+            title = postItem.name,
             place = postItem.place,
             details = postItem.details
         )
 
         postRepository.addPost(
             imageByteArray = imageByteArray,
-            name = postItem.title,
+            name = postItem.name,
             place = postItem.place,
             details = postItem.details,
-            categoryId = postItem.categoryItem.uuid,
-            favoriteCategoryIds = postItem.favoriteCategoryItems.map(CategoryItem::uuid)
+            categoryId = postItem.categoryItem.id,
+            favoriteCategoryIds = postItem.favoriteCategoryItems.map(CategoryItem::id)
         )
     }
 

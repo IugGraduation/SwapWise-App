@@ -32,8 +32,8 @@ class PostDetailsViewModel @Inject constructor(
         tryToExecute(
             call = { getPostDetailsUseCase(args.postId) },
             onSuccess = ::onGetPostDetailsSuccess,
-            shouldLoad = _state.value.data.postItem.uuid.isBlank(),
-            shouldHideContent = _state.value.data.postItem.uuid.isBlank(),
+            shouldLoad = _state.value.data.postItem.id.isBlank(),
+            shouldHideContent = _state.value.data.postItem.id.isBlank(),
         )
     }
 
@@ -59,9 +59,9 @@ class PostDetailsViewModel @Inject constructor(
             call = { getAuthUseCase().userId },
             onSuccess = { currentUserId ->
                 if (currentUserId == state.value.data.postItem.user.uuid) {
-                    sendUiEffect(PostDetailsEffects.NavigateToOfferDetails(offerItem.uuid))
+                    sendUiEffect(PostDetailsEffects.NavigateToOfferDetails(offerItem.id))
                 } else if (currentUserId == offerItem.user.uuid) {
-                    sendUiEffect(PostDetailsEffects.NavigateToEditOffer(offerItem.uuid))
+                    sendUiEffect(PostDetailsEffects.NavigateToEditOffer(offerItem.id))
                 }
             },
         )

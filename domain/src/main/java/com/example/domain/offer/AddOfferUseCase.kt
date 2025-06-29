@@ -17,7 +17,7 @@ class AddOfferUseCase @Inject constructor(
         offerItem: OfferItem
     ) {
         validateOfferUseCase(
-            title = offerItem.title,
+            title = offerItem.name,
             place = offerItem.place,
             details = offerItem.details
         )

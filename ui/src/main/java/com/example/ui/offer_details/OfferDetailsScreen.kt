@@ -109,14 +109,14 @@ fun OfferDetailsContent(
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
         ) {
-            ProductImage(state.data.offerItem.imageLink)
+            ProductImage(state.data.offerItem.imageUrl)
             VerticalSpacer(Spacing16)
             DetailsScreenUserHeader(
                 user = state.data.offerItem.user,
                 date = state.data.offerItem.date
             )
             VerticalSpacer(Spacing24)
-            DetailsScreenBody(state.data.offerItem.title, state.data.offerItem.details)
+            DetailsScreenBody(state.data.offerItem.name, state.data.offerItem.details)
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.category_of_the_offer),
