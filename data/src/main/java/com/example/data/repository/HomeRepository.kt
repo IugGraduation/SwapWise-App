@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.example.data.model.response.TopicItemDto
+import com.example.data.model.response.PostItemDto
 import com.example.data.source.remote.HomeRemoteDataSource
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -20,7 +20,7 @@ class HomeRepository(
     suspend fun getPostsFromCategory(categoryId: String) =
         homeRemoteDataSource.getPostsFromCategory(categoryId)
 
-    suspend fun getCategories(): List<TopicItemDto>? {
+    suspend fun getCategories(): List<PostItemDto>? {
         if (checkIsCategoriesStored()) {
             return getCategoriesFromDataStore()
         } else {
@@ -37,14 +37,14 @@ class HomeRepository(
         }.first()
     }
 
-    private suspend fun saveCategoriesToDataStore(topics: List<TopicItemDto>) {
+    private suspend fun saveCategoriesToDataStore(topics: List<PostItemDto>) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.topics] = TODO()
             //   Gson().toJson(topics, object : TypeToken<List<TopicItemDto>>() {}.type)
         }
     }
 
-    suspend fun getCategoriesFromDataStore(): List<TopicItemDto> {
+    suspend fun getCategoriesFromDataStore(): List<PostItemDto> {
 //        return dataStore.data.map { preferences ->
 //            try {
 //                Gson().fromJson<List<TopicItemDto>>(

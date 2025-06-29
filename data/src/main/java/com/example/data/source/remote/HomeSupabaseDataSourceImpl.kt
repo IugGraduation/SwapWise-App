@@ -3,7 +3,6 @@ package com.example.data.source.remote
 import com.example.data.model.response.HomeDto
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.TopicDto
-import com.example.data.model.response.TopicItemDto
 import com.example.data.model.response.UserDto
 import com.example.data.util.Constants
 import io.github.jan.supabase.SupabaseClient
@@ -55,11 +54,11 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun seeAll(type: String): List<TopicItemDto>? {
+    override suspend fun seeAll(type: String): List<PostItemDto>? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPostsFromCategory(categoryId: String): List<TopicItemDto>? {
+    override suspend fun getPostsFromCategory(categoryId: String): List<PostItemDto>? {
         TODO("Not yet implemented")
     }
 

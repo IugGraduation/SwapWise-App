@@ -43,11 +43,7 @@ data class PostItem(
         fun fromPostItemDto(postItemDto: PostItemDto): PostItem {
             return PostItem(
                 id = postItemDto.id.orEmpty(),
-                user = User(
-                    uuid = postItemDto.userId.orEmpty(),
-                    name = postItemDto.userName.orEmpty(),
-                    imageLink = postItemDto.userImage.orEmpty(),
-                ),
+                user = postItemDto.user.toUser(),
                 imageUrl = postItemDto.imageUrl.orEmpty(),
                 name = postItemDto.name.orEmpty(),
                 isOpen = postItemDto.status == "1",
