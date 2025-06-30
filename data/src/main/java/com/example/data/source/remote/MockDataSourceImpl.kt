@@ -14,11 +14,11 @@ class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
         TODO("Not yet implemented")
     }
 
-    override suspend fun seeAll(type: String): List<TopicItemDto>? {
+    override suspend fun seeAll(type: String): List<PostItemDto>? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPostsFromCategory(categoryId: String): List<TopicItemDto>? {
+    override suspend fun getPostsFromCategory(categoryId: String): List<PostItemDto>? {
         TODO("Not yet implemented")
     }
 
