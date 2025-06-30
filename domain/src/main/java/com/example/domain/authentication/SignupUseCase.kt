@@ -29,7 +29,7 @@ class SignupUseCase @Inject constructor(
             name = fullName,
             password = password,
             confirmPassword = confirmPassword,
-            location = bestBarterSpot
+            place = bestBarterSpot
         )
         authRepository.signup(signupRequest)
     }
