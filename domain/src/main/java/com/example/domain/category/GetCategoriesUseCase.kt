@@ -9,7 +9,7 @@ class GetCategoriesUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(): List<CategoryItem> {
         return homeRepository.getCategories()?.map {
-           CategoryItem.fromTopicItemDto(it)
+            CategoryItem.fromPostItemDto(it)
         } ?: listOf()
     }
 }
