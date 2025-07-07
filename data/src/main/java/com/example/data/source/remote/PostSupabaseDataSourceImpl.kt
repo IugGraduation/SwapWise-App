@@ -28,7 +28,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
             imageByteArray = imageByteArray
         )
 
-        val postId = supabase.from(Constants.Supabase.posts).insert(
+        val postId = supabase.from(Constants.Supabase.Tables.posts).insert(
             PostItemRequest(
                 name = name,
                 place = place,

@@ -35,7 +35,7 @@ class AuthSupabaseDataSourceImpl @Inject constructor(
     }
 
     private suspend fun insertUserIntoSupabase(body: SignupRequest) {
-        supabase.from(Constants.Supabase.users).insert(body)
+        supabase.from(Constants.Supabase.Tables.users).insert(body)
     }
 
     override suspend fun login(body: LoginRequest): AuthDto {

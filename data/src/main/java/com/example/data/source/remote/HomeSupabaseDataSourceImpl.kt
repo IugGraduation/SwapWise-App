@@ -15,11 +15,11 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
     private val supabase: SupabaseClient,
     ) : HomeRemoteDataSource{
     override suspend fun getHomeDto(): HomeDto? {
-        val categories = supabase.from(Constants.Supabase.categories).select(
+        val categories = supabase.from(Constants.Supabase.Tables.categories).select(
             Columns.list(
-                Constants.Supabase.id,
-                Constants.Supabase.name,
-                Constants.Supabase.imageUrl,
+                Constants.Supabase.Columns.id,
+                Constants.Supabase.Columns.name,
+                Constants.Supabase.Columns.imageUrl,
             )
         ).decodeList<PostItemDto>()
         val categoriesTopicDto = TopicDto(
@@ -27,7 +27,7 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
             title = "Categories",
         )
 
-        val recentPosts = supabase.from(Constants.Supabase.detailedPosts).select()
+        val recentPosts = supabase.from(Constants.Supabase.Tables.detailedPosts).select()
             .decodeList<PostItemDto>()
         //todo: write top interactive code
         val topInteractiveTopicDto = TopicDto(
@@ -39,7 +39,7 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
             title = "Recent Posts",
         )
 
-        val user = supabase.from(Constants.Supabase.users)
+        val user = supabase.from(Constants.Supabase.Tables.users)
             .select(
                 columns = Columns.list(UserDto::name.name, UserDto::imageUrl.name)
             ) {
