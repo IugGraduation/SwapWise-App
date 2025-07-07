@@ -87,6 +87,7 @@ dependencies {
     implementation(libs.postgrest.kt)
     implementation(libs.auth.kt)
     implementation(libs.ktor.client.android)
+    implementation(libs.storage.kt)
 
     // fix for Time.Instant not found, for Supabase
     coreLibraryDesugaring(libs.desugar.jdk.libs)
