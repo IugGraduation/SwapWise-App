@@ -14,7 +14,7 @@ object Constants {
         object Columns {
             const val id = "id"
             const val name = "name"
-            const val imageUrl = "imageUrl" //todo: check if imageUrl or image_url
+            const val imageUrl = "image_url"
         }
 
         object Buckets {
