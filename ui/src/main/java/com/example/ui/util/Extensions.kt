@@ -1,20 +1,18 @@
 package com.example.ui.util
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import android.content.Context
 import androidx.core.net.toUri
 import com.example.domain.exception.EmptyImageException
 
 fun String.Companion.empty() = ""
 
-@Composable
-fun String.toByteArray(): ByteArray? {
+fun String.toByteArray(context: Context): ByteArray? {
     this.toUri().apply {
         if (scheme == "http" || scheme == "https") {
             return null
         }
 
-        val contentResolver = LocalContext.current.contentResolver
+        val contentResolver = context.contentResolver
         val inputStream = contentResolver.openInputStream(this)
         return inputStream?.readBytes()
     }

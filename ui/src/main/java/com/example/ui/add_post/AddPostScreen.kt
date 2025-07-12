@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -168,9 +169,12 @@ fun AddPostContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
-                val imageByteArray = state.data.postItem.imageUrl.toByteArray()
+                val context = LocalContext.current
                 SwapWiseFilledButton(
-                    onClick = { addInteractions.onClickAdd(imageByteArray) },
+                    onClick = {
+                        val imageByteArray = state.data.postItem.imageUrl.toByteArray(context)
+                        addInteractions.onClickAdd(imageByteArray)
+                    },
                     text = stringResource(R.string.post),
                     modifier = Modifier.padding(horizontal = Spacing16)
                 )

@@ -331,9 +331,13 @@ private fun UserInformationSection(
             ) {
                 VerticalSpacer(Spacing8)
                 //todo: check if image is being saved correctly in state when clicking save. do same check at post add,edit
-                val imageByteArray = state.profileInformationUiState.imageUri.toByteArray()
+                val context = LocalContext.current
                 SwapWiseFilledButton(
-                    onClick = { profileInteraction.onSaveButtonClicked(imageByteArray) },
+                    onClick = {
+                        val imageByteArray =
+                            state.profileInformationUiState.imageUri.toByteArray(context)
+                        profileInteraction.onSaveButtonClicked(imageByteArray)
+                    },
                     text = stringResource(R.string.save)
                 )
 

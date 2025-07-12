@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -186,9 +187,12 @@ fun EditOfferContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
-                val imageByteArray = state.data.postItem.imageUrl.toByteArray()
+                val context = LocalContext.current
                 SwapWiseFilledButton(
-                    onClick = { editInteractions.onClickSave(imageByteArray) },
+                    onClick = {
+                        val imageByteArray = state.data.postItem.imageUrl.toByteArray(context)
+                        editInteractions.onClickSave(imageByteArray)
+                    },
                     text = stringResource(R.string.save),
                 )
                 VerticalSpacer(Spacing8)
