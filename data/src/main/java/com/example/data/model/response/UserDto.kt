@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserDto(
-    @SerialName("image")
+    @SerialName("image_url")
     val imageUrl: String? = null,
     @SerialName("name")
     val name: String? = null,
