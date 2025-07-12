@@ -1,5 +1,8 @@
 package com.example.data.model.response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class OfferItemDto(
     val category: CategoryItemDto? = null,
     val details: String? = null,
