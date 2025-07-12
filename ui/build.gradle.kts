@@ -27,6 +27,8 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -83,5 +85,8 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
     implementation (libs.androidx.foundation)
     implementation (libs.ui)
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
 
 }
