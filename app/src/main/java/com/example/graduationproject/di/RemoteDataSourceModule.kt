@@ -8,6 +8,7 @@ import com.example.data.source.remote.MockDataSourceImpl
 import com.example.data.source.remote.NotificationsRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
+import com.example.data.source.remote.PostSupabaseDataSourceImpl
 import com.example.data.source.remote.ProfileRemoteDataSource
 import com.example.data.source.remote.ProfileSupabaseDataSourceImpl
 import com.example.data.source.remote.SearchRemoteDataSource
@@ -30,7 +31,7 @@ abstract class RemoteDataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun providePostRemoteDataSource(mockDataSourceImpl: MockDataSourceImpl): PostRemoteDataSource
+    abstract fun providePostRemoteDataSource(postSupabaseDataSourceImpl: PostSupabaseDataSourceImpl): PostRemoteDataSource
 
     @Binds
     @Singleton
