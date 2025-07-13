@@ -17,7 +17,7 @@ object SupabaseModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(): SupabaseClient {
+    fun provideSupabase(): SupabaseClient {
         val supabase = createSupabaseClient(
             supabaseUrl = "https://jlmqsobipfiihvynwpfh.supabase.co",
             supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpsbXFzb2JpcGZpaWh2eW53cGZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4MTcwNjcsImV4cCI6MjA2NTM5MzA2N30.XP3MY1nHaM943MAxdR2K1HMCu0upPzBrjySfuyXyhes"
