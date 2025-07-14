@@ -5,10 +5,17 @@ object Constants {
 
     object Supabase {
         object Tables {
-            const val categories = "categories"
             const val users = "users"
             const val posts = "posts"
-            const val detailedPosts = "detailed_posts"
+        }
+
+        object Functions {
+            const val getCategories = "get_categories"
+            const val getDetailedPosts = "get_detailed_posts"
+        }
+
+        object Parameters {
+            const val languageCode = "language_code"
         }
 
         object Columns {

@@ -50,10 +50,10 @@ data class PostItem(
                 details = postItemDto.details.orEmpty(),
                 place = postItemDto.place.orEmpty(),
                 categoryItem = CategoryItem.fromCategoryItemDto(postItemDto.category ?: CategoryItemDto()),
-                date = postItemDto.created_at.orEmpty(),
+                date = postItemDto.createdAt.orEmpty(),
                 favoriteCategoryItems = CategoryItem.fromCategoryItemDtoList(postItemDto.favoriteCategories).toMutableList(),
 //                rate = "",
-                offers = OfferItem.fromOfferItemDtoList(postItemDto.offers),
+//                offers = OfferItem.fromOfferItemDtoList(postItemDto.offers),
             )
         }
     }

@@ -8,27 +8,36 @@ import com.example.data.util.Constants
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Columns
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.encodeToJsonElement
 import javax.inject.Inject
 
 class HomeSupabaseDataSourceImpl @Inject constructor(
     private val supabase: SupabaseClient,
     ) : HomeRemoteDataSource{
     override suspend fun getHomeDto(): HomeDto? {
-        val categories = supabase.from(Constants.Supabase.Tables.categories).select(
-            Columns.list(
-                Constants.Supabase.Columns.id,
-                Constants.Supabase.Columns.name,
-                Constants.Supabase.Columns.imageUrl,
-            )
+        val categories = supabase.postgrest.rpc(
+            function = Constants.Supabase.Functions.getCategories,
+            parameters = Json.encodeToJsonElement(
+                mapOf(Constants.Supabase.Parameters.languageCode to "en")
+            ) as JsonObject
         ).decodeList<PostItemDto>()
+
+        val recentPosts = supabase.postgrest.rpc(
+            function = Constants.Supabase.Functions.getDetailedPosts,
+            parameters = Json.encodeToJsonElement(
+                mapOf(Constants.Supabase.Parameters.languageCode to "en")
+            ) as JsonObject
+        ).decodeList<PostItemDto>()
+
         val categoriesTopicDto = TopicDto(
             topicItemDtos = categories,
             title = "Categories",
         )
 
-        val recentPosts = supabase.from(Constants.Supabase.Tables.detailedPosts).select()
-            .decodeList<PostItemDto>()
         //todo: write top interactive code
         val topInteractiveTopicDto = TopicDto(
             topicItemDtos = recentPosts,
@@ -41,10 +50,14 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
 
         val user = supabase.from(Constants.Supabase.Tables.users)
             .select(
-                columns = Columns.list(UserDto::name.name, UserDto::imageUrl.name)
+                columns = Columns.list(
+                    Constants.Supabase.Columns.name,
+                    Constants.Supabase.Columns.imageUrl
+                )
             ) {
                 filter {
-                    supabase.auth.currentUserOrNull()?.let { eq("id", it.id) }
+                    supabase.auth.currentUserOrNull()
+                        ?.let { eq(Constants.Supabase.Columns.id, it.id) }
                 }
             }
 
