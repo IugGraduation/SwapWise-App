@@ -1,10 +1,15 @@
 package com.example.data.model.request
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
+
+@Serializable
 data class SignupRequest(
-    val id: String = "",
     val name: String,
-    val phone: String,
-    val password: String,
-    val confirmPassword: String,
-    val place: String
+    val place: String,
+    val bio: String? = null,
+    @Transient
+    val phone: String = "",
+    @Transient
+    val password: String = "",
 )

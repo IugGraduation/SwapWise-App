@@ -27,9 +27,8 @@ class SignupUseCase @Inject constructor(
         val signupRequest = SignupRequest(
             phone = phone,
             name = fullName,
+            place = bestBarterSpot,
             password = password,
-            confirmPassword = confirmPassword,
-            place = bestBarterSpot
         )
         authRepository.signup(signupRequest)
     }
