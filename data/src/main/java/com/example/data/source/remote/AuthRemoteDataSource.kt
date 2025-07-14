@@ -7,9 +7,9 @@ import com.example.data.model.response.AuthDto
 
 interface AuthRemoteDataSource {
 
-    suspend fun signup(body: SignupRequest): AuthDto
+    suspend fun signup(signupRequest: SignupRequest): AuthDto
 
-    suspend fun login(body: LoginRequest): AuthDto
+    suspend fun login(loginRequest: LoginRequest): AuthDto
 
-    suspend fun verifyCode(body: VerifyCodeRequest): AuthDto
+    suspend fun verifyCode(verifyCodeRequest: VerifyCodeRequest): AuthDto
 }

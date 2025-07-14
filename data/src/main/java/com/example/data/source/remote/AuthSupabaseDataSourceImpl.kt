@@ -17,7 +17,7 @@ class AuthSupabaseDataSourceImpl @Inject constructor(
     private val profileRemoteDataSource: ProfileRemoteDataSource
 ) :
     AuthRemoteDataSource {
-    override suspend fun signup(body: SignupRequest): AuthDto {
+    override suspend fun signup(signupRequest: SignupRequest): AuthDto {
         supabase.auth.signUpWith(Phone) {
             phone = body.phone
             password = body.password
@@ -26,22 +26,22 @@ class AuthSupabaseDataSourceImpl @Inject constructor(
         val userId = supabase.auth.currentUserOrNull()?.id.orEmpty()
         Log.e("TAG", "signup: user id: $userId")
 
-        insertUserIntoSupabase(body.copy(id = userId))
+        insertUserIntoSupabase(signupRequest.copy(id = userId))
 
         return AuthDto(
             uuid = userId,
-            name = body.name,
+            name = signupRequest.name,
         )
     }
 
-    private suspend fun insertUserIntoSupabase(body: SignupRequest) {
-        supabase.from(Constants.Supabase.Tables.users).insert(body)
+    private suspend fun insertUserIntoSupabase(signupRequest: SignupRequest) {
+        supabase.from(Constants.Supabase.Tables.users).insert(signupRequest)
     }
 
-    override suspend fun login(body: LoginRequest): AuthDto {
+    override suspend fun login(loginRequest: LoginRequest): AuthDto {
         supabase.auth.signInWith(Phone) {
-            phone = body.phone
-            password = body.password
+            phone = loginRequest.phone
+            password = loginRequest.password
         }
 
         val userId = supabase.auth.currentUserOrNull()?.id.orEmpty()
@@ -56,7 +56,7 @@ class AuthSupabaseDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun verifyCode(body: VerifyCodeRequest): AuthDto {
+    override suspend fun verifyCode(verifyCodeRequest: VerifyCodeRequest): AuthDto {
         TODO("Not yet implemented")
     }
 }

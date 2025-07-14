@@ -11,8 +11,8 @@ class AuthRepository(
     private val authRemoteDataSource: AuthRemoteDataSource,
     private val authLocalDataSource: AuthLocalDataSource
 ) {
-    suspend fun signup(body: SignupRequest) {
-        val authDto = authRemoteDataSource.signup(body)
+    suspend fun signup(signupRequest: SignupRequest) {
+        val authDto = authRemoteDataSource.signup(signupRequest)
         //todo: when you enable code verification, replace the last 2 lines with these comments
 //        authLocalDataSource.saveAccountState(false)
 //        authLocalDataSource.savePhone(body.phone)
@@ -21,13 +21,13 @@ class AuthRepository(
         authLocalDataSource.saveAccountState(true)
     }
 
-    suspend fun login(body: LoginRequest) {
-        val authDto = authRemoteDataSource.login(body)
+    suspend fun login(loginRequest: LoginRequest) {
+        val authDto = authRemoteDataSource.login(loginRequest)
         authLocalDataSource.saveUserData(authDto)
     }
 
-    suspend fun verifyCode(body: VerifyCodeRequest) {
-        val authDto = authRemoteDataSource.verifyCode(body)
+    suspend fun verifyCode(verifyCodeRequest: VerifyCodeRequest) {
+        val authDto = authRemoteDataSource.verifyCode(verifyCodeRequest)
         authLocalDataSource.saveUserData(authDto)
         authLocalDataSource.saveAccountState(true)
     }
