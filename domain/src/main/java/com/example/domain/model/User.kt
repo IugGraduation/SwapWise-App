@@ -24,8 +24,8 @@ fun UserDto?.toUser(): User {
 
 fun ProfileDto?.toUser(): User {
     return User(
-        uuid = this?.uuid.orEmpty(),
-        imageLink = this?.image.orEmpty(),
+        uuid = this?.id.orEmpty(),
+        imageLink = this?.imageUrl.orEmpty(),
         name = this?.name.orEmpty(),
         bio = this?.bio.orEmpty(),
         phone = this?.phone.orEmpty(),

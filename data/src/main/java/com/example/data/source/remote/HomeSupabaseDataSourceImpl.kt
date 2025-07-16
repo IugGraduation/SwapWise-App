@@ -53,9 +53,7 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
                     supabase.auth.currentUserOrNull()
                         ?.let { eq(Constants.Supabase.Columns.id, it.id) }
                 }
-            }
-
-            .decodeSingle<UserDto>()
+            }.decodeSingle<UserDto>()
         return HomeDto(
             topicDtos = listOf(categoriesTopicDto, topInteractiveTopicDto,recentPostsTopicDto) ,
             userDto = user

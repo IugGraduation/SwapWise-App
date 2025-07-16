@@ -46,8 +46,8 @@ class AuthSupabaseDataSourceImpl @Inject constructor(
         val userProfile = profileRemoteDataSource.getCurrentUserDataById(userId)
 
         return AuthDto(
-            uuid = userProfile?.uuid,
-            image = userProfile?.image,
+            uuid = userProfile?.id,
+            image = userProfile?.imageUrl,
             name = userProfile?.name,
         )
     }
