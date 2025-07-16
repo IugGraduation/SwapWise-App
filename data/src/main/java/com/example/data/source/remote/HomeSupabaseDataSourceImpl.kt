@@ -10,6 +10,7 @@ import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Columns
+import io.github.jan.supabase.postgrest.query.request.RpcRequestBuilder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.encodeToJsonElement
@@ -19,33 +20,26 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
     private val supabase: SupabaseClient,
     ) : HomeRemoteDataSource{
     override suspend fun getHomeDto(): HomeDto? {
-        val categories = supabase.postgrest.rpc(
-            function = Constants.Supabase.Functions.getCategories,
-            parameters = Json.encodeToJsonElement(
-                mapOf(Constants.Supabase.Parameters.languageCode to "en")
-            ) as JsonObject
-        ).decodeList<PostItemDto>()
+        val categories = getCategories()
 
-        val recentPosts = supabase.postgrest.rpc(
-            function = Constants.Supabase.Functions.getDetailedPosts,
-            parameters = Json.encodeToJsonElement(
-                mapOf(Constants.Supabase.Parameters.languageCode to "en")
-            ) as JsonObject
-        ).decodeList<PostItemDto>()
+        val recentPosts = getRecentPosts()
 
         val categoriesTopicDto = TopicDto(
             topicItemDtos = categories,
             title = "Categories",
+            url = "Categories",
         )
 
         //todo: write top interactive code
         val topInteractiveTopicDto = TopicDto(
             topicItemDtos = recentPosts,
             title = "Top Interactive",
+            url = "Top Interactive",
         )
         val recentPostsTopicDto = TopicDto(
             topicItemDtos = recentPosts,
             title = "Recent Posts",
+            url = "Recent Posts",
         )
 
         val user = supabase.from(Constants.Supabase.Tables.users)
@@ -68,12 +62,40 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
         )
     }
 
+    private suspend fun getCategories(): List<PostItemDto> {
+        return supabase.postgrest.rpc(
+            function = Constants.Supabase.Functions.getCategories,
+            parameters = Json.encodeToJsonElement(
+                //todo: get language from user info, same for anywhere with "en"
+                mapOf(Constants.Supabase.Parameters.languageCode to "en")
+            ) as JsonObject
+        ).decodeList<PostItemDto>()
+    }
+
+    private suspend fun getRecentPosts(request: RpcRequestBuilder.() -> Unit = {}): List<PostItemDto> {
+        return supabase.postgrest.rpc(
+            function = Constants.Supabase.Functions.getDetailedPosts,
+            parameters = Json.encodeToJsonElement(
+                mapOf(Constants.Supabase.Parameters.languageCode to "en")
+            ) as JsonObject,
+            request = request
+        ).decodeList<PostItemDto>()
+    }
+
     override suspend fun seeAll(type: String): List<PostItemDto>? {
-        TODO("Not yet implemented")
+        return if (type == "Categories") {
+            getCategories()
+        } else {
+            getRecentPosts()
+        }
     }
 
     override suspend fun getPostsFromCategory(categoryId: String): List<PostItemDto>? {
-        TODO("Not yet implemented")
+        return getRecentPosts {
+            filter {
+                eq(Constants.Supabase.Columns.categoryId, categoryId)
+            }
+        }
     }
 
 

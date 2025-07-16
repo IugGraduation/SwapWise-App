@@ -22,6 +22,7 @@ object Constants {
             const val id = "id"
             const val name = "name"
             const val imageUrl = "image_url"
+            const val categoryId = "category_id"
         }
 
         object Buckets {
