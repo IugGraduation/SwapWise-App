@@ -2,7 +2,6 @@ package com.example.domain.model
 
 import com.example.data.model.response.CategoryItemDto
 import com.example.data.model.response.PostItemDto
-import com.example.data.model.response.TopicItemDto
 
 data class CategoryItem(
     override val id: String = "",
@@ -11,14 +10,6 @@ data class CategoryItem(
 
     ) : TopicItem() {
     companion object {
-        fun fromTopicItemDto(topicItemDto: TopicItemDto): CategoryItem {
-            return CategoryItem(
-                id = topicItemDto.id ?: "",
-                name = topicItemDto.categoryName ?: "",
-                imageUrl = topicItemDto.categoryImage ?: "",
-            )
-        }
-
         fun fromPostItemDto(postItemDto: PostItemDto): CategoryItem {
             return CategoryItem(
                 id = postItemDto.id ?: "",

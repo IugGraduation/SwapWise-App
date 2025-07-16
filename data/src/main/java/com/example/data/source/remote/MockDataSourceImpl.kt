@@ -4,7 +4,6 @@ import com.example.data.model.response.HomeDto
 import com.example.data.model.response.NotificationDto
 import com.example.data.model.response.OfferItemDto
 import com.example.data.model.response.PostItemDto
-import com.example.data.model.response.TopicItemDto
 import javax.inject.Inject
 
 class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
@@ -59,7 +58,7 @@ class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
         TODO("Not yet implemented")
     }
 
-    override suspend fun search(search: String, categoriesIds: List<String>?): List<TopicItemDto>? {
+    override suspend fun search(search: String, categoryIds: List<String>?): List<PostItemDto>? {
         TODO("Not yet implemented")
     }
 

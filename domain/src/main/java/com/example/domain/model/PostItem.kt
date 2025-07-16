@@ -2,7 +2,6 @@ package com.example.domain.model
 
 import com.example.data.model.response.CategoryItemDto
 import com.example.data.model.response.PostItemDto
-import com.example.data.model.response.TopicItemDto
 import com.example.data.model.response.profile.ProfilePostItemDto
 
 
@@ -24,22 +23,6 @@ data class PostItem(
 ) : TopicItem() {
 
     companion object {
-        fun fromTopicItemDto(topicItemDto: TopicItemDto): PostItem {
-            return PostItem(
-                id = topicItemDto.id.orEmpty(),
-                user = User(
-                    uuid = topicItemDto.userUuid.orEmpty(),
-                    name = topicItemDto.userName.orEmpty(),
-                    imageLink = topicItemDto.userImage.orEmpty(),
-                ),
-                imageUrl = topicItemDto.postImage.orEmpty(),
-                name = topicItemDto.postName.orEmpty(),
-                isOpen = topicItemDto.status == "1",
-                details = topicItemDto.postDetails.orEmpty(),
-                offers = List(topicItemDto.numOffers ?: 0){ OfferItem() },
-            )
-        }
-
         fun fromPostItemDto(postItemDto: PostItemDto): PostItem {
             return PostItem(
                 id = postItemDto.id.orEmpty(),

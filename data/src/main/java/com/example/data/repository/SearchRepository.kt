@@ -7,6 +7,6 @@ class SearchRepository(private val searchRemoteDataSource: SearchRemoteDataSourc
     suspend fun search(search: String, categoriesIds: List<String>?) =
             searchRemoteDataSource.search(
                 search = search,
-                categoriesIds = categoriesIds,
+                categoryIds = categoriesIds,
             )
 }

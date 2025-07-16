@@ -12,10 +12,12 @@ object Constants {
         object Functions {
             const val getCategories = "get_categories"
             const val getDetailedPosts = "get_detailed_posts"
+            const val searchPosts = "search_posts"
         }
 
         object Parameters {
             const val languageCode = "language_code"
+            const val categoryIds = "category_ids"
         }
 
         object Columns {

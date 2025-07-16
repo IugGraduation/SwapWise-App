@@ -17,7 +17,7 @@ class GetSearchResultUseCase @Inject constructor(private val searchRepository: S
         }
         val result = searchRepository.search(searchValue, filterCategoryIds)
         val postItemList = result?.map {
-            PostItem.fromTopicItemDto(it)
+            PostItem.fromPostItemDto(it)
         }
         return postItemList ?: throw EmptyDataException()
     }

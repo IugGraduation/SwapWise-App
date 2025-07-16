@@ -12,6 +12,7 @@ import com.example.data.source.remote.PostSupabaseDataSourceImpl
 import com.example.data.source.remote.ProfileRemoteDataSource
 import com.example.data.source.remote.ProfileSupabaseDataSourceImpl
 import com.example.data.source.remote.SearchRemoteDataSource
+import com.example.data.source.remote.SearchSupabaseDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -43,7 +44,7 @@ abstract class RemoteDataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun provideSearchRemoteDataSource(mockDataSourceImpl: MockDataSourceImpl): SearchRemoteDataSource
+    abstract fun provideSearchRemoteDataSource(searchSupabaseDataSourceImpl: SearchSupabaseDataSourceImpl): SearchRemoteDataSource
 
     @Binds
     @Singleton
