@@ -3,6 +3,7 @@ package com.example.data.source.remote
 import com.example.data.model.request.PostItemRequest
 import com.example.data.model.response.PostItemDto
 import com.example.data.util.Constants
+import com.example.data.util.getRecentPosts
 import com.example.data.util.uploadImageAndGetUrl
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
@@ -12,7 +13,11 @@ import javax.inject.Inject
 class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: SupabaseClient) :
     PostRemoteDataSource {
     override suspend fun getPostDetails(postId: String): PostItemDto {
-        TODO("Not yet implemented")
+        return supabase.getRecentPosts {
+            filter {
+                eq(Constants.Supabase.Columns.id, postId)
+            }
+        }.first()
     }
 
     override suspend fun addPost(
