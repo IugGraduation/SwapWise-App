@@ -8,6 +8,7 @@ import com.example.data.util.uploadImageAndGetUrl
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.postgrest
 import javax.inject.Inject
 
 class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: SupabaseClient) :
@@ -63,8 +64,11 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
     }
 
     override suspend fun deletePost(postId: String): Any {
-        TODO("Not yet implemented")
+        return supabase.postgrest.from(Constants.Supabase.Tables.posts).delete {
+            filter {
+                eq(Constants.Supabase.Columns.id, postId)
+            }
+        } //todo: return id
     }
-
-
+    
 }
