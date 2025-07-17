@@ -9,7 +9,6 @@ data class PostItemDto(
     val name: String? = null,
     val details: String? = null,
     val place: String? = null,
-    val status: String? = null,
 //    @SerialName("category_id") val categoryId: String? = null,
     @SerialName("is_active") val isActive: Boolean? = null,
     @SerialName("created_at") val createdAt: String? = null,

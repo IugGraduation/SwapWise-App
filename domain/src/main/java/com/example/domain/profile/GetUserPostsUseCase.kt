@@ -9,8 +9,8 @@ class GetCurrentUserPostsUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(): List<PostItem> {
-        val profilePostsDto = userRepository.getCurrentUserPosts()
-        val posts = profilePostsDto?.map { it.toPostItem() } ?: emptyList()
+        val postItemDtos = userRepository.getCurrentUserPosts()
+        val posts = postItemDtos?.map { it.toPostItem() } ?: emptyList()
         return posts.sortedByDescending { it.date }
     }
 }

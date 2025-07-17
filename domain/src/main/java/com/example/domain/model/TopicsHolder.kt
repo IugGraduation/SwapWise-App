@@ -15,7 +15,7 @@ fun TopicDto.toTopicsHolder(): TopicsHolder {
         if (title == "Categories") {
             CategoryItem.fromPostItemDto(topicItemDto)
         } else {
-            PostItem.fromPostItemDto(topicItemDto)
+            topicItemDto.toPostItem()
         }
 
     }

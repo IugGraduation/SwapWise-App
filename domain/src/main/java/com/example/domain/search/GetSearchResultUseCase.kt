@@ -4,6 +4,7 @@ import com.example.data.repository.SearchRepository
 import com.example.domain.exception.EmptyDataException
 import com.example.domain.model.Chip
 import com.example.domain.model.PostItem
+import com.example.domain.model.toPostItem
 import javax.inject.Inject
 
 class GetSearchResultUseCase @Inject constructor(private val searchRepository: SearchRepository) {
@@ -17,7 +18,7 @@ class GetSearchResultUseCase @Inject constructor(private val searchRepository: S
         }
         val result = searchRepository.search(searchValue, filterCategoryIds)
         val postItemList = result?.map {
-            PostItem.fromPostItemDto(it)
+            it.toPostItem()
         }
         return postItemList ?: throw EmptyDataException()
     }

@@ -23,7 +23,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
         categoryId: String,
         favoriteCategoryIds: List<String>?
     ): Any {
-        val imageUrl = supabase.uploadImageAndGetUrl(
+        val imageDto = supabase.uploadImageAndGetUrl(
             bucketId = Constants.Supabase.Buckets.postImages,
             imageByteArray = imageByteArray
         )
@@ -33,7 +33,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
                 name = name,
                 place = place,
                 details = details,
-                imageUrl = imageUrl,
+                imageUrl = imageDto.imageUrl,
                 categoryId = categoryId,
                 favoriteCategoryIds = favoriteCategoryIds,
                 userId = supabase.auth.currentUserOrNull()?.id

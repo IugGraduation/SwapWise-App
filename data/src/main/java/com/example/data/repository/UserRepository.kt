@@ -6,8 +6,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.data.model.request.ResetPasswordRequest
+import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.profile.ProfileDto
-import com.example.data.model.response.profile.ProfilePostItemDto
 import com.example.data.repository.UserRepository.PreferencesKeys.LOCAL_LANGUAGE
 import com.example.data.source.remote.ProfileRemoteDataSource
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +23,7 @@ class UserRepository @Inject constructor(
         return profileRemoteDataSource.getCurrentUserDataById(id)
     }
 
-    suspend fun getCurrentUserPosts(): List<ProfilePostItemDto>?{
+    suspend fun getCurrentUserPosts(): List<PostItemDto>? {
         return profileRemoteDataSource.getCurrentUserPosts()
     }
 
