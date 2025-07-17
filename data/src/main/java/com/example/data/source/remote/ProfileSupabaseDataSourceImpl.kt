@@ -5,15 +5,11 @@ import com.example.data.model.response.ImageDto
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.profile.ProfileDto
 import com.example.data.util.Constants
+import com.example.data.util.getRecentPosts
 import com.example.data.util.updateImageAndGetUrl
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.postgrest
-import io.github.jan.supabase.postgrest.query.request.RpcRequestBuilder
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.encodeToJsonElement
 import javax.inject.Inject
 
 class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: SupabaseClient) :
@@ -29,22 +25,12 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
     }
 
     override suspend fun getCurrentUserPosts(): List<PostItemDto>? {
-        return getRecentPosts {
+        return supabase.getRecentPosts {
             filter {
                 supabase.auth.currentUserOrNull()
                     ?.let { eq(Constants.Supabase.Columns.id, it.id) }
             }
         }
-    }
-
-    private suspend fun getRecentPosts(request: RpcRequestBuilder.() -> Unit = {}): List<PostItemDto> {
-        return supabase.postgrest.rpc(
-            function = Constants.Supabase.Functions.getDetailedPosts,
-            parameters = Json.encodeToJsonElement(
-                mapOf(Constants.Supabase.Parameters.languageCode to "en")
-            ) as JsonObject,
-            request = request
-        ).decodeList<PostItemDto>()
     }
 
 
