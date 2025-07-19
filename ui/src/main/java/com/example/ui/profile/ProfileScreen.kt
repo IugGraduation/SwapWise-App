@@ -369,6 +369,7 @@ private fun UserPostsSection(
                 title = postItem.postTitle,
                 isPostCard = false,
                 details = postItem.postDescription,
+                place = postItem.postPlace,
                 offersNumber = postItem.offersNumber.toString(),
                 postImage = rememberAsyncImagePainter(postItem.postImageLink),
                 onCardClick = { profileInteraction.navigateToPostDetails(postItem.id) }

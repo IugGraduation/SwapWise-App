@@ -56,6 +56,7 @@ fun PostCard(
     username: String,
     title: String,
     details: String,
+    place: String,
     modifier: Modifier = Modifier,
     offersNumber: String = "0",
     isOpen: Boolean = true,
@@ -289,6 +290,7 @@ private fun PostCardPreview() {
         isOpen = true,
         title = "Liters of Olive Oil for Trade Liters of Olive Oil for Trade",
         details = "Looking for a sweet deal? I have 10 kilograms of high-quality sugar Liters of Olive Oil for Trade that I’d like to exchange Liters of Olive Oil for Trade Liters of Olive Oil for Trade Liters of Olive Oil for Trade for something useful",
+        place = "Gaza",
         offersNumber = "50",
         postImage = painterResource(R.drawable.img_food_and_beverages),
         isHorizontalCard = true

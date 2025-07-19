@@ -195,6 +195,7 @@ fun PostDetailsContent(
                                 title = offerItem.name,
                                 isPostCard = false,
                                 details = offerItem.details,
+                                place = offerItem.place,
                                 postImage = rememberAsyncImagePainter(offerItem.imageUrl),
                                 onCardClick = {
                                     postDetailsInteractions.navigateToOfferDetails(offerItem)

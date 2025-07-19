@@ -35,6 +35,7 @@ data class PostItemUiState(
     val isThePostOpen: Boolean = false,
     val postTitle: String = String.empty(),
     val postDescription: String = String.empty(),
+    val postPlace: String = String.empty(),
     val offersNumber: Int = 0
 )
 
