@@ -19,11 +19,10 @@ suspend fun SupabaseClient.uploadImageAndGetUrl(
     val fileName = "${UUID.randomUUID()}.jpg"
 
     storage.from(bucketId).upload(path = fileName, data = imageByteArray) {
-        upsert = true
+        upsert = false
     }
 
-    val imageUrl = storage.from(Constants.Supabase.Buckets.postImages)
-        .createSignedUrl(fileName, expiresIn = (365 * 10).days)
+    val imageUrl = storage.from(bucketId).publicUrl(fileName)
 
     return ImageDto(imageUrl = imageUrl, imagePath = fileName)
 }
