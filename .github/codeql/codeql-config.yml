@@ -1,11 +1,7 @@
 name: "Android CodeQL Configuration"
 
 queries:
-- uses: security-and-quality-extended
-- uses: codeql-suites/java-security-and-quality.qls
-  queries: /security/SecurityFeatures/Android
-- uses: codeql-suites/kotlin-security-and-quality.qls
-  queries: /security/SecurityFeatures/Android
+- uses: security-and-quality
 
 paths:
 - app/src
