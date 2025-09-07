@@ -84,7 +84,6 @@ dependencies {
 
     implementation(libs.accompanist.systemuicontroller)
     implementation (libs.androidx.foundation)
-    implementation (libs.ui)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
