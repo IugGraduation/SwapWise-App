@@ -235,7 +235,7 @@ fun TopicsListHeader(
 
 @Preview(
     showBackground = true, showSystemUi = false,
-    device = "spec:width=1080px,height=3040px,dpi=440",
+    device = "spec:width=1080px,height=3040px,dpi=440", apiLevel = 34,
 )
 @Composable
 fun PreviewHomeContent() {

@@ -281,7 +281,7 @@ private fun PostStateRoundedBox(
 }
 
 
-@Preview(showSystemUi = true)
+@Preview(showSystemUi = true, apiLevel = 34)
 @Composable
 private fun PostCardPreview() {
     PostCard(
