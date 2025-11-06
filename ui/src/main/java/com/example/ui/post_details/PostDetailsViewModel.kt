@@ -1,6 +1,7 @@
 package com.example.ui.post_details
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.example.domain.authentication.GetAuthUseCase
 import com.example.domain.model.OfferItem
 import com.example.domain.model.PostItem
@@ -9,6 +10,7 @@ import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
 import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,11 +45,13 @@ class PostDetailsViewModel @Inject constructor(
     }
 
     private fun showEditButtonIfNeeded() {
-        tryToExecute(
-            call = { if (state.value.data.postItem.user.uuid != getAuthUseCase().userId) throw Exception() },
-            onSuccess = { updateData { copy(showEditPostButton = true) } },
-            isLoadableAction = false
-        )
+        viewModelScope.launch {
+            val currentUserId = getAuthUseCase().userId
+            val postOwnerId = state.value.data.postItem.user.uuid
+            if (currentUserId.isNotBlank() && currentUserId == postOwnerId) {
+                updateData { copy(showEditPostButton = true) }
+            }
+        }
     }
 
     override fun navigateToAddOffer() {

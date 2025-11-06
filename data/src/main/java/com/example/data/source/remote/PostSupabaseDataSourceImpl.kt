@@ -44,8 +44,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
                 userId = supabase.auth.currentUserOrNull()?.id,
                 contactNumber = supabase.auth.currentUserOrNull()?.phone
             )
-        ).decodeSingle<PostItemRequest>().id.orEmpty()
-
+        )//.decodeSingle<PostItemRequest>().id.orEmpty()
         return postId
     }
 
