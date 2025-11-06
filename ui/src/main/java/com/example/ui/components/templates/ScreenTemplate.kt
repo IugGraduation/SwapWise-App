@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.ui.base.BaseUiState
 import com.example.ui.components.atoms.ShowContentWithState
@@ -22,11 +25,14 @@ fun ScreenTemplate(
     baseUiState: BaseUiState = BaseUiState(),
     content: @Composable () -> Unit
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
         topBar = topBar,
         bottomBar = bottomBar,
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.color.background),
@@ -36,10 +42,12 @@ fun ScreenTemplate(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            ShowContentWithState(baseUiState) {
+            ShowContentWithState(
+                state = baseUiState,
+                snackbarHostState = snackbarHostState
+            ) {
                 content()
             }
         }
     }
 }
-

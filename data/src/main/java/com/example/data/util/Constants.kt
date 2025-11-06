@@ -25,6 +25,10 @@ object Constants {
             const val name = "name"
             const val imageUrl = "image_url"
             const val categoryId = "category_id"
+            const val place = "place"
+            const val details = "details"
+            const val favoriteCategoryIds = "favorite_category_ids"
+            const val isActive = "is_active"
         }
 
         object Buckets {

@@ -49,6 +49,7 @@ class StringsResourceImpl @Inject constructor(
     override val invalidPlace: String = getString(R.string.invalid_place)
     override val invalidDetails: String = getString(R.string.invalid_details)
     override val emptyImageMessage: String = getString(R.string.empty_image)
+    override val invalidCategory: String = getString(R.string.invalid_category)
 
 
     private fun getString(@androidx.annotation.StringRes stringsRes: Int): String {

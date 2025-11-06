@@ -21,4 +21,6 @@ data class PostItemRequest(
     val favoriteCategoryIds: List<String>? = null,
     @SerialName("user_id")
     val userId: String? = null,
+    @SerialName("contact_number")
+    val contactNumber: String? = null,
 )

@@ -14,7 +14,8 @@ class AddPostUseCase @Inject constructor(
         validatePostUseCase(
             title = postItem.name,
             place = postItem.place,
-            details = postItem.details
+            details = postItem.details,
+            categoryId = postItem.categoryItem.id
         )
 
         postRepository.addPost(

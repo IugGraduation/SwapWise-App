@@ -33,7 +33,6 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
             bucketId = Constants.Supabase.Buckets.postImages,
             imageByteArray = imageByteArray
         )
-
         val postId = supabase.from(Constants.Supabase.Tables.posts).insert(
             PostItemRequest(
                 name = name,
@@ -42,7 +41,8 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
                 imageUrl = imageDto.imageUrl,
                 categoryId = categoryId,
                 favoriteCategoryIds = favoriteCategoryIds,
-                userId = supabase.auth.currentUserOrNull()?.id
+                userId = supabase.auth.currentUserOrNull()?.id,
+                contactNumber = supabase.auth.currentUserOrNull()?.phone
             )
         ).decodeSingle<PostItemRequest>().id.orEmpty()
 
@@ -60,7 +60,28 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
         postId: String,
         status: String
     ): Any {
-        TODO("Not yet implemented")
+        val newImageUrl = imageByteArray?.let {
+            supabase.uploadImageAndGetUrl(
+                bucketId = Constants.Supabase.Buckets.postImages,
+                imageByteArray = it
+            ).imageUrl
+        }
+
+        return supabase.from(Constants.Supabase.Tables.posts).update(
+            {
+                set(Constants.Supabase.Columns.name, name)
+                set(Constants.Supabase.Columns.place, place)
+                set(Constants.Supabase.Columns.details, details)
+                set(Constants.Supabase.Columns.categoryId, categoryId)
+                set(Constants.Supabase.Columns.favoriteCategoryIds, favoriteCategoryIds)
+                set(Constants.Supabase.Columns.isActive, status == "Open")
+                newImageUrl?.let { set(Constants.Supabase.Columns.imageUrl, it) }
+            }
+        ) {
+            filter {
+                eq(Constants.Supabase.Columns.id, postId)
+            }
+        }
     }
 
     override suspend fun deletePost(postId: String): Any {

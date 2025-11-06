@@ -15,7 +15,8 @@ class EditOfferUseCase @Inject constructor(
         validateOfferUseCase(
             title = offerItem.name,
             place = offerItem.place,
-            details = offerItem.details
+            details = offerItem.details,
+            categoryId = "TODO()"
         )
 
 //        val name = offerItem.title.toRequestBody("text/plain".toMediaTypeOrNull())

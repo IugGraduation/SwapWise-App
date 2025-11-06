@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.EmptyImageException
+import com.example.domain.exception.InvalidCategoryException
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
@@ -156,6 +157,10 @@ class AddPostViewModel @Inject constructor(
 
             is EmptyImageException -> {
                 onActionFail(Exception(stringsResource.emptyImageMessage))
+            }
+
+            is InvalidCategoryException -> {
+                onActionFail(Exception(stringsResource.invalidCategory))
             }
 
             else -> onActionFail(throwable)

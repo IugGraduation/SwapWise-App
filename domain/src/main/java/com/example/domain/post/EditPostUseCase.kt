@@ -14,7 +14,8 @@ class EditPostUseCase @Inject constructor(
         validatePostUseCase(
             title = postItem.name,
             place = postItem.place,
-            details = postItem.details
+            details = postItem.details,
+            categoryId = postItem.categoryItem.id
         )
 
         postRepository.updatePost(
@@ -25,7 +26,7 @@ class EditPostUseCase @Inject constructor(
             categoryId = postItem.categoryItem.id,
             favoriteCategoryIds = postItem.favoriteCategoryItems.map(CategoryItem::id),
             postId = postItem.id,
-            status = if (postItem.isOpen) "1" else "0"
+            status = if (postItem.isOpen) "Open" else "Closed"
         )
     }
 }

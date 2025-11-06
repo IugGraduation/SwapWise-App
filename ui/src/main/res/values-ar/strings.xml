@@ -76,6 +76,7 @@
     <string name="invalid_phone_number">رقم الهاتف غير صالح</string>
     <string name="invalid_password">يجب أن تتكون كلمة المرور من 8 أحرف على الأقل وتحتوي على حرف كبير وصغير ورقم وحرف خاص.</string>
     <string name="empty_image">يرجى إضافة صورة</string>
+    <string name="invalid_category">يرجى اختيار فئة</string>
     <string name="add_post">إضافة منشور</string>
     <string name="post">منشور</string>
     <string name="post_info">معلومات المنشور</string>

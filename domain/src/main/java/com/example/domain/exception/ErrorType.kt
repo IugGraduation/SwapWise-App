@@ -30,6 +30,7 @@ class EmptyConfirmPasswordException: ValidationException()
 class SamePasswordException: ValidationException()
 
 class InvalidDetailsException: ValidationException()
+class InvalidCategoryException: ValidationException()
 class InvalidFullNameException: ValidationException()
 class InvalidBestBarterSpotException: ValidationException()
 class EmptyImageException: ValidationException()

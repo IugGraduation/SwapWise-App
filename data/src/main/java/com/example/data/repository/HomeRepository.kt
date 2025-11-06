@@ -8,6 +8,8 @@ import com.example.data.model.response.PostItemDto
 import com.example.data.source.remote.HomeRemoteDataSource
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class HomeRepository(
     private val homeRemoteDataSource: HomeRemoteDataSource,
@@ -39,27 +41,23 @@ class HomeRepository(
 
     private suspend fun saveCategoriesToDataStore(topics: List<PostItemDto>) {
         dataStore.edit { preferences ->
-            preferences[PreferencesKeys.topics] = TODO()
-            //   Gson().toJson(topics, object : TypeToken<List<TopicItemDto>>() {}.type)
+            preferences[PreferencesKeys.topics] = Json.encodeToString(topics)
         }
     }
 
-    suspend fun getCategoriesFromDataStore(): List<PostItemDto> {
-//        return dataStore.data.map { preferences ->
-//            try {
-//                Gson().fromJson<List<TopicItemDto>>(
-//                    preferences[PreferencesKeys.topics] ?: "",
-//                    object : TypeToken<List<TopicItemDto>>() {}.type
-//                ) ?: emptyList()
-//            } catch (e: Exception) {
-//                emptyList()
-//            }
-//        }.first()
-        TODO()
+    private suspend fun getCategoriesFromDataStore(): List<PostItemDto> {
+        return dataStore.data.map { preferences ->
+            try {
+                Json.decodeFromString<List<PostItemDto>>(
+                    preferences[PreferencesKeys.topics] ?: ""
+                )
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }.first()
     }
 
     private object PreferencesKeys {
         val topics = stringPreferencesKey("topics")
     }
 }
-
