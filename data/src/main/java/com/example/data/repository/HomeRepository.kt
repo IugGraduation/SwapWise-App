@@ -26,7 +26,7 @@ class HomeRepository(
         if (checkIsCategoriesStored()) {
             return getCategoriesFromDataStore()
         } else {
-            val categories = homeRemoteDataSource.seeAll("category")
+            val categories = homeRemoteDataSource.seeAll("Categories")
             saveCategoriesToDataStore(categories ?: emptyList())
             return categories
         }
