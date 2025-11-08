@@ -12,16 +12,16 @@ data class CategoryItem(
     companion object {
         fun fromPostItemDto(postItemDto: PostItemDto): CategoryItem {
             return CategoryItem(
-                id = postItemDto.id ?: "",
-                name = postItemDto.name ?: "",
-                imageUrl = postItemDto.imageUrl ?: "",
+                id = postItemDto.id.orEmpty(),
+                name = postItemDto.name.orEmpty(),
+                imageUrl = postItemDto.imageUrl.orEmpty(),
             )
         }
 
         fun fromCategoryItemDto(categoryItemDto: CategoryItemDto): CategoryItem {
             return CategoryItem(
-                id = categoryItemDto.categoryUuid ?: "",
-                name = categoryItemDto.categoryName ?: "",
+                id = categoryItemDto.id.orEmpty(),
+                name = categoryItemDto.name.orEmpty(),
             )
         }
 
