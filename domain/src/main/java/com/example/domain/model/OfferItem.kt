@@ -22,7 +22,7 @@ data class OfferItem(
                     name = offerItemDto.userName ?: "",
                     imageLink = offerItemDto.userImage ?: "",
                     phone = offerItemDto.phone ?: "",
-                    uuid = offerItemDto.userUuid ?: "",
+                    id = offerItemDto.userUuid ?: "",
                 ),
                 imageUrl = offerItemDto.image ?: "",
                 name = offerItemDto.title ?: "",

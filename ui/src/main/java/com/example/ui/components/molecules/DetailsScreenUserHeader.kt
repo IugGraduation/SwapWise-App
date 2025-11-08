@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -76,7 +77,7 @@ private fun UserHeader(
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = rememberAsyncImagePainter(user.imageLink),
-            contentDescription = user.imgContentDescription,
+            contentDescription = stringResource(R.string.user_image),
             contentScale = ContentScale.Crop,
             modifier = Modifier.size(imgSize)
         )

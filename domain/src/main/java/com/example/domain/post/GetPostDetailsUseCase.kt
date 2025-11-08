@@ -2,7 +2,6 @@ package com.example.domain.post
 
 import com.example.data.repository.PostRepository
 import com.example.domain.category.GetFakeCategoriesUseCase
-import com.example.domain.exception.EmptyDataException
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.model.User
@@ -12,7 +11,7 @@ import javax.inject.Inject
 
 class GetPostDetailsUseCase @Inject constructor(private val postRepository: PostRepository) {
     suspend operator fun invoke(postId: String): PostItem {
-        return postRepository.getPostDetails(postId).toPostItem() ?: throw EmptyDataException()
+        return postRepository.getPostDetails(postId).toPostItem()
     }
 }
 

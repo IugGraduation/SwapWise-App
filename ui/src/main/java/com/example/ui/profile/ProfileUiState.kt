@@ -59,7 +59,7 @@ data class ProfileErrorUiState(
 
 fun User.toProfileUiState(): ProfileUiState {
     return ProfileUiState(
-        id = this.uuid,
+        id = this.id,
         profileInformationUiState = ProfileInformationUiState(
             imageUri = this.imageLink,
             name = this.name,

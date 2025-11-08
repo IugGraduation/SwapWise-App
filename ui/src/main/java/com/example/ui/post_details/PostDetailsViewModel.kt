@@ -47,7 +47,7 @@ class PostDetailsViewModel @Inject constructor(
     private fun showEditButtonIfNeeded() {
         viewModelScope.launch {
             val currentUserId = getAuthUseCase().userId
-            val postOwnerId = state.value.data.postItem.user.uuid
+            val postOwnerId = state.value.data.postItem.user.id
             if (currentUserId.isNotBlank() && currentUserId == postOwnerId) {
                 updateData { copy(showEditPostButton = true) }
             }
@@ -62,9 +62,9 @@ class PostDetailsViewModel @Inject constructor(
         tryToExecute(
             call = { getAuthUseCase().userId },
             onSuccess = { currentUserId ->
-                if (currentUserId == state.value.data.postItem.user.uuid) {
+                if (currentUserId == state.value.data.postItem.user.id) {
                     sendUiEffect(PostDetailsEffects.NavigateToOfferDetails(offerItem.id))
-                } else if (currentUserId == offerItem.user.uuid) {
+                } else if (currentUserId == offerItem.user.id) {
                     sendUiEffect(PostDetailsEffects.NavigateToEditOffer(offerItem.id))
                 }
             },
