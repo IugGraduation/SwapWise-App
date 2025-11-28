@@ -17,7 +17,8 @@ object Constants {
 
         object Parameters {
             const val languageCode = "language_code"
-            const val categoryIds = "category_ids"
+            const val searchText = "search_text"
+            const val categoryIdsFilter = "category_ids_filter"
         }
 
         object Columns {
@@ -27,6 +28,8 @@ object Constants {
             const val categoryId = "category_id"
             const val place = "place"
             const val details = "details"
+            const val phone = "phone"
+            const val bio = "bio"
             const val favoriteCategoryIds = "favorite_category_ids"
             const val isActive = "is_active"
         }
