@@ -30,6 +30,7 @@ object Constants {
             const val details = "details"
             const val phone = "phone"
             const val bio = "bio"
+            const val user = "user"
             const val favoriteCategoryIds = "favorite_category_ids"
             const val isActive = "is_active"
         }

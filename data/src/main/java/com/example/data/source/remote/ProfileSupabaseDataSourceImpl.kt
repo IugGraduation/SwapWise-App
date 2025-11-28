@@ -1,7 +1,6 @@
 package com.example.data.source.remote
 
 import com.example.data.model.request.ResetPasswordRequest
-import com.example.data.model.response.ImageDto
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.profile.ProfileDto
 import com.example.data.util.Constants
@@ -18,17 +17,20 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
         return supabase.from(Constants.Supabase.Tables.users)
             .select {
                 filter {
-                    supabase.auth.currentUserOrNull()
-                        ?.let { eq(Constants.Supabase.Columns.id, it.id) }
+                    eq(Constants.Supabase.Columns.id, id)
                 }
             }.decodeSingle<ProfileDto>()
     }
 
     override suspend fun getCurrentUserPosts(): List<PostItemDto>? {
+        val currentUserId = supabase.auth.currentUserOrNull()?.id ?: return emptyList()
+
         return supabase.getRecentPosts {
             filter {
-                supabase.auth.currentUserOrNull()
-                    ?.let { eq(Constants.Supabase.Columns.id, it.id) }
+                eq(
+                    "${Constants.Supabase.Columns.user}->>${Constants.Supabase.Columns.id}",
+                    currentUserId
+                )
             }
         }
     }
@@ -41,17 +43,27 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
         imageByteArray: ByteArray?,
         bio: String
     ): Boolean {
-        var imageDto: ImageDto? = null
-        imageByteArray?.let {
-            imageDto = supabase.updateImageAndGetUrl(
+        val newImageUrl = imageByteArray?.let {
+            supabase.updateImageAndGetUrl(
                 bucketId = Constants.Supabase.Buckets.userImages,
                 imageByteArray = it
-            )
+            ).imageUrl
         }
-        supabase.from(Constants.Supabase.Tables.users).update({
 
-        })
-        TODO("Not yet implemented")
+        supabase.from(Constants.Supabase.Tables.users).update({
+            set(Constants.Supabase.Columns.name, name)
+            set(Constants.Supabase.Columns.phone, phone)
+            set(Constants.Supabase.Columns.place, place)
+            set(Constants.Supabase.Columns.bio, bio)
+            newImageUrl?.let { set(Constants.Supabase.Columns.imageUrl, it) }
+        }) {
+            filter {
+                supabase.auth.currentUserOrNull()?.id?.let {
+                    eq(Constants.Supabase.Columns.id, it)
+                }
+            }
+        }
+        return true
     }
 
     override suspend fun resetPassword(request: ResetPasswordRequest) {
