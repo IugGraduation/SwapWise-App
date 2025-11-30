@@ -5,7 +5,7 @@ import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.profile.ProfileDto
 import com.example.data.util.Constants
 import com.example.data.util.getRecentPosts
-import com.example.data.util.updateImageAndGetUrl
+import com.example.data.util.uploadAndGetPublicUrl
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
@@ -43,9 +43,13 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
         imageByteArray: ByteArray?,
         bio: String
     ): Boolean {
+        val userId = supabase.auth.currentUserOrNull()?.id
+        if (userId.isNullOrBlank()) return false
+
         val newImageUrl = imageByteArray?.let {
-            supabase.updateImageAndGetUrl(
+            supabase.uploadAndGetPublicUrl(
                 bucketId = Constants.Supabase.Buckets.userImages,
+                imagePath = "$userId.jpg",
                 imageByteArray = it
             ).imageUrl
         }
@@ -58,9 +62,7 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
             newImageUrl?.let { set(Constants.Supabase.Columns.imageUrl, it) }
         }) {
             filter {
-                supabase.auth.currentUserOrNull()?.id?.let {
-                    eq(Constants.Supabase.Columns.id, it)
-                }
+                eq(Constants.Supabase.Columns.id, userId)
             }
         }
         return true

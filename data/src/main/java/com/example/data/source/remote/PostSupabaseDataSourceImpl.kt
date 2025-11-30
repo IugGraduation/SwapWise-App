@@ -4,11 +4,11 @@ import com.example.data.model.request.PostItemRequest
 import com.example.data.model.response.PostItemDto
 import com.example.data.util.Constants
 import com.example.data.util.getRecentPosts
-import com.example.data.util.uploadImageAndGetUrl
+import com.example.data.util.uploadAndGetPublicUrl
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.postgrest
+import java.util.UUID
 import javax.inject.Inject
 
 class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: SupabaseClient) :
@@ -29,12 +29,16 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
         categoryId: String,
         favoriteCategoryIds: List<String>?
     ): Any {
-        val imageDto = supabase.uploadImageAndGetUrl(
+        val postId = UUID.randomUUID().toString()
+        val imageDto = supabase.uploadAndGetPublicUrl(
             bucketId = Constants.Supabase.Buckets.postImages,
+            imagePath = "$postId.jpg",
             imageByteArray = imageByteArray
         )
-        val postId = supabase.from(Constants.Supabase.Tables.posts).insert(
+
+        return supabase.from(Constants.Supabase.Tables.posts).insert(
             PostItemRequest(
+                id = postId,
                 name = name,
                 place = place,
                 details = details,
@@ -44,8 +48,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
                 userId = supabase.auth.currentUserOrNull()?.id,
                 contactNumber = supabase.auth.currentUserOrNull()?.phone
             )
-        )//.decodeSingle<PostItemRequest>().id.orEmpty()
-        return postId
+        )
     }
 
 
@@ -60,8 +63,9 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
         status: String
     ): Any {
         val newImageUrl = imageByteArray?.let {
-            supabase.uploadImageAndGetUrl(
+            supabase.uploadAndGetPublicUrl(
                 bucketId = Constants.Supabase.Buckets.postImages,
+                imagePath = "$postId.jpg",
                 imageByteArray = it
             ).imageUrl
         }
@@ -84,7 +88,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
     }
 
     override suspend fun deletePost(postId: String): Any {
-        return supabase.postgrest.from(Constants.Supabase.Tables.posts).delete {
+        return supabase.from(Constants.Supabase.Tables.posts).delete {
             filter {
                 eq(Constants.Supabase.Columns.id, postId)
             }
