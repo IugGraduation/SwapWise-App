@@ -9,39 +9,17 @@ import io.github.jan.supabase.storage.storage
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.encodeToJsonElement
-import java.util.UUID
-import kotlin.time.Duration.Companion.days
 
-suspend fun SupabaseClient.uploadImageAndGetUrl(
+suspend fun SupabaseClient.uploadAndGetPublicUrl(
     bucketId: String,
+    imagePath: String,
     imageByteArray: ByteArray
 ): ImageDto {
-    val fileName = "${UUID.randomUUID()}.jpg"
-
-    storage.from(bucketId).upload(path = fileName, data = imageByteArray) {
-        upsert = false
-    }
-
-    val imageUrl = storage.from(bucketId).publicUrl(fileName)
-
-    return ImageDto(imageUrl = imageUrl, imagePath = fileName)
-}
-
-
-suspend fun SupabaseClient.updateImageAndGetUrl(
-    bucketId: String,
-    imageByteArray: ByteArray
-): ImageDto {
-    val fileName = "${UUID.randomUUID()}.jpg"
-
-    storage.from(bucketId).update(path = fileName, data = imageByteArray) {
+    storage.from(bucketId).upload(path = imagePath, data = imageByteArray) {
         upsert = true
     }
-
-    val imageUrl = storage.from(Constants.Supabase.Buckets.postImages)
-        .createSignedUrl(fileName, expiresIn = (365 * 10).days)
-
-    return ImageDto(imageUrl = imageUrl, imagePath = fileName)
+    val imageUrl = storage.from(bucketId).publicUrl(imagePath)
+    return ImageDto(imageUrl = imageUrl, imagePath = imagePath)
 }
 
 
