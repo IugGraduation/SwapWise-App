@@ -7,15 +7,14 @@ import com.example.domain.exception.EmptyImageException
 fun String.Companion.empty() = ""
 
 fun String.toByteArray(context: Context): ByteArray? {
-    this.toUri().apply {
-        if (scheme == "http" || scheme == "https") {
-            return null
-        }
-
-        val contentResolver = context.contentResolver
-        val inputStream = contentResolver.openInputStream(this)
-        return inputStream?.readBytes()
+    val uri = this.toUri()
+    if (uri.scheme != "content") {
+        return null
     }
+
+    val contentResolver = context.contentResolver
+    val inputStream = contentResolver.openInputStream(uri)
+    return inputStream?.readBytes()
 }
 
 fun ByteArray?.checkImageNotNull(): ByteArray {
