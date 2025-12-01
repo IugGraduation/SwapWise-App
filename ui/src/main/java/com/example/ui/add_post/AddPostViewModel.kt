@@ -119,9 +119,9 @@ class AddPostViewModel @Inject constructor(
         val newFavoriteChipList =
             if (state.value.data.postItem.favoriteCategoryItems.contains(categoryItem)) {
                 _state.value.data.postItem.favoriteCategoryItems - categoryItem
-        } else {
+            } else {
                 _state.value.data.postItem.favoriteCategoryItems + categoryItem
-        }
+            }
 
         updatePostItem { copy(favoriteCategoryItems = newFavoriteChipList.toMutableList()) }
     }
@@ -163,7 +163,7 @@ class AddPostViewModel @Inject constructor(
                 onActionFail(Exception(stringsResource.invalidCategory))
             }
 
-            else -> onActionFail(throwable)
+            else -> updateFieldError().also { onActionFail(throwable) }
         }
     }
 
