@@ -8,6 +8,6 @@ data class UserDto(
     val id: String? = null,
     @SerialName("image_url")
     val imageUrl: String? = null,
-    @SerialName("name")
     val name: String? = null,
+    val phone: String? = null
 )

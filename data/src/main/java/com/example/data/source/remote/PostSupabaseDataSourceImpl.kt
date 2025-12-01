@@ -45,8 +45,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
                 imageUrl = imageDto.imageUrl,
                 categoryId = categoryId,
                 favoriteCategoryIds = favoriteCategoryIds,
-                userId = supabase.auth.currentUserOrNull()?.id,
-                contactNumber = supabase.auth.currentUserOrNull()?.phone
+                userId = supabase.auth.currentUserOrNull()?.id
             )
         )
     }
