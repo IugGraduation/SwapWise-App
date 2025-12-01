@@ -133,7 +133,7 @@ class ProfileViewModel @Inject constructor(
             is InvalidUsernameException -> updateFieldError(userNameError = stringsResource.invalidUsername)
             is InvalidPhoneNumberException -> updateFieldError(phoneNumberError = stringsResource.invalidPhoneNumber)
             is InvalidLocationException -> updateFieldError(locationError = stringsResource.invalidLocation)
-            else -> updateFieldError()
+            else -> updateFieldError().also { onActionFail(throwable) }
         }
     }
 

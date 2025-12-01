@@ -173,7 +173,7 @@ class EditPostViewModel @Inject constructor(
                 updateFieldError(detailsError = stringsResource.invalidDetails)
             }
 
-            else -> onActionFail(throwable)
+            else -> updateFieldError().also { onActionFail(throwable) }
         }
     }
 
