@@ -47,11 +47,15 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
         if (userId.isNullOrBlank()) return false
 
         val newImageUrl = imageByteArray?.let {
-            supabase.uploadAndGetPublicUrl(
+            val uploadedImage = supabase.uploadAndGetPublicUrl(
                 bucketId = Constants.Supabase.Buckets.userImages,
                 imagePath = "$userId.jpg",
                 imageByteArray = it
-            ).imageUrl
+            )
+            // Appending a unique timestamp is a "cache-busting" technique.
+            // It forces the image loading library (Coil) to treat this as a new URL and
+            // re-download the image, rather than showing a stale version from its cache.
+            "${uploadedImage.imageUrl}?t=${System.currentTimeMillis()}"
         }
 
         supabase.from(Constants.Supabase.Tables.users).update({
