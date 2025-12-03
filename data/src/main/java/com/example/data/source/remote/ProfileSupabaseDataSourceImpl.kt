@@ -43,13 +43,20 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
         imageByteArray: ByteArray?,
         bio: String
     ): Boolean {
-        val userId = supabase.auth.currentUserOrNull()?.id
-        if (userId.isNullOrBlank()) return false
+        val user = supabase.auth.currentUserOrNull()
+        if (user?.id.isNullOrBlank()) return false
+
+        // First, update the auth table if the phone number has changed
+        if (phone != user.phone) {
+            supabase.auth.updateUser {
+                this.phone = phone
+            }
+        }
 
         val newImageUrl = imageByteArray?.let {
             val uploadedImage = supabase.uploadAndGetPublicUrl(
                 bucketId = Constants.Supabase.Buckets.userImages,
-                imagePath = "$userId.jpg",
+                imagePath = "${user.id}.jpg",
                 imageByteArray = it
             )
             // Appending a unique timestamp is a "cache-busting" technique.
@@ -58,6 +65,7 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
             "${uploadedImage.imageUrl}?t=${System.currentTimeMillis()}"
         }
 
+        // Then, update the public users table
         supabase.from(Constants.Supabase.Tables.users).update({
             set(Constants.Supabase.Columns.name, name)
             set(Constants.Supabase.Columns.phone, phone)
@@ -66,7 +74,7 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
             newImageUrl?.let { set(Constants.Supabase.Columns.imageUrl, it) }
         }) {
             filter {
-                eq(Constants.Supabase.Columns.id, userId)
+                eq(Constants.Supabase.Columns.id, user.id)
             }
         }
         return true
