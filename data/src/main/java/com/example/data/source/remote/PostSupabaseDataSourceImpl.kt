@@ -96,7 +96,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(
             filter {
                 eq(Constants.Supabase.Columns.id, postId)
             }
-        } //todo: return id
+        }
     }
 
 }

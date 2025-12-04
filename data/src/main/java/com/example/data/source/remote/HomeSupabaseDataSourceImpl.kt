@@ -23,7 +23,9 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
         val lang = userRepository.getLatestSelectedAppLanguage().first()
         val categories = supabase.getCategories(lang)
 
-        val recentPosts = supabase.getRecentPosts(lang)
+        val recentPosts = supabase.getRecentPosts(lang) {
+            limit(20)
+        }
 
         val categoriesTopicDto = TopicDto(
             topicItemDtos = categories,
@@ -31,14 +33,14 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
             url = "Categories",
         )
 
-        //todo: write top interactive code
+        //todo: write better logic for top interactive
         val topInteractiveTopicDto = TopicDto(
-            topicItemDtos = recentPosts,
+            topicItemDtos = recentPosts.reversed().take(10),
             title = "Top Interactive",
             url = "Top Interactive",
         )
         val recentPostsTopicDto = TopicDto(
-            topicItemDtos = recentPosts,
+            topicItemDtos = recentPosts.take(10),
             title = "Recent Posts",
             url = "Recent Posts",
         )
