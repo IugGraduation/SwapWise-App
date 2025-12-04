@@ -330,7 +330,6 @@ private fun UserInformationSection(
                 verticalArrangement = Arrangement.spacedBy(Spacing8)
             ) {
                 VerticalSpacer(Spacing8)
-                //todo: check if image is being saved correctly in state when clicking save. do same check at post add,edit
                 val context = LocalContext.current
                 SwapWiseFilledButton(
                     onClick = {

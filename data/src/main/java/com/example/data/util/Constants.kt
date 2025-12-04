@@ -37,7 +37,7 @@ object Constants {
 
         object Buckets {
             const val postImages = "post-images"
-            const val userImages = "user-images" //todo: create the bucket
+            const val userImages = "user-images"
         }
     }
 
