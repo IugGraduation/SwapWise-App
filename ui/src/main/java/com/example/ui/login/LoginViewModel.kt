@@ -7,6 +7,7 @@ import com.example.domain.exception.InvalidPhoneException
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
+import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.buffer
@@ -18,6 +19,7 @@ class LoginViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val loginUseCase: LoginUseCase,
+    private val bottomNavigationViewModel: BottomNavigationViewModel,
 ) : BaseViewModel<LoginUiState, LoginEffects>(LoginUiState()), ILoginInteractions {
 
     init {
@@ -47,6 +49,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun navigateToHome() {
+        bottomNavigationViewModel.onItemSelected(0)
         sendUiEffect(LoginEffects.NavigateToHome)
     }
 
@@ -103,4 +106,3 @@ class LoginViewModel @Inject constructor(
         sendUiEffect(LoginEffects.NavigateToSignup)
     }
 }
-

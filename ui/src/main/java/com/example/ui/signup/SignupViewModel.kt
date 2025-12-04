@@ -11,6 +11,7 @@ import com.example.domain.exception.PasswordMismatchException
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
+import com.example.ui.shared.BottomNavigationViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ class SignupViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val signupUseCase: SignupUseCase,
+    private val bottomNavigationViewModel: BottomNavigationViewModel,
 ) : BaseViewModel<SignupUiState, SignupEffects>(SignupUiState()), ISignupInteractions {
 
     init {
@@ -57,6 +59,7 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun navigateToHome() {
+        bottomNavigationViewModel.onItemSelected(0)
         sendUiEffect(SignupEffects.NavigateToHome)
     }
 
@@ -169,4 +172,3 @@ class SignupViewModel @Inject constructor(
     }
 
 }
-
