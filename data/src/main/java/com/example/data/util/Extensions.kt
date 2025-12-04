@@ -6,9 +6,8 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.request.RpcRequestBuilder
 import io.github.jan.supabase.storage.storage
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.encodeToJsonElement
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 suspend fun SupabaseClient.uploadAndGetPublicUrl(
     bucketId: String,
@@ -22,24 +21,24 @@ suspend fun SupabaseClient.uploadAndGetPublicUrl(
     return ImageDto(imageUrl = imageUrl, imagePath = imagePath)
 }
 
-
-suspend fun SupabaseClient.getCategories(): List<PostItemDto> {
+suspend fun SupabaseClient.getCategories(languageCode: String): List<PostItemDto> {
     return postgrest.rpc(
         function = Constants.Supabase.Functions.getCategories,
-        parameters = Json.encodeToJsonElement(
-            //todo: get language from user info, same for anywhere with "en"
-            mapOf(Constants.Supabase.Parameters.languageCode to "en")
-        ) as JsonObject
+        parameters = buildJsonObject {
+            put(Constants.Supabase.Parameters.languageCode, languageCode)
+        }
     ).decodeList<PostItemDto>()
 }
 
-
-suspend fun SupabaseClient.getRecentPosts(request: RpcRequestBuilder.() -> Unit = {}): List<PostItemDto> {
+suspend fun SupabaseClient.getRecentPosts(
+    languageCode: String,
+    request: RpcRequestBuilder.() -> Unit = {}
+): List<PostItemDto> {
     return postgrest.rpc(
         function = Constants.Supabase.Functions.getDetailedPosts,
-        parameters = Json.encodeToJsonElement(
-            mapOf(Constants.Supabase.Parameters.languageCode to "en")
-        ) as JsonObject,
+        parameters = buildJsonObject {
+            put(Constants.Supabase.Parameters.languageCode, languageCode)
+        },
         request = request
     ).decodeList<PostItemDto>()
 }

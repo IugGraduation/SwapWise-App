@@ -2,19 +2,24 @@ package com.example.data.source.remote
 
 import com.example.data.model.request.PostItemRequest
 import com.example.data.model.response.PostItemDto
+import com.example.data.repository.UserRepository
 import com.example.data.util.Constants
 import com.example.data.util.getRecentPosts
 import com.example.data.util.uploadAndGetPublicUrl
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
+import kotlinx.coroutines.flow.first
 import java.util.UUID
 import javax.inject.Inject
 
-class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: SupabaseClient) :
-    PostRemoteDataSource {
+class PostSupabaseDataSourceImpl @Inject constructor(
+    private val supabase: SupabaseClient,
+    private val userRepository: UserRepository
+) : PostRemoteDataSource {
     override suspend fun getPostDetails(postId: String): PostItemDto {
-        return supabase.getRecentPosts {
+        val lang = userRepository.getLatestSelectedAppLanguage().first()
+        return supabase.getRecentPosts(lang) {
             filter {
                 eq(Constants.Supabase.Columns.id, postId)
             }

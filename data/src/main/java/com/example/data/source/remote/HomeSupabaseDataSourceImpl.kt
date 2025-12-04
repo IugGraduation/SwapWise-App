@@ -4,6 +4,7 @@ import com.example.data.model.response.HomeDto
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.TopicDto
 import com.example.data.model.response.UserDto
+import com.example.data.repository.UserRepository
 import com.example.data.util.Constants
 import com.example.data.util.getCategories
 import com.example.data.util.getRecentPosts
@@ -11,15 +12,18 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class HomeSupabaseDataSourceImpl @Inject constructor(
     private val supabase: SupabaseClient,
-    ) : HomeRemoteDataSource{
+    private val userRepository: UserRepository
+) : HomeRemoteDataSource {
     override suspend fun getHomeDto(): HomeDto? {
-        val categories = supabase.getCategories()
+        val lang = userRepository.getLatestSelectedAppLanguage().first()
+        val categories = supabase.getCategories(lang)
 
-        val recentPosts = supabase.getRecentPosts()
+        val recentPosts = supabase.getRecentPosts(lang)
 
         val categoriesTopicDto = TopicDto(
             topicItemDtos = categories,
@@ -52,22 +56,24 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
                 }
             }.decodeSingle<UserDto>()
         return HomeDto(
-            topicDtos = listOf(categoriesTopicDto, topInteractiveTopicDto,recentPostsTopicDto) ,
+            topicDtos = listOf(categoriesTopicDto, topInteractiveTopicDto, recentPostsTopicDto),
             userDto = user
         )
     }
 
 
     override suspend fun seeAll(type: String): List<PostItemDto>? {
+        val lang = userRepository.getLatestSelectedAppLanguage().first()
         return if (type == "Categories") {
-            supabase.getCategories()
+            supabase.getCategories(lang)
         } else {
-            supabase.getRecentPosts()
+            supabase.getRecentPosts(lang)
         }
     }
 
     override suspend fun getPostsFromCategory(categoryId: String): List<PostItemDto>? {
-        return supabase.getRecentPosts {
+        val lang = userRepository.getLatestSelectedAppLanguage().first()
+        return supabase.getRecentPosts(lang) {
             filter {
                 eq(Constants.Supabase.Columns.categoryId, categoryId)
             }
