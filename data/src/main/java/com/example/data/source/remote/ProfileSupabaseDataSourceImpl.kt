@@ -3,15 +3,20 @@ package com.example.data.source.remote
 import com.example.data.model.request.ResetPasswordRequest
 import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.profile.ProfileDto
+import com.example.data.repository.UserRepository
 import com.example.data.util.Constants
 import com.example.data.util.getRecentPosts
 import com.example.data.util.uploadAndGetPublicUrl
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: SupabaseClient) :
+class ProfileSupabaseDataSourceImpl @Inject constructor(
+    private val supabase: SupabaseClient,
+    private val userRepository: UserRepository
+) :
     ProfileRemoteDataSource {
     override suspend fun getCurrentUserDataById(id: String): ProfileDto? {
         return supabase.from(Constants.Supabase.Tables.users)
@@ -24,8 +29,9 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
 
     override suspend fun getCurrentUserPosts(): List<PostItemDto>? {
         val currentUserId = supabase.auth.currentUserOrNull()?.id ?: return emptyList()
+        val lang = userRepository.getLatestSelectedAppLanguage().first()
 
-        return supabase.getRecentPosts {
+        return supabase.getRecentPosts(lang) {
             filter {
                 eq(
                     "${Constants.Supabase.Columns.user}->>${Constants.Supabase.Columns.id}",
@@ -81,7 +87,9 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
     }
 
     override suspend fun resetPassword(request: ResetPasswordRequest) {
-        TODO("Coming Soon")
+        supabase.auth.updateUser {
+            password = request.newPassword
+        }
     }
 
 }
