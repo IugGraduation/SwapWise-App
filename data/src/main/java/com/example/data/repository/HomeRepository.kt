@@ -8,25 +8,30 @@ import com.example.data.model.response.PostItemDto
 import com.example.data.source.remote.HomeRemoteDataSource
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class HomeRepository(
     private val homeRemoteDataSource: HomeRemoteDataSource,
     private val dataStore: DataStore<Preferences>,
+    private val userRepository: UserRepository
 ) {
-    suspend fun getHomeDto() = homeRemoteDataSource.getHomeDto()
+    suspend fun getHomeDto() = homeRemoteDataSource.getHomeDto(getLatestSelectedAppLanguage())
 
-    suspend fun seeAll(url: String) = homeRemoteDataSource.seeAll(url)
+    private suspend fun getLatestSelectedAppLanguage() =
+        userRepository.getLatestSelectedAppLanguage().first()
+
+    suspend fun seeAll(url: String) =
+        homeRemoteDataSource.seeAll(getLatestSelectedAppLanguage(), url)
 
     suspend fun getPostsFromCategory(categoryId: String) =
-        homeRemoteDataSource.getPostsFromCategory(categoryId)
+        homeRemoteDataSource.getPostsFromCategory(getLatestSelectedAppLanguage(), categoryId)
 
     suspend fun getCategories(): List<PostItemDto>? {
         if (checkIsCategoriesStored()) {
             return getCategoriesFromDataStore()
         } else {
-            val categories = homeRemoteDataSource.seeAll("Categories")
+            val lang = getLatestSelectedAppLanguage()
+            val categories = homeRemoteDataSource.seeAll(lang, "Categories")
             saveCategoriesToDataStore(categories ?: emptyList())
             return categories
         }

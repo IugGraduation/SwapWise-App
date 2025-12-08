@@ -5,9 +5,9 @@ import com.example.data.model.response.PostItemDto
 
 interface HomeRemoteDataSource {
 
-    suspend fun getHomeDto(): HomeDto?
+    suspend fun getHomeDto(languageCode: String): HomeDto?
 
-    suspend fun seeAll(type: String): List<PostItemDto>?
+    suspend fun seeAll(languageCode: String, type: String): List<PostItemDto>?
 
-    suspend fun getPostsFromCategory(categoryId: String): List<PostItemDto>?
+    suspend fun getPostsFromCategory(languageCode: String, categoryId: String): List<PostItemDto>?
 }
