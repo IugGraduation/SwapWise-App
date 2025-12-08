@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,13 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
+}
+
+// Read the secrets.properties file at the top level
+val secretsProperties = Properties()
+val secretsPropertiesFile = rootProject.file("secrets.properties")
+if (secretsPropertiesFile.exists()) {
+    secretsProperties.load(secretsPropertiesFile.inputStream())
 }
 
 android {
@@ -19,6 +28,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Use the properties to create BuildConfig fields for ALL build types
+        buildConfigField("String", "SUPABASE_URL", "${secretsProperties.getProperty("supabaseUrl")}")
+        buildConfigField("String", "SUPABASE_KEY", "${secretsProperties.getProperty("supabaseKey")}")
     }
 
     buildTypes {
@@ -29,8 +42,8 @@ android {
                 "proguard-rules.pro"
             )
         }
-
     }
+
     compileOptions {
         // fix for Time.Instant not found, for Supabase
         isCoreLibraryDesugaringEnabled = true
@@ -43,6 +56,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
