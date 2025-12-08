@@ -13,10 +13,14 @@ import javax.inject.Inject
 class SearchSupabaseDataSourceImpl @Inject constructor(
     private val supabase: SupabaseClient,
 ) : SearchRemoteDataSource {
-    override suspend fun search(search: String, categoryIds: List<String>?): List<PostItemDto> {
+    override suspend fun search(
+        languageCode: String,
+        search: String,
+        categoryIds: List<String>?
+    ): List<PostItemDto> {
         val parameters = buildJsonObject {
             put(Constants.Supabase.Parameters.searchText, search)
-            put(Constants.Supabase.Parameters.languageCode, "en")
+            put(Constants.Supabase.Parameters.languageCode, languageCode)
             if (!categoryIds.isNullOrEmpty()) {
                 putJsonArray(Constants.Supabase.Parameters.categoryIdsFilter) {
                     categoryIds.forEach { add(it) }
