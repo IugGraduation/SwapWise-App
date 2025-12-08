@@ -113,7 +113,7 @@
     <string name="confirm_password_cannot_be_empty">Confirm password cannot be empty</string>
     <string name="new_password_cannot_be_the_same">New password cannot be the same as the current password.</string>
     <string name="add">Add</string>
-    <string name="swapwise">SwapWise</string>
+    <string name="swapwise" translatable="false">SwapWise</string>
     <string name="done">Done</string>
-    <string name="english_language_code">en</string>
+    <string name="english_language_code" translatable="false">en</string>
 </resources>

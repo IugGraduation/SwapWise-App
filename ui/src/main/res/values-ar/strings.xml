@@ -103,5 +103,16 @@
     <string name="confirm_password_cannot_be_empty">لا يمكن أن يكون تأكيد كلمة المرور فارغًا</string>
     <string name="new_password_cannot_be_the_same">يجب أن تكون كلمة المرور الجديدة مختلفة عن الحالية</string>
     <string name="done">تم</string>
-    <string name="english_language_code">en</string>
+    <string name="the_email_shouldn_t_be_empty">لا يمكن أن يكون البريد الإلكتروني فارغًا</string>
+    <string name="the_full_name_shouldn_t_be_empty">لا يمكن أن يكون الاسم الكامل فارغًا</string>
+    <string name="field_cont_be_empty">لا يمكن أن يكون الحقل فارغًا</string>
+    <string name="invalid_location">الموقع غير صالح</string>
+    <string name="invalid_new_password">يجب أن تتكون كلمة المرور الجديدة من 8 أحرف على الأقل وتحتوي على حرف كبير وصغير ورقم وحرف خاص.</string>
+    <string name="invalid_confirm_new_password">يجب أن يتكون تأكيد كلمة المرور من 8 أحرف على الأقل ويحتوي على حرف كبير وصغير ورقم وحرف خاص.</string>
+    <string name="invalid_best_barter_spot">أفضل مكان للمقايضة غير صالح</string>
+    <string name="invalid_title">العنوان غير صالح</string>
+    <string name="invalid_place">المكان غير صالح</string>
+    <string name="invalid_details">التفاصيل غير صالحة</string>
+    <string name="categories_you_like">الفئات التي تعجبك</string>
+    <string name="add">إضافة</string>
 </resources>
