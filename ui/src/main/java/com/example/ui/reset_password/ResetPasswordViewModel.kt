@@ -79,8 +79,13 @@ class ResetPasswordViewModel @Inject constructor(
 
 
     private fun onResetPasswordSuccess() {
-        //todo: show dialog with success state
         updateErrorState()
+        updateData { copy(isSuccessDialogVisible = true) }
+    }
+
+    override fun onDismissSuccessDialog() {
+        updateData { copy(isSuccessDialogVisible = false) }
+        sendUiEffect(ResetPasswordEffect.PopUpToPreviousScreen)
     }
 
     private fun onResetPasswordFail(throwable: Throwable) {

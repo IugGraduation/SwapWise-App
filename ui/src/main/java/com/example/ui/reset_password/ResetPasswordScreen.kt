@@ -22,9 +22,10 @@ import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.templates.TitledScreenTemplate
+import com.example.ui.profile.composable.ProfileDialog
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing8
-import com.example.ui.theme.TextStyles.hint
+import com.example.ui.theme.TextStyles
 import com.example.ui.theme.color
 import com.example.ui.util.CollectUiEffect
 import com.example.ui.util.empty
@@ -58,6 +59,15 @@ private fun ResetPasswordContent(
         onClickGoBack = interaction::onPopUpToPreviousScreen,
         baseUiState = state.baseUiState,
     ) {
+        if (state.data.isSuccessDialogVisible) {
+            ProfileDialog(
+                title = "Success",
+                text = "Your password has been changed successfully.",
+                onConfirmButtonClick = interaction::onDismissSuccessDialog,
+                onDismissButtonClick = interaction::onDismissSuccessDialog,
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -118,14 +128,15 @@ private fun LabeledPasswordField(
     errorMessage: String? = String.empty(),
     onVisibilityToggle: () -> Unit, modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-        .padding(horizontal = Spacing16)
-        .background(color = MaterialTheme.color.background),
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(horizontal = Spacing16)
+            .background(color = MaterialTheme.color.background),
         verticalArrangement = Arrangement.spacedBy(Spacing8)
     ) {
-        Text(text = label, style = hint, color = MaterialTheme.color.textPrimary)
+        Text(text = label, style = TextStyles.hint, color = MaterialTheme.color.textPrimary)
         PasswordTextField(
             value = value,
             placeholder = placeholder,
@@ -136,4 +147,3 @@ private fun LabeledPasswordField(
         )
     }
 }
-

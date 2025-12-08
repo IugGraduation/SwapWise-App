@@ -9,7 +9,8 @@ data class ResetPasswordUiState(
     val confirmNewPassword: String = String.empty(),
     val resetPasswordErrorUiState: ResetPasswordErrorUiState = ResetPasswordErrorUiState(),
     val resetPasswordVisibilityUiState: ResetPasswordVisibilityUiState = ResetPasswordVisibilityUiState(),
-    val baseUiState: BaseUiState = BaseUiState()
+    val isSuccessDialogVisible: Boolean = false,
+    val baseUiState: BaseUiState = BaseUiState(),
 )
 
 data class ResetPasswordErrorUiState (
