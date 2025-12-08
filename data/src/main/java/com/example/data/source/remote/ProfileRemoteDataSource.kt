@@ -5,10 +5,9 @@ import com.example.data.model.response.PostItemDto
 import com.example.data.model.response.profile.ProfileDto
 
 interface ProfileRemoteDataSource {
-
     suspend fun getCurrentUserDataById(id: String): ProfileDto?
 
-    suspend fun getCurrentUserPosts(): List<PostItemDto>?
+    suspend fun getCurrentUserPosts(languageCode: String): List<PostItemDto>?
 
     suspend fun updateUserInfo(
         name: String,

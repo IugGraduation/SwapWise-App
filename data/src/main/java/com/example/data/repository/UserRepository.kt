@@ -11,6 +11,7 @@ import com.example.data.model.response.profile.ProfileDto
 import com.example.data.repository.UserRepository.PreferencesKeys.LOCAL_LANGUAGE
 import com.example.data.source.remote.ProfileRemoteDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -24,7 +25,8 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun getCurrentUserPosts(): List<PostItemDto>? {
-        return profileRemoteDataSource.getCurrentUserPosts()
+        val lang = getLatestSelectedAppLanguage().first()
+        return profileRemoteDataSource.getCurrentUserPosts(lang)
     }
 
     suspend fun updateUserInfo(
