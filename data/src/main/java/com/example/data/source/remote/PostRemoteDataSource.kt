@@ -3,8 +3,7 @@ package com.example.data.source.remote
 import com.example.data.model.response.PostItemDto
 
 interface PostRemoteDataSource {
-
-    suspend fun getPostDetails(postId: String): PostItemDto
+    suspend fun getPostDetails(languageCode: String, postId: String): PostItemDto
 
     suspend fun addPost(
         imageByteArray: ByteArray,
@@ -23,9 +22,8 @@ interface PostRemoteDataSource {
         categoryId: String,
         favoriteCategoryIds: List<String>?,
         postId: String,
-        status: String,
+        status: String
     ): Any
 
     suspend fun deletePost(postId: String): Any
-
 }
