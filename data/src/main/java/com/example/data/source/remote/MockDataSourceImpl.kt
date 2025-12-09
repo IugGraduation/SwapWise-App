@@ -9,15 +9,18 @@ import javax.inject.Inject
 class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
     NotificationsRemoteDataSource,
     OfferRemoteDataSource, PostRemoteDataSource, SearchRemoteDataSource {
-    override suspend fun getHomeDto(): HomeDto? {
+    override suspend fun getHomeDto(languageCode: String): HomeDto? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun seeAll(type: String): List<PostItemDto>? {
+    override suspend fun seeAll(languageCode: String, type: String): List<PostItemDto>? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getPostsFromCategory(categoryId: String): List<PostItemDto>? {
+    override suspend fun getPostsFromCategory(
+        languageCode: String,
+        categoryId: String
+    ): List<PostItemDto>? {
         TODO("Not yet implemented")
     }
 
@@ -26,7 +29,7 @@ class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
     }
 
 
-    override suspend fun getPostDetails(postId: String): PostItemDto {
+    override suspend fun getPostDetails(languageCode: String, postId: String): PostItemDto {
         TODO("Not yet implemented")
     }
 
@@ -58,7 +61,11 @@ class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
         TODO("Not yet implemented")
     }
 
-    override suspend fun search(search: String, categoryIds: List<String>?): List<PostItemDto>? {
+    override suspend fun search(
+        languageCode: String,
+        search: String,
+        categoryIds: List<String>?
+    ): List<PostItemDto> {
         TODO("Not yet implemented")
     }
 
