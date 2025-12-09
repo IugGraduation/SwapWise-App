@@ -36,15 +36,21 @@ object RepositoryModule {
     @Provides
     fun provideHomeRepository(
         homeRemoteDataSource: HomeRemoteDataSource,
-        dataStore: DataStore<Preferences>
+        dataStore: DataStore<Preferences>,
+        userRepository: UserRepository
     ) =
-        HomeRepository(homeRemoteDataSource, dataStore)
+        HomeRepository(
+            homeRemoteDataSource, dataStore, userRepository = userRepository
+        )
 
 
     @Singleton
     @Provides
-    fun providePostRepository(postRemoteDataSource: PostRemoteDataSource) =
-        PostRepository(postRemoteDataSource)
+    fun providePostRepository(
+        postRemoteDataSource: PostRemoteDataSource,
+        userRepository: UserRepository
+    ) =
+        PostRepository(postRemoteDataSource, userRepository)
 
     @Singleton
     @Provides
@@ -63,7 +69,10 @@ object RepositoryModule {
     }
 
     @Provides
-    fun provideSearchRepository(searchRemoteDataSource: SearchRemoteDataSource): SearchRepository {
-        return SearchRepository(searchRemoteDataSource)
+    fun provideSearchRepository(
+        searchRemoteDataSource: SearchRemoteDataSource,
+        userRepository: UserRepository
+    ): SearchRepository {
+        return SearchRepository(searchRemoteDataSource, userRepository)
     }
 }
