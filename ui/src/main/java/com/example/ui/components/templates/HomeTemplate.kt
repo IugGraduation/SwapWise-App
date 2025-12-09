@@ -40,7 +40,7 @@ fun HomeTemplate(
     BottomBarTemplate(
         topBar = {
             HomeTopBar(
-                title = "Good Morning \uD83D\uDC4B",
+                title = stringResource(R.string.home_greeting),
                 subtitle = user.name,
                 imagePainter = rememberAsyncImagePainter(user.imageLink),
                 modifier = Modifier.focusable()

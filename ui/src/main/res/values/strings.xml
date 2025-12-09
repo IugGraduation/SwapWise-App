@@ -116,4 +116,5 @@
     <string name="swapwise" translatable="false">SwapWise</string>
     <string name="done">Done</string>
     <string name="english_language_code" translatable="false">en</string>
+    <string name="home_greeting">Hello 👋</string>
 </resources>
