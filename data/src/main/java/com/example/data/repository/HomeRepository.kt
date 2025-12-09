@@ -37,16 +37,21 @@ class HomeRepository(
         }
     }
 
+    suspend fun clearCategoriesCache() {
+        dataStore.edit {
+            it.remove(PreferencesKeys.categories)
+        }
+    }
 
     private suspend fun checkIsCategoriesStored(): Boolean {
         return dataStore.data.map {
-            !it[PreferencesKeys.topics].isNullOrEmpty()
+            !it[PreferencesKeys.categories].isNullOrEmpty()
         }.first()
     }
 
     private suspend fun saveCategoriesToDataStore(topics: List<PostItemDto>) {
         dataStore.edit { preferences ->
-            preferences[PreferencesKeys.topics] = Json.encodeToString(topics)
+            preferences[PreferencesKeys.categories] = Json.encodeToString(topics)
         }
     }
 
@@ -54,7 +59,7 @@ class HomeRepository(
         return dataStore.data.map { preferences ->
             try {
                 Json.decodeFromString<List<PostItemDto>>(
-                    preferences[PreferencesKeys.topics] ?: ""
+                    preferences[PreferencesKeys.categories] ?: ""
                 )
             } catch (e: Exception) {
                 emptyList()
@@ -63,6 +68,6 @@ class HomeRepository(
     }
 
     private object PreferencesKeys {
-        val topics = stringPreferencesKey("topics")
+        val categories = stringPreferencesKey("categories")
     }
 }
