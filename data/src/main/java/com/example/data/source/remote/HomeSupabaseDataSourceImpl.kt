@@ -23,21 +23,27 @@ class HomeSupabaseDataSourceImpl @Inject constructor(
             limit(20)
         }
 
+        //this should be server job, but we will use this for the time being
+        val (categoriesTitle, topInteractiveTitle, recentPostsTitle) = when (languageCode) {
+            "ar" -> Triple("الفئات", "الأكثر تفاعلاً", "أحدث المنشورات")
+            else -> Triple("Categories", "Top Interactive", "Recent Posts")
+        }
+
         val categoriesTopicDto = TopicDto(
             topicItemDtos = categories,
-            title = "Categories",
+            title = categoriesTitle,
             url = "Categories",
         )
 
         //todo: write better logic for top interactive
         val topInteractiveTopicDto = TopicDto(
             topicItemDtos = recentPosts.reversed().take(10),
-            title = "Top Interactive",
+            title = topInteractiveTitle,
             url = "Top Interactive",
         )
         val recentPostsTopicDto = TopicDto(
             topicItemDtos = recentPosts.take(10),
-            title = "Recent Posts",
+            title = recentPostsTitle,
             url = "Recent Posts",
         )
 
