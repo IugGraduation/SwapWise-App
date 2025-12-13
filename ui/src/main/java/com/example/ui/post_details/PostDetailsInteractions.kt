@@ -7,4 +7,7 @@ interface PostDetailsInteractions : INavigateUp {
     fun navigateToAddOffer()
     fun navigateToOfferDetails(offerItem: OfferItem)
     fun navigateToEditPost(postId: String)
+    fun onClickPhoneButton()
+    fun onClickWhatsappButton()
+    fun onClickMessageButton()
 }

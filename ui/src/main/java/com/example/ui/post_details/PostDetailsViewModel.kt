@@ -79,4 +79,16 @@ class PostDetailsViewModel @Inject constructor(
         sendUiEffect(PostDetailsEffects.NavigateUp)
     }
 
+    override fun onClickPhoneButton() {
+        sendUiEffect(PostDetailsEffects.NavigateToPhone)
+    }
+
+    override fun onClickWhatsappButton() {
+        sendUiEffect(PostDetailsEffects.NavigateToWhatsapp)
+    }
+
+    override fun onClickMessageButton() {
+        sendUiEffect(PostDetailsEffects.NavigateToMessages)
+    }
+
 }

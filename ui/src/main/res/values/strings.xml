@@ -117,4 +117,5 @@
     <string name="done">Done</string>
     <string name="english_language_code" translatable="false">en</string>
     <string name="home_greeting">Hello 👋</string>
+    <string name="contact_on_whatsapp">Contact on Whats app</string>
 </resources>
