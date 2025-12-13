@@ -89,7 +89,6 @@ private fun getCard(
                     details = item.details,
                     place = item.place,
                     isOpen = item.isOpen,
-                    offersNumber = item.offers.size.toString(),
                     onCardClick = { onClickGoToDetails(item) },
                     isHorizontalCard = isHorizontal,
                 )
@@ -101,7 +100,6 @@ private fun getCard(
                     title = item.name,
                     details = item.details,
                     place = item.place,
-                    isPostCard = false,
                     isHorizontalCard = isHorizontal,
                     onCardClick = { },
                 )

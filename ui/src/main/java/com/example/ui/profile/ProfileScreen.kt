@@ -366,12 +366,11 @@ private fun UserPostsSection(
                 userImage = rememberAsyncImagePainter(postItem.userImageLink),
                 isOpen = postItem.isThePostOpen,
                 title = postItem.postTitle,
-                isPostCard = false,
                 details = postItem.postDescription,
                 place = postItem.postPlace,
-                offersNumber = postItem.offersNumber.toString(),
                 postImage = rememberAsyncImagePainter(postItem.postImageLink),
-                onCardClick = { profileInteraction.navigateToPostDetails(postItem.id) }
+                onCardClick = { profileInteraction.navigateToPostDetails(postItem.id) },
+                showState = true
             )
 
         }

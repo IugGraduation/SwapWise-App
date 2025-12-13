@@ -3,23 +3,19 @@ package com.example.ui.components.molecules
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,14 +32,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
-import com.example.ui.components.atoms.HorizontalSpacer
-import com.example.ui.theme.ButtonSize32
 import com.example.ui.theme.CardHeight
 import com.example.ui.theme.CardWidth
-import com.example.ui.theme.IconSizeSmall
 import com.example.ui.theme.ImageSize16
-import com.example.ui.theme.Primary
-import com.example.ui.theme.PrimaryOverlay
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
 import com.example.ui.theme.TextStyles
@@ -58,11 +49,9 @@ fun PostCard(
     details: String,
     place: String,
     modifier: Modifier = Modifier,
-    offersNumber: String = "0",
     isOpen: Boolean = true,
-    isPostCard: Boolean = true,
+    showState: Boolean = false,
     isHorizontalCard: Boolean = false,
-    onMakeOfferButtonClick: () -> Unit = {},
     onCardClick: () -> Unit,
 ) {
 
@@ -80,9 +69,11 @@ fun PostCard(
         colors = CardDefaults.cardColors(contentColor = MaterialTheme.color.onBackground)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1.6f)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.4f)
+            ) {
                 Image(
                     modifier = Modifier.fillMaxWidth(),
                     painter = postImage,
@@ -93,23 +84,20 @@ fun PostCard(
                 PostHeaderSection(
                     userImage = userImage,
                     username = username,
-                    isPostCard = isPostCard,
-                    isOpen = isOpen
+                    isOpen = isOpen,
+                    showState = showState
                 )
             }
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.4f)
+                    .weight(1f)
                     .background(color = MaterialTheme.color.onBackground)
             ) {
                 PostInfoSection(
                     title = title,
-                    offersNumber = offersNumber,
                     details = details,
-                    isPostCard = isPostCard,
-                    onMakeOfferButtonClick = onMakeOfferButtonClick,
                 )
             }
         }
@@ -121,8 +109,8 @@ private fun PostHeaderSection(
     userImage: Painter,
     username: String,
     modifier: Modifier = Modifier,
-    isPostCard: Boolean = true,
-    isOpen: Boolean = true
+    isOpen: Boolean = true,
+    showState: Boolean
 ) {
     Row(
         modifier = modifier
@@ -153,17 +141,14 @@ private fun PostHeaderSection(
             )
         }
 
-        AnimatedVisibility(isPostCard) { PostStateRoundedBox(isPostOpen = isOpen) }
+        AnimatedVisibility(visible = showState) { PostStateRoundedBox(isPostOpen = isOpen) }
     }
 }
 
 @Composable
 private fun PostInfoSection(
     title: String,
-    offersNumber: String,
     details: String,
-    isPostCard: Boolean,
-    onMakeOfferButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -176,40 +161,13 @@ private fun PostInfoSection(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(end = Spacing8)
-                    .weight(3f),
+                    .padding(end = Spacing8),
                 text = title,
                 style = TextStyles.headingMedium,
                 color = MaterialTheme.color.textPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.weight(1f))
-            AnimatedVisibility(isPostCard) {
-                BoxRounded(
-                    modifier = Modifier
-                        .wrapContentWidth(),
-                    color = MaterialTheme.color.background
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = Spacing8, vertical = Spacing4),
-                        horizontalArrangement = Arrangement.spacedBy(Spacing4),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_offer),
-                            contentDescription = offersNumber + stringResource(R.string.offers),
-                            modifier = Modifier.size(IconSizeSmall),
-                            tint = MaterialTheme.color.textSecondary
-                        )
-                        Text(
-                            text = offersNumber + " " + stringResource(R.string.offers),
-                            style = TextStyles.captionSmall,
-                            color = MaterialTheme.color.textSecondary
-                        )
-                    }
-                }
-            }
         }
 
         Text(
@@ -221,44 +179,6 @@ private fun PostInfoSection(
             overflow = TextOverflow.Ellipsis
         )
 
-        Spacer(modifier = Modifier.weight(1f))
-
-        AnimatedVisibility(isPostCard) {
-            ButtonMakeOfferBottom(
-                onClick = { onMakeOfferButtonClick() }
-            )
-        }
-    }
-}
-
-@Composable
-private fun ButtonMakeOfferBottom(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Box(
-        modifier = modifier
-            .background(color = PrimaryOverlay)
-            .height(ButtonSize32)
-            .clickable(onClick = onClick)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = Spacing4),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_offer),
-                contentDescription = "",
-                modifier = Modifier.size(IconSizeSmall),
-                tint = Primary
-            )
-            HorizontalSpacer(Spacing4)
-            Text(
-                stringResource(R.string.make_your_offer),
-                style = TextStyles.captionMedium,
-                color = Primary
-            )
-        }
     }
 }
 
@@ -291,10 +211,7 @@ private fun PostCardPreview() {
         title = "Liters of Olive Oil for Trade Liters of Olive Oil for Trade",
         details = "Looking for a sweet deal? I have 10 kilograms of high-quality sugar Liters of Olive Oil for Trade that I’d like to exchange Liters of Olive Oil for Trade Liters of Olive Oil for Trade Liters of Olive Oil for Trade for something useful",
         place = "Gaza",
-        offersNumber = "50",
         postImage = painterResource(R.drawable.img_food_and_beverages),
         isHorizontalCard = true
     ) { }
 }
-
-
