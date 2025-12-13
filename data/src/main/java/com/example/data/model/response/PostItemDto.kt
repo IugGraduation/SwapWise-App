@@ -1,5 +1,6 @@
 package com.example.data.model.response
 
+import com.example.data.util.Constants
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -10,9 +11,10 @@ data class PostItemDto(
     val details: String? = null,
     val place: String? = null,
 //    @SerialName("category_id") val categoryId: String? = null,
-    @SerialName("is_active") val isActive: Boolean? = null,
+    @SerialName(Constants.Supabase.Columns.isActive)
+    val isActive: Boolean? = null,
     @SerialName("created_at") val createdAt: String? = null,
-    @SerialName("image_url") val imageUrl: String? = null,
+    @SerialName(Constants.Supabase.Columns.imageUrl) val imageUrl: String? = null,
     val user: UserDto? = null,
     val category: CategoryItemDto? = null,
     @SerialName("favorite_categories") val favoriteCategories: List<CategoryItemDto?>? = null,

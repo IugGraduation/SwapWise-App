@@ -1,5 +1,6 @@
 package com.example.data.model.response.profile
 
+import com.example.data.util.Constants
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -7,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class ProfileDto(
     val id: String = "",
     val name: String? = null,
-    @SerialName("image_url") val imageUrl: String? = null,
+    @SerialName(Constants.Supabase.Columns.imageUrl) val imageUrl: String? = null,
     val email: String? = null,
     var phone: String? = null,
     var place: String? = null,

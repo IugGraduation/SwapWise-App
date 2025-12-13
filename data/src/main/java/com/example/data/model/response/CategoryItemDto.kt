@@ -1,5 +1,6 @@
 package com.example.data.model.response
 
+import com.example.data.util.Constants
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -7,6 +8,6 @@ import kotlinx.serialization.Serializable
 data class CategoryItemDto(
     val name: String? = null,
     val id: String? = null,
-    @SerialName("image_url") val imageUrl: String? = null,
+    @SerialName(Constants.Supabase.Columns.imageUrl) val imageUrl: String? = null,
 
     )
