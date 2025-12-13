@@ -32,6 +32,7 @@ suspend fun SupabaseClient.getCategories(languageCode: String): List<PostItemDto
 
 suspend fun SupabaseClient.getRecentPosts(
     languageCode: String,
+    showActiveOnly: Boolean = true,
     request: RpcRequestBuilder.() -> Unit = {}
 ): List<PostItemDto> {
     return postgrest.rpc(
@@ -39,6 +40,16 @@ suspend fun SupabaseClient.getRecentPosts(
         parameters = buildJsonObject {
             put(Constants.Supabase.Parameters.languageCode, languageCode)
         },
-        request = request
+        request = {
+            if (showActiveOnly) {
+                filter {
+                    eq(
+                        Constants.Supabase.Columns.isActive, true
+                    )
+                }
+            }
+            // This applies any additional filters passed from the call site
+            request()
+        }
     ).decodeList<PostItemDto>()
 }

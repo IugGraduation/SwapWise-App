@@ -25,7 +25,7 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
     override suspend fun getCurrentUserPosts(languageCode: String): List<PostItemDto>? {
         val currentUserId = supabase.auth.currentUserOrNull()?.id ?: return emptyList()
 
-        return supabase.getRecentPosts(languageCode) {
+        return supabase.getRecentPosts(languageCode = languageCode, showActiveOnly = false) {
             filter {
                 eq(
                     "${Constants.Supabase.Columns.user}->>${Constants.Supabase.Columns.id}",
