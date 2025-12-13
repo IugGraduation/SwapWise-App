@@ -12,7 +12,7 @@ data class TopicsHolder(
 
 fun TopicDto.toTopicsHolder(): TopicsHolder {
     val items = topicItemDtos?.map { topicItemDto ->
-        if (title == "Categories") {
+        if (url == "Categories") {
             CategoryItem.fromPostItemDto(topicItemDto)
         } else {
             topicItemDto.toPostItem()
