@@ -99,7 +99,7 @@ private fun SwapWiseBottomNavigationBar(selectedItem: Int, onClickItem: (itemNum
                 },
                 selected = selectedItem == 1,
                 onClick = { onClickItem(1) },
-                label = { Text("Search") },
+                label = { Text(stringResource(R.string.search)) },
                 alwaysShowLabel = false,
                 colors = navigationBarItemColors
             )
