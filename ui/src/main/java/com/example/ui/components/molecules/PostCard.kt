@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,8 +33,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
+import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.theme.CardHeight
 import com.example.ui.theme.CardWidth
+import com.example.ui.theme.IconSizeSmall
 import com.example.ui.theme.ImageSize16
 import com.example.ui.theme.Spacing4
 import com.example.ui.theme.Spacing8
@@ -92,12 +95,13 @@ fun PostCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .weight(0.95f)
                     .background(color = MaterialTheme.color.onBackground)
             ) {
                 PostInfoSection(
                     title = title,
                     details = details,
+                    place = place
                 )
             }
         }
@@ -149,26 +153,20 @@ private fun PostHeaderSection(
 private fun PostInfoSection(
     title: String,
     details: String,
+    place: String,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Spacing8),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        VerticalSpacer(Spacing8)
             Text(
                 modifier = Modifier
-                    .padding(end = Spacing8),
+                    .padding(horizontal = Spacing8),
                 text = title,
                 style = TextStyles.headingMedium,
                 color = MaterialTheme.color.textPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-        }
 
         Text(
             modifier = Modifier.padding(horizontal = Spacing8),
@@ -178,6 +176,26 @@ private fun PostInfoSection(
             color = MaterialTheme.color.textSecondary,
             overflow = TextOverflow.Ellipsis
         )
+
+        VerticalSpacer(Spacing8)
+
+        Row(
+            modifier = Modifier.padding(horizontal = Spacing8, vertical = Spacing4),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(Spacing4)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_location),
+                contentDescription = place,
+                tint = MaterialTheme.color.textTertiary,
+                modifier = Modifier.size(IconSizeSmall)
+            )
+            Text(
+                text = place,
+                style = TextStyles.captionLarge,
+                color = MaterialTheme.color.textTertiary
+            )
+        }
 
     }
 }
