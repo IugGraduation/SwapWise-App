@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.exception.InvalidLocationException
 import com.example.domain.exception.InvalidPhoneNumberException
 import com.example.domain.exception.InvalidUsernameException
+import com.example.domain.location.GetLocationsUseCase
+import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.domain.profile.GetCurrentUserDataUseCase
@@ -28,6 +30,7 @@ class ProfileViewModel @Inject constructor(
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
     private val logoutUseCase: LogoutUseCase,
+    private val getLocationsUseCase: GetLocationsUseCase
 ) : BaseViewModel<ProfileUiState, ProfileEffect>(ProfileUiState()), ProfileInteraction {
 
     private lateinit var originalProfileInformation: ProfileInformationUiState
@@ -35,13 +38,35 @@ class ProfileViewModel @Inject constructor(
     init {
         viewModelScope.launch { isDarkTheme() }
         getLastSelectedAppLanguage()
-        getCurrentUserInfo()
+        getLocationsAndThenCurrentUserInfo()
         getCurrentUserPosts()
+    }
+
+    private fun getLocationsAndThenCurrentUserInfo() {
+        tryToExecute(
+            call = { getLocationsUseCase() },
+            onSuccess = { locations ->
+                updateData {
+                    copy(
+                        profileInformationUiState = profileInformationUiState.copy(
+                            locations = locations
+                        )
+                    )
+                }
+                getCurrentUserInfo()
+            },
+            onError = {
+                // If locations fail to load, still get user info
+                getCurrentUserInfo()
+            },
+            shouldLoad = true,
+            shouldHideContent = true
+        )
     }
 
     private fun getLastSelectedAppLanguage() {
         viewModelScope.launch {
-            customizeProfileSettings.getLatestSelectedAppLanguage().collect(){ language ->
+            customizeProfileSettings.getLatestSelectedAppLanguage().collect { language ->
                 updateData { copy(profileSettingsUiState = profileSettingsUiState.copy(lastAppLanguage = language)) }
             }
         }
@@ -51,14 +76,20 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             call = { getCurrentUserDataUseCase(getCurrentUserDataUseCase.getCurrentUserId()).toProfileUiState() },
             onSuccess = ::onGetCurrentUserSuccess,
-            shouldLoad = true,
-            shouldHideContent = true
+            shouldLoad = _state.value.data.profileInformationUiState.name.isBlank(),
+            shouldHideContent = _state.value.data.profileInformationUiState.name.isBlank(),
         )
     }
 
     private fun onGetCurrentUserSuccess(user: ProfileUiState) {
-        updateData { copy(profileInformationUiState = user.profileInformationUiState) }
-        originalProfileInformation = user.profileInformationUiState
+        val userLocationName = user.profileInformationUiState.location?.name
+        val fullLocationObject =
+            _state.value.data.profileInformationUiState.locations.find { it.name == userLocationName }
+
+        val updatedProfileInfo = user.profileInformationUiState.copy(location = fullLocationObject)
+
+        updateData { copy(profileInformationUiState = updatedProfileInfo) }
+        originalProfileInformation = updatedProfileInfo
     }
 
     private fun getCurrentUserPosts() {
@@ -71,7 +102,6 @@ class ProfileViewModel @Inject constructor(
     private fun onGetCurrentUserPostsSuccess(postItems: List<PostItem>) {
         updateData { copy(userPosts = postItems.map { it.toPostItemUIState() }) }
     }
-
 
     override fun onUpdateProfileImage(imageUri: Uri) {
         updateData {
@@ -90,8 +120,9 @@ class ProfileViewModel @Inject constructor(
     override fun onPhoneNumberChange(newNumber: String) =
         updateProfileField { copy(phone = newNumber) }
 
-    override fun onLocationChange(location: String) =
+    override fun onLocationChange(location: LocationItem) {
         updateProfileField { copy(location = location) }
+    }
 
     override fun onBioChange(bio: String) = updateProfileField { copy(bio = bio) }
 
@@ -112,7 +143,7 @@ class ProfileViewModel @Inject constructor(
                 updateUserInfoUseCase(
                     name = lastUserInfo.name,
                     phone = lastUserInfo.phone,
-                    location = lastUserInfo.location,
+                    location = lastUserInfo.location?.id ?: "",
                     imageByteArray = imageByteArray,
                     bio = lastUserInfo.bio
                 )
@@ -151,9 +182,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun onLogoutSuccess() = sendUiEffect(ProfileEffect.NavigateToLoginScreen)
 
-
     override fun onResetPasswordClicked() = sendUiEffect(ProfileEffect.NavigateToResetPassword)
-
 
     override fun updateLanguageDialogState(showDialog: Boolean) {
         updateData {
@@ -250,5 +279,4 @@ class ProfileViewModel @Inject constructor(
             copy(pagerNumber = currentPage)
         }
     }
-
 }

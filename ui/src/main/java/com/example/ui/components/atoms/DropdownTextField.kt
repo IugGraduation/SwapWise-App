@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -51,7 +50,8 @@ fun <T> DropdownTextField(
                         true -> Icons.Default.KeyboardArrowUp
                         else -> Icons.Default.ArrowDropDown
                     },
-                    contentDescription = ""
+                    contentDescription = "",
+                    tint = MaterialTheme.color.textTertiary
                 )
             },
             modifier = Modifier.clickable { expanded = !expanded },

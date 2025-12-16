@@ -38,8 +38,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
+import com.example.domain.model.LocationItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState
+import com.example.ui.components.atoms.DropdownTextField
 import com.example.ui.components.atoms.MultiChoiceDialog
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
@@ -292,16 +294,17 @@ private fun UserInformationSection(
             }
         )
 
-        SwapWiseTextField(
-            value = state.profileInformationUiState.location,
+        DropdownTextField(
+            selectedValue = state.profileInformationUiState.location,
+            options = state.profileInformationUiState.locations,
             onValueChange = profileInteraction::onLocationChange,
-            isEditable = isUserInfoEditable,
             placeholder = stringResource(R.string.best_barter_spot),
+            valueToString = { it.name },
             errorMessage = state.profileError.locationErrorMessage,
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_location),
-                    contentDescription = state.profileInformationUiState.location,
+                    contentDescription = stringResource(R.string.best_barter_spot),
                     tint = MaterialTheme.color.textTertiary
                 )
             }
@@ -437,7 +440,7 @@ fun PreviewPostDetailsContent() {
                 override fun onEditButtonClicked() {}
                 override fun onUsernameChange(newName: String) {}
                 override fun onPhoneNumberChange(newNumber: String) {}
-                override fun onLocationChange(location: String) {}
+                override fun onLocationChange(location: LocationItem) {}
                 override fun onBioChange(bio: String) {}
                 override fun onCancelButtonClicked() {}
                 override fun onSaveButtonClicked(imageByteArray: ByteArray?) {}

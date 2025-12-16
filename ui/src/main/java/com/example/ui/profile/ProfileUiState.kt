@@ -1,5 +1,6 @@
 package com.example.ui.profile
 
+import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
 import com.example.domain.model.User
 import com.example.ui.base.BaseUiState
@@ -12,7 +13,7 @@ data class ProfileUiState(
     val profileSettingsUiState: ProfileSettingsUiState = ProfileSettingsUiState(),
     val pagerNumber: Int = 0,
     val profileError: ProfileErrorUiState = ProfileErrorUiState(),
-    val baseUiState: BaseUiState = BaseUiState()
+    val baseUiState: BaseUiState = BaseUiState(),
 )
 
 data class ProfileInformationUiState(
@@ -20,7 +21,8 @@ data class ProfileInformationUiState(
     val name: String = String.empty(),
     val phone: String = String.empty(),
     val postsNumber: String = String.empty(),
-    val location: String = String.empty(),
+    val location: LocationItem? = null,
+    val locations: List<LocationItem> = emptyList(),
     val bio: String = String.empty(),
     val offersNumber: String = String.empty(),
     val exchangesNumber: String = String.empty(),
@@ -65,7 +67,7 @@ fun User.toProfileUiState(): ProfileUiState {
             name = this.name,
             phone = this.phone,
             postsNumber = this.postsNumber.toString(),
-            location = this.place,
+            location = LocationItem(name = this.place),
             bio = this.bio,
             offersNumber = this.offersNumber.toString(),
         )
@@ -84,5 +86,3 @@ fun PostItem.toPostItemUIState(): PostItemUiState {
         offersNumber = this.offers.size
     )
 }
-
-
