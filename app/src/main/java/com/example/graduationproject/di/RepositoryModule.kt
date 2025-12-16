@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.example.data.repository.AuthRepository
 import com.example.data.repository.HomeRepository
+import com.example.data.repository.LocationRepository
 import com.example.data.repository.OfferRepository
 import com.example.data.repository.PostRepository
 import com.example.data.repository.SearchRepository
@@ -11,6 +12,7 @@ import com.example.data.repository.UserRepository
 import com.example.data.source.local.AuthLocalDataSource
 import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.HomeRemoteDataSource
+import com.example.data.source.remote.LocationRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import com.example.data.source.remote.ProfileRemoteDataSource
@@ -40,7 +42,7 @@ object RepositoryModule {
         userRepository: UserRepository
     ) =
         HomeRepository(
-            homeRemoteDataSource, dataStore, userRepository = userRepository
+            homeRemoteDataSource, dataStore, userRepository
         )
 
 
@@ -74,5 +76,11 @@ object RepositoryModule {
         userRepository: UserRepository
     ): SearchRepository {
         return SearchRepository(searchRemoteDataSource, userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationRepository(locationRemoteDataSource: LocationRemoteDataSource): LocationRepository {
+        return LocationRepository(locationRemoteDataSource)
     }
 }

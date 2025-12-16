@@ -1,6 +1,7 @@
 package com.example.data.util
 
 import com.example.data.model.response.ImageDto
+import com.example.data.model.response.LocationItemDto
 import com.example.data.model.response.PostItemDto
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.postgrest
@@ -28,6 +29,15 @@ suspend fun SupabaseClient.getCategories(languageCode: String): List<PostItemDto
             put(Constants.Supabase.Parameters.languageCode, languageCode)
         }
     ).decodeList<PostItemDto>()
+}
+
+suspend fun SupabaseClient.getLocations(languageCode: String): List<LocationItemDto> {
+    return postgrest.rpc(
+        function = Constants.Supabase.Functions.getLocations,
+        parameters = buildJsonObject {
+            put(Constants.Supabase.Parameters.languageCode, languageCode)
+        }
+    ).decodeList<LocationItemDto>()
 }
 
 suspend fun SupabaseClient.getRecentPosts(

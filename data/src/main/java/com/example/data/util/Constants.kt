@@ -13,6 +13,7 @@ object Constants {
             const val getCategories = "get_categories"
             const val getDetailedPosts = "get_detailed_posts"
             const val searchPosts = "search_posts"
+            const val getLocations = "get_locations"
         }
 
         object Parameters {

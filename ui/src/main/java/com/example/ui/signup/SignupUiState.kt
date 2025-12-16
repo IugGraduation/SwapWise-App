@@ -1,11 +1,14 @@
 package com.example.ui.signup
 
+import com.example.domain.model.LocationItem
+
 data class SignupUiState(
     val fullName: String = "",
     val phone: String = "",
     val password: String = "",
     val confirmPassword: String = "",
-    val bestBarterSpot: String = "",
+    val locations: List<LocationItem> = emptyList(),
+    val bestBarterSpot: LocationItem? = null,
     val bio: String = "",
     val isPasswordVisible: Boolean = false,
     val isConfirmPasswordVisible: Boolean = false,

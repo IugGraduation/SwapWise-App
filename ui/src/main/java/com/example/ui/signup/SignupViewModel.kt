@@ -8,6 +8,8 @@ import com.example.domain.exception.InvalidFullNameException
 import com.example.domain.exception.InvalidPasswordException
 import com.example.domain.exception.InvalidPhoneException
 import com.example.domain.exception.PasswordMismatchException
+import com.example.domain.location.GetLocationsUseCase
+import com.example.domain.model.LocationItem
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
@@ -21,12 +23,16 @@ import javax.inject.Inject
 class SignupViewModel @Inject constructor(
     private val stringsResource: StringsResource,
     private val customizeProfileSettings: CustomizeProfileSettingsUseCase,
+    private val getLocationsUseCase: GetLocationsUseCase,
     private val signupUseCase: SignupUseCase,
     private val bottomNavigationViewModel: BottomNavigationViewModel,
 ) : BaseViewModel<SignupUiState, SignupEffects>(SignupUiState()), ISignupInteractions {
 
     init {
-        viewModelScope.launch { isDarkTheme() }
+        viewModelScope.launch {
+            isDarkTheme()
+            getLocations()
+        }
     }
 
     private suspend fun isDarkTheme() {
@@ -35,6 +41,14 @@ class SignupViewModel @Inject constructor(
                 copy(isDarkTheme = isDark)
             }
         }
+    }
+
+    private fun getLocations() {
+        tryToExecute(
+            call = { getLocationsUseCase() },
+            onSuccess = { locations -> updateData { copy(locations = locations) } },
+            shouldLoad = false
+        )
     }
 
 
@@ -46,7 +60,7 @@ class SignupViewModel @Inject constructor(
                     phone = state.value.data.phone,
                     password = state.value.data.password,
                     confirmPassword = state.value.data.confirmPassword,
-                    bestBarterSpot = state.value.data.bestBarterSpot,
+                    bestBarterSpot = state.value.data.bestBarterSpot?.id.orEmpty(),
                 )
             },
             onSuccess = { navigateToHome() },
@@ -157,11 +171,9 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    override fun onBestBarterSpotChange(newValue: String) {
+    override fun onBestBarterSpotChange(newValue: LocationItem) {
         updateFieldError()
-        updateData {
-            copy(bestBarterSpot = newValue)
-        }
+        updateData { copy(bestBarterSpot = newValue) }
     }
 
     override fun onBioChange(newValue: String) {

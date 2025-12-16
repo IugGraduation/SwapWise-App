@@ -26,8 +26,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.domain.model.LocationItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState
+import com.example.ui.components.atoms.DropdownTextField
 import com.example.ui.components.atoms.Header
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -172,20 +174,20 @@ fun SignupForm(
             keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
             errorMessage = state.signupError.confirmPasswordError
         )
-        SwapWiseTextField(
-            value = state.bestBarterSpot,
+        DropdownTextField(
+            selectedValue = state.bestBarterSpot,
+            options = state.locations,
             onValueChange = signupInteractions::onBestBarterSpotChange,
             placeholder = stringResource(R.string.best_barter_spot),
+            valueToString = { it.name },
+            errorMessage = state.signupError.bestBarterSpotError,
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_location),
                     contentDescription = stringResource(R.string.best_barter_spot),
                     tint = MaterialTheme.color.textTertiary
                 )
-            },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-            errorMessage = state.signupError.bestBarterSpotError
+            }
         )
         SwapWiseTextField(
             value = state.bio,
@@ -213,13 +215,20 @@ fun SignupForm(
 fun PreviewSignupContent() {
     GraduationProjectTheme {
         SignupContent(
-            state = MyUiState(SignupUiState()),
+            state = MyUiState(
+                SignupUiState(
+                    locations = listOf(
+                        LocationItem(name = "Gaza"),
+                        LocationItem(name = "London")
+                    )
+                )
+            ),
             signupInteractions = object : ISignupInteractions {
                 override fun onFullNameChange(newValue: String) {}
                 override fun onPhoneChange(newValue: String) {}
                 override fun onPasswordChange(newValue: String) {}
                 override fun onConfirmPasswordChange(newValue: String) {}
-                override fun onBestBarterSpotChange(newValue: String) {}
+                override fun onBestBarterSpotChange(newValue: LocationItem) {}
                 override fun onBioChange(newValue: String) {}
                 override fun togglePasswordVisibility() {}
                 override fun toggleConfirmPasswordVisibility() {}

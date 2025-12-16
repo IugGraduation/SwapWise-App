@@ -4,6 +4,8 @@ import com.example.data.source.remote.AuthRemoteDataSource
 import com.example.data.source.remote.AuthSupabaseDataSourceImpl
 import com.example.data.source.remote.HomeRemoteDataSource
 import com.example.data.source.remote.HomeSupabaseDataSourceImpl
+import com.example.data.source.remote.LocationRemoteDataSource
+import com.example.data.source.remote.LocationSupabaseDataSourceImpl
 import com.example.data.source.remote.MockDataSourceImpl
 import com.example.data.source.remote.NotificationsRemoteDataSource
 import com.example.data.source.remote.OfferRemoteDataSource
@@ -49,6 +51,10 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun provideNotificationsRemoteDataSource(mockDataSourceImpl: MockDataSourceImpl): NotificationsRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun provideLocationRemoteDataSource(locationSupabaseDataSourceImpl: LocationSupabaseDataSourceImpl): LocationRemoteDataSource
 
 
 }
