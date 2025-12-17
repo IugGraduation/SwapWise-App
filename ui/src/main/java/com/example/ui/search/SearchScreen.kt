@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.category.GetFakeCategoriesUseCase
+import com.example.domain.model.CategoryItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.CustomLazyLayout
@@ -113,7 +114,15 @@ fun SearchContent(
             modifier = Modifier.padding(horizontal = Spacing16)
         )
         VerticalSpacer(Spacing8)
-        TitledChipsList(chipsList = state.data.filterChipsList)
+        TitledChipsList(
+            title = stringResource(id = R.string.categories),
+            chipsList = state.data.categoryFilterChipsList
+        )
+        VerticalSpacer(Spacing8)
+        TitledChipsList(
+            title = stringResource(id = R.string.location),
+            chipsList = state.data.locationFilterChipsList
+        )
         VerticalSpacer(Spacing16)
         if (state.baseUiState.isLoading) {
             LoadingContent()
@@ -173,11 +182,13 @@ private fun LoadingContent() {
 fun PreviewSearchContent() {
     GraduationProjectTheme {
         val searchUiState = SearchUiState(
-//            topicsList = GetFakePostsUseCase()(),
-            filterChipsList = GetFakeCategoriesUseCase()().map {
-                ChipUiState(categoryItem = it, onClick = { })
+            categoryFilterChipsList = GetFakeCategoriesUseCase()().map {
+                ChipUiState(categoryItem = CategoryItem(name = it.name, id = it.id))
             },
-//            isLoading = true,
+            locationFilterChipsList = listOf(
+                ChipUiState(CategoryItem(name = "Gaza")),
+                ChipUiState(CategoryItem(name = "London"))
+            )
         )
         SearchContent(
             state = MyUiState(searchUiState),

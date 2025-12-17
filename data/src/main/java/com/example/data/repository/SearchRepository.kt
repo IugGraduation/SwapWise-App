@@ -8,10 +8,15 @@ class SearchRepository(
     private val userRepository: UserRepository
 ) {
 
-    suspend fun search(search: String, categoriesIds: List<String>?) =
+    suspend fun search(
+        search: String,
+        categoryIdsFilter: List<String>,
+        locationIdsFilter: List<String>
+    ) =
         searchRemoteDataSource.search(
             languageCode = userRepository.getLatestSelectedAppLanguage().first(),
-            search = search,
-            categoryIds = categoriesIds,
+            searchText = search,
+            categoryIdsFilter = categoryIdsFilter,
+            locationIdsFilter = locationIdsFilter,
         )
 }

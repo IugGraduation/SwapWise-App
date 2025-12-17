@@ -3,7 +3,9 @@ package com.example.ui.search
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.domain.category.GetCategoriesUseCase
+import com.example.domain.location.GetLocationsUseCase
 import com.example.domain.model.CategoryItem
+import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
 import com.example.domain.search.GetSearchResultUseCase
 import com.example.ui.base.BaseViewModel
@@ -21,33 +23,58 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getLocationsUseCase: GetLocationsUseCase,
 ) : BaseViewModel<SearchUiState, SearchEffects>(SearchUiState()), ISearchInteractions {
 
     init {
-        prepareChipsList()
+        prepareCategoryChips()
+        prepareLocationChips()
         viewModelScope.launch {
             _state.map { it.data.search }.debounce(500L).distinctUntilChanged()
                 .collect { if (it.isNotBlank()) search() }
         }
     }
 
-    private fun prepareChipsList() {
+    private fun prepareCategoryChips() {
         tryToExecute(
             call = { getCategoriesUseCase() },
-            onSuccess = ::onGetChipsDataSuccess,
+            onSuccess = ::onGetCategoryChipsSuccess,
         )
     }
 
-    private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
-        val chipsList = List(categoryItems.size) { index ->
+    private fun onGetCategoryChipsSuccess(categoryItems: List<CategoryItem>) {
+        val chipsList = categoryItems.map { category ->
             ChipUiState(
-                categoryItem = categoryItems[index],
+                categoryItem = category,
                 selected = mutableStateOf(false),
                 onClick = { search() }
             )
         }
         updateData {
-            copy(filterChipsList = chipsList)
+            copy(categoryFilterChipsList = chipsList)
+        }
+    }
+
+    private fun prepareLocationChips() {
+        tryToExecute(
+            call = { getLocationsUseCase() },
+            onSuccess = ::onGetLocationChipsSuccess,
+        )
+    }
+
+    private fun onGetLocationChipsSuccess(locations: List<LocationItem>) {
+        val chipsList = locations.map { location ->
+            ChipUiState(
+                categoryItem = CategoryItem(
+                    id = location.id,
+                    name = location.name,
+                ),
+                selected = mutableStateOf(false),
+                onClick = { search() }
+            )
+        }
+        updateData {
+            copy(locationFilterChipsList = chipsList)
         }
     }
 
@@ -57,11 +84,18 @@ class SearchViewModel @Inject constructor(
         tryToExecute(
             call = {
                 updateErrorMessage()
-                updateData {
-                    copy(topicsList = listOf())
-                }
-                val filterChips = _state.value.data.filterChipsList.map { it.toChip() }
-                getSearchResultUseCase(_state.value.data.search, filterChips)
+                updateData { copy(topicsList = listOf()) }
+                val categoryIds =
+                    _state.value.data.categoryFilterChipsList.filter { it.selected.value }
+                        .map { it.categoryItem.id }
+                val locationIds =
+                    _state.value.data.locationFilterChipsList.filter { it.selected.value }
+                        .map { it.categoryItem.id }
+                getSearchResultUseCase(
+                    searchValue = _state.value.data.search,
+                    categoryIdsFilter = categoryIds,
+                    locationIdsFilter = locationIds
+                )
             },
             onSuccess = ::onSearchSuccess,
             onError = ::onSearchFail

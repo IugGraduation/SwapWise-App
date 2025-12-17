@@ -5,7 +5,8 @@ import com.example.data.model.response.PostItemDto
 interface SearchRemoteDataSource {
     suspend fun search(
         languageCode: String,
-        search: String,
-        categoryIds: List<String>?
+        searchText: String,
+        categoryIdsFilter: List<String>,
+        locationIdsFilter: List<String>,
     ): List<PostItemDto>
 }

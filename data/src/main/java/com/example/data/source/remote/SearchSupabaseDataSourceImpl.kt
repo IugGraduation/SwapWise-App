@@ -15,18 +15,25 @@ class SearchSupabaseDataSourceImpl @Inject constructor(
 ) : SearchRemoteDataSource {
     override suspend fun search(
         languageCode: String,
-        search: String,
-        categoryIds: List<String>?
+        searchText: String,
+        categoryIdsFilter: List<String>,
+        locationIdsFilter: List<String>
     ): List<PostItemDto> {
         val parameters = buildJsonObject {
-            put(Constants.Supabase.Parameters.searchText, search)
+            put(Constants.Supabase.Parameters.searchText, searchText)
             put(Constants.Supabase.Parameters.languageCode, languageCode)
-            if (!categoryIds.isNullOrEmpty()) {
+            if (categoryIdsFilter.isNotEmpty()) {
                 putJsonArray(Constants.Supabase.Parameters.categoryIdsFilter) {
-                    categoryIds.forEach { add(it) }
+                    categoryIdsFilter.forEach { add(it) }
+                }
+            }
+            if (locationIdsFilter.isNotEmpty()) {
+                putJsonArray(Constants.Supabase.Parameters.locationIdsFilter) {
+                    locationIdsFilter.forEach { add(it) }
                 }
             }
         }
+
 
         return supabase.postgrest.rpc(
             function = Constants.Supabase.Functions.searchPosts,

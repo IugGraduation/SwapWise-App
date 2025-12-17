@@ -20,6 +20,7 @@ object Constants {
             const val languageCode = "language_code"
             const val searchText = "search_text"
             const val categoryIdsFilter = "category_ids_filter"
+            const val locationIdsFilter = "location_ids_filter"
         }
 
         object Columns {

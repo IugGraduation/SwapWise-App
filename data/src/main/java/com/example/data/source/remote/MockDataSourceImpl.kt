@@ -63,8 +63,9 @@ class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
 
     override suspend fun search(
         languageCode: String,
-        search: String,
-        categoryIds: List<String>?
+        searchText: String,
+        categoryIdsFilter: List<String>,
+        locationIdsFilter: List<String>
     ): List<PostItemDto> {
         TODO("Not yet implemented")
     }
