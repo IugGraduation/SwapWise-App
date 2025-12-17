@@ -82,11 +82,12 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onGetCurrentUserSuccess(user: ProfileUiState) {
-        val userLocationName = user.profileInformationUiState.location?.name
+        val userLocationName = user.profileInformationUiState.locationItem?.name
         val fullLocationObject =
             _state.value.data.profileInformationUiState.locations.find { it.name == userLocationName }
 
-        val updatedProfileInfo = user.profileInformationUiState.copy(location = fullLocationObject)
+        val updatedProfileInfo =
+            user.profileInformationUiState.copy(locationItem = fullLocationObject)
 
         updateData { copy(profileInformationUiState = updatedProfileInfo) }
         originalProfileInformation = updatedProfileInfo
@@ -121,7 +122,7 @@ class ProfileViewModel @Inject constructor(
         updateProfileField { copy(phone = newNumber) }
 
     override fun onLocationChange(location: LocationItem) {
-        updateProfileField { copy(location = location) }
+        updateProfileField { copy(locationItem = location) }
     }
 
     override fun onBioChange(bio: String) = updateProfileField { copy(bio = bio) }
@@ -143,7 +144,7 @@ class ProfileViewModel @Inject constructor(
                 updateUserInfoUseCase(
                     name = lastUserInfo.name,
                     phone = lastUserInfo.phone,
-                    location = lastUserInfo.location?.id ?: "",
+                    location = lastUserInfo.locationItem?.id ?: "",
                     imageByteArray = imageByteArray,
                     bio = lastUserInfo.bio
                 )

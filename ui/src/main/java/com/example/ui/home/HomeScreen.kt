@@ -191,7 +191,7 @@ fun HomeContent(
                     username = item.user.name,
                     title = item.name,
                     details = item.details,
-                    place = item.place,
+                    location = item.locationItem.name,
                     isOpen = item.isOpen,
                     onCardClick = {
                         homeInteractions.onClickGoToDetails(item)

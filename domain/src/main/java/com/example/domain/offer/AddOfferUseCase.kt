@@ -18,7 +18,7 @@ class AddOfferUseCase @Inject constructor(
     ) {
         validateOfferUseCase(
             title = offerItem.name,
-            place = offerItem.place,
+            locationId = offerItem.place,
             details = offerItem.details,
             categoryId = "TODO()"
         )

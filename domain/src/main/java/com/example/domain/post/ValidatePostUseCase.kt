@@ -9,12 +9,12 @@ import javax.inject.Inject
 class ValidatePostUseCase @Inject constructor() {
     operator fun invoke(
         title: String,
-        place: String,
+        locationId: String,
         details: String,
         categoryId: String
     ) {
         validateTitle(title)
-        validatePlace(place)
+        validateLocation(locationId)
         validateDetails(details)
         validateCategory(categoryId)
     }
@@ -24,7 +24,7 @@ private fun validateTitle(input: String) {
     if (input.length < 3) throw InvalidTitleException()
 }
 
-private fun validatePlace(input: String) {
+private fun validateLocation(input: String) {
     if (input.length < 3) throw InvalidPlaceException()
 }
 

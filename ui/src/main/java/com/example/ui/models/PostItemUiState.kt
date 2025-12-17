@@ -1,9 +1,11 @@
 package com.example.ui.models
 
+import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
 
 data class PostItemUiState(
     val postItem: PostItem = PostItem(),
+    val locations: List<LocationItem> = emptyList(),
     val chipsList: List<ChipUiState> = listOf(),
     val favoriteChipsList: List<ChipUiState> = listOf(),
     val showEditPostButton: Boolean = false,
@@ -13,7 +15,7 @@ data class PostItemUiState(
 data class PostErrorUiState(
     val imageError: String = "",
     val titleError: String = "",
-    val placeError: String = "",
+    val locationError: String = "",
     val detailsError: String = "",
     val categoryError: String = "",
 )

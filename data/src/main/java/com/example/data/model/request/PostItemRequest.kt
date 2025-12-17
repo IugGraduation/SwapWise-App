@@ -11,10 +11,10 @@ data class PostItemRequest(
     val name: String? = null,
     @SerialName("details")
     val details: String? = null,
-    @SerialName("place")
-    val place: String? = null,
     @SerialName("image_url")
     val imageUrl: String? = null,
+    @SerialName("location_id")
+    val locationId: String? = null,
     @SerialName("category_id")
     val categoryId: String? = null,
     @SerialName("favorite_category_ids")

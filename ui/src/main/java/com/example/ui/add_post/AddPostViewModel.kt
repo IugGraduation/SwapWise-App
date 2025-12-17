@@ -9,7 +9,9 @@ import com.example.domain.exception.InvalidCategoryException
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
+import com.example.domain.location.GetLocationsUseCase
 import com.example.domain.model.CategoryItem
+import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
 import com.example.domain.post.AddPostUseCase
 import com.example.ui.base.BaseViewModel
@@ -28,7 +30,7 @@ class AddPostViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
     private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val addPostUseCase: AddPostUseCase,
+    private val addPostUseCase: AddPostUseCase, private val getLocationsUseCase: GetLocationsUseCase
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IAddPostInteractions {
     private val args = AddPostArgs(savedStateHandle)
 
@@ -39,7 +41,15 @@ class AddPostViewModel @Inject constructor(
 
     init {
         updatePostItem { copy(name = args.postTitle) }
+        getLocations()
         prepareChipsList()
+    }
+
+    private fun getLocations() {
+        tryToExecute(
+            call = { getLocationsUseCase() },
+            onSuccess = { locations -> updateData { copy(locations = locations) } },
+        )
     }
 
     private fun prepareChipsList() {
@@ -84,7 +94,7 @@ class AddPostViewModel @Inject constructor(
             copy(
                 postError = PostErrorUiState(
                     titleError = titleError,
-                    placeError = placeError,
+                    locationError = placeError,
                     detailsError = detailsError,
                 )
             )
@@ -101,9 +111,9 @@ class AddPostViewModel @Inject constructor(
         updatePostItem { copy(details = details) }
     }
 
-    override fun onPlaceChange(place: String) {
+    override fun onLocationChange(location: LocationItem) {
         updateFieldError()
-        updatePostItem { copy(place = place) }
+        updatePostItem { copy(locationItem = location) }
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {

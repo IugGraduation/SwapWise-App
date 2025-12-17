@@ -42,6 +42,7 @@ import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
 import com.example.ui.base.NavigateUpEffect
+import com.example.ui.components.atoms.DropdownTextField
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseOutlineButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -132,21 +133,22 @@ fun EditOfferContent(
                 errorMessage = state.data.postError.titleError,
             )
 
-            SwapWiseTextField(
-                value = state.data.postItem.place,
-                onValueChange = editInteractions::onPlaceChange,
+            DropdownTextField(
+                selectedValue = state.data.postItem.locationItem,
+                options = state.data.locations,
+                onValueChange = editInteractions::onLocationChange,
                 placeholder = stringResource(R.string.your_place),
+                valueToString = { it.name },
+                errorMessage = state.data.postError.locationError,
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.ic_location),
                         contentDescription = stringResource(R.string.your_place),
                         tint = MaterialTheme.color.textTertiary
                     )
-                },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-                errorMessage = state.data.postError.placeError,
+                }
             )
+
             SwapWiseTextField(
                 value = state.data.postItem.details,
                 onValueChange = editInteractions::onDetailsChange,
@@ -285,7 +287,7 @@ fun PreviewPostDetailsContent() {
                 )
         ), editInteractions = object : IEditPostInteractions {
             override fun onTitleChange(title: String) {}
-            override fun onPlaceChange(place: String) {}
+                override fun onLocationChange(location: String) {}
             override fun onDetailsChange(details: String) {}
             override fun onIsOpenChange(isOpen: Boolean) {}
             override fun onSelectedImageChange(selectedImageUri: Uri) {}

@@ -10,6 +10,7 @@ import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.CategoryItem
+import com.example.domain.model.LocationItem
 import com.example.domain.model.OfferItem
 import com.example.domain.offer.AddOfferUseCase
 import com.example.domain.post.GetImageRequestBodyUseCase
@@ -80,7 +81,7 @@ class AddOfferViewModel @Inject constructor(
             copy(
                 offerError = PostErrorUiState(
                     titleError = titleError,
-                    placeError = placeError,
+                    locationError = placeError,
                     detailsError = detailsError,
                 )
             )
@@ -97,9 +98,9 @@ class AddOfferViewModel @Inject constructor(
         updatePostItem { copy(details = details) }
     }
 
-    override fun onPlaceChange(place: String) {
+    override fun onLocationChange(location: LocationItem) {
         updateFieldError()
-        updatePostItem { copy(place = place) }
+//        updatePostItem { copy(locationItem = location) }
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {

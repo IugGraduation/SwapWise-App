@@ -295,7 +295,7 @@ private fun UserInformationSection(
         )
 
         DropdownTextField(
-            selectedValue = state.profileInformationUiState.location,
+            selectedValue = state.profileInformationUiState.locationItem,
             options = state.profileInformationUiState.locations,
             onValueChange = profileInteraction::onLocationChange,
             placeholder = stringResource(R.string.best_barter_spot),
@@ -370,7 +370,7 @@ private fun UserPostsSection(
                 isOpen = postItem.isThePostOpen,
                 title = postItem.postTitle,
                 details = postItem.postDescription,
-                place = postItem.postPlace,
+                location = postItem.postPlace,
                 postImage = rememberAsyncImagePainter(postItem.postImageLink),
                 onCardClick = { profileInteraction.navigateToPostDetails(postItem.id) },
                 showState = true

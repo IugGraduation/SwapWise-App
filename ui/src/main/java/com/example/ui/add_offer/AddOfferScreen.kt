@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.model.CategoryItem
+import com.example.domain.model.LocationItem
 import com.example.domain.model.OfferItem
 import com.example.ui.R
 import com.example.ui.add_post.IAddPostInteractions
@@ -112,21 +113,21 @@ fun AddOfferContent(
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 errorMessage = state.data.offerError.titleError,
             )
-            SwapWiseTextField(
-                value = state.data.offerItem.place,
-                onValueChange = addInteractions::onPlaceChange,
-                placeholder = stringResource(R.string.your_place),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_location),
-                        contentDescription = stringResource(R.string.your_place),
-                        tint = MaterialTheme.color.textTertiary
-                    )
-                },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-                errorMessage = state.data.offerError.placeError,
-            )
+//            SwapWiseTextField(
+//                value = state.data.offerItem.place,
+//                onValueChange = addInteractions::onLocationChange,
+//                placeholder = stringResource(R.string.your_place),
+//                leadingIcon = {
+//                    Icon(
+//                        painter = painterResource(R.drawable.ic_location),
+//                        contentDescription = stringResource(R.string.your_place),
+//                        tint = MaterialTheme.color.textTertiary
+//                    )
+//                },
+//                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+//                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
+//                errorMessage = state.data.offerError.locationError,
+//            )
             SwapWiseTextField(
                 value = state.data.offerItem.details,
                 onValueChange = addInteractions::onDetailsChange,
@@ -185,7 +186,7 @@ fun PreviewPostDetailsContent() {
             ),
             addInteractions = object : IAddPostInteractions {
                 override fun onTitleChange(title: String) {}
-                override fun onPlaceChange(place: String) {}
+                override fun onLocationChange(location: LocationItem) {}
                 override fun onDetailsChange(details: String) {}
                 override fun onSelectedImageChange(selectedImageUri: Uri) {}
                 override fun onClickAdd(imageByteArray: ByteArray?) {}

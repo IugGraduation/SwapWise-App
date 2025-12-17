@@ -11,7 +11,8 @@ data class ProfileDto(
     @SerialName(Constants.Supabase.Columns.imageUrl) val imageUrl: String? = null,
     val email: String? = null,
     var phone: String? = null,
-    var place: String? = null,
+    @SerialName("location_id")
+    var locationId: String? = null,
     val bio: String? = null,
     // val role: String = "member",
 

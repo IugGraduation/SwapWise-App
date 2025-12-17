@@ -8,6 +8,7 @@ import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
 import com.example.domain.model.CategoryItem
+import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
 import com.example.domain.post.DeletePostUseCase
 import com.example.domain.post.EditPostUseCase
@@ -93,7 +94,7 @@ class EditPostViewModel @Inject constructor(
             copy(
                 postError = PostErrorUiState(
                     titleError = titleError,
-                    placeError = placeError,
+                    locationError = placeError,
                     detailsError = detailsError,
                 )
             )
@@ -120,9 +121,9 @@ class EditPostViewModel @Inject constructor(
         updatePostItem { copy(isOpen = isOpen) }
     }
 
-    override fun onPlaceChange(place: String) {
+    override fun onLocationChange(location: LocationItem) {
         updateFieldError()
-        updatePostItem { copy(place = place) }
+        updatePostItem { copy(locationItem = location) }
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {

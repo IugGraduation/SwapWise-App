@@ -24,8 +24,8 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
     override suspend fun addPost(
         imageByteArray: ByteArray,
         name: String,
-        place: String,
         details: String,
+        locationId: String,
         categoryId: String,
         favoriteCategoryIds: List<String>?
     ): Any {
@@ -40,7 +40,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
             PostItemRequest(
                 id = postId,
                 name = name,
-                place = place,
+                locationId = locationId,
                 details = details,
                 imageUrl = imageDto.imageUrl,
                 categoryId = categoryId,
@@ -54,8 +54,8 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
     override suspend fun updatePost(
         imageByteArray: ByteArray?,
         name: String,
-        place: String,
         details: String,
+        locationId: String,
         categoryId: String,
         favoriteCategoryIds: List<String>?,
         postId: String,
@@ -72,7 +72,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
         return supabase.from(Constants.Supabase.Tables.posts).update(
             {
                 set(Constants.Supabase.Columns.name, name)
-                set(Constants.Supabase.Columns.place, place)
+                set(Constants.Supabase.Columns.place, locationId)
                 set(Constants.Supabase.Columns.details, details)
                 set(Constants.Supabase.Columns.categoryId, categoryId)
                 set(Constants.Supabase.Columns.favoriteCategoryIds, favoriteCategoryIds)

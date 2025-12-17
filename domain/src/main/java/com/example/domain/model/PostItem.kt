@@ -1,6 +1,7 @@
 package com.example.domain.model
 
 import com.example.data.model.response.CategoryItemDto
+import com.example.data.model.response.LocationItemDto
 import com.example.data.model.response.PostItemDto
 
 
@@ -11,8 +12,8 @@ data class PostItem(
 
     val imageId: String = "",
     val user: User = User(),
-    val place: String = "",
     val details: String = "",
+    val locationItem: LocationItem = LocationItem(),
     val categoryItem: CategoryItem = CategoryItem(),
     val date: String = "",
     val favoriteCategoryItems: MutableList<CategoryItem> = mutableListOf(),
@@ -29,7 +30,7 @@ fun PostItemDto.toPostItem(): PostItem {
         user = this.user.toUser(),
         isOpen = this.isActive == true,
         details = this.details.orEmpty(),
-        place = this.place.orEmpty(),
+        locationItem = LocationItem.fromLocationItemDto(this.location ?: LocationItemDto()),
         categoryItem = CategoryItem.fromCategoryItemDto(this.category ?: CategoryItemDto()),
         date = this.createdAt.orEmpty(),
         favoriteCategoryItems = CategoryItem.fromCategoryItemDtoList(this.favoriteCategories)

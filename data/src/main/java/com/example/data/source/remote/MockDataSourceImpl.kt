@@ -36,7 +36,7 @@ class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
     override suspend fun addPost(
         imageByteArray: ByteArray,
         name: String,
-        place: String,
+        locationId: String,
         details: String,
         categoryId: String,
         favoriteCategoryIds: List<String>?
@@ -47,7 +47,7 @@ class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
     override suspend fun updatePost(
         imageByteArray: ByteArray?,
         name: String,
-        place: String,
+        locationId: String,
         details: String,
         categoryId: String,
         favoriteCategoryIds: List<String>?,

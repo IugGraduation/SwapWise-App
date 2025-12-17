@@ -21,7 +21,7 @@ data class ProfileInformationUiState(
     val name: String = String.empty(),
     val phone: String = String.empty(),
     val postsNumber: String = String.empty(),
-    val location: LocationItem? = null,
+    val locationItem: LocationItem? = null,
     val locations: List<LocationItem> = emptyList(),
     val bio: String = String.empty(),
     val offersNumber: String = String.empty(),
@@ -67,7 +67,7 @@ fun User.toProfileUiState(): ProfileUiState {
             name = this.name,
             phone = this.phone,
             postsNumber = this.postsNumber.toString(),
-            location = LocationItem(name = this.place),
+            locationItem = LocationItem(id = this.locationId),
             bio = this.bio,
             offersNumber = this.offersNumber.toString(),
         )

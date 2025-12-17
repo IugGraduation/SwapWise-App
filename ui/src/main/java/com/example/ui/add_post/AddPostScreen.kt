@@ -30,10 +30,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.category.GetFakeCategoriesUseCase
 import com.example.domain.model.CategoryItem
+import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState
 import com.example.ui.base.NavigateUpEffect
+import com.example.ui.components.atoms.DropdownTextField
 import com.example.ui.components.atoms.SwapWiseFilledButton
 import com.example.ui.components.atoms.SwapWiseTextField
 import com.example.ui.components.atoms.VerticalSpacer
@@ -113,23 +115,27 @@ fun AddPostContent(
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 errorMessage = state.data.postError.titleError,
             )
+
             VerticalSpacer(Spacing8)
-            SwapWiseTextField(
-                value = state.data.postItem.place,
-                onValueChange = addInteractions::onPlaceChange,
+
+            DropdownTextField(
+                selectedValue = state.data.postItem.locationItem,
+                options = state.data.locations,
+                onValueChange = addInteractions::onLocationChange,
                 placeholder = stringResource(R.string.your_place),
+                valueToString = { it.name },
+                errorMessage = state.data.postError.locationError,
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.ic_location),
                         contentDescription = stringResource(R.string.your_place),
                         tint = MaterialTheme.color.textTertiary
                     )
-                },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-                errorMessage = state.data.postError.placeError,
+                }
             )
+
             VerticalSpacer(Spacing8)
+
             SwapWiseTextField(
                 value = state.data.postItem.details,
                 onValueChange = addInteractions::onDetailsChange,
@@ -203,7 +209,7 @@ fun PreviewPostDetailsContent() {
             ),
             addInteractions = object : IAddPostInteractions{
                 override fun onTitleChange(title: String) {}
-                override fun onPlaceChange(place: String) {}
+                override fun onLocationChange(location: LocationItem) {}
                 override fun onDetailsChange(details: String) {}
                 override fun onSelectedImageChange(selectedImageUri: Uri) {}
                 override fun onClickAdd(imageByteArray: ByteArray?) {}

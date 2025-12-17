@@ -1,11 +1,12 @@
 package com.example.ui.edit_offer
 
 import android.net.Uri
+import com.example.domain.model.LocationItem
 import com.example.ui.base.INavigateUp
 
 interface IEditPostInteractions : INavigateUp {
     fun onTitleChange (title: String)
-    fun onPlaceChange(place: String)
+    fun onLocationChange(location: LocationItem)
     fun onDetailsChange(details: String)
     fun onSelectedImageChange(selectedImageUri: Uri)
     fun onClickSave(imageByteArray: ByteArray? = null)

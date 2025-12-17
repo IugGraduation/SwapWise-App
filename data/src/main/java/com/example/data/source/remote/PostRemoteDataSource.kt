@@ -8,8 +8,8 @@ interface PostRemoteDataSource {
     suspend fun addPost(
         imageByteArray: ByteArray,
         name: String,
-        place: String,
         details: String,
+        locationId: String,
         categoryId: String,
         favoriteCategoryIds: List<String>?
     ): Any
@@ -17,8 +17,8 @@ interface PostRemoteDataSource {
     suspend fun updatePost(
         imageByteArray: ByteArray?,
         name: String,
-        place: String,
         details: String,
+        locationId: String,
         categoryId: String,
         favoriteCategoryIds: List<String>?,
         postId: String,
