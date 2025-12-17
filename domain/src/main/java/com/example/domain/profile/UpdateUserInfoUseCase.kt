@@ -13,16 +13,16 @@ class UpdateUserInfoUseCase @Inject constructor(
     suspend operator fun invoke(
         name: String,
         phone: String,
-        location: String,
+        locationId: String,
         imageByteArray: ByteArray?,
         bio: String
     ): Boolean {
-        if (!validateUserInfo(name, phone, location)) throw FailedToUpdateUserInfoException()
+        if (!validateUserInfo(name, phone, locationId)) throw FailedToUpdateUserInfoException()
 
         return userRepository.updateUserInfo(
             name = name,
             phone = phone,
-            place = location,
+            locationId = locationId,
             imageByteArray = imageByteArray,
             bio = bio
         )
@@ -31,11 +31,11 @@ class UpdateUserInfoUseCase @Inject constructor(
     private fun validateUserInfo(
         name: String,
         phoneNumber: String,
-        location: String,
+        locationId: String,
     ): Boolean {
         validateUsername(name = name)
         validatePhoneNumber(number = phoneNumber)
-        validateLocation(location = location)
+        validateLocationId(location = locationId)
 
         return true
     }
@@ -52,7 +52,7 @@ class UpdateUserInfoUseCase @Inject constructor(
         if (number.isBlank()) throw InvalidPhoneNumberException()
     }
 
-    private fun validateLocation(location: String) {
+    private fun validateLocationId(location: String) {
         if (location.isBlank()) throw InvalidLocationException()
     }
 }

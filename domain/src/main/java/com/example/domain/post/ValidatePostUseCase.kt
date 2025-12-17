@@ -25,7 +25,7 @@ private fun validateTitle(input: String) {
 }
 
 private fun validateLocation(input: String) {
-    if (input.length < 3) throw InvalidPlaceException()
+    if (input.isNotBlank()) throw InvalidPlaceException()
 }
 
 private fun validateDetails(input: String) {

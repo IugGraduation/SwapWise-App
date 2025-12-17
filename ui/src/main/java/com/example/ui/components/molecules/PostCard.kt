@@ -101,7 +101,7 @@ fun PostCard(
                 PostInfoSection(
                     title = title,
                     details = details,
-                    place = location
+                    location = location
                 )
             }
         }
@@ -153,7 +153,7 @@ private fun PostHeaderSection(
 private fun PostInfoSection(
     title: String,
     details: String,
-    place: String,
+    location: String,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -186,12 +186,12 @@ private fun PostInfoSection(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_location),
-                contentDescription = place,
+                contentDescription = location,
                 tint = MaterialTheme.color.textTertiary,
                 modifier = Modifier.size(IconSizeSmall)
             )
             Text(
-                text = place,
+                text = location,
                 style = TextStyles.captionLarge,
                 color = MaterialTheme.color.textTertiary
             )

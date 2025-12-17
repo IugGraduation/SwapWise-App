@@ -6,7 +6,7 @@ import kotlinx.serialization.Transient
 @Serializable
 data class SignupRequest(
     val name: String,
-    val place: String,
+    val locationId: String,
     val bio: String? = null,
     @Transient
     val phone: String = "",

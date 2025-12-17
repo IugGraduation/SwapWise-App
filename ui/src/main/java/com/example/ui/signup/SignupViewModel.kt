@@ -60,7 +60,7 @@ class SignupViewModel @Inject constructor(
                     phone = state.value.data.phone,
                     password = state.value.data.password,
                     confirmPassword = state.value.data.confirmPassword,
-                    bestBarterSpot = state.value.data.bestBarterSpot?.id.orEmpty(),
+                    bestBarterSpotId = state.value.data.bestBarterSpot?.id.orEmpty(),
                 )
             },
             onSuccess = { navigateToHome() },

@@ -144,7 +144,7 @@ class ProfileViewModel @Inject constructor(
                 updateUserInfoUseCase(
                     name = lastUserInfo.name,
                     phone = lastUserInfo.phone,
-                    location = lastUserInfo.locationItem?.id ?: "",
+                    locationId = lastUserInfo.locationItem?.id.orEmpty(),
                     imageByteArray = imageByteArray,
                     bio = lastUserInfo.bio
                 )

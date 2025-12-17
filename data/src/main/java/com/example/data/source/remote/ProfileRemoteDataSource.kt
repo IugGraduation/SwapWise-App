@@ -12,7 +12,7 @@ interface ProfileRemoteDataSource {
     suspend fun updateUserInfo(
         name: String,
         phone: String,
-        place: String,
+        locationId: String,
         imageByteArray: ByteArray?,
         bio: String
     ): Boolean

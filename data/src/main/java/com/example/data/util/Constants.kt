@@ -28,7 +28,7 @@ object Constants {
             const val name = "name"
             const val imageUrl = "image_url"
             const val categoryId = "category_id"
-            const val place = "place"
+            const val locationId = "location_id"
             const val details = "details"
             const val phone = "phone"
             const val bio = "bio"

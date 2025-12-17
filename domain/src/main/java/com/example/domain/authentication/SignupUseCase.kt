@@ -16,18 +16,18 @@ class SignupUseCase @Inject constructor(
         phone: String,
         password: String,
         confirmPassword: String,
-        bestBarterSpot: String,
+        bestBarterSpotId: String,
     ) {
         validateFullName(fullName)
         validatePhone(phone)
         validatePassword(password)
         validateConfirmPassword(password, confirmPassword)
-        validateBestBarterSpot(bestBarterSpot)
+        validateBestBarterSpot(bestBarterSpotId)
 
         val signupRequest = SignupRequest(
             phone = phone,
             name = fullName,
-            place = bestBarterSpot,
+            locationId = bestBarterSpotId,
             password = password,
         )
         authRepository.signup(signupRequest)

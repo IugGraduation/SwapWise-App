@@ -72,7 +72,7 @@ class PostSupabaseDataSourceImpl @Inject constructor(private val supabase: Supab
         return supabase.from(Constants.Supabase.Tables.posts).update(
             {
                 set(Constants.Supabase.Columns.name, name)
-                set(Constants.Supabase.Columns.place, locationId)
+                set(Constants.Supabase.Columns.locationId, locationId)
                 set(Constants.Supabase.Columns.details, details)
                 set(Constants.Supabase.Columns.categoryId, categoryId)
                 set(Constants.Supabase.Columns.favoriteCategoryIds, favoriteCategoryIds)

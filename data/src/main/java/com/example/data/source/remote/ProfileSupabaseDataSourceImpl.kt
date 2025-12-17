@@ -39,7 +39,7 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
     override suspend fun updateUserInfo(
         name: String,
         phone: String,
-        place: String,
+        locationId: String,
         imageByteArray: ByteArray?,
         bio: String
     ): Boolean {
@@ -69,7 +69,7 @@ class ProfileSupabaseDataSourceImpl @Inject constructor(private val supabase: Su
         supabase.from(Constants.Supabase.Tables.users).update({
             set(Constants.Supabase.Columns.name, name)
             set(Constants.Supabase.Columns.phone, phone)
-            set(Constants.Supabase.Columns.place, place)
+            set(Constants.Supabase.Columns.locationId, locationId)
             set(Constants.Supabase.Columns.bio, bio)
             newImageUrl?.let { set(Constants.Supabase.Columns.imageUrl, it) }
         }) {

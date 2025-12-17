@@ -32,14 +32,14 @@ class UserRepository @Inject constructor(
     suspend fun updateUserInfo(
         name: String,
         phone: String,
-        place: String,
+        locationId: String,
         imageByteArray: ByteArray?,
         bio: String
     ): Boolean {
         return profileRemoteDataSource.updateUserInfo(
             name = name,
             phone = phone,
-            place = place,
+            locationId = locationId,
             imageByteArray = imageByteArray,
             bio = bio,
         )
