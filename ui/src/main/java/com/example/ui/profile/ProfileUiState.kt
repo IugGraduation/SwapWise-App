@@ -24,7 +24,6 @@ data class ProfileInformationUiState(
     val locationItem: LocationItem? = null,
     val locations: List<LocationItem> = emptyList(),
     val bio: String = String.empty(),
-    val offersNumber: String = String.empty(),
     val exchangesNumber: String = String.empty(),
     val isUserInfoEditable: Boolean = false,
 )
@@ -38,7 +37,6 @@ data class PostItemUiState(
     val postTitle: String = String.empty(),
     val postDescription: String = String.empty(),
     val postLocation: LocationItem = LocationItem(),
-    val offersNumber: Int = 0
 )
 
 data class ProfileSettingsUiState(

@@ -82,9 +82,9 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onGetCurrentUserSuccess(user: ProfileUiState) {
-        val userLocationName = user.profileInformationUiState.locationItem?.name
+        val userLocationId = user.profileInformationUiState.locationItem?.id
         val fullLocationObject =
-            _state.value.data.profileInformationUiState.locations.find { it.name == userLocationName }
+            _state.value.data.profileInformationUiState.locations.find { it.id == userLocationId }
 
         val updatedProfileInfo =
             user.profileInformationUiState.copy(locationItem = fullLocationObject)
