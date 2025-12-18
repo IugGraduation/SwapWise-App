@@ -37,7 +37,7 @@ data class PostItemUiState(
     val isThePostOpen: Boolean = false,
     val postTitle: String = String.empty(),
     val postDescription: String = String.empty(),
-    val postPlace: String = String.empty(),
+    val postLocation: LocationItem = LocationItem(),
     val offersNumber: Int = 0
 )
 
@@ -69,7 +69,6 @@ fun User.toProfileUiState(): ProfileUiState {
             postsNumber = this.postsNumber.toString(),
             locationItem = LocationItem(id = this.locationId),
             bio = this.bio,
-            offersNumber = this.offersNumber.toString(),
         )
     )
 }
@@ -83,5 +82,6 @@ fun PostItem.toPostItemUIState(): PostItemUiState {
         isThePostOpen = this.isOpen,
         postTitle = this.name,
         postDescription = this.details,
+        postLocation = this.locationItem
     )
 }

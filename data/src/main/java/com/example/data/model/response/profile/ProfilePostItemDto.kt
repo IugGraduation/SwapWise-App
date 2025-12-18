@@ -1,7 +1,6 @@
 package com.example.data.model.response.profile
 
 import com.example.data.model.response.CategoryItemDto
-import com.example.data.model.response.OfferItemDto
 import com.example.data.model.response.UserDto
 import kotlinx.serialization.SerialName
 
@@ -14,8 +13,6 @@ data class ProfilePostItemDto(
     @SerialName("image_url") val imageUrl: String? = null,
     val user: UserDto? = null,
 
-    val numOffers: Int? = null,
-    val offers: List<OfferItemDto?>? = null,
     val userImage: String? = null,
     val userName: String? = null,
     val userUuid: String? = null,

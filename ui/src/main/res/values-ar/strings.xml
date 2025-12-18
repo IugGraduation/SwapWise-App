@@ -29,9 +29,7 @@
     <string name="see_all">عرض الكل</string>
     <string name="food_and_beverages">المأكولات والمشروبات</string>
     <string name="top_interactive">الأكثر تفاعلاً</string>
-    <string name="make_your_offer">قدّم عرضك</string>
     <string name="open">مفتوح</string>
-    <string name="offers">عروض</string>
     <string name="go_back">العودة</string>
     <string name="recent_posts">أحدث المنشورات</string>
     <string name="home">الرئيسية</string>
@@ -46,17 +44,11 @@
     <string name="closed">مغلق</string>
     <string name="post_details">تفاصيل المنشور</string>
     <string name="favorite_categories">الفئات المفضلة</string>
-    <string name="add_offer">إضافة عرض</string>
-    <string name="offer_info">معلومات العرض</string>
     <string name="image">الصورة</string>
-    <string name="offer_title">عنوان العرض</string>
     <string name="your_place">مكانك</string>
     <string name="details">التفاصيل</string>
-    <string name="category_of_the_offer">فئة العرض</string>
-    <string name="offer_details">تفاصيل العرض</string>
     <string name="message">رسالة</string>
     <string name="what_s_up_app">تطبيق واتساب</string>
-    <string name="edit_offer">تحرير العرض</string>
     <string name="save">حفظ</string>
     <string name="delete">حذف</string>
     <string name="posts">المنشورات</string>

@@ -182,7 +182,6 @@ private fun ProfileContent(
 
                         UserActivitiesBar(
                             postsNumber = state.data.profileInformationUiState.postsNumber,
-                            offersNumber = state.data.profileInformationUiState.offersNumber,
                             exchangesNumber = state.data.profileInformationUiState.exchangesNumber
                         )
 

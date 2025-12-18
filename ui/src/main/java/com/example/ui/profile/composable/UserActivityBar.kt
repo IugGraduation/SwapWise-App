@@ -21,7 +21,6 @@ import com.example.ui.theme.color
 fun UserActivitiesBar(
     modifier: Modifier = Modifier,
                     postsNumber: String,
-                    offersNumber: String,
                     exchangesNumber: String
 ) {
     Row (
@@ -30,8 +29,6 @@ fun UserActivitiesBar(
         horizontalArrangement = Arrangement.SpaceAround
         ){
         VerticalBoldAndLightText(boldText = postsNumber, lightText = stringResource(R.string.posts))
-        InfoBoarder(modifier = Modifier.align(Alignment.CenterVertically))
-        VerticalBoldAndLightText(boldText = offersNumber, lightText = stringResource(R.string.offers))
         InfoBoarder(modifier = Modifier.align(Alignment.CenterVertically))
         VerticalBoldAndLightText(boldText = exchangesNumber.ifEmpty { "0" }, lightText = stringResource(R.string.exchanges))
     }

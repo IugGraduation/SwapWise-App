@@ -8,7 +8,6 @@ import com.example.data.source.remote.LocationRemoteDataSource
 import com.example.data.source.remote.LocationSupabaseDataSourceImpl
 import com.example.data.source.remote.MockDataSourceImpl
 import com.example.data.source.remote.NotificationsRemoteDataSource
-import com.example.data.source.remote.OfferRemoteDataSource
 import com.example.data.source.remote.PostRemoteDataSource
 import com.example.data.source.remote.PostSupabaseDataSourceImpl
 import com.example.data.source.remote.ProfileRemoteDataSource
@@ -39,10 +38,6 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun provideHomeRemoteDataSource(homeSupabaseDataSourceImpl: HomeSupabaseDataSourceImpl): HomeRemoteDataSource
-
-    @Binds
-    @Singleton
-    abstract fun provideOfferRemoteDataSource(mockDataSourceImpl: MockDataSourceImpl): OfferRemoteDataSource
 
     @Binds
     @Singleton

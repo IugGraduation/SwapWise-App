@@ -34,7 +34,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
-import com.example.domain.model.OfferItem
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
@@ -277,8 +276,6 @@ fun PreviewPostDetailsContent() {
         PostDetailsContent(
             state = MyUiState(PostItemUiState(postItem = GetFakePostDetailsUseCase()())),
             postDetailsInteractions = object : PostDetailsInteractions {
-                override fun navigateToAddOffer() {}
-                override fun navigateToOfferDetails(offerItem: OfferItem) {}
                 override fun navigateToEditPost(postId: String) {}
                 override fun navigateUp() {}
                 override fun onClickPhoneButton() {}

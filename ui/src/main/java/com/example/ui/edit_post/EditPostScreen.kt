@@ -74,14 +74,14 @@ fun EditPostScreen(navController: NavController, viewModel: EditPostViewModel = 
         }
     }
 
-    EditOfferContent(
+    EditPostContent(
         state = state,
         editInteractions = viewModel,
     )
 }
 
 @Composable
-fun EditOfferContent(
+fun EditPostContent(
     state: MyUiState<PostItemUiState>,
     editInteractions: IEditPostInteractions,
 ) {
@@ -279,7 +279,7 @@ private fun OpenClosedSwitch(isOpen: Boolean, onIsOpenChange: (Boolean) -> Unit)
 @Composable
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
-        EditOfferContent(
+        EditPostContent(
             state = MyUiState(
                 PostItemUiState(
             postItem = GetFakePostDetailsUseCase()().copy(

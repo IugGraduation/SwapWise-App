@@ -2,13 +2,12 @@ package com.example.data.source.remote
 
 import com.example.data.model.response.HomeDto
 import com.example.data.model.response.NotificationDto
-import com.example.data.model.response.OfferItemDto
 import com.example.data.model.response.PostItemDto
 import javax.inject.Inject
 
 class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
     NotificationsRemoteDataSource,
-    OfferRemoteDataSource, PostRemoteDataSource, SearchRemoteDataSource {
+    PostRemoteDataSource, SearchRemoteDataSource {
     override suspend fun getHomeDto(languageCode: String): HomeDto? {
         TODO("Not yet implemented")
     }
@@ -70,34 +69,6 @@ class MockDataSourceImpl @Inject constructor() : HomeRemoteDataSource,
         TODO("Not yet implemented")
     }
 
-    override suspend fun getOffer(offerId: String): OfferItemDto {
-        TODO("Not yet implemented")
-    }
 
-    override suspend fun addOffer(
-        image: ByteArray,
-        name: String,
-        place: String,
-        details: String,
-        categoryUuid: String,
-        postUuid: String
-    ): Any {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateOffer(
-        image: Byte,
-        name: String,
-        place: String,
-        details: String,
-        categoryUuid: String,
-        offerUuid: String
-    ): Any {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteOffer(offerId: String): Any {
-        TODO("Not yet implemented")
-    }
 
 }

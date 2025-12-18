@@ -20,6 +20,5 @@ data class ProfileDto(
 //    var lastLoginAt: Date? = null,
 
 
-    val offers: Int? = null,
     val posts: Int? = null,
 )

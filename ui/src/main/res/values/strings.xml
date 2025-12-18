@@ -28,9 +28,7 @@
     <string name="see_all">See All</string>
     <string name="food_and_beverages"><![CDATA[Food & Beverages]]></string>
     <string name="top_interactive">Top Interactive</string>
-    <string name="make_your_offer">Make Your Offer</string>
     <string name="open">Open</string>
-    <string name="offers">"Offers"</string>
     <string name="go_back">Go Back</string>
     <string name="recent_posts">Recent Posts</string>
     <string name="home">Home</string>
@@ -45,17 +43,11 @@
     <string name="closed">Closed</string>
     <string name="post_details">Post Details</string>
     <string name="favorite_categories">Favorite Categories</string>
-    <string name="add_offer">Add Offer</string>
-    <string name="offer_info">Offer Info</string>
     <string name="image">Image</string>
-    <string name="offer_title">Offer Title</string>
     <string name="your_place">Your Place</string>
     <string name="details">Details</string>
-    <string name="category_of_the_offer">Category of The Offer</string>
-    <string name="offer_details">Offer Details</string>
     <string name="message">Message</string>
     <string name="what_s_up_app">What\'s up app</string>
-    <string name="edit_offer">Edit Offer</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="posts">Posts</string>

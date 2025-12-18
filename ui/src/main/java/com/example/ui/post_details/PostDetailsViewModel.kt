@@ -3,7 +3,6 @@ package com.example.ui.post_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.domain.authentication.GetAuthUseCase
-import com.example.domain.model.OfferItem
 import com.example.domain.model.PostItem
 import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
@@ -54,22 +53,6 @@ class PostDetailsViewModel @Inject constructor(
         }
     }
 
-    override fun navigateToAddOffer() {
-        sendUiEffect(PostDetailsEffects.NavigateToAddOffer)
-    }
-
-    override fun navigateToOfferDetails(offerItem: OfferItem) {
-        tryToExecute(
-            call = { getAuthUseCase().userId },
-            onSuccess = { currentUserId ->
-                if (currentUserId == state.value.data.postItem.user.id) {
-                    sendUiEffect(PostDetailsEffects.NavigateToOfferDetails(offerItem.id))
-                } else if (currentUserId == offerItem.user.id) {
-                    sendUiEffect(PostDetailsEffects.NavigateToEditOffer(offerItem.id))
-                }
-            },
-        )
-    }
 
     override fun navigateToEditPost(postId: String) {
         sendUiEffect(PostDetailsEffects.NavigateToEditPost(postId = postId))
