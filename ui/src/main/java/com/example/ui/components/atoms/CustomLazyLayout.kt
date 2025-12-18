@@ -30,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.model.CategoryItem
-import com.example.domain.model.OfferItem
 import com.example.domain.model.PostItem
 import com.example.domain.model.TopicItem
 import com.example.ui.components.molecules.PostCard
@@ -48,39 +47,18 @@ import com.example.ui.theme.color
 @Composable
 fun CustomLazyLayout(
     items: List<TopicItem> = listOf(),
-    isCategoryCard: Boolean = false,
     isHorizontalLayout: Boolean = true,
     onClickGoToDetails: (topicItem: TopicItem) -> Unit,
 ) {
-    val card = getCard(isCategoryCard, isHorizontalLayout, onClickGoToDetails)
-
-    val content = getContent(items, card)
-
-    when (isHorizontalLayout) {
-        true -> CustomLazyRow(content)
-        false -> CustomLazyColumn(content)
-    }
-}
-
-@Composable
-private fun getCard(
-    isCategoryItem: Boolean = false,
-    isHorizontal: Boolean = true,
-    onClickGoToDetails: (topicItem: TopicItem) -> Unit,
-): @Composable (TopicItem) -> Unit {
-    return when (isCategoryItem) { 
-        true -> { item ->
+    val content: LazyListScope.() -> Unit = {
+        items(items) { item ->
             if (item is CategoryItem) {
                 CategoryCard(
                     categoryItem = item,
-                    isHorizontal = isHorizontal,
+                    isHorizontal = isHorizontalLayout,
                     onClickGoShowAllCategoryPosts = onClickGoToDetails,
                 )
-            }
-        }
-
-        false -> { item ->
-            if (item is PostItem) {
+            } else if (item is PostItem) {
                 PostCard(
                     userImage = rememberAsyncImagePainter(item.user.imageLink),
                     postImage = rememberAsyncImagePainter(item.imageUrl),
@@ -90,21 +68,16 @@ private fun getCard(
                     location = item.locationItem.name,
                     isOpen = item.isOpen,
                     onCardClick = { onClickGoToDetails(item) },
-                    isHorizontalCard = isHorizontal,
-                )
-            } else if (item is OfferItem) {
-                PostCard(
-                    userImage = rememberAsyncImagePainter(item.user.imageLink),
-                    postImage = rememberAsyncImagePainter(item.imageUrl),
-                    username = item.user.name,
-                    title = item.name,
-                    details = item.details,
-                    location = item.place,
-                    isHorizontalCard = isHorizontal,
-                    onCardClick = { },
+                    isHorizontalCard = isHorizontalLayout,
                 )
             }
         }
+    }
+
+    if (isHorizontalLayout) {
+        CustomLazyRow(content)
+    } else {
+        CustomLazyColumn(content)
     }
 }
 
@@ -137,10 +110,8 @@ fun CategoryCard(
                 .clickable { onClickGoShowAllCategoryPosts(categoryItem) },
         ) {}
 
-        val textStyle = when (isHorizontal) {
-            true -> TextStyles.smallCustomTitle
-            false -> TextStyles.largeCustomTitle
-        }
+        val textStyle =
+            if (isHorizontal) TextStyles.smallCustomTitle else TextStyles.largeCustomTitle
         CardText(text = categoryItem.name, textStyle = textStyle)
     }
 }
@@ -170,16 +141,6 @@ fun CardText(
         ),
         textAlign = TextAlign.Center,
     )
-}
-
-@Composable
-private fun getContent(
-    items: List<TopicItem>,
-    card: @Composable (TopicItem) -> Unit
-): LazyListScope.() -> Unit = {
-    items(items) { item ->
-        card(item)
-    }
 }
 
 @Composable

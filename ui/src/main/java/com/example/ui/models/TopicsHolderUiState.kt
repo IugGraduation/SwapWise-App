@@ -9,7 +9,6 @@ data class TopicsHolderUiState(
     val isHorizontal: Boolean = true,
     var onClickSeeAll: () -> Unit = {},
     val url: String = "Categories",
-    val isCategoryTopics: Boolean = false,
 )
 
 fun TopicsHolder.toTopicsHolderUiState(): TopicsHolderUiState {
@@ -17,6 +16,5 @@ fun TopicsHolder.toTopicsHolderUiState(): TopicsHolderUiState {
         title = title,
         items = items,
         url = url,
-        isCategoryTopics = url == "Categories"
     )
 }

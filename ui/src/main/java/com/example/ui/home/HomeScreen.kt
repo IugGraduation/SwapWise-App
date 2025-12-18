@@ -167,7 +167,6 @@ fun HomeContent(
                     )
                     CustomLazyLayout(
                         items = topic.items,
-                        isCategoryCard = topic.isCategoryTopics,
                         isHorizontalLayout = topic.isHorizontal,
                         onClickGoToDetails = homeInteractions::onClickGoToDetails
                     )

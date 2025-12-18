@@ -131,7 +131,6 @@ fun SearchContent(
         } else {
             CustomLazyLayout(
                 items = state.data.topicsList,
-                isCategoryCard = false,
                 isHorizontalLayout = false,
                 onClickGoToDetails = { item -> searchInteractions.navigateToPostDetails(item.id) }
             )

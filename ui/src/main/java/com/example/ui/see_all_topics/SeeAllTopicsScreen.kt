@@ -69,7 +69,6 @@ fun SeeAllTopicsContent(
     ) {
         CustomLazyLayout(
             items = state.data.items,
-            isCategoryCard = state.data.isCategoryTopics,
             isHorizontalLayout = false,
             onClickGoToDetails = seeAllTopicsInteractions::onClickGoToDetails
         )
