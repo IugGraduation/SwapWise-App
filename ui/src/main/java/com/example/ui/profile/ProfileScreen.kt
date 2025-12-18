@@ -369,7 +369,7 @@ private fun UserPostsSection(
                 isOpen = postItem.isThePostOpen,
                 title = postItem.postTitle,
                 details = postItem.postDescription,
-                location = postItem.postPlace,
+                location = postItem.postLocation.name,
                 postImage = rememberAsyncImagePainter(postItem.postImageLink),
                 onCardClick = { profileInteraction.navigateToPostDetails(postItem.id) },
                 showState = true
