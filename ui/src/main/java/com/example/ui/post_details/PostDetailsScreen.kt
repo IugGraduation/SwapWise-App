@@ -35,7 +35,6 @@ import androidx.navigation.NavController
 import com.example.domain.model.OfferItem
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
-import com.example.ui.add_offer.navigateToAddOffer
 import com.example.ui.base.MyUiState
 import com.example.ui.components.atoms.DetailsScreenBody
 import com.example.ui.components.atoms.HorizontalSpacer
@@ -45,11 +44,9 @@ import com.example.ui.components.molecules.DetailsScreenUserHeader
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
-import com.example.ui.edit_offer.navigateToEditOffer
 import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostItemUiState
-import com.example.ui.offer_details.navigateToOfferDetails
 import com.example.ui.post_details.composable.PhoneRow
 import com.example.ui.profile.composable.EditIconButton
 import com.example.ui.theme.BlackFourth
@@ -89,18 +86,6 @@ fun PostDetailsScreen(
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is PostDetailsEffects.NavigateToAddOffer -> {
-                    navController.navigateToAddOffer(state.data.postItem.id)
-                }
-
-                is PostDetailsEffects.NavigateToOfferDetails -> {
-                    navController.navigateToOfferDetails(effect.offerId)
-                }
-
-                is PostDetailsEffects.NavigateToEditOffer -> {
-                    navController.navigateToEditOffer(effect.offerId)
-                }
-
                 is PostDetailsEffects.NavigateToEditPost -> {
                     navController.navigateToEditPost(effect.postId)
                 }
@@ -127,6 +112,7 @@ fun PostDetailsScreen(
                     }
                     context.startActivity(intent)
                 }
+                else -> {}
             }
         }
     }
@@ -171,7 +157,6 @@ fun PostDetailsContent(
                 VerticalSpacer(Spacing24)
                 StatusRow(
                     rate = state.data.postItem.rate,
-                    offersCount = state.data.postItem.offers.size,
                     isOpen = state.data.postItem.isOpen
                 )
                 VerticalSpacer(Spacing24)
@@ -183,9 +168,7 @@ fun PostDetailsContent(
                         ChipUiState(
                             categoryItem = it,
                             selected = mutableStateOf(
-                                state.data.postItem.favoriteCategoryItems.contains(
-                                    it
-                                )
+                                state.data.postItem.favoriteCategoryItems.contains(it)
                             ),
                             clickable = false
                         )
@@ -209,30 +192,18 @@ fun PostDetailsContent(
                 }
                 VerticalSpacer(Spacing80) //space for floating button at the bottom
             }
-
         }
     }
 }
 
 @Composable
-fun StatusRow(rate: Float, offersCount: Int, isOpen: Boolean) {
+fun StatusRow(rate: Float, isOpen: Boolean) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         PostDetailsStatusItem(title = stringResource(R.string.rate), value = rate.toString())
-        HorizontalSpacer(Spacing24)
-        Spacer(
-            modifier = Modifier
-                .size(width = 1.5.dp, height = 20.dp)
-                .background(color = BlackFourth, shape = RoundedCornerShape(RadiusLarge))
-        )
-        HorizontalSpacer(Spacing24)
-        PostDetailsStatusItem(
-            title = stringResource(R.string.offers),
-            value = offersCount.toString()
-        )
         HorizontalSpacer(Spacing24)
         Spacer(
             modifier = Modifier

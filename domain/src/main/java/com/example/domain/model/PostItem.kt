@@ -10,7 +10,6 @@ data class PostItem(
     override val name: String = "",
     override val imageUrl: String = "",
 
-    val imageId: String = "",
     val user: User = User(),
     val details: String = "",
     val locationItem: LocationItem = LocationItem(),
@@ -19,7 +18,6 @@ data class PostItem(
     val favoriteCategoryItems: MutableList<CategoryItem> = mutableListOf(),
     val isOpen: Boolean = true,
     val rate: Float = 0f,
-    val offers: List<OfferItem> = listOf(),
 ) : TopicItem()
 
 fun PostItemDto.toPostItem(): PostItem {
@@ -35,9 +33,5 @@ fun PostItemDto.toPostItem(): PostItem {
         date = this.createdAt.orEmpty(),
         favoriteCategoryItems = CategoryItem.fromCategoryItemDtoList(this.favoriteCategories)
             .toMutableList(),
-//                rate = "",
-//                offers = OfferItem.fromOfferItemDtoList(this.offers),
     )
 }
-
-
