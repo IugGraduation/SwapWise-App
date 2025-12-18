@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.model.CategoryItem
+import com.example.domain.model.LocationItem
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
@@ -287,7 +288,7 @@ fun PreviewPostDetailsContent() {
                 )
         ), editInteractions = object : IEditPostInteractions {
             override fun onTitleChange(title: String) {}
-                override fun onLocationChange(location: String) {}
+                override fun onLocationChange(location: LocationItem) {}
             override fun onDetailsChange(details: String) {}
             override fun onIsOpenChange(isOpen: Boolean) {}
             override fun onSelectedImageChange(selectedImageUri: Uri) {}

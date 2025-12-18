@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,6 +53,7 @@ import com.example.ui.post_details.composable.PhoneRow
 import com.example.ui.profile.composable.EditIconButton
 import com.example.ui.theme.BlackFourth
 import com.example.ui.theme.GraduationProjectTheme
+import com.example.ui.theme.IconSizeSmall
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -162,6 +165,8 @@ fun PostDetailsContent(
                 VerticalSpacer(Spacing24)
                 DetailsScreenBody(state.data.postItem.name, state.data.postItem.details)
                 VerticalSpacer(Spacing24)
+                LocationRow(location = state.data.postItem.locationItem.name)
+                VerticalSpacer(Spacing24)
                 TitledChipsList(
                     title = stringResource(R.string.favorite_categories),
                     chipsList = state.data.postItem.favoriteCategoryItems.map {
@@ -192,6 +197,34 @@ fun PostDetailsContent(
                 }
                 VerticalSpacer(Spacing80) //space for floating button at the bottom
             }
+        }
+    }
+}
+
+@Composable
+fun LocationRow(location: String) {
+    Column(modifier = Modifier.padding(horizontal = Spacing16)) {
+        Text(
+            text = stringResource(id = R.string.your_place),
+            style = TextStyles.headingMedium,
+            color = MaterialTheme.color.textPrimary
+        )
+        VerticalSpacer(Spacing8)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(Spacing4)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_location),
+                contentDescription = location,
+                tint = MaterialTheme.color.textTertiary,
+                modifier = Modifier.size(IconSizeSmall)
+            )
+            Text(
+                text = location,
+                style = TextStyles.bodyLarge,
+                color = MaterialTheme.color.textTertiary
+            )
         }
     }
 }

@@ -83,6 +83,5 @@ fun PostItem.toPostItemUIState(): PostItemUiState {
         isThePostOpen = this.isOpen,
         postTitle = this.name,
         postDescription = this.details,
-        offersNumber = this.offers.size
     )
 }
