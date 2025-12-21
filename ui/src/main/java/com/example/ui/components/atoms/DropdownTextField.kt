@@ -74,7 +74,6 @@ fun <T> DropdownTextField(
             }
         }
     }
-    VerticalSpacer(Spacing16)
 
     AnimatedVisibility(!errorMessage.isNullOrEmpty()) {
         VerticalSpacer(Spacing8)
