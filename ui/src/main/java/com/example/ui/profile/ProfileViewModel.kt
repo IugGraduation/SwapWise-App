@@ -42,6 +42,20 @@ class ProfileViewModel @Inject constructor(
         getCurrentUserPosts()
     }
 
+    private fun getLastSelectedAppLanguage() {
+        viewModelScope.launch {
+            customizeProfileSettings.getLatestSelectedAppLanguage().collect { language ->
+                updateData {
+                    copy(
+                        profileSettingsUiState = profileSettingsUiState.copy(
+                            lastAppLanguage = language
+                        )
+                    )
+                }
+            }
+        }
+    }
+
     private fun getLocationsAndThenCurrentUserInfo() {
         tryToExecute(
             call = { getLocationsUseCase() },
@@ -64,17 +78,10 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    private fun getLastSelectedAppLanguage() {
-        viewModelScope.launch {
-            customizeProfileSettings.getLatestSelectedAppLanguage().collect { language ->
-                updateData { copy(profileSettingsUiState = profileSettingsUiState.copy(lastAppLanguage = language)) }
-            }
-        }
-    }
-
     private fun getCurrentUserInfo() {
+        val locations = _state.value.data.profileInformationUiState.locations
         tryToExecute(
-            call = { getCurrentUserDataUseCase(getCurrentUserDataUseCase.getCurrentUserId()).toProfileUiState() },
+            call = { getCurrentUserDataUseCase().toProfileUiState(locations) },
             onSuccess = ::onGetCurrentUserSuccess,
             shouldLoad = _state.value.data.profileInformationUiState.name.isBlank(),
             shouldHideContent = _state.value.data.profileInformationUiState.name.isBlank(),
@@ -84,7 +91,7 @@ class ProfileViewModel @Inject constructor(
     private fun onGetCurrentUserSuccess(user: ProfileUiState) {
         val userLocationId = user.profileInformationUiState.locationItem?.id
         val fullLocationObject =
-            _state.value.data.profileInformationUiState.locations.find { it.id == userLocationId }
+            user.profileInformationUiState.locations.find { it.id == userLocationId }
 
         val updatedProfileInfo =
             user.profileInformationUiState.copy(locationItem = fullLocationObject)

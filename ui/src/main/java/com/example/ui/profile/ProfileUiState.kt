@@ -57,7 +57,7 @@ data class ProfileErrorUiState(
     val bioErrorMessage: String = String.empty(),
 )
 
-fun User.toProfileUiState(): ProfileUiState {
+fun User.toProfileUiState(locations: List<LocationItem> = emptyList()): ProfileUiState {
     return ProfileUiState(
         id = this.id,
         profileInformationUiState = ProfileInformationUiState(
@@ -66,6 +66,7 @@ fun User.toProfileUiState(): ProfileUiState {
             phone = this.phone,
             postsNumber = this.postsNumber.toString(),
             locationItem = LocationItem(id = this.locationId),
+            locations = locations,
             bio = this.bio,
         )
     )

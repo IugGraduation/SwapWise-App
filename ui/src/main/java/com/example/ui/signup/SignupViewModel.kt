@@ -29,10 +29,8 @@ class SignupViewModel @Inject constructor(
 ) : BaseViewModel<SignupUiState, SignupEffects>(SignupUiState()), ISignupInteractions {
 
     init {
-        viewModelScope.launch {
-            isDarkTheme()
-            getLocations()
-        }
+        viewModelScope.launch { isDarkTheme() }
+        getLocations()
     }
 
     private suspend fun isDarkTheme() {

@@ -10,10 +10,10 @@ class GetCurrentUserDataUseCase @Inject constructor(
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository,
     )  {
-    suspend operator fun invoke(userId: String): User{
-        val response = userRepository.getCurrentUserById(userId)
+    suspend operator fun invoke(): User {
+        val response = userRepository.getCurrentUserById(getCurrentUserId())
         return response.toUser()
     }
 
-    suspend fun getCurrentUserId(): String = authRepository.getStoredAuthData().uuid ?: ""
+    private suspend fun getCurrentUserId(): String = authRepository.getStoredAuthData().uuid ?: ""
 }
