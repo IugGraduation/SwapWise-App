@@ -48,7 +48,7 @@ fun TitledChipsList(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(Spacing4)
     ) {
-        items(chipsList) {
+        items(items = chipsList, key = { it.categoryItem.id }) {
             SwapWiseChip(it)
         }
     }

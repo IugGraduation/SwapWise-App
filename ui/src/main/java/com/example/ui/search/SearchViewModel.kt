@@ -79,20 +79,21 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun search() {
-        if (_state.value.data.search.isBlank()) return
+        // We allow search even if text is blank if filters are selected
+        val searchVal = _state.value.data.search
+        val categoryIds = _state.value.data.categoryFilterChipsList.filter { it.selected.value }
+            .map { it.categoryItem.id }
+        val locationIds = _state.value.data.locationFilterChipsList.filter { it.selected.value }
+            .map { it.categoryItem.id }
+
+        if (searchVal.isBlank() && categoryIds.isEmpty() && locationIds.isEmpty()) return
 
         tryToExecute(
             call = {
                 updateErrorMessage()
                 updateData { copy(topicsList = listOf()) }
-                val categoryIds =
-                    _state.value.data.categoryFilterChipsList.filter { it.selected.value }
-                        .map { it.categoryItem.id }
-                val locationIds =
-                    _state.value.data.locationFilterChipsList.filter { it.selected.value }
-                        .map { it.categoryItem.id }
                 getSearchResultUseCase(
-                    searchValue = _state.value.data.search,
+                    searchValue = searchVal,
                     categoryIdsFilter = categoryIds,
                     locationIdsFilter = locationIds
                 )
