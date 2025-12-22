@@ -27,59 +27,52 @@ class SearchViewModel @Inject constructor(
 ) : BaseViewModel<SearchUiState, SearchEffects>(SearchUiState()), ISearchInteractions {
 
     init {
-        prepareCategoryChips()
-        prepareLocationChips()
+        loadAllFilters()
         viewModelScope.launch {
             _state.map { it.data.search }.debounce(500L).distinctUntilChanged()
                 .collect { if (it.isNotBlank()) search() }
         }
     }
 
-    private fun prepareCategoryChips() {
+    private fun loadAllFilters() {
         tryToExecute(
-            call = { getCategoriesUseCase() },
-            onSuccess = ::onGetCategoryChipsSuccess,
+            call = {
+                val categories = getCategoriesUseCase()
+                val locations = getLocationsUseCase()
+                Pair(categories, locations)
+            },
+            onSuccess = ::onLoadFiltersSuccess,
         )
     }
 
-    private fun onGetCategoryChipsSuccess(categoryItems: List<CategoryItem>) {
-        val chipsList = categoryItems.map { category ->
+    private fun onLoadFiltersSuccess(filters: Pair<List<CategoryItem>, List<LocationItem>>) {
+        val (categories, locations) = filters
+        
+        val categoryChips = categories.map { category ->
             ChipUiState(
                 categoryItem = category,
                 selected = mutableStateOf(false),
                 onClick = { search() }
             )
         }
-        updateData {
-            copy(categoryFilterChipsList = chipsList)
-        }
-    }
-
-    private fun prepareLocationChips() {
-        tryToExecute(
-            call = { getLocationsUseCase() },
-            onSuccess = ::onGetLocationChipsSuccess,
-        )
-    }
-
-    private fun onGetLocationChipsSuccess(locations: List<LocationItem>) {
-        val chipsList = locations.map { location ->
+        
+        val locationChips = locations.map { location ->
             ChipUiState(
-                categoryItem = CategoryItem(
-                    id = location.id,
-                    name = location.name,
-                ),
+                categoryItem = CategoryItem(id = location.id, name = location.name),
                 selected = mutableStateOf(false),
                 onClick = { search() }
             )
         }
+        
         updateData {
-            copy(locationFilterChipsList = chipsList)
+            copy(
+                categoryFilterChipsList = categoryChips,
+                locationFilterChipsList = locationChips
+            )
         }
     }
 
     private fun search() {
-        // We allow search even if text is blank if filters are selected
         val searchVal = _state.value.data.search
         val categoryIds = _state.value.data.categoryFilterChipsList.filter { it.selected.value }
             .map { it.categoryItem.id }
