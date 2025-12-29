@@ -1,18 +1,18 @@
 package com.example.ui.signup
 
 import com.example.domain.model.LocationItem
+import com.example.ui.models.DropdownUiState
 
 data class SignupUiState(
     val fullName: String = "",
     val phone: String = "",
     val password: String = "",
     val confirmPassword: String = "",
-    val locations: List<LocationItem> = emptyList(),
-    val bestBarterSpot: LocationItem? = null,
     val bio: String = "",
     val isPasswordVisible: Boolean = false,
     val isConfirmPasswordVisible: Boolean = false,
     val isDarkTheme: Boolean = false,
+    val locationDropdown: DropdownUiState<LocationItem> = DropdownUiState(),
     val signupError: SignupErrorUiState = SignupErrorUiState(),
 )
 

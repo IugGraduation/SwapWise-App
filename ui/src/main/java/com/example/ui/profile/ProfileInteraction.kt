@@ -19,4 +19,5 @@ interface ProfileInteraction {
     fun updateLanguageDialogState(showDialog: Boolean)
     fun onUpdateLanguage(language: String)
     fun navigateToPostDetails(postId: String)
+    fun onRetryLocations()
 }

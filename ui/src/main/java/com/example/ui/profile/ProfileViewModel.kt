@@ -38,7 +38,7 @@ class ProfileViewModel @Inject constructor(
     init {
         viewModelScope.launch { isDarkTheme() }
         getLastSelectedAppLanguage()
-        getLocationsAndThenCurrentUserInfo()
+        initUserData()
         getCurrentUserPosts()
     }
 
@@ -46,58 +46,71 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             customizeProfileSettings.getLatestSelectedAppLanguage().collect { language ->
                 updateData {
-                    copy(
-                        profileSettingsUiState = profileSettingsUiState.copy(
-                            lastAppLanguage = language
-                        )
-                    )
+                    copy(profileSettingsUiState = profileSettingsUiState.copy(lastAppLanguage = language))
                 }
             }
         }
     }
 
-    private fun getLocationsAndThenCurrentUserInfo() {
+    private fun initUserData() {
         tryToExecute(
-            call = { getLocationsUseCase() },
-            onSuccess = { locations ->
-                updateData {
-                    copy(
-                        profileInformationUiState = profileInformationUiState.copy(
-                            locations = locations
-                        )
+            call = {
+                val locations = fetchLocations()
+                val userState = getCurrentUserDataUseCase().toProfileUiState()
+
+                // Find the full LocationItem with name using the ID from user data
+                val selectedId =
+                    userState.profileInformationUiState.locationDropdown.selectedItem?.id
+                val fullLocation = locations.find { it.id == selectedId }
+
+                userState.profileInformationUiState.copy(
+                    locationDropdown = userState.profileInformationUiState.locationDropdown.copy(
+                        selectedItem = fullLocation
+                            ?: userState.profileInformationUiState.locationDropdown.selectedItem,
+                        items = locations,
                     )
-                }
-                getCurrentUserInfo()
+                )
             },
-            onError = {
-                // If locations fail to load, still get user info
-                getCurrentUserInfo()
+            onSuccess = { profileInfo ->
+                updateData { copy(profileInformationUiState = profileInfo) }
+                originalProfileInformation = state.value.data.profileInformationUiState
             },
             shouldLoad = true,
             shouldHideContent = true
         )
     }
 
-    private fun getCurrentUserInfo() {
-        val locations = _state.value.data.profileInformationUiState.locations
-        tryToExecute(
-            call = { getCurrentUserDataUseCase().toProfileUiState(locations) },
-            onSuccess = ::onGetCurrentUserSuccess,
-            shouldLoad = _state.value.data.profileInformationUiState.name.isBlank(),
-            shouldHideContent = _state.value.data.profileInformationUiState.name.isBlank(),
-        )
-    }
-
-    private fun onGetCurrentUserSuccess(user: ProfileUiState) {
-        val userLocationId = user.profileInformationUiState.locationItem?.id
-        val fullLocationObject =
-            user.profileInformationUiState.locations.find { it.id == userLocationId }
-
-        val updatedProfileInfo =
-            user.profileInformationUiState.copy(locationItem = fullLocationObject)
-
-        updateData { copy(profileInformationUiState = updatedProfileInfo) }
-        originalProfileInformation = updatedProfileInfo
+    private suspend fun fetchLocations(): List<LocationItem> {
+        updateProfileField {
+            copy(
+                locationDropdown = locationDropdown.copy(
+                    isLoading = true,
+                    error = null
+                )
+            )
+        }
+        return try {
+            val locations = getLocationsUseCase()
+            updateProfileField {
+                copy(
+                    locationDropdown = locationDropdown.copy(
+                        items = locations,
+                        isLoading = false
+                    )
+                )
+            }
+            locations
+        } catch (e: Exception) {
+            updateProfileField {
+                copy(
+                    locationDropdown = locationDropdown.copy(
+                        isLoading = false,
+                        error = e.message
+                    )
+                )
+            }
+            emptyList()
+        }
     }
 
     private fun getCurrentUserPosts() {
@@ -112,13 +125,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onUpdateProfileImage(imageUri: Uri) {
-        updateData {
-            copy(
-                profileInformationUiState = _state.value.data.profileInformationUiState.copy(
-                    imageUri = imageUri.toString()
-                )
-            )
-        }
+        updateProfileField { copy(imageUri = imageUri.toString()) }
     }
 
     override fun onEditButtonClicked() = manageUserInfoEdit(isEditable = true)
@@ -129,7 +136,7 @@ class ProfileViewModel @Inject constructor(
         updateProfileField { copy(phone = newNumber) }
 
     override fun onLocationChange(location: LocationItem) {
-        updateProfileField { copy(locationItem = location) }
+        updateProfileField { copy(locationDropdown = locationDropdown.copy(selectedItem = location)) }
     }
 
     override fun onBioChange(bio: String) = updateProfileField { copy(bio = bio) }
@@ -151,7 +158,7 @@ class ProfileViewModel @Inject constructor(
                 updateUserInfoUseCase(
                     name = lastUserInfo.name,
                     phone = lastUserInfo.phone,
-                    locationId = lastUserInfo.locationItem?.id.orEmpty(),
+                    locationId = lastUserInfo.locationDropdown.selectedItem?.id.orEmpty(),
                     imageByteArray = imageByteArray,
                     bio = lastUserInfo.bio
                 )
@@ -164,7 +171,7 @@ class ProfileViewModel @Inject constructor(
     private fun onUpdateUserInfoSuccess(isUpdated: Boolean) {
         manageUserInfoEdit(isEditable = false)
         makeErrorMessagesEmpty()
-        if (isUpdated) getCurrentUserInfo()
+        if (isUpdated) initUserData()
     }
 
     private fun onUpdateUserInfoFail(throwable: Throwable) {
@@ -221,6 +228,10 @@ class ProfileViewModel @Inject constructor(
         sendUiEffect(ProfileEffect.NavigateToPostDetails(postId))
     }
 
+    override fun onRetryLocations() {
+        initUserData()
+    }
+
     private fun onUpdateLanguageSuccess() {
         updateLanguageDialogState(false)
     }
@@ -242,13 +253,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun manageUserInfoEdit(isEditable: Boolean) {
-        updateData {
-            copy(
-                profileInformationUiState = profileInformationUiState.copy(
-                    isUserInfoEditable = isEditable
-                )
-            )
-        }
+        updateProfileField { copy(isUserInfoEditable = isEditable) }
     }
 
     private fun updateFieldError(

@@ -1,12 +1,14 @@
 package com.example.ui.components.atoms
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -19,20 +21,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.ui.models.DropdownUiState
 import com.example.ui.theme.GraduationProjectTheme
-import com.example.ui.theme.Spacing16
-import com.example.ui.theme.Spacing8
-import com.example.ui.theme.TextStyles
 import com.example.ui.theme.color
 
 @Composable
 fun <T> DropdownTextField(
     modifier: Modifier = Modifier,
-    selectedValue: T?,
-    options: List<T>,
+    state: DropdownUiState<T>,
     onValueChange: (T) -> Unit,
+    onRetry: () -> Unit = {},
     placeholder: String,
     errorMessage: String? = null,
+    enabled: Boolean = true,
     leadingIcon: @Composable (() -> Unit)? = null,
     valueToString: (T) -> String = { it.toString() }
 ) {
@@ -40,22 +42,43 @@ fun <T> DropdownTextField(
 
     Box(modifier = modifier.fillMaxWidth()) {
         SwapWiseTextField(
-            value = selectedValue?.let(valueToString) ?: "",
+            value = state.selectedItem?.let(valueToString) ?: "",
             onValueChange = {},
             placeholder = placeholder,
             leadingIcon = leadingIcon,
             trailingIcon = {
-                Icon(
-                    imageVector = when (expanded) {
-                        true -> Icons.Default.KeyboardArrowUp
-                        else -> Icons.Default.ArrowDropDown
-                    },
-                    contentDescription = "",
-                    tint = MaterialTheme.color.textTertiary
-                )
+                when {
+                    state.isLoading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            strokeWidth = 2.dp,
+                            color = MaterialTheme.color.primary
+                        )
+                    }
+
+                    state.error != null -> {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = "Retry",
+                            tint = MaterialTheme.color.danger,
+                            modifier = Modifier.clickable { onRetry() }
+                        )
+                    }
+
+                    else -> {
+                        Icon(
+                            imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.ArrowDropDown,
+                            contentDescription = null,
+                            tint = MaterialTheme.color.textTertiary
+                        )
+                    }
+                }
             },
-            modifier = Modifier.clickable { expanded = !expanded },
-            isEditable = false
+            modifier = modifier.clickable(enabled = enabled && !state.isLoading && state.error == null) {
+                expanded = !expanded
+            },
+            isEditable = false,
+            errorMessage = errorMessage ?: state.error
         )
 
         DropdownMenu(
@@ -63,7 +86,7 @@ fun <T> DropdownTextField(
             onDismissRequest = { expanded = false },
             modifier = Modifier.fillMaxWidth()
         ) {
-            options.forEach { selectionOption ->
+            state.items.forEach { selectionOption ->
                 DropdownMenuItem(
                     text = { Text(text = valueToString(selectionOption)) },
                     onClick = {
@@ -74,28 +97,14 @@ fun <T> DropdownTextField(
             }
         }
     }
-
-    AnimatedVisibility(!errorMessage.isNullOrEmpty()) {
-        VerticalSpacer(Spacing8)
-        Text(
-            text = errorMessage ?: "",
-            color = MaterialTheme.color.danger,
-            style = TextStyles.captionMedium
-        )
-    }
 }
 
-
-@Preview(
-    showSystemUi = false, showBackground = true,
-    device = "spec:width=1080px,height=2790px,dpi=440",
-)
+@Preview(showBackground = true)
 @Composable
 fun PreviewDropdownContent() {
     GraduationProjectTheme {
         DropdownTextField(
-            selectedValue = null,
-            options = listOf("Gaza"),
+            state = DropdownUiState(items = listOf("Gaza")),
             onValueChange = {},
             placeholder = "Select location"
         )

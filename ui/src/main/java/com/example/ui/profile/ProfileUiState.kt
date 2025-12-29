@@ -4,6 +4,7 @@ import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
 import com.example.domain.model.User
 import com.example.ui.base.BaseUiState
+import com.example.ui.models.DropdownUiState
 import com.example.ui.util.empty
 
 data class ProfileUiState(
@@ -21,8 +22,7 @@ data class ProfileInformationUiState(
     val name: String = String.empty(),
     val phone: String = String.empty(),
     val postsNumber: String = String.empty(),
-    val locationItem: LocationItem? = null,
-    val locations: List<LocationItem> = emptyList(),
+    val locationDropdown: DropdownUiState<LocationItem> = DropdownUiState(),
     val bio: String = String.empty(),
     val exchangesNumber: String = String.empty(),
     val isUserInfoEditable: Boolean = false,
@@ -57,7 +57,7 @@ data class ProfileErrorUiState(
     val bioErrorMessage: String = String.empty(),
 )
 
-fun User.toProfileUiState(locations: List<LocationItem> = emptyList()): ProfileUiState {
+fun User.toProfileUiState(): ProfileUiState {
     return ProfileUiState(
         id = this.id,
         profileInformationUiState = ProfileInformationUiState(
@@ -65,8 +65,9 @@ fun User.toProfileUiState(locations: List<LocationItem> = emptyList()): ProfileU
             name = this.name,
             phone = this.phone,
             postsNumber = this.postsNumber.toString(),
-            locationItem = LocationItem(id = this.locationId),
-            locations = locations,
+            locationDropdown = DropdownUiState(
+                selectedItem = LocationItem(id = this.locationId),
+            ),
             bio = this.bio,
         )
     )

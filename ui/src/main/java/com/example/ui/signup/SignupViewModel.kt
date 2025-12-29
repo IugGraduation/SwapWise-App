@@ -42,10 +42,37 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun getLocations() {
+        updateData {
+            copy(
+                locationDropdown = locationDropdown.copy(
+                    isLoading = true,
+                    error = null
+                )
+            )
+        }
         tryToExecute(
             call = { getLocationsUseCase() },
-            onSuccess = { locations -> updateData { copy(locations = locations) } },
-            shouldLoad = false
+            shouldLoad = false,
+            onSuccess = { locations ->
+                updateData {
+                    copy(
+                        locationDropdown = locationDropdown.copy(
+                            items = locations,
+                            isLoading = false
+                        )
+                    )
+                }
+            },
+            onError = { throwable ->
+                updateData {
+                    copy(
+                        locationDropdown = locationDropdown.copy(
+                            isLoading = false,
+                            error = throwable.message
+                        )
+                    )
+                }
+            }
         )
     }
 
@@ -58,7 +85,7 @@ class SignupViewModel @Inject constructor(
                     phone = state.value.data.phone,
                     password = state.value.data.password,
                     confirmPassword = state.value.data.confirmPassword,
-                    bestBarterSpotId = state.value.data.bestBarterSpot?.id.orEmpty(),
+                    bestBarterSpotId = state.value.data.locationDropdown.selectedItem?.id.orEmpty(),
                 )
             },
             onSuccess = { navigateToHome() },
@@ -171,7 +198,7 @@ class SignupViewModel @Inject constructor(
 
     override fun onBestBarterSpotChange(newValue: LocationItem) {
         updateFieldError()
-        updateData { copy(bestBarterSpot = newValue) }
+        updateData { copy(locationDropdown = locationDropdown.copy(selectedItem = newValue)) }
     }
 
     override fun onBioChange(newValue: String) {
@@ -180,5 +207,4 @@ class SignupViewModel @Inject constructor(
             copy(bio = newValue)
         }
     }
-
 }

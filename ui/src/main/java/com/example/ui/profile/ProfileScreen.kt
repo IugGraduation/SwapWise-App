@@ -294,12 +294,13 @@ private fun UserInformationSection(
         )
 
         DropdownTextField(
-            selectedValue = state.profileInformationUiState.locationItem,
-            options = state.profileInformationUiState.locations,
+            state = state.profileInformationUiState.locationDropdown,
             onValueChange = profileInteraction::onLocationChange,
+            onRetry = profileInteraction::onRetryLocations,
             placeholder = stringResource(R.string.best_barter_spot),
             valueToString = { it.name },
             errorMessage = state.profileError.locationErrorMessage,
+            enabled = isUserInfoEditable,
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_location),
@@ -450,6 +451,7 @@ fun PreviewPostDetailsContent() {
                 override fun updateLanguageDialogState(showDialog: Boolean) {}
                 override fun onUpdateLanguage(language: String) {}
                 override fun navigateToPostDetails(postId: String) {}
+                override fun onRetryLocations() {}
             },
             pagerState = pagerState,
             bottomBarState = BottomBarUiState(),
