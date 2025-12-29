@@ -268,6 +268,7 @@ private fun UserInformationSection(
             placeholder = stringResource(R.string.full_name),
             errorMessage = state.profileError.userNameErrorMessage,
             isEditable = isUserInfoEditable,
+            enabled = isUserInfoEditable,
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_user),
@@ -281,6 +282,7 @@ private fun UserInformationSection(
             value = state.profileInformationUiState.phone,
             onValueChange = profileInteraction::onPhoneNumberChange,
             isEditable = isUserInfoEditable,
+            enabled = isUserInfoEditable,
             placeholder = stringResource(R.string.phone_number),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             errorMessage = state.profileError.phoneNumberErrorMessage,
@@ -314,6 +316,7 @@ private fun UserInformationSection(
             value = state.profileInformationUiState.bio,
             onValueChange = profileInteraction::onBioChange,
             isEditable = isUserInfoEditable,
+            enabled = isUserInfoEditable,
             placeholder = stringResource(R.string.bio),
             errorMessage = state.profileError.bioErrorMessage,
             isMultiline = true,

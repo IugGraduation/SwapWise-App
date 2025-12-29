@@ -78,6 +78,7 @@ fun <T> DropdownTextField(
                 expanded = !expanded
             },
             isEditable = false,
+            enabled = enabled,
             errorMessage = errorMessage ?: state.error
         )
 
