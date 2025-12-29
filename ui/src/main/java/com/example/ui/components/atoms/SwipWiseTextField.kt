@@ -80,7 +80,7 @@ fun SwapWiseTextField(
                     enabled = isEditable && enabled,
                     onValueChange = onValueChange,
                     textStyle = TextStyles.hint.copy(
-                        color = if(isEditable) MaterialTheme.color.textPrimary else MaterialTheme.color.textTertiary
+                        color = if(enabled) MaterialTheme.color.textPrimary else MaterialTheme.color.textTertiary
                     ),
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
