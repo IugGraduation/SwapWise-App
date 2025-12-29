@@ -204,7 +204,7 @@ fun PostDetailsContent(
 fun LocationRow(location: String) {
     Column(modifier = Modifier.padding(horizontal = Spacing16)) {
         Text(
-            text = stringResource(id = R.string.your_place),
+            text = stringResource(id = R.string.location),
             style = TextStyles.headingMedium,
             color = MaterialTheme.color.textPrimary
         )
