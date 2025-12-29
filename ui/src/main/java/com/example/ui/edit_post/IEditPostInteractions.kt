@@ -12,4 +12,5 @@ interface IEditPostInteractions : INavigateUp {
     fun onSelectedImageChange(selectedImageUri: Uri)
     fun onClickSave(imageByteArray: ByteArray?)
     fun onClickDelete()
+    fun onRetryLocations()
 }

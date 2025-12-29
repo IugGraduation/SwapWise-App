@@ -7,6 +7,7 @@ import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.exception.InvalidDetailsException
 import com.example.domain.exception.InvalidPlaceException
 import com.example.domain.exception.InvalidTitleException
+import com.example.domain.location.GetLocationsUseCase
 import com.example.domain.model.CategoryItem
 import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
@@ -32,6 +33,7 @@ class EditPostViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val editPostUseCase: EditPostUseCase,
     private val deletePostUseCase: DeletePostUseCase,
+    private val getLocationsUseCase: GetLocationsUseCase,
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IEditPostInteractions {
     private val args = EditPostArgs(savedStateHandle)
 
@@ -48,9 +50,48 @@ class EditPostViewModel @Inject constructor(
 
     private fun onGetPostDetailsSuccess(data: PostItem) {
         _state.value = MyUiState(PostItemUiState(postItem = data))
+        getLocations()
         prepareChipsList()
     }
 
+    private fun getLocations() {
+        updateData {
+            copy(
+                locationDropdown = locationDropdown.copy(
+                    isLoading = true,
+                    error = null
+                )
+            )
+        }
+        tryToExecute(
+            call = { getLocationsUseCase() },
+            shouldLoad = false,
+            onSuccess = { locations ->
+                val selectedId = state.value.data.postItem.locationItem.id
+                val fullLocation = locations.find { it.id == selectedId }
+
+                updateData {
+                    copy(
+                        locationDropdown = locationDropdown.copy(
+                            items = locations,
+                            selectedItem = fullLocation ?: postItem.locationItem,
+                            isLoading = false
+                        )
+                    )
+                }
+            },
+            onError = { throwable ->
+                updateData {
+                    copy(
+                        locationDropdown = locationDropdown.copy(
+                            isLoading = false,
+                            error = throwable.message
+                        )
+                    )
+                }
+            }
+        )
+    }
 
     private fun prepareChipsList() {
         tryToExecute(
@@ -123,7 +164,7 @@ class EditPostViewModel @Inject constructor(
 
     override fun onLocationChange(location: LocationItem) {
         updateFieldError()
-        updatePostItem { copy(locationItem = location) }
+        updateData { copy(locationDropdown = locationDropdown.copy(selectedItem = location)) }
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
@@ -151,13 +192,20 @@ class EditPostViewModel @Inject constructor(
         tryToExecute(
             call = {
                 editPostUseCase(
-                    postItem = state.value.data.postItem,
+                    postItem = state.value.data.postItem.copy(
+                        locationItem = state.value.data.locationDropdown.selectedItem
+                            ?: LocationItem()
+                    ),
                     imageByteArray = imageByteArray
                 )
             },
             onSuccess = { navigateUp() },
             onError = ::onSavePostFail
         )
+    }
+
+    override fun onRetryLocations() {
+        getLocations()
     }
 
     private fun onSavePostFail(throwable: Throwable) {

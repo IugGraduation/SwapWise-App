@@ -51,6 +51,7 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
+import com.example.ui.models.DropdownUiState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Primary
@@ -135,9 +136,9 @@ fun EditPostContent(
             )
 
             DropdownTextField(
-                selectedValue = state.data.postItem.locationItem,
-                options = state.data.locations,
+                state = state.data.locationDropdown,
                 onValueChange = editInteractions::onLocationChange,
+                onRetry = editInteractions::onRetryLocations,
                 placeholder = stringResource(R.string.your_place),
                 valueToString = { it.name },
                 errorMessage = state.data.postError.locationError,
@@ -284,7 +285,8 @@ fun PreviewPostDetailsContent() {
                 PostItemUiState(
             postItem = GetFakePostDetailsUseCase()().copy(
                 categoryItem = CategoryItem("Food and beverages0"),
-            )
+            ),
+                    locationDropdown = DropdownUiState(items = listOf(LocationItem(name = "Gaza")))
                 )
         ), editInteractions = object : IEditPostInteractions {
             override fun onTitleChange(title: String) {}
@@ -295,6 +297,7 @@ fun PreviewPostDetailsContent() {
                 override fun onClickSave(imageByteArray: ByteArray?) {}
             override fun onClickDelete() {}
                 override fun navigateUp() {}
+                override fun onRetryLocations() {}
             },
         )
     }
