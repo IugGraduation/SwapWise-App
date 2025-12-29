@@ -14,4 +14,5 @@ interface ISignupInteractions{
     fun toggleConfirmPasswordVisibility ()
     fun onClickSignup ()
     fun navigateToLogin()
+    fun onRetryLocations()
 }

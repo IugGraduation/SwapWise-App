@@ -46,7 +46,8 @@ fun SwapWiseTextField(
     errorMessage: String? = null,
     isMultiline: Boolean = false,
     minHeight: Dp = if (isMultiline) MultiLineEditTextHeight else OneLineEditTextHeight,
-    isEditable: Boolean = true
+    isEditable: Boolean = true,
+    enabled: Boolean = true
 ) {
     Column(modifier = modifier) {
         Box(
@@ -76,7 +77,7 @@ fun SwapWiseTextField(
 
                 BasicTextField(
                     value = value,
-                    enabled = isEditable,
+                    enabled = isEditable && enabled,
                     onValueChange = onValueChange,
                     textStyle = TextStyles.hint.copy(
                         color = if(isEditable) MaterialTheme.color.textPrimary else MaterialTheme.color.textTertiary

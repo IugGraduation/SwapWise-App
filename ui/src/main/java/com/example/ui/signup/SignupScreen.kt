@@ -39,6 +39,7 @@ import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.templates.ScreenTemplate
 import com.example.ui.home.navigateToHome
 import com.example.ui.login.navigateToLogin
+import com.example.ui.models.DropdownUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -175,9 +176,9 @@ fun SignupForm(
             errorMessage = state.signupError.confirmPasswordError
         )
         DropdownTextField(
-            selectedValue = state.bestBarterSpot,
-            options = state.locations,
+            state = state.locationDropdown,
             onValueChange = signupInteractions::onBestBarterSpotChange,
+            onRetry = signupInteractions::onRetryLocations,
             placeholder = stringResource(R.string.best_barter_spot),
             valueToString = { it.name },
             errorMessage = state.signupError.bestBarterSpotError,
@@ -217,9 +218,11 @@ fun PreviewSignupContent() {
         SignupContent(
             state = MyUiState(
                 SignupUiState(
-                    locations = listOf(
-                        LocationItem(name = "Gaza"),
-                        LocationItem(name = "London")
+                    locationDropdown = DropdownUiState(
+                        items = listOf(
+                            LocationItem(name = "Gaza"),
+                            LocationItem(name = "London")
+                        )
                     )
                 )
             ),
@@ -234,6 +237,7 @@ fun PreviewSignupContent() {
                 override fun toggleConfirmPasswordVisibility() {}
                 override fun onClickSignup() {}
                 override fun navigateToLogin() {}
+                override fun onRetryLocations() {}
             },
         )
     }

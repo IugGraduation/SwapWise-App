@@ -97,6 +97,10 @@ class SignupViewModel @Inject constructor(
         sendUiEffect(SignupEffects.NavigateToLogin)
     }
 
+    override fun onRetryLocations() {
+        getLocations()
+    }
+
     private fun navigateToHome() {
         bottomNavigationViewModel.onItemSelected(0)
         sendUiEffect(SignupEffects.NavigateToHome)
