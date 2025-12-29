@@ -43,6 +43,7 @@ import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.ChipUiState
+import com.example.ui.models.DropdownUiState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
@@ -119,9 +120,9 @@ fun AddPostContent(
             VerticalSpacer(Spacing8)
 
             DropdownTextField(
-                selectedValue = state.data.postItem.locationItem,
-                options = state.data.locations,
+                state = state.data.locationDropdown,
                 onValueChange = addInteractions::onLocationChange,
+                onRetry = addInteractions::onRetryLocations,
                 placeholder = stringResource(R.string.your_place),
                 valueToString = { it.name },
                 errorMessage = state.data.postError.locationError,
@@ -204,7 +205,8 @@ fun PreviewPostDetailsContent() {
                 },
                 postItem = PostItem(
                     categoryItem = CategoryItem(name = "Category")
-                )
+                ),
+                    locationDropdown = DropdownUiState(items = listOf(LocationItem(name = "Gaza")))
                 )
             ),
             addInteractions = object : IAddPostInteractions{
@@ -214,6 +216,7 @@ fun PreviewPostDetailsContent() {
                 override fun onSelectedImageChange(selectedImageUri: Uri) {}
                 override fun onClickAdd(imageByteArray: ByteArray?) {}
                 override fun navigateUp() {}
+                override fun onRetryLocations() {}
             },
         )
     }

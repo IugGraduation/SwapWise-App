@@ -30,14 +30,10 @@ class AddPostViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val stringsResource: StringsResource,
     private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val addPostUseCase: AddPostUseCase, private val getLocationsUseCase: GetLocationsUseCase
+    private val addPostUseCase: AddPostUseCase,
+    private val getLocationsUseCase: GetLocationsUseCase
 ) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IAddPostInteractions {
     private val args = AddPostArgs(savedStateHandle)
-
-    override fun navigateUp() {
-        sendUiEffect(NavigateUpEffect.NavigateUp)
-    }
-
 
     init {
         updatePostItem { copy(name = args.postTitle) }
@@ -45,10 +41,42 @@ class AddPostViewModel @Inject constructor(
         prepareChipsList()
     }
 
+    override fun navigateUp() {
+        sendUiEffect(NavigateUpEffect.NavigateUp)
+    }
+
     private fun getLocations() {
+        updateData {
+            copy(
+                locationDropdown = locationDropdown.copy(
+                    isLoading = true,
+                    error = null
+                )
+            )
+        }
         tryToExecute(
             call = { getLocationsUseCase() },
-            onSuccess = { locations -> updateData { copy(locations = locations) } },
+            shouldLoad = false,
+            onSuccess = { locations ->
+                updateData {
+                    copy(
+                        locationDropdown = locationDropdown.copy(
+                            items = locations,
+                            isLoading = false
+                        )
+                    )
+                }
+            },
+            onError = { throwable ->
+                updateData {
+                    copy(
+                        locationDropdown = locationDropdown.copy(
+                            isLoading = false,
+                            error = throwable.message
+                        )
+                    )
+                }
+            }
         )
     }
 
@@ -113,7 +141,7 @@ class AddPostViewModel @Inject constructor(
 
     override fun onLocationChange(location: LocationItem) {
         updateFieldError()
-        updatePostItem { copy(locationItem = location) }
+        updateData { copy(locationDropdown = locationDropdown.copy(selectedItem = location)) }
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
@@ -141,13 +169,20 @@ class AddPostViewModel @Inject constructor(
         tryToExecute(
             call = {
                 addPostUseCase(
-                    postItem = state.value.data.postItem,
+                    postItem = state.value.data.postItem.copy(
+                        locationItem = state.value.data.locationDropdown.selectedItem
+                            ?: LocationItem()
+                    ),
                     imageByteArray = imageByteArray.checkImageNotNull()
                 )
             },
             onSuccess = { navigateUp() },
             onError = ::onAddPostFail
         )
+    }
+
+    override fun onRetryLocations() {
+        getLocations()
     }
 
 
