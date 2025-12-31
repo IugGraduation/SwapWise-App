@@ -51,18 +51,11 @@ class EditPostViewModel @Inject constructor(
     private fun onGetPostDetailsSuccess(data: PostItem) {
         _state.value = MyUiState(PostItemUiState(postItem = data))
         getLocations()
-        prepareChipsList()
+        getCategories()
     }
 
     private fun getLocations() {
-        updateData {
-            copy(
-                locationDropdown = locationDropdown.copy(
-                    isLoading = true,
-                    error = null
-                )
-            )
-        }
+        updateData { copy(locationDropdown = locationDropdown.copy(isLoading = true, error = null)) }
         tryToExecute(
             call = { getLocationsUseCase() },
             shouldLoad = false,
@@ -93,36 +86,46 @@ class EditPostViewModel @Inject constructor(
         )
     }
 
-    private fun prepareChipsList() {
+    private fun getCategories() {
+        updateData {
+            copy(
+                categories = categories.copy(isLoading = true, error = null),
+                favoriteCategories = favoriteCategories.copy(isLoading = true, error = null)
+            )
+        }
         tryToExecute(
             call = { getCategoriesUseCase() },
-            onSuccess = ::onGetChipsDataSuccess,
+            shouldLoad = false,
+            onSuccess = { categoryItems ->
+                val chipsList = categoryItems.map { category ->
+                    ChipUiState(
+                        categoryItem = category,
+                        selected = mutableStateOf(category.id == state.value.data.postItem.categoryItem.id),
+                        onClick = ::onCategoryChange
+                    )
+                }
+                val favoriteChipsList = chipsList.map {
+                    it.copy(
+                        selected = mutableStateOf(state.value.data.postItem.favoriteCategoryItems.contains(it.categoryItem)),
+                        onClick = ::onFavoriteCategoryChange
+                    )
+                }
+                updateData {
+                    copy(
+                        categories = categories.copy(items = chipsList, isLoading = false),
+                        favoriteCategories = favoriteCategories.copy(items = favoriteChipsList, isLoading = false)
+                    )
+                }
+            },
+            onError = { throwable ->
+                updateData {
+                    copy(
+                        categories = categories.copy(isLoading = false, error = throwable.message),
+                        favoriteCategories = favoriteCategories.copy(isLoading = false, error = throwable.message)
+                    )
+                }
+            }
         )
-    }
-
-    private fun onGetChipsDataSuccess(categoryItems: List<CategoryItem>) {
-        val chipsList = List(categoryItems.size) { index ->
-            ChipUiState(
-                categoryItem = categoryItems[index],
-                selected = mutableStateOf(
-                    categoryItems[index].id == state.value.data.postItem.categoryItem.id
-                ),
-                onClick = ::onCategoryChange
-            )
-
-        }
-        val favoriteChipsList = chipsList.map {
-            it.copy(
-                categoryItem = it.categoryItem.copy(imageUrl = ""),
-                selected = mutableStateOf(
-                    state.value.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
-                ),
-                onClick = ::onFavoriteCategoryChange
-            )
-        }
-        updateData {
-            copy(chipsList = chipsList, favoriteChipsList = favoriteChipsList)
-        }
     }
 
 
@@ -173,18 +176,23 @@ class EditPostViewModel @Inject constructor(
 
     fun onCategoryChange(categoryItem: CategoryItem) {
         updateFieldError()
+        state.value.data.categories.items.forEach { chip ->
+            chip.selected.value = chip.categoryItem.id == categoryItem.id
+        }
         updatePostItem { copy(categoryItem = categoryItem) }
     }
 
     fun onFavoriteCategoryChange(categoryItem: CategoryItem) {
-        val newFavoriteChipList =
-            if (state.value.data.postItem.favoriteCategoryItems.contains(categoryItem)) {
-                _state.value.data.postItem.favoriteCategoryItems - categoryItem
+        val favorites = state.value.data.postItem.favoriteCategoryItems
+        if (favorites.contains(categoryItem)) {
+            favorites.remove(categoryItem)
         } else {
-                _state.value.data.postItem.favoriteCategoryItems + categoryItem
+            favorites.add(categoryItem)
         }
-
-        updatePostItem { copy(favoriteCategoryItems = newFavoriteChipList.toMutableList()) }
+        // Visually update the specific chip's selected state
+        state.value.data.favoriteCategories.items.find { it.categoryItem.id == categoryItem.id }?.let {
+            it.selected.value = favorites.contains(categoryItem)
+        }
     }
 
 
@@ -206,6 +214,10 @@ class EditPostViewModel @Inject constructor(
 
     override fun onRetryLocations() {
         getLocations()
+    }
+
+    override fun onRetryCategories() {
+        getCategories()
     }
 
     private fun onSavePostFail(throwable: Throwable) {

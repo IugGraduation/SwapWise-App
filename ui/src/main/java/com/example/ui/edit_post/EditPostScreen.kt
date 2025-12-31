@@ -94,10 +94,11 @@ fun EditPostContent(
         ProductImage(
             state.data.postItem.imageUrl, onImagePicked = editInteractions::onSelectedImageChange
         )
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .padding(Spacing16),
             verticalArrangement = Arrangement.spacedBy(Spacing8)
         ) {
@@ -169,19 +170,15 @@ fun EditPostContent(
             TitledChipsList(
                 title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.data.chipsList.onEach {
-                    it.selected.value =
-                        it.categoryItem.id == state.data.postItem.categoryItem.id
-                },
+                state = state.data.categories,
+                onRetry = editInteractions::onRetryCategories
             )
             VerticalSpacer(Spacing16)
             TitledChipsList(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.data.favoriteChipsList.onEach {
-                    it.selected.value =
-                        state.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
-                },
+                state = state.data.favoriteCategories,
+                onRetry = editInteractions::onRetryCategories
             )
 
             Column(
@@ -298,6 +295,7 @@ fun PreviewPostDetailsContent() {
             override fun onClickDelete() {}
                 override fun navigateUp() {}
                 override fun onRetryLocations() {}
+                override fun onRetryCategories() {}
             },
         )
     }

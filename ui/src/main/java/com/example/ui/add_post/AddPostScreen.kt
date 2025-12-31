@@ -43,6 +43,7 @@ import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.models.ChipUiState
+import com.example.ui.models.ChipsUiState
 import com.example.ui.models.DropdownUiState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.theme.GraduationProjectTheme
@@ -86,10 +87,11 @@ fun AddPostContent(
             state.data.postItem.imageUrl,
             onImagePicked = addInteractions::onSelectedImageChange
         )
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .padding(Spacing16)
         ) {
             Text(
@@ -155,18 +157,15 @@ fun AddPostContent(
             TitledChipsList(
                 title = stringResource(R.string.category_of_your_post),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.data.chipsList.onEach {
-                    it.selected.value = it.categoryItem == state.data.postItem.categoryItem
-                },
+                state = state.data.categories,
+                onRetry = addInteractions::onRetryCategories
             )
             VerticalSpacer(Spacing24)
             TitledChipsList(
                 title = stringResource(R.string.categories_you_like),
                 textStyle = TextStyles.headingLarge,
-                chipsList = state.data.favoriteChipsList.onEach {
-                    it.selected.value =
-                        state.data.postItem.favoriteCategoryItems.contains(it.categoryItem)
-                },
+                state = state.data.favoriteCategories,
+                onRetry = addInteractions::onRetryCategories
             )
 
             Column(
@@ -200,16 +199,18 @@ fun PreviewPostDetailsContent() {
         AddPostContent(
             state = MyUiState(
                 PostItemUiState(
-                    chipsList = GetFakeCategoriesUseCase()().map {
-                        ChipUiState(categoryItem = it)
-                },
-                postItem = PostItem(
-                    categoryItem = CategoryItem(name = "Category")
-                ),
+                    categories = ChipsUiState(
+                        items = GetFakeCategoriesUseCase()().map {
+                            ChipUiState(categoryItem = it)
+                        }
+                    ),
+                    postItem = PostItem(
+                        categoryItem = CategoryItem(name = "Category")
+                    ),
                     locationDropdown = DropdownUiState(items = listOf(LocationItem(name = "Gaza")))
                 )
             ),
-            addInteractions = object : IAddPostInteractions{
+            addInteractions = object : IAddPostInteractions {
                 override fun onTitleChange(title: String) {}
                 override fun onLocationChange(location: LocationItem) {}
                 override fun onDetailsChange(details: String) {}
@@ -217,6 +218,7 @@ fun PreviewPostDetailsContent() {
                 override fun onClickAdd(imageByteArray: ByteArray?) {}
                 override fun navigateUp() {}
                 override fun onRetryLocations() {}
+                override fun onRetryCategories() {}
             },
         )
     }

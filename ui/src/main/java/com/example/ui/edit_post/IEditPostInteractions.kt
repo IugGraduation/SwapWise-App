@@ -13,4 +13,5 @@ interface IEditPostInteractions : INavigateUp {
     fun onClickSave(imageByteArray: ByteArray?)
     fun onClickDelete()
     fun onRetryLocations()
+    fun onRetryCategories()
 }

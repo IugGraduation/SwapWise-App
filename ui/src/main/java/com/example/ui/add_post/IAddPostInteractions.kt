@@ -11,4 +11,5 @@ interface IAddPostInteractions : INavigateUp {
     fun onSelectedImageChange(selectedImageUri: Uri)
     fun onClickAdd(imageByteArray: ByteArray? = null)
     fun onRetryLocations()
+    fun onRetryCategories()
 }

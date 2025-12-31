@@ -6,8 +6,8 @@ import com.example.domain.model.PostItem
 data class PostItemUiState(
     val postItem: PostItem = PostItem(),
     val locationDropdown: DropdownUiState<LocationItem> = DropdownUiState(),
-    val chipsList: List<ChipUiState> = listOf(),
-    val favoriteChipsList: List<ChipUiState> = listOf(),
+    val categories: ChipsUiState = ChipsUiState(),
+    val favoriteCategories: ChipsUiState = ChipsUiState(),
     val showEditPostButton: Boolean = false,
     val postError: PostErrorUiState = PostErrorUiState(),
 )
