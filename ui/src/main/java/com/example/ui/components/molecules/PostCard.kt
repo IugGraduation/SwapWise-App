@@ -7,12 +7,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -31,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.VerticalSpacer
@@ -60,7 +64,7 @@ fun PostCard(
 
     Card(
         modifier = modifier
-            .height(CardHeight)
+            .wrapContentHeight() // Allow height to adjust to content
             .then(
                 if (isHorizontalCard) {
                     Modifier.width(width = CardWidth)
@@ -75,10 +79,10 @@ fun PostCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.4f)
+                    .height(if (isHorizontalCard) 140.dp else 200.dp) // Fixed image height
             ) {
                 Image(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxSize(),
                     painter = postImage,
                     contentDescription = details,
                     contentScale = ContentScale.Crop
@@ -91,11 +95,13 @@ fun PostCard(
                     showState = showState
                 )
             }
+            
+            VerticalSpacer(Spacing8)
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.95f)
+                    .wrapContentHeight()
                     .background(color = MaterialTheme.color.onBackground)
             ) {
                 PostInfoSection(
@@ -156,17 +162,20 @@ private fun PostInfoSection(
     location: String,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        VerticalSpacer(Spacing8)
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = Spacing8),
-                text = title,
-                style = TextStyles.headingMedium,
-                color = MaterialTheme.color.textPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = Spacing8)
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(horizontal = Spacing8),
+            text = title,
+            style = TextStyles.headingMedium,
+            color = MaterialTheme.color.textPrimary,
+            maxLines = 2, // Allow title to take more lines if needed
+            overflow = TextOverflow.Ellipsis
+        )
 
         Text(
             modifier = Modifier.padding(horizontal = Spacing8),
@@ -226,8 +235,8 @@ private fun PostCardPreview() {
         username = "Bilal Alkhatib",
         userImage = painterResource(R.drawable.img_user_fake),
         isOpen = true,
-        title = "Liters of Olive Oil for Trade Liters of Olive Oil for Trade",
-        details = "Looking for a sweet deal? I have 10 kilograms of high-quality sugar Liters of Olive Oil for Trade that I’d like to exchange Liters of Olive Oil for Trade Liters of Olive Oil for Trade Liters of Olive Oil for Trade for something useful",
+        title = "Liters of Olive Oil for Trade",
+        details = "Looking for a sweet deal? I have 10 kilograms of high-quality sugar that I’d like to exchange for something useful. This is a very long description to test the flexible height of the card. Let's see how many lines it takes and if the card grows accordingly.",
         location = "Gaza",
         postImage = painterResource(R.drawable.img_food_and_beverages),
         isHorizontalCard = true
