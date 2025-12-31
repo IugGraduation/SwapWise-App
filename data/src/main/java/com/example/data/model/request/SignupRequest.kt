@@ -1,11 +1,14 @@
 package com.example.data.model.request
 
+import com.example.data.util.Constants
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 @Serializable
 data class SignupRequest(
     val name: String,
+    @SerialName(Constants.Supabase.Columns.locationId)
     val locationId: String,
     val bio: String? = null,
     @Transient
