@@ -21,7 +21,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -46,7 +45,6 @@ import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.edit_post.navigateToEditPost
-import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.post_details.composable.PhoneRow
 import com.example.ui.profile.composable.EditIconButton
@@ -167,16 +165,13 @@ fun PostDetailsContent(
                 LocationRow(location = state.data.postItem.locationItem.name)
                 VerticalSpacer(Spacing24)
                 TitledChipsList(
+                    title = stringResource(R.string.categories),
+                    state = state.data.categories,
+                )
+                VerticalSpacer(Spacing24)
+                TitledChipsList(
                     title = stringResource(R.string.favorite_categories),
-                    chipsList = state.data.postItem.favoriteCategoryItems.map {
-                        ChipUiState(
-                            categoryItem = it,
-                            selected = mutableStateOf(
-                                state.data.postItem.favoriteCategoryItems.contains(it)
-                            ),
-                            clickable = false
-                        )
-                    }
+                    state = state.data.favoriteCategories,
                 )
                 if (state.data.postItem.user.phone.isNotBlank() && !state.data.showEditPostButton) {
                     VerticalSpacer(Spacing24)

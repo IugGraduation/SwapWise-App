@@ -1,5 +1,6 @@
 package com.example.ui.post_details
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.domain.authentication.GetAuthUseCase
@@ -7,6 +8,8 @@ import com.example.domain.model.PostItem
 import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.MyUiState
+import com.example.ui.models.ChipUiState
+import com.example.ui.models.ChipsUiState
 import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -39,7 +42,30 @@ class PostDetailsViewModel @Inject constructor(
     }
 
     private fun onGetPostDetailsSuccess(data: PostItem) {
-        _state.value = MyUiState(PostItemUiState(postItem = data))
+
+        val categoryChips = listOf(
+            ChipUiState(
+                categoryItem = data.categoryItem,
+                selected = mutableStateOf(true),
+                clickable = false
+            )
+        )
+
+        val favoriteChips = data.favoriteCategoryItems.map { category ->
+            ChipUiState(
+                categoryItem = category,
+                selected = mutableStateOf(true),
+                clickable = false
+            )
+        }
+
+        _state.value = MyUiState(
+            PostItemUiState(
+                postItem = data,
+                categories = ChipsUiState(items = categoryChips),
+                favoriteCategories = ChipsUiState(items = favoriteChips)
+            )
+        )
         showEditButtonIfNeeded()
     }
 
