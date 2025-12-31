@@ -20,10 +20,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.ui.R
 import com.example.ui.models.DropdownUiState
 import com.example.ui.theme.GraduationProjectTheme
+import com.example.ui.theme.IconSizeMedium
 import com.example.ui.theme.color
 
 @Composable
@@ -50,7 +53,7 @@ fun <T> DropdownTextField(
                 when {
                     state.isLoading -> {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier.size(IconSizeMedium),
                             strokeWidth = 2.dp,
                             color = MaterialTheme.color.primary
                         )
@@ -59,7 +62,7 @@ fun <T> DropdownTextField(
                     state.error != null -> {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Retry",
+                            contentDescription = stringResource(R.string.retry),
                             tint = MaterialTheme.color.danger,
                             modifier = Modifier.clickable { onRetry() }
                         )
