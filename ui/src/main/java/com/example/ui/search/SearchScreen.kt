@@ -39,6 +39,7 @@ import com.example.ui.components.templates.MainTitledScreenTemplate
 import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.ChipUiState
+import com.example.ui.models.ChipsUiState
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.BlackFourth
@@ -116,12 +117,14 @@ fun SearchContent(
         VerticalSpacer(Spacing8)
         TitledChipsList(
             title = stringResource(id = R.string.categories),
-            chipsList = state.data.categoryFilterChipsList
+            state = state.data.categoriesFilter,
+            onRetry = searchInteractions::onRetryCategories
         )
         VerticalSpacer(Spacing8)
         TitledChipsList(
             title = stringResource(id = R.string.location),
-            chipsList = state.data.locationFilterChipsList
+            state = state.data.locationsFilter,
+            onRetry = searchInteractions::onRetryLocations
         )
         VerticalSpacer(Spacing16)
         if (state.baseUiState.isLoading) {
@@ -181,12 +184,16 @@ private fun LoadingContent() {
 fun PreviewSearchContent() {
     GraduationProjectTheme {
         val searchUiState = SearchUiState(
-            categoryFilterChipsList = GetFakeCategoriesUseCase()().map {
-                ChipUiState(categoryItem = CategoryItem(name = it.name, id = it.id))
-            },
-            locationFilterChipsList = listOf(
-                ChipUiState(CategoryItem(name = "Gaza")),
-                ChipUiState(CategoryItem(name = "London"))
+            categoriesFilter = ChipsUiState(
+                items = GetFakeCategoriesUseCase()().map {
+                    ChipUiState(categoryItem = CategoryItem(name = it.name, id = it.id))
+                }
+            ),
+            locationsFilter = ChipsUiState(
+                items = listOf(
+                    ChipUiState(CategoryItem(name = "Gaza")),
+                    ChipUiState(CategoryItem(name = "London"))
+                )
             )
         )
         SearchContent(
@@ -196,6 +203,8 @@ fun PreviewSearchContent() {
                 override fun onSearchChange(newValue: String) {}
                 override fun onClickTryAgain() {}
                 override fun navigateToPostDetails(postId: String) {}
+                override fun onRetryCategories() {}
+                override fun onRetryLocations() {}
             }
         )
     }

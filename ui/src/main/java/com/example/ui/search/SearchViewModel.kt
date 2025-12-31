@@ -8,6 +8,7 @@ import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.search.GetSearchResultUseCase
 import com.example.ui.base.BaseViewModel
+import com.example.ui.base.StringsResource
 import com.example.ui.models.ChipUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
+    private val stringsResource: StringsResource,
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getLocationsUseCase: GetLocationsUseCase,
@@ -35,6 +37,14 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun loadCategoryFilters() {
+        updateData {
+            copy(
+                categoriesFilter = categoriesFilter.copy(
+                    isLoading = true,
+                    error = null
+                )
+            )
+        }
         tryToExecute(
             call = { getCategoriesUseCase() },
             onSuccess = { categories ->
@@ -45,13 +55,31 @@ class SearchViewModel @Inject constructor(
                         onClick = { search() }
                     )
                 }
-                updateData { copy(categoryFilterChipsList = chips) }
+                updateData {
+                    copy(
+                        categoriesFilter = this.categoriesFilter.copy(
+                            items = chips,
+                            isLoading = false
+                        )
+                    )
+                }
+            },
+            onError = { throwable ->
+                updateData {
+                    copy(
+                        categoriesFilter = this.categoriesFilter.copy(
+                            isLoading = false,
+                            error = throwable.message
+                        )
+                    )
+                }
             },
             shouldLoad = false
         )
     }
 
     private fun loadLocationFilters() {
+        updateData { copy(locationsFilter = locationsFilter.copy(isLoading = true, error = null)) }
         tryToExecute(
             call = { getLocationsUseCase() },
             onSuccess = { locations ->
@@ -62,7 +90,24 @@ class SearchViewModel @Inject constructor(
                         onClick = { search() }
                     )
                 }
-                updateData { copy(locationFilterChipsList = chips) }
+                updateData {
+                    copy(
+                        locationsFilter = this.locationsFilter.copy(
+                            items = chips,
+                            isLoading = false
+                        )
+                    )
+                }
+            },
+            onError = { throwable ->
+                updateData {
+                    copy(
+                        locationsFilter = this.locationsFilter.copy(
+                            isLoading = false,
+                            error = throwable.message
+                        )
+                    )
+                }
             },
             shouldLoad = false
         )
@@ -70,9 +115,9 @@ class SearchViewModel @Inject constructor(
 
     private fun search() {
         val searchVal = _state.value.data.search
-        val categoryIds = _state.value.data.categoryFilterChipsList.filter { it.selected.value }
+        val categoryIds = _state.value.data.categoriesFilter.items.filter { it.selected.value }
             .map { it.categoryItem.id }
-        val locationIds = _state.value.data.locationFilterChipsList.filter { it.selected.value }
+        val locationIds = _state.value.data.locationsFilter.items.filter { it.selected.value }
             .map { it.categoryItem.id }
 
         if (searchVal.isBlank() && categoryIds.isEmpty() && locationIds.isEmpty()) return
@@ -118,6 +163,14 @@ class SearchViewModel @Inject constructor(
 
     override fun navigateToPostDetails(postId: String) {
         sendUiEffect(SearchEffects.NavigateToPostDetails(postId))
+    }
+
+    override fun onRetryCategories() {
+        loadCategoryFilters()
+    }
+
+    override fun onRetryLocations() {
+        loadLocationFilters()
     }
 
 }

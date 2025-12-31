@@ -34,6 +34,8 @@ val Spacing80 = 80.dp
 //endregion
 
 //Image Sizes
+val ImageSize200 = 200.dp
+val ImageSize140 = 140.dp
 val ImageSize120 = 120.dp
 val ImageSize16 = 16.dp
 
