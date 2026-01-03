@@ -61,7 +61,6 @@ import com.example.ui.profile.composable.ProfileHorizontalPager
 import com.example.ui.profile.composable.ProfileImage
 import com.example.ui.profile.composable.ProfileToggle
 import com.example.ui.profile.composable.SettingsRow
-import com.example.ui.profile.composable.UserActivitiesBar
 import com.example.ui.profile.composable.VerticalBoldAndLightText
 import com.example.ui.reset_password.navigateToResetPassword
 import com.example.ui.shared.BottomNavigationViewModel
@@ -175,11 +174,6 @@ private fun ProfileContent(
                             boldText = state.data.profileInformationUiState.name,
                             boldStyle = headingExtraLarge,
                             lightText = state.data.profileInformationUiState.bio
-                        )
-
-                        UserActivitiesBar(
-                            postsNumber = state.data.profileInformationUiState.postsNumber,
-                            exchangesNumber = state.data.profileInformationUiState.exchangesNumber
                         )
 
                         ProfileToggle(pagerState = pagerState)

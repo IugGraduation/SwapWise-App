@@ -12,7 +12,6 @@ data class ProfileUiState(
     val profileInformationUiState: ProfileInformationUiState = ProfileInformationUiState(),
     val userPosts: List<PostItemUiState> = emptyList(),
     val profileSettingsUiState: ProfileSettingsUiState = ProfileSettingsUiState(),
-    val pagerNumber: Int = 0,
     val profileError: ProfileErrorUiState = ProfileErrorUiState(),
     val baseUiState: BaseUiState = BaseUiState(),
 )
@@ -21,10 +20,8 @@ data class ProfileInformationUiState(
     val imageUri: String = String.empty(),
     val name: String = String.empty(),
     val phone: String = String.empty(),
-    val postsNumber: String = String.empty(),
     val locationDropdown: DropdownUiState<LocationItem> = DropdownUiState(),
     val bio: String = String.empty(),
-    val exchangesNumber: String = String.empty(),
     val isUserInfoEditable: Boolean = false,
 )
 
@@ -64,7 +61,6 @@ fun User.toProfileUiState(): ProfileUiState {
             imageUri = this.imageLink,
             name = this.name,
             phone = this.phone,
-            postsNumber = this.postsNumber.toString(),
             locationDropdown = DropdownUiState(
                 selectedItem = LocationItem(id = this.locationId),
             ),

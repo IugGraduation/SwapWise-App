@@ -10,7 +10,6 @@ data class User(
     val phone: String = "",
     val locationId: String = "",
     val bio: String = "",
-    val postsNumber: Int = 0,
 )
 
 fun UserDto?.toUser(): User {
@@ -30,6 +29,5 @@ fun ProfileDto?.toUser(): User {
         phone = this?.phone.orEmpty(),
         locationId = this?.locationId.orEmpty(),
         bio = this?.bio.orEmpty(),
-        postsNumber = this?.posts ?: 0,
     )
 }
