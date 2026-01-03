@@ -33,7 +33,8 @@ class ProfileViewModel @Inject constructor(
     private val getLocationsUseCase: GetLocationsUseCase
 ) : BaseViewModel<ProfileUiState, ProfileEffect>(ProfileUiState()), ProfileInteraction {
 
-    private lateinit var originalProfileInformation: ProfileInformationUiState
+    private var originalProfileInformation: ProfileInformationUiState = ProfileInformationUiState()
+
 
     init {
         viewModelScope.launch { isDarkTheme() }
