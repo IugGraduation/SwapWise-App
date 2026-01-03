@@ -8,7 +8,6 @@ import com.example.domain.model.CategoryItem
 import com.example.domain.model.PostItem
 import com.example.domain.search.GetSearchResultUseCase
 import com.example.ui.base.BaseViewModel
-import com.example.ui.base.StringsResource
 import com.example.ui.models.ChipUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -21,7 +20,6 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val stringsResource: StringsResource,
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getLocationsUseCase: GetLocationsUseCase,
@@ -32,7 +30,7 @@ class SearchViewModel @Inject constructor(
         loadLocationFilters()
         viewModelScope.launch {
             _state.map { it.data.search }.debounce(500L).distinctUntilChanged()
-                .collect { if (it.isNotBlank()) search() }
+                .collect { search() }
         }
     }
 
