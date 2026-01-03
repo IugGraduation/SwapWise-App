@@ -91,116 +91,126 @@ fun EditPostContent(
         onClickGoBack = editInteractions::navigateUp,
         baseUiState = state.baseUiState,
     ) {
-        ProductImage(
-            state.data.postItem.imageUrl, onImagePicked = editInteractions::onSelectedImageChange
-        )
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
-                .padding(Spacing16),
-            verticalArrangement = Arrangement.spacedBy(Spacing8)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    stringResource(R.string.post_info),
-                    style = TextStyles.headingLarge,
-                    color = MaterialTheme.color.textPrimary
-                )
-                OpenClosedSwitch(
-                    isOpen = state.data.postItem.isOpen,
-                    onIsOpenChange = editInteractions::onIsOpenChange
-                )
-            }
-
-            val focusManager = LocalFocusManager.current
-
-            SwapWiseTextField(
-                value = state.data.postItem.name,
-                onValueChange = editInteractions::onTitleChange,
-                placeholder = stringResource(R.string.post_title),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_title),
-                        contentDescription = stringResource(R.string.post_title),
-                        tint = MaterialTheme.color.textTertiary
-                    )
-                },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-                errorMessage = state.data.postError.titleError,
+            ProductImage(
+                state.data.postItem.imageUrl,
+                onImagePicked = editInteractions::onSelectedImageChange
             )
-
-            DropdownTextField(
-                state = state.data.locationDropdown,
-                onValueChange = editInteractions::onLocationChange,
-                onRetry = editInteractions::onRetryLocations,
-                placeholder = stringResource(R.string.your_place),
-                valueToString = { it.name },
-                errorMessage = state.data.postError.locationError,
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_location),
-                        contentDescription = stringResource(R.string.your_place),
-                        tint = MaterialTheme.color.textTertiary
-                    )
-                }
-            )
-
-            SwapWiseTextField(
-                value = state.data.postItem.details,
-                onValueChange = editInteractions::onDetailsChange,
-                placeholder = stringResource(R.string.details),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_details),
-                        contentDescription = stringResource(R.string.details),
-                        tint = MaterialTheme.color.textTertiary
-                    )
-                },
-                errorMessage = state.data.postError.detailsError,
-                isMultiline = true,
-            )
-            VerticalSpacer(Spacing16)
-            TitledChipsList(
-                title = stringResource(R.string.category_of_your_post),
-                textStyle = TextStyles.headingLarge,
-                state = state.data.categories,
-                onRetry = editInteractions::onRetryCategories
-            )
-            VerticalSpacer(Spacing16)
-            TitledChipsList(
-                title = stringResource(R.string.categories_you_like),
-                textStyle = TextStyles.headingLarge,
-                state = state.data.favoriteCategories,
-                onRetry = editInteractions::onRetryCategories
-            )
-
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = Spacing16, bottom = Spacing24),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom,
+                    .fillMaxWidth()
+                    .padding(Spacing16),
+                verticalArrangement = Arrangement.spacedBy(Spacing8)
             ) {
-                val context = LocalContext.current
-                SwapWiseFilledButton(
-                    onClick = {
-                        val imageByteArray = state.data.postItem.imageUrl.toByteArray(context)
-                        editInteractions.onClickSave(imageByteArray)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        stringResource(R.string.post_info),
+                        style = TextStyles.headingLarge,
+                        color = MaterialTheme.color.textPrimary
+                    )
+                    OpenClosedSwitch(
+                        isOpen = state.data.postItem.isOpen,
+                        onIsOpenChange = editInteractions::onIsOpenChange
+                    )
+                }
+
+                val focusManager = LocalFocusManager.current
+
+                SwapWiseTextField(
+                    value = state.data.postItem.name,
+                    onValueChange = editInteractions::onTitleChange,
+                    placeholder = stringResource(R.string.post_title),
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_title),
+                            contentDescription = stringResource(R.string.post_title),
+                            tint = MaterialTheme.color.textTertiary
+                        )
                     },
-                    text = stringResource(R.string.save),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(
+                            FocusDirection.Down
+                        )
+                    }),
+                    errorMessage = state.data.postError.titleError,
                 )
-                VerticalSpacer(Spacing8)
-                SwapWiseOutlineButton(
-                    onClick = editInteractions::onClickDelete,
-                    text = stringResource(R.string.delete),
+
+                DropdownTextField(
+                    state = state.data.locationDropdown,
+                    onValueChange = editInteractions::onLocationChange,
+                    onRetry = editInteractions::onRetryLocations,
+                    placeholder = stringResource(R.string.your_place),
+                    valueToString = { it.name },
+                    errorMessage = state.data.postError.locationError,
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_location),
+                            contentDescription = stringResource(R.string.your_place),
+                            tint = MaterialTheme.color.textTertiary
+                        )
+                    }
                 )
+
+                SwapWiseTextField(
+                    value = state.data.postItem.details,
+                    onValueChange = editInteractions::onDetailsChange,
+                    placeholder = stringResource(R.string.details),
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_details),
+                            contentDescription = stringResource(R.string.details),
+                            tint = MaterialTheme.color.textTertiary
+                        )
+                    },
+                    errorMessage = state.data.postError.detailsError,
+                    isMultiline = true,
+                )
+                VerticalSpacer(Spacing16)
+                TitledChipsList(
+                    title = stringResource(R.string.category_of_your_post),
+                    textStyle = TextStyles.headingLarge,
+                    state = state.data.categories,
+                    onRetry = editInteractions::onRetryCategories
+                )
+                VerticalSpacer(Spacing16)
+                TitledChipsList(
+                    title = stringResource(R.string.categories_you_like),
+                    textStyle = TextStyles.headingLarge,
+                    state = state.data.favoriteCategories,
+                    onRetry = editInteractions::onRetryCategories
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = Spacing16, bottom = Spacing24),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom,
+                ) {
+                    val context = LocalContext.current
+                    SwapWiseFilledButton(
+                        onClick = {
+                            val imageByteArray = state.data.postItem.imageUrl.toByteArray(context)
+                            editInteractions.onClickSave(imageByteArray)
+                        },
+                        text = stringResource(R.string.save),
+                    )
+                    VerticalSpacer(Spacing8)
+                    SwapWiseOutlineButton(
+                        onClick = editInteractions::onClickDelete,
+                        text = stringResource(R.string.delete),
+                    )
+                }
             }
         }
     }

@@ -83,111 +83,117 @@ fun AddPostContent(
         onClickGoBack = addInteractions::navigateUp,
         baseUiState = state.baseUiState,
     ) {
-        ProductImage(
-            state.data.postItem.imageUrl,
-            onImagePicked = addInteractions::onSelectedImageChange
-        )
-        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(scrollState)
-                .padding(Spacing16)
+                .verticalScroll(rememberScrollState())
         ) {
-            Text(
-                text = stringResource(R.string.post_info),
-                style = TextStyles.headingLarge,
-                color = MaterialTheme.color.textPrimary
+            ProductImage(
+                state.data.postItem.imageUrl,
+                onImagePicked = addInteractions::onSelectedImageChange
             )
-            VerticalSpacer(Spacing8)
-
-            val focusManager = LocalFocusManager.current
-
-            SwapWiseTextField(
-                value = state.data.postItem.name,
-                onValueChange = addInteractions::onTitleChange,
-                placeholder = stringResource(R.string.post_title),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_title),
-                        contentDescription = stringResource(R.string.post_title),
-                        tint = MaterialTheme.color.textTertiary
-                    )
-                },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-                errorMessage = state.data.postError.titleError,
-            )
-
-            VerticalSpacer(Spacing8)
-
-            DropdownTextField(
-                state = state.data.locationDropdown,
-                onValueChange = addInteractions::onLocationChange,
-                onRetry = addInteractions::onRetryLocations,
-                placeholder = stringResource(R.string.your_place),
-                valueToString = { it.name },
-                errorMessage = state.data.postError.locationError,
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_location),
-                        contentDescription = stringResource(R.string.your_place),
-                        tint = MaterialTheme.color.textTertiary
-                    )
-                }
-            )
-
-            VerticalSpacer(Spacing8)
-
-            SwapWiseTextField(
-                value = state.data.postItem.details,
-                onValueChange = addInteractions::onDetailsChange,
-                placeholder = stringResource(R.string.details),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_details),
-                        contentDescription = stringResource(R.string.details),
-                        tint = MaterialTheme.color.textTertiary
-                    )
-                },
-                isMultiline = true,
-                errorMessage = state.data.postError.detailsError,
-            )
-            VerticalSpacer(Spacing24)
-            TitledChipsList(
-                title = stringResource(R.string.category_of_your_post),
-                textStyle = TextStyles.headingLarge,
-                state = state.data.categories,
-                onRetry = addInteractions::onRetryCategories
-            )
-            VerticalSpacer(Spacing24)
-            TitledChipsList(
-                title = stringResource(R.string.categories_you_like),
-                textStyle = TextStyles.headingLarge,
-                state = state.data.favoriteCategories,
-                onRetry = addInteractions::onRetryCategories
-            )
-
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = Spacing24),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom,
+                    .fillMaxWidth()
+                    .padding(Spacing16),
             ) {
-                val context = LocalContext.current
-                SwapWiseFilledButton(
-                    onClick = {
-                        val imageByteArray = state.data.postItem.imageUrl.toByteArray(context)
-                        addInteractions.onClickAdd(imageByteArray)
-                    },
-                    text = stringResource(R.string.post),
-                    modifier = Modifier.padding(horizontal = Spacing16)
+                Text(
+                    text = stringResource(R.string.post_info),
+                    style = TextStyles.headingLarge,
+                    color = MaterialTheme.color.textPrimary
                 )
+                VerticalSpacer(Spacing8)
+
+                val focusManager = LocalFocusManager.current
+
+                SwapWiseTextField(
+                    value = state.data.postItem.name,
+                    onValueChange = addInteractions::onTitleChange,
+                    placeholder = stringResource(R.string.post_title),
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_title),
+                            contentDescription = stringResource(R.string.post_title),
+                            tint = MaterialTheme.color.textTertiary
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(
+                            FocusDirection.Down
+                        )
+                    }),
+                    errorMessage = state.data.postError.titleError,
+                )
+
+                VerticalSpacer(Spacing8)
+
+                DropdownTextField(
+                    state = state.data.locationDropdown,
+                    onValueChange = addInteractions::onLocationChange,
+                    onRetry = addInteractions::onRetryLocations,
+                    placeholder = stringResource(R.string.your_place),
+                    valueToString = { it.name },
+                    errorMessage = state.data.postError.locationError,
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_location),
+                            contentDescription = stringResource(R.string.your_place),
+                            tint = MaterialTheme.color.textTertiary
+                        )
+                    }
+                )
+
+                VerticalSpacer(Spacing8)
+
+                SwapWiseTextField(
+                    value = state.data.postItem.details,
+                    onValueChange = addInteractions::onDetailsChange,
+                    placeholder = stringResource(R.string.details),
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_details),
+                            contentDescription = stringResource(R.string.details),
+                            tint = MaterialTheme.color.textTertiary
+                        )
+                    },
+                    isMultiline = true,
+                    errorMessage = state.data.postError.detailsError,
+                )
+                VerticalSpacer(Spacing24)
+                TitledChipsList(
+                    title = stringResource(R.string.category_of_your_post),
+                    textStyle = TextStyles.headingLarge,
+                    state = state.data.categories,
+                    onRetry = addInteractions::onRetryCategories
+                )
+                VerticalSpacer(Spacing24)
+                TitledChipsList(
+                    title = stringResource(R.string.categories_you_like),
+                    textStyle = TextStyles.headingLarge,
+                    state = state.data.favoriteCategories,
+                    onRetry = addInteractions::onRetryCategories
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = Spacing24),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom,
+                ) {
+                    val context = LocalContext.current
+                    SwapWiseFilledButton(
+                        onClick = {
+                            val imageByteArray = state.data.postItem.imageUrl.toByteArray(context)
+                            addInteractions.onClickAdd(imageByteArray)
+                        },
+                        text = stringResource(R.string.post),
+                        modifier = Modifier.padding(horizontal = Spacing16)
+                    )
+                }
             }
-
         }
-
     }
 }
 
