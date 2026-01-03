@@ -22,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -92,8 +91,6 @@ fun ProfileScreen(
         onItemSelected = bottomNavigationViewModel::onItemSelected,
         navController = navController
     )
-
-    LaunchedEffect(pagerState.currentPage) { viewModel.updatePagerNumber(pagerState.currentPage) }
 
     CollectUiEffect(viewModel.effect) { effect ->
         when (effect) {

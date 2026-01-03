@@ -35,7 +35,6 @@ class ProfileViewModel @Inject constructor(
 
     private var originalProfileInformation: ProfileInformationUiState = ProfileInformationUiState()
 
-
     init {
         viewModelScope.launch { isDarkTheme() }
         getLastSelectedAppLanguage()
@@ -74,7 +73,7 @@ class ProfileViewModel @Inject constructor(
             },
             onSuccess = { profileInfo ->
                 updateData { copy(profileInformationUiState = profileInfo) }
-                originalProfileInformation = state.value.data.profileInformationUiState
+                originalProfileInformation = profileInfo
             },
             shouldLoad = true,
             shouldHideContent = true
@@ -285,12 +284,6 @@ class ProfileViewModel @Inject constructor(
                     bioErrorMessage = String.empty()
                 )
             )
-        }
-    }
-
-    fun updatePagerNumber(currentPage: Int) {
-        updateData {
-            copy(pagerNumber = currentPage)
         }
     }
 }
