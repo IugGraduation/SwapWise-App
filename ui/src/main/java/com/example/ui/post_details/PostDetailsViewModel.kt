@@ -100,4 +100,8 @@ class PostDetailsViewModel @Inject constructor(
         sendUiEffect(PostDetailsEffects.NavigateToMessages)
     }
 
+    override fun onClickRetry() {
+        getPostDetails()
+    }
+
 }

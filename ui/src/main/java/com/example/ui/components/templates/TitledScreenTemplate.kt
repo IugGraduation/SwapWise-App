@@ -29,6 +29,7 @@ fun TitledScreenTemplate(
     floatingActionButtonPosition: FabPosition = FabPosition.Center,
     actions: @Composable() (RowScope.() -> Unit) = {},
     baseUiState: BaseUiState = BaseUiState(),
+    onRetry: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
     ScreenTemplate(
@@ -51,8 +52,8 @@ fun TitledScreenTemplate(
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,
         baseUiState = baseUiState,
+        onRetry = onRetry,
     ) {
         content()
     }
 }
-

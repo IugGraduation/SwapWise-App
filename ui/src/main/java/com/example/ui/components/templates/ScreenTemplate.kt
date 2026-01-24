@@ -23,6 +23,7 @@ fun ScreenTemplate(
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     baseUiState: BaseUiState = BaseUiState(),
+    onRetry: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -44,7 +45,8 @@ fun ScreenTemplate(
         ) {
             ShowContentWithState(
                 state = baseUiState,
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
+                onRetry = onRetry
             ) {
                 content()
             }

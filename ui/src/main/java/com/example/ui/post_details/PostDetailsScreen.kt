@@ -130,9 +130,10 @@ fun PostDetailsContent(
     TitledScreenTemplate(
         title = stringResource(R.string.post_details),
         onClickGoBack = postDetailsInteractions::navigateUp,
+        onRetry = postDetailsInteractions::onClickRetry,
         floatingActionButton = {
-            AnimatedVisibility(!state.baseUiState.isLoading && !state.data.showEditPostButton) {
-                SwapWiseFilledButton(
+                AnimatedVisibility(!state.baseUiState.isLoading && !state.data.showEditPostButton && !state.baseUiState.shouldHideContent) {
+                    SwapWiseFilledButton(
                     onClick = postDetailsInteractions::onClickWhatsappButton,
                     text = stringResource(R.string.contact_on_whatsapp),
                     modifier = Modifier.padding(horizontal = Spacing16)
@@ -276,6 +277,7 @@ fun PreviewPostDetailsContent() {
                 override fun onClickPhoneButton() {}
                 override fun onClickWhatsappButton() {}
                 override fun onClickMessageButton() {}
+                override fun onClickRetry() {}
             },
         )
     }

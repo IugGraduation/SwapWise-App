@@ -7,4 +7,5 @@ interface PostDetailsInteractions : INavigateUp {
     fun onClickPhoneButton()
     fun onClickWhatsappButton()
     fun onClickMessageButton()
+    fun onClickRetry()
 }
