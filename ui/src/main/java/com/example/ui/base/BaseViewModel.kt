@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import com.example.ui.models.AsyncState
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -73,6 +74,54 @@ abstract class BaseViewModel<STATE, EFFECT>(initialState: STATE) : ViewModel() {
             }
         }
     }
+
+
+    /**
+     * Executes an async operation with automatic loading, success, and error state management
+     * @param call The async operation to execute (e.g., API call, database query)
+     * @param stateUpdater Function to update the state with the new async state
+     *
+     * ```
+     * //example:
+     * fun getProducts(){
+     *     tryToExecuteAsync(
+     *          call = { apiService.getProducts() },
+     *          stateUpdater = { newState ->
+     *              updateState { it.copy(productsState = newState) }
+     *     })
+     * }
+     * ```
+     */
+    protected fun <T> tryToExecuteAsync(
+        call: suspend () -> T,
+        stateUpdater: (AsyncState<T>) -> Unit,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ) {
+        viewModelScope.launch(dispatcher) {
+            // Set loading
+            stateUpdater(AsyncState.Loading)
+
+            try {
+                // Execute the async operation
+                val result = call()
+
+                // Set success state with the result
+                stateUpdater(AsyncState.Success(result));
+            } catch (throwable: Throwable) {
+                // Set error state with error message
+                val errorMessage = throwable.message ?: "An error occurred"
+                stateUpdater(AsyncState.Error(errorMessage))
+
+                // Log the error with stack trace for debugging
+                val stackTrace = throwable.stackTraceToString()
+                Log.e(
+                    "BaseViewModel",
+                    "Async operation failed: $errorMessage\nStack trace: $stackTrace"
+                )
+            }
+        }
+    }
+
 
     protected fun updateData(update: STATE.() -> STATE) {
         _state.update {
