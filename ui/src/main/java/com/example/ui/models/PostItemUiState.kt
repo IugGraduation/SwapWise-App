@@ -4,7 +4,7 @@ import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
 
 data class PostItemUiState(
-    val postItem: PostItem = PostItem(),
+    val postItem: AsyncState<PostItem> = AsyncState.Initial,
     val locationDropdown: DropdownUiState<LocationItem> = DropdownUiState(),
     val categories: ChipsUiState = ChipsUiState(),
     val favoriteCategories: ChipsUiState = ChipsUiState(),

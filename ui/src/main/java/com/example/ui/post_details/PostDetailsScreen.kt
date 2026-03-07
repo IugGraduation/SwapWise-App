@@ -33,9 +33,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
+import com.example.domain.model.PostItem
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
+import com.example.ui.components.AsyncContent
 import com.example.ui.components.atoms.DetailsScreenBody
 import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.components.atoms.SwapWiseFilledButton
@@ -45,6 +47,7 @@ import com.example.ui.components.molecules.ProductImage
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.TitledScreenTemplate
 import com.example.ui.edit_post.navigateToEditPost
+import com.example.ui.models.AsyncState
 import com.example.ui.models.PostItemUiState
 import com.example.ui.post_details.composable.PhoneRow
 import com.example.ui.profile.composable.EditIconButton
@@ -59,6 +62,7 @@ import com.example.ui.theme.Spacing8
 import com.example.ui.theme.Spacing80
 import com.example.ui.theme.TextStyles
 import com.example.ui.theme.color
+import androidx.core.net.toUri
 
 @Composable
 fun PostDetailsScreen(
@@ -93,26 +97,31 @@ fun PostDetailsScreen(
                 is PostDetailsEffects.NavigateUp -> navController.navigateUp()
 
                 PostDetailsEffects.NavigateToPhone -> {
-                    val intent = Intent(Intent.ACTION_DIAL).apply {
-                        data = Uri.parse("tel:${state.data.postItem.user.phone}")
+                    state.data.postItem.data?.let { post ->
+                        val intent = Intent(Intent.ACTION_DIAL).apply {
+                            data = "tel:${post.user.phone}".toUri()
+                        }
+                        context.startActivity(intent)
                     }
-                    context.startActivity(intent)
                 }
 
                 PostDetailsEffects.NavigateToWhatsapp -> {
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("https://wa.me/${state.data.postItem.user.phone}")
+                    state.data.postItem.data?.let { post ->
+                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                            data = "https://wa.me/${post.user.phone}".toUri()
+                        }
+                        context.startActivity(intent)
                     }
-                    context.startActivity(intent)
                 }
 
                 PostDetailsEffects.NavigateToMessages -> {
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("sms:${state.data.postItem.user.phone}")
+                    state.data.postItem.data?.let { post ->
+                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                            data = "sms:${post.user.phone}".toUri()
+                        }
+                        context.startActivity(intent)
                     }
-                    context.startActivity(intent)
                 }
-                else -> {}
             }
         }
     }
@@ -132,8 +141,8 @@ fun PostDetailsContent(
         onClickGoBack = postDetailsInteractions::navigateUp,
         onRetry = postDetailsInteractions::onClickRetry,
         floatingActionButton = {
-                AnimatedVisibility(!state.baseUiState.isLoading && !state.data.showEditPostButton && !state.baseUiState.shouldHideContent) {
-                    SwapWiseFilledButton(
+            AnimatedVisibility(state.data.postItem is AsyncState.Success && !state.data.showEditPostButton) {
+                SwapWiseFilledButton(
                     onClick = postDetailsInteractions::onClickWhatsappButton,
                     text = stringResource(R.string.contact_on_whatsapp),
                     modifier = Modifier.padding(horizontal = Spacing16)
@@ -142,55 +151,61 @@ fun PostDetailsContent(
         },
         actions = {
             AnimatedVisibility(state.data.showEditPostButton) {
-                EditIconButton { postDetailsInteractions.navigateToEditPost(state.data.postItem.id) }
+                state.data.postItem.data?.let { post ->
+                    EditIconButton { postDetailsInteractions.navigateToEditPost(post.id) }
+                }
             }
         },
-        baseUiState = state.baseUiState,
     ) {
-        LazyColumn {
-            item {
-                ProductImage(state.data.postItem.imageUrl)
-                VerticalSpacer(Spacing16)
-                DetailsScreenUserHeader(
-                    user = state.data.postItem.user,
-                    date = state.data.postItem.date
-                )
-                VerticalSpacer(Spacing24)
-                StatusRow(
-                    rate = state.data.postItem.rate,
-                    isOpen = state.data.postItem.isOpen
-                )
-                VerticalSpacer(Spacing24)
-                DetailsScreenBody(state.data.postItem.name, state.data.postItem.details)
-                VerticalSpacer(Spacing24)
-                LocationRow(location = state.data.postItem.locationItem.name)
-                VerticalSpacer(Spacing24)
-                TitledChipsList(
-                    title = stringResource(R.string.categories),
-                    state = state.data.categories,
-                )
-                VerticalSpacer(Spacing24)
-                TitledChipsList(
-                    title = stringResource(R.string.favorite_categories),
-                    state = state.data.favoriteCategories,
-                )
-                if (state.data.postItem.user.phone.isNotBlank() && !state.data.showEditPostButton) {
+        AsyncContent(
+            state = state.data.postItem,
+            onRetry = postDetailsInteractions::onClickRetry
+        ) { postItem ->
+            LazyColumn {
+                item {
+                    ProductImage(postItem.imageUrl)
+                    VerticalSpacer(Spacing16)
+                    DetailsScreenUserHeader(
+                        user = postItem.user,
+                        date = postItem.date
+                    )
                     VerticalSpacer(Spacing24)
-                    Text(
-                        text = stringResource(R.string.phone),
-                        style = TextStyles.headingMedium,
-                        color = MaterialTheme.color.textPrimary,
-                        modifier = Modifier.padding(horizontal = Spacing16)
+                    StatusRow(
+                        rate = postItem.rate,
+                        isOpen = postItem.isOpen
                     )
-                    VerticalSpacer(Spacing8)
-                    PhoneRow(
-                        phone = state.data.postItem.user.phone,
-                        onClickPhoneButton = postDetailsInteractions::onClickPhoneButton,
-                        onClickWhatsappButton = postDetailsInteractions::onClickWhatsappButton,
-                        onClickMessageButton = postDetailsInteractions::onClickMessageButton
+                    VerticalSpacer(Spacing24)
+                    DetailsScreenBody(postItem.name, postItem.details)
+                    VerticalSpacer(Spacing24)
+                    LocationRow(location = postItem.locationItem.name)
+                    VerticalSpacer(Spacing24)
+                    TitledChipsList(
+                        title = stringResource(R.string.categories),
+                        state = state.data.categories,
                     )
+                    VerticalSpacer(Spacing24)
+                    TitledChipsList(
+                        title = stringResource(R.string.favorite_categories),
+                        state = state.data.favoriteCategories,
+                    )
+                    if (postItem.user.phone.isNotBlank() && !state.data.showEditPostButton) {
+                        VerticalSpacer(Spacing24)
+                        Text(
+                            text = stringResource(R.string.phone),
+                            style = TextStyles.headingMedium,
+                            color = MaterialTheme.color.textPrimary,
+                            modifier = Modifier.padding(horizontal = Spacing16)
+                        )
+                        VerticalSpacer(Spacing8)
+                        PhoneRow(
+                            phone = postItem.user.phone,
+                            onClickPhoneButton = postDetailsInteractions::onClickPhoneButton,
+                            onClickWhatsappButton = postDetailsInteractions::onClickWhatsappButton,
+                            onClickMessageButton = postDetailsInteractions::onClickMessageButton
+                        )
+                    }
+                    VerticalSpacer(Spacing80) //space for floating button at the bottom
                 }
-                VerticalSpacer(Spacing80) //space for floating button at the bottom
             }
         }
     }
@@ -270,7 +285,7 @@ fun PostDetailsStatusItem(title: String, value: String, modifier: Modifier = Mod
 fun PreviewPostDetailsContent() {
     GraduationProjectTheme {
         PostDetailsContent(
-            state = MyUiState(PostItemUiState(postItem = GetFakePostDetailsUseCase()())),
+            state = MyUiState(PostItemUiState(postItem = AsyncState.Success(GetFakePostDetailsUseCase()()))),
             postDetailsInteractions = object : PostDetailsInteractions {
                 override fun navigateToEditPost(postId: String) {}
                 override fun navigateUp() {}

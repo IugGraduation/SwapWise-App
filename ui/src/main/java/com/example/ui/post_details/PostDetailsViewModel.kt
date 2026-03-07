@@ -7,7 +7,7 @@ import com.example.domain.authentication.GetAuthUseCase
 import com.example.domain.model.PostItem
 import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
-import com.example.ui.base.MyUiState
+import com.example.ui.models.AsyncState
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.ChipsUiState
 import com.example.ui.models.PostItemUiState
@@ -24,7 +24,7 @@ class PostDetailsViewModel @Inject constructor(
     private val args = PostDetailsArgs(savedStateHandle)
 
     init {
-        isActionLoading(isLoading = true, shouldHideContent = true)
+        getPostDetails()
     }
 
 
@@ -33,11 +33,14 @@ class PostDetailsViewModel @Inject constructor(
     }
 
     private fun getPostDetails() {
-        tryToExecute(
+        tryToExecuteAsync(
             call = { getPostDetailsUseCase(args.postId) },
-            onSuccess = ::onGetPostDetailsSuccess,
-            shouldLoad = _state.value.data.postItem.id.isBlank(),
-            shouldHideContent = _state.value.data.postItem.id.isBlank(),
+            stateUpdater = { newState ->
+                updateData { copy(postItem = newState) }
+                if (newState is AsyncState.Success) {
+                    onGetPostDetailsSuccess(newState.data)
+                }
+            }
         )
     }
 
@@ -59,20 +62,19 @@ class PostDetailsViewModel @Inject constructor(
             )
         }
 
-        _state.value = MyUiState(
-            PostItemUiState(
-                postItem = data,
+        updateData {
+            copy(
                 categories = ChipsUiState(items = categoryChips),
                 favoriteCategories = ChipsUiState(items = favoriteChips)
             )
-        )
-        showEditButtonIfNeeded()
+        }
+        showEditButtonIfNeeded(data)
     }
 
-    private fun showEditButtonIfNeeded() {
+    private fun showEditButtonIfNeeded(postItem: PostItem) {
         viewModelScope.launch {
             val currentUserId = getAuthUseCase().userId
-            val postOwnerId = state.value.data.postItem.user.id
+            val postOwnerId = postItem.user.id
             if (currentUserId.isNotBlank() && currentUserId == postOwnerId) {
                 updateData { copy(showEditPostButton = true) }
             }
