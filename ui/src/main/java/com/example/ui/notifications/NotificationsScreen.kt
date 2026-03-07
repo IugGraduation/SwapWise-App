@@ -45,8 +45,10 @@ import com.example.domain.notifications.GetFakeNotificationsUseCase
 import com.example.domain.notifications.GroupNotificationsUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
+import com.example.ui.components.AsyncContent
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.templates.MainTitledScreenTemplate
+import com.example.ui.models.AsyncState
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.BackgroundLight
@@ -92,29 +94,37 @@ fun NotificationsContent(
         title = stringResource(R.string.notifications),
         bottomBarState = bottomBarState,
     ) {
-        val groupedNotifications = notificationsInteractions.getGroupedNotifications()
-
-        LazyColumn(
-            modifier = Modifier.padding(top = Spacing16),
-            verticalArrangement = Arrangement.spacedBy(Spacing8)
+        AsyncContent(
+            state = state.data.notifications,
+            onRetry = notificationsInteractions::refresh
         ) {
-            groupedNotifications.forEach { group ->
-                stickyHeader {
-                    Text(
-                        text = group.title,
-                        style = TextStyles.headingSmall,
-                        color = MaterialTheme.color.textTertiary,
-                        modifier = Modifier
-                            .padding(horizontal = Spacing16)
-                            .padding(bottom = Spacing8)
-                    )
-                }
-                items(group.notifications, key = { it.id }) { notification ->
-                    SwipeableNotificationCard(notification, notificationsInteractions::onDismiss)
-                }
+            val groupedNotifications = notificationsInteractions.getGroupedNotifications()
 
-                item {
-                    VerticalSpacer(Spacing8)
+            LazyColumn(
+                modifier = Modifier.padding(top = Spacing16),
+                verticalArrangement = Arrangement.spacedBy(Spacing8)
+            ) {
+                groupedNotifications.forEach { group ->
+                    stickyHeader {
+                        Text(
+                            text = group.title,
+                            style = TextStyles.headingSmall,
+                            color = MaterialTheme.color.textTertiary,
+                            modifier = Modifier
+                                .padding(horizontal = Spacing16)
+                                .padding(bottom = Spacing8)
+                        )
+                    }
+                    items(group.notifications, key = { it.id }) { notification ->
+                        SwipeableNotificationCard(
+                            notification,
+                            notificationsInteractions::onDismiss
+                        )
+                    }
+
+                    item {
+                        VerticalSpacer(Spacing8)
+                    }
                 }
             }
         }
@@ -234,7 +244,7 @@ fun PreviewNotificationContent() {
     GraduationProjectTheme {
 
         val notificationUIState = NotificationUIState(
-            notifications = GetFakeNotificationsUseCase()()
+            notifications = AsyncState.Success(GetFakeNotificationsUseCase()())
         )
         NotificationsContent(
             state = MyUiState(notificationUIState),
@@ -244,6 +254,7 @@ fun PreviewNotificationContent() {
                 override fun getGroupedNotifications(): List<NotificationGroup> {
                     return GroupNotificationsUseCase()(GetFakeNotificationsUseCase()())
                 }
+                override fun refresh() {}
             },
         )
     }

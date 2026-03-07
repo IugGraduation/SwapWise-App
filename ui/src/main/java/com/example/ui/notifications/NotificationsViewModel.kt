@@ -1,11 +1,9 @@
 package com.example.ui.notifications
 
-import com.example.domain.model.Notification
 import com.example.domain.model.NotificationGroup
 import com.example.domain.notifications.GetNotificationsUseCase
 import com.example.domain.notifications.GroupNotificationsUseCase
 import com.example.ui.base.BaseViewModel
-import com.example.ui.base.MyUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -20,28 +18,30 @@ class NotificationsViewModel @Inject constructor(
     }
 
     private fun getNotifications() {
-        tryToExecute(
+        tryToExecuteAsync(
             call = { getNotificationsUseCase() },
-            onSuccess = ::onGetNotificationsSuccess,
-            )
+            stateUpdater = { newState ->
+                updateData { copy(notifications = newState) }
+            }
+        )
     }
-
-    private fun onGetNotificationsSuccess(data: List<Notification>) {
-        _state.value = MyUiState(NotificationUIState(notifications = data))
-    }
-
 
     override fun onDismiss(id: String) {
         updateData {
-            copy(notifications = notifications.filterNot { it.id == id })
+            copy(notifications = notifications.mapData { list ->
+                list.filterNot { it.id == id }
+            })
         }
         //todo: tell api/use-case to delete the notification
     }
 
 
     override fun getGroupedNotifications(): List<NotificationGroup> {
-        return groupNotificationsUseCase(_state.value.data.notifications)
+        val currentNotifications = _state.value.data.notifications.data ?: emptyList()
+        return groupNotificationsUseCase(currentNotifications)
     }
 
-
+    override fun refresh() {
+        getNotifications()
+    }
 }
