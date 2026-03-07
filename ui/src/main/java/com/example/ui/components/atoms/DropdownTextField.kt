@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ui.R
-import com.example.ui.models.DropdownUiState
+import com.example.ui.models.AsyncState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.IconSizeMedium
 import com.example.ui.theme.color
@@ -32,7 +32,8 @@ import com.example.ui.theme.color
 @Composable
 fun <T> DropdownTextField(
     modifier: Modifier = Modifier,
-    state: DropdownUiState<T>,
+    state: AsyncState<List<T>>,
+    selectedItem: T? = null,
     onValueChange: (T) -> Unit,
     onRetry: () -> Unit = {},
     placeholder: String,
@@ -45,13 +46,13 @@ fun <T> DropdownTextField(
 
     Box(modifier = modifier.fillMaxWidth()) {
         SwapWiseTextField(
-            value = state.selectedItem?.let(valueToString) ?: "",
+            value = selectedItem?.let(valueToString) ?: "",
             onValueChange = {},
             placeholder = placeholder,
             leadingIcon = leadingIcon,
             trailingIcon = {
-                when {
-                    state.isLoading -> {
+                when (state) {
+                    is AsyncState.Loading -> {
                         CircularProgressIndicator(
                             modifier = Modifier.size(IconSizeMedium),
                             strokeWidth = 2.dp,
@@ -59,7 +60,7 @@ fun <T> DropdownTextField(
                         )
                     }
 
-                    state.error != null -> {
+                    is AsyncState.Error -> {
                         Icon(
                             imageVector = Icons.Default.Refresh,
                             contentDescription = stringResource(R.string.retry),
@@ -77,12 +78,12 @@ fun <T> DropdownTextField(
                     }
                 }
             },
-            modifier = modifier.clickable(enabled = enabled && !state.isLoading && state.error == null) {
+            modifier = modifier.clickable(enabled = enabled && state is AsyncState.Success) {
                 expanded = !expanded
             },
             isEditable = false,
             enabled = enabled,
-            errorMessage = errorMessage ?: state.error
+            errorMessage = errorMessage ?: (state as? AsyncState.Error)?.message
         )
 
         DropdownMenu(
@@ -90,7 +91,7 @@ fun <T> DropdownTextField(
             onDismissRequest = { expanded = false },
             modifier = Modifier.fillMaxWidth()
         ) {
-            state.items.forEach { selectionOption ->
+            state.data?.forEach { selectionOption ->
                 DropdownMenuItem(
                     text = { Text(text = valueToString(selectionOption)) },
                     onClick = {
@@ -108,7 +109,7 @@ fun <T> DropdownTextField(
 fun PreviewDropdownContent() {
     GraduationProjectTheme {
         DropdownTextField(
-            state = DropdownUiState(items = listOf("Gaza")),
+            state = AsyncState.Success(data = listOf("Gaza")),
             onValueChange = {},
             placeholder = "Select location"
         )

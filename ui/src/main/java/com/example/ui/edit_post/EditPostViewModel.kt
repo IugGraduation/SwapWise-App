@@ -15,9 +15,9 @@ import com.example.domain.post.DeletePostUseCase
 import com.example.domain.post.EditPostUseCase
 import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
-import com.example.ui.base.MyUiState
 import com.example.ui.base.NavigateUpEffect
 import com.example.ui.base.StringsResource
+import com.example.ui.models.AsyncState
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostErrorUiState
 import com.example.ui.models.PostItemUiState
@@ -42,44 +42,33 @@ class EditPostViewModel @Inject constructor(
     }
 
     private fun getPostDetails() {
-        tryToExecute(
+        tryToExecuteAsync(
             call = { getPostDetailsUseCase(args.postId) },
-            onSuccess = ::onGetPostDetailsSuccess,
+            stateUpdater = { newState ->
+                updateData { copy(postItem = newState) }
+                if (newState is AsyncState.Success) {
+                    onGetPostDetailsSuccess(newState.data)
+                }
+            }
         )
     }
 
     private fun onGetPostDetailsSuccess(data: PostItem) {
-        _state.value = MyUiState(PostItemUiState(postItem = data))
+        updateData { copy(selectedLocation = data.locationItem) }
         getLocations()
         getCategories()
     }
 
     private fun getLocations() {
-        updateData { copy(locationDropdown = locationDropdown.copy(isLoading = true, error = null)) }
-        tryToExecute(
+        tryToExecuteAsync(
             call = { getLocationsUseCase() },
-            shouldLoad = false,
-            onSuccess = { locations ->
-                val selectedId = state.value.data.postItem.locationItem.id
-                val fullLocation = locations.find { it.id == selectedId }
-
+            stateUpdater = { newState ->
                 updateData {
                     copy(
-                        locationDropdown = locationDropdown.copy(
-                            items = locations,
-                            selectedItem = fullLocation ?: postItem.locationItem,
-                            isLoading = false
-                        )
-                    )
-                }
-            },
-            onError = { throwable ->
-                updateData {
-                    copy(
-                        locationDropdown = locationDropdown.copy(
-                            isLoading = false,
-                            error = throwable.message
-                        )
+                        locationDropdown = newState,
+                        selectedLocation = if (newState is AsyncState.Success) {
+                            newState.data.find { it.id == selectedLocation?.id } ?: selectedLocation
+                        } else selectedLocation
                     )
                 }
             }
@@ -87,41 +76,33 @@ class EditPostViewModel @Inject constructor(
     }
 
     private fun getCategories() {
-        updateData {
-            copy(
-                categories = categories.copy(isLoading = true, error = null),
-                favoriteCategories = favoriteCategories.copy(isLoading = true, error = null)
-            )
-        }
-        tryToExecute(
+        tryToExecuteAsync(
             call = { getCategoriesUseCase() },
-            shouldLoad = false,
-            onSuccess = { categoryItems ->
-                val chipsList = categoryItems.map { category ->
-                    ChipUiState(
-                        categoryItem = category,
-                        selected = mutableStateOf(category.id == state.value.data.postItem.categoryItem.id),
-                        onClick = ::onCategoryChange
-                    )
+            stateUpdater = { newState ->
+                val chips = newState.mapData { categoryItems ->
+                    categoryItems.map { category ->
+                        ChipUiState(
+                            categoryItem = category,
+                            selected = mutableStateOf(category.id == state.value.data.postItem.data?.categoryItem?.id),
+                            onClick = ::onCategoryChange
+                        )
+                    }
                 }
-                val favoriteChipsList = chipsList.map {
-                    it.copy(
-                        selected = mutableStateOf(state.value.data.postItem.favoriteCategoryItems.contains(it.categoryItem)),
-                        onClick = ::onFavoriteCategoryChange
-                    )
+                
+                val favoriteChips = newState.mapData { categoryItems ->
+                    categoryItems.map { category ->
+                        ChipUiState(
+                            categoryItem = category,
+                            selected = mutableStateOf(state.value.data.postItem.data?.favoriteCategoryItems?.any { it.id == category.id } == true),
+                            onClick = ::onFavoriteCategoryChange
+                        )
+                    }
                 }
+
                 updateData {
                     copy(
-                        categories = categories.copy(items = chipsList, isLoading = false),
-                        favoriteCategories = favoriteCategories.copy(items = favoriteChipsList, isLoading = false)
-                    )
-                }
-            },
-            onError = { throwable ->
-                updateData {
-                    copy(
-                        categories = categories.copy(isLoading = false, error = throwable.message),
-                        favoriteCategories = favoriteCategories.copy(isLoading = false, error = throwable.message)
+                        categories = chips,
+                        favoriteCategories = favoriteChips
                     )
                 }
             }
@@ -147,7 +128,7 @@ class EditPostViewModel @Inject constructor(
 
     private fun updatePostItem(update: PostItem.() -> PostItem) {
         updateData {
-            copy(postItem = postItem.update())
+            copy(postItem = postItem.mapData { it.update() })
         }
     }
 
@@ -167,7 +148,7 @@ class EditPostViewModel @Inject constructor(
 
     override fun onLocationChange(location: LocationItem) {
         updateFieldError()
-        updateData { copy(locationDropdown = locationDropdown.copy(selectedItem = location)) }
+        updateData { copy(selectedLocation = location) }
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
@@ -176,33 +157,34 @@ class EditPostViewModel @Inject constructor(
 
     fun onCategoryChange(categoryItem: CategoryItem) {
         updateFieldError()
-        state.value.data.categories.items.forEach { chip ->
+        state.value.data.categories.data?.forEach { chip ->
             chip.selected.value = chip.categoryItem.id == categoryItem.id
         }
         updatePostItem { copy(categoryItem = categoryItem) }
     }
 
     fun onFavoriteCategoryChange(categoryItem: CategoryItem) {
-        val favorites = state.value.data.postItem.favoriteCategoryItems
-        if (favorites.contains(categoryItem)) {
-            favorites.remove(categoryItem)
+        val post = state.value.data.postItem.data ?: return
+        val favorites = post.favoriteCategoryItems
+        if (favorites.any { it.id == categoryItem.id }) {
+            favorites.removeAll { it.id == categoryItem.id }
         } else {
             favorites.add(categoryItem)
         }
         // Visually update the specific chip's selected state
-        state.value.data.favoriteCategories.items.find { it.categoryItem.id == categoryItem.id }?.let {
-            it.selected.value = favorites.contains(categoryItem)
+        state.value.data.favoriteCategories.data?.find { it.categoryItem.id == categoryItem.id }?.let {
+            it.selected.value = favorites.any { f -> f.id == categoryItem.id }
         }
     }
 
 
     override fun onClickSave(imageByteArray: ByteArray?) {
+        val post = state.value.data.postItem.data ?: return
         tryToExecute(
             call = {
                 editPostUseCase(
-                    postItem = state.value.data.postItem.copy(
-                        locationItem = state.value.data.locationDropdown.selectedItem
-                            ?: LocationItem()
+                    postItem = post.copy(
+                        locationItem = state.value.data.selectedLocation ?: LocationItem()
                     ),
                     imageByteArray = imageByteArray
                 )
@@ -240,8 +222,9 @@ class EditPostViewModel @Inject constructor(
 
 
     override fun onClickDelete() {
+        val postId = state.value.data.postItem.data?.id ?: return
         tryToExecute(
-            call = { deletePostUseCase(state.value.data.postItem.id) },
+            call = { deletePostUseCase(postId) },
             onSuccess = { navigateUp() },
         )
     }

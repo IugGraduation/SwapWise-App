@@ -5,7 +5,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,8 +27,8 @@ import androidx.compose.ui.text.TextStyle
 import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.VerticalSpacer
+import com.example.ui.models.AsyncState
 import com.example.ui.models.ChipUiState
-import com.example.ui.models.ChipsUiState
 import com.example.ui.theme.IconSizeMedium
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Secondary
@@ -44,22 +43,44 @@ import com.example.ui.theme.color
 fun TitledChipsList(
     title: String,
     textStyle: TextStyle = TextStyles.headingMedium,
-    state: ChipsUiState,
+    state: AsyncState<List<ChipUiState>>,
     onRetry: () -> Unit = {}
 ) {
-    Row(
+    Text(
+        text = title,
+        style = textStyle,
+        color = MaterialTheme.color.textPrimary,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = Spacing16),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = title,
-            style = textStyle,
-            color = MaterialTheme.color.textPrimary,
-        )
-        if (state.error != null) {
+    )
+
+    VerticalSpacer(Spacing8)
+
+    when (state) {
+        is AsyncState.Loading, AsyncState.Initial -> {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(IconSizeMedium),
+                    strokeWidth = Spacing2,
+                    color = MaterialTheme.color.primary
+                )
+            }
+        }
+
+        is AsyncState.Success -> {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = Spacing16),
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(Spacing4)
+            ) {
+                items(items = state.data, key = { it.categoryItem.id }) {
+                    SwapWiseChip(it)
+                }
+            }
+        }
+
+        is AsyncState.Error -> {
             Icon(
                 imageVector = Icons.Default.Refresh,
                 contentDescription = stringResource(R.string.retry),
@@ -68,27 +89,6 @@ fun TitledChipsList(
                     .size(IconSizeMedium)
                     .clickable { onRetry() }
             )
-        }
-    }
-    VerticalSpacer(Spacing8)
-
-    if (state.isLoading) {
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(IconSizeMedium),
-                strokeWidth = Spacing2,
-                color = MaterialTheme.color.primary
-            )
-        }
-    } else {
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = Spacing16),
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(Spacing4)
-        ) {
-            items(items = state.items, key = { it.categoryItem.id }) {
-                SwapWiseChip(it)
-            }
         }
     }
 }

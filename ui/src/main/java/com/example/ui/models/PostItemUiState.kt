@@ -5,9 +5,10 @@ import com.example.domain.model.PostItem
 
 data class PostItemUiState(
     val postItem: AsyncState<PostItem> = AsyncState.Initial,
-    val locationDropdown: DropdownUiState<LocationItem> = DropdownUiState(),
-    val categories: ChipsUiState = ChipsUiState(),
-    val favoriteCategories: ChipsUiState = ChipsUiState(),
+    val locationDropdown: AsyncState<List<LocationItem>> = AsyncState.Initial,
+    val selectedLocation: LocationItem? = null,
+    val categories: AsyncState<List<ChipUiState>> = AsyncState.Initial,
+    val favoriteCategories: AsyncState<List<ChipUiState>> = AsyncState.Initial,
     val showEditPostButton: Boolean = false,
     val postError: PostErrorUiState = PostErrorUiState(),
 )
