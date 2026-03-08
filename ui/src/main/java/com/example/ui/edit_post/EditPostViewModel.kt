@@ -41,7 +41,7 @@ class EditPostViewModel @Inject constructor(
         getPostDetails()
     }
 
-    private fun getPostDetails() {
+    override fun getPostDetails() {
         tryToExecuteAsync(
             call = { getPostDetailsUseCase(args.postId) },
             stateUpdater = { newState ->

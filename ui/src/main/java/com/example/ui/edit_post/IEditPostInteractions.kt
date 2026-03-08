@@ -14,4 +14,5 @@ interface IEditPostInteractions : INavigateUp {
     fun onClickDelete()
     fun onRetryLocations()
     fun onRetryCategories()
+    fun getPostDetails()
 }
