@@ -31,7 +31,7 @@ import coil3.request.placeholder
 import coil3.request.transformations
 import coil3.transform.CircleCropTransformation
 import com.example.ui.R
-import com.example.ui.profile.ProfileUiState
+import com.example.ui.profile.ProfileInformationUiState
 import com.example.ui.theme.BorderWidth2
 import com.example.ui.theme.IconButtonSize32
 import com.example.ui.theme.IconSize24
@@ -43,7 +43,7 @@ import com.example.ui.theme.ZeroDp
 @Composable
 fun ProfileImage(
     modifier: Modifier = Modifier,
-    state: ProfileUiState,
+    info: ProfileInformationUiState?,
     onImageChangeClick: (newUri: Uri) -> Unit
 ) {
     val context = LocalContext.current
@@ -56,7 +56,7 @@ fun ProfileImage(
 
     Box(modifier = modifier) {
         ProfileImageContent(
-            imageUrl = state.profileInformationUiState.imageUri,
+            imageUrl = info?.imageUri,
             context = context,
             modifier = Modifier
                 .size(ImageSize120)
@@ -64,7 +64,7 @@ fun ProfileImage(
                 .clip(CircleShape)
         )
 
-        AnimatedVisibility(state.profileInformationUiState.isUserInfoEditable) {
+        AnimatedVisibility(info?.isUserInfoEditable == true) {
             ImageChangeButton(
                 onClick = { imagePickerLauncher.launch("image/*") },
                 modifier = Modifier
@@ -125,4 +125,3 @@ private fun ImageChangeButton(
         )
     }
 }
-

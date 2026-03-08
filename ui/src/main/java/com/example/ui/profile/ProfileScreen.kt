@@ -172,7 +172,7 @@ private fun ProfileContent(
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 ProfileImage(
                                     modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-                                    state = state.data,
+                                    info = info,
                                     onImageChangeClick = profileInteraction::onUpdateProfileImage
                                 )
 
