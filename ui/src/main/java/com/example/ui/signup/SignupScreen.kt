@@ -39,7 +39,7 @@ import com.example.ui.components.molecules.PasswordTextField
 import com.example.ui.components.templates.ScreenTemplate
 import com.example.ui.home.navigateToHome
 import com.example.ui.login.navigateToLogin
-import com.example.ui.models.DropdownUiState
+import com.example.ui.models.AsyncState
 import com.example.ui.theme.GraduationProjectTheme
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -177,6 +177,7 @@ fun SignupForm(
         )
         DropdownTextField(
             state = state.locationDropdown,
+            selectedItem = state.selectedLocation,
             onValueChange = signupInteractions::onBestBarterSpotChange,
             onRetry = signupInteractions::onRetryLocations,
             placeholder = stringResource(R.string.best_barter_spot),
@@ -218,8 +219,8 @@ fun PreviewSignupContent() {
         SignupContent(
             state = MyUiState(
                 SignupUiState(
-                    locationDropdown = DropdownUiState(
-                        items = listOf(
+                    locationDropdown = AsyncState.Success(
+                        listOf(
                             LocationItem(name = "Gaza"),
                             LocationItem(name = "London")
                         )

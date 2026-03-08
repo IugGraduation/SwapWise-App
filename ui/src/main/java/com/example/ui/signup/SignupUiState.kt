@@ -1,7 +1,7 @@
 package com.example.ui.signup
 
 import com.example.domain.model.LocationItem
-import com.example.ui.models.DropdownUiState
+import com.example.ui.models.AsyncState
 
 data class SignupUiState(
     val fullName: String = "",
@@ -12,7 +12,8 @@ data class SignupUiState(
     val isPasswordVisible: Boolean = false,
     val isConfirmPasswordVisible: Boolean = false,
     val isDarkTheme: Boolean = false,
-    val locationDropdown: DropdownUiState<LocationItem> = DropdownUiState(),
+    val locationDropdown: AsyncState<List<LocationItem>> = AsyncState.Initial,
+    val selectedLocation: LocationItem? = null,
     val signupError: SignupErrorUiState = SignupErrorUiState(),
 )
 
