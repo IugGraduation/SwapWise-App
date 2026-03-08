@@ -17,6 +17,7 @@ import com.example.domain.post.AddPostUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.NavigateUpEffect
 import com.example.ui.base.StringsResource
+import com.example.ui.models.AsyncState
 import com.example.ui.models.ChipUiState
 import com.example.ui.models.PostErrorUiState
 import com.example.ui.models.PostItemUiState
@@ -46,69 +47,42 @@ class AddPostViewModel @Inject constructor(
     }
 
     private fun getLocations() {
-        updateData { copy(locationDropdown = locationDropdown.copy(isLoading = true, error = null)) }
-        tryToExecute(
+        tryToExecuteAsync(
             call = { getLocationsUseCase() },
-            shouldLoad = false,
-            onSuccess = { locations ->
-                updateData {
-                    copy(
-                        locationDropdown = locationDropdown.copy(
-                            items = locations,
-                            isLoading = false
-                        )
-                    )
-                }
-            },
-            onError = { throwable ->
-                updateData {
-                    copy(
-                        locationDropdown = locationDropdown.copy(
-                            isLoading = false,
-                            error = throwable.message
-                        )
-                    )
-                }
+            stateUpdater = { newState ->
+                updateData { copy(locationDropdown = newState) }
             }
         )
     }
 
     private fun getCategories() {
-        updateData {
-            copy(
-                categories = categories.copy(isLoading = true, error = null),
-                favoriteCategories = favoriteCategories.copy(isLoading = true, error = null)
-            )
-        }
-        tryToExecute(
+        tryToExecuteAsync(
             call = { getCategoriesUseCase() },
-            shouldLoad = false,
-            onSuccess = { categoryItems ->
-                val chipsList = categoryItems.map { category ->
-                    ChipUiState(
-                        categoryItem = category,
-                        selected = mutableStateOf(category.id == state.value.data.postItem.categoryItem.id),
-                        onClick = ::onCategoryChange
-                    )
+            stateUpdater = { newState ->
+                val chips = newState.mapData { categoryItems ->
+                    categoryItems.map { category ->
+                        ChipUiState(
+                            categoryItem = category,
+                            selected = mutableStateOf(category.id == state.value.data.postItem.data?.categoryItem?.id),
+                            onClick = ::onCategoryChange
+                        )
+                    }
                 }
-                val favoriteChipsList = chipsList.map {
-                    it.copy(
-                        selected = mutableStateOf(state.value.data.postItem.favoriteCategoryItems.contains(it.categoryItem)),
-                        onClick = ::onFavoriteCategoryChange
-                    )
+
+                val favoriteChips = newState.mapData { categoryItems ->
+                    categoryItems.map { category ->
+                        ChipUiState(
+                            categoryItem = category,
+                            selected = mutableStateOf(state.value.data.postItem.data?.favoriteCategoryItems?.any { it.id == category.id } == true),
+                            onClick = ::onFavoriteCategoryChange
+                        )
+                    }
                 }
+
                 updateData {
                     copy(
-                        categories = categories.copy(items = chipsList, isLoading = false),
-                        favoriteCategories = favoriteCategories.copy(items = favoriteChipsList, isLoading = false)
-                    )
-                }
-            },
-            onError = { throwable ->
-                updateData {
-                    copy(
-                        categories = categories.copy(isLoading = false, error = throwable.message),
-                        favoriteCategories = favoriteCategories.copy(isLoading = false, error = throwable.message)
+                        categories = chips,
+                        favoriteCategories = favoriteChips
                     )
                 }
             }
@@ -118,7 +92,7 @@ class AddPostViewModel @Inject constructor(
 
     private fun updatePostItem(update: PostItem.() -> PostItem) {
         updateData {
-            copy(postItem = postItem.update())
+            copy(postItem = postItem.mapData { it.update() })
         }
     }
 
@@ -150,7 +124,7 @@ class AddPostViewModel @Inject constructor(
 
     override fun onLocationChange(location: LocationItem) {
         updateFieldError()
-        updateData { copy(locationDropdown = locationDropdown.copy(selectedItem = location)) }
+        updateData { copy(selectedLocation = location) }
     }
 
     override fun onSelectedImageChange(selectedImageUri: Uri) {
@@ -160,32 +134,34 @@ class AddPostViewModel @Inject constructor(
     fun onCategoryChange(categoryItem: CategoryItem) {
         updateFieldError()
         // Single selection logic: unselect all, select current
-        state.value.data.categories.items.forEach { chip ->
+        state.value.data.categories.data?.forEach { chip ->
             chip.selected.value = chip.categoryItem.id == categoryItem.id
         }
         updatePostItem { copy(categoryItem = categoryItem) }
     }
 
     fun onFavoriteCategoryChange(categoryItem: CategoryItem) {
-        val favorites = state.value.data.postItem.favoriteCategoryItems
-        if (favorites.contains(categoryItem)) {
-            favorites.remove(categoryItem)
+        val post = state.value.data.postItem.data ?: return
+        val favorites = post.favoriteCategoryItems
+        if (favorites.any { it.id == categoryItem.id }) {
+            favorites.removeAll { it.id == categoryItem.id }
         } else {
             favorites.add(categoryItem)
         }
         // Multi selection logic: visually toggle the chip
-        state.value.data.favoriteCategories.items.find { it.categoryItem.id == categoryItem.id }?.let {
-            it.selected.value = favorites.contains(categoryItem)
+        state.value.data.favoriteCategories.data?.find { it.categoryItem.id == categoryItem.id }?.let {
+            it.selected.value = favorites.any { it.id == categoryItem.id }
         }
     }
 
 
     override fun onClickAdd(imageByteArray: ByteArray?) {
+        val post = state.value.data.postItem.data ?: return
         tryToExecute(
             call = {
                 addPostUseCase(
-                    postItem = state.value.data.postItem.copy(
-                        locationItem = state.value.data.locationDropdown.selectedItem
+                    postItem = post.copy(
+                        locationItem = state.value.data.selectedLocation
                             ?: LocationItem()
                     ),
                     imageByteArray = imageByteArray.checkImageNotNull()
