@@ -111,4 +111,6 @@
     <string name="contact_on_whatsapp">تواصل على واتساب</string>
     <string name="location">المكان</string>
     <string name="retry">أعد المحاولة</string>
+    <string name="no_items_found">لم يتم العثور على عناصر</string>
+    <string name="start_searching_now">ابدأ البحث الآن</string>
 </resources>
