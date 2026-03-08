@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
-import com.example.ui.theme.IconSizeMedium
+import com.example.ui.theme.IconSize24
 import com.example.ui.theme.MultiLineEditTextHeight
 import com.example.ui.theme.OneLineEditTextHeight
 import com.example.ui.theme.RadiusLarge
@@ -68,7 +68,7 @@ fun SwapWiseTextField(
                     Box(
                         modifier = Modifier
                             .padding(end = Spacing8)
-                            .size(IconSizeMedium),
+                            .size(IconSize24),
                         contentAlignment = Alignment.Center
                     ) {
                         it()
@@ -98,7 +98,7 @@ fun SwapWiseTextField(
 
                 trailingIcon?.let {
                     Box(
-                        modifier = Modifier.size(IconSizeMedium),
+                        modifier = Modifier.size(IconSize24),
                         contentAlignment = Alignment.Center
                     ) {
                         it()

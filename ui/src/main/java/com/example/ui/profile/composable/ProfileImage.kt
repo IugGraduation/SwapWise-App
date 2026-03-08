@@ -34,7 +34,7 @@ import com.example.ui.R
 import com.example.ui.profile.ProfileUiState
 import com.example.ui.theme.BorderWidth2
 import com.example.ui.theme.IconButtonSize32
-import com.example.ui.theme.IconSizeMedium
+import com.example.ui.theme.IconSize24
 import com.example.ui.theme.ImageSize120
 import com.example.ui.theme.Primary
 import com.example.ui.theme.WhitePrimary
@@ -120,7 +120,7 @@ private fun ImageChangeButton(
         Icon(
             painter = painterResource(id = R.drawable.ic_camera),
             contentDescription = null,
-            modifier = Modifier.size(IconSizeMedium),
+            modifier = Modifier.size(IconSize24),
             tint = WhitePrimary
         )
     }

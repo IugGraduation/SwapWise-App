@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.R
 import com.example.ui.theme.IconButtonSize40
-import com.example.ui.theme.IconSizeMedium
+import com.example.ui.theme.IconSize24
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.ZeroDp
 import com.example.ui.theme.color
@@ -34,7 +34,7 @@ fun EditIconButton(modifier: Modifier = Modifier, onClick:() -> Unit) {
     ) {
         Icon(
             modifier = Modifier
-                .size(IconSizeMedium),
+                .size(IconSize24),
             painter = painterResource(id = R.drawable.ic_pen),
             contentDescription = null,
             tint = MaterialTheme.color.textPrimary

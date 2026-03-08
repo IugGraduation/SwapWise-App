@@ -17,8 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
-import com.example.ui.theme.IconSizeLarge
-import com.example.ui.theme.IconSizeSmall
+import com.example.ui.theme.IconSize32
+import com.example.ui.theme.IconSize16
 import com.example.ui.theme.Primary
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.TextStyles
@@ -73,14 +73,14 @@ fun RoundedIconButton(
     BoxRounded(
         color = Primary,
         modifier = modifier
-            .size(IconSizeLarge)
+            .size(IconSize32)
             .clickable { onClick() },
         contentAlignment = Alignment.Center,
     ) {
         Icon(
             painterResource(iconResId),
             contentDescription = contentDescription,
-            modifier = Modifier.size(IconSizeSmall),
+            modifier = Modifier.size(IconSize16),
             tint = Color.White
         )
     }

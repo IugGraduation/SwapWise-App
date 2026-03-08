@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.example.ui.R
 import com.example.ui.models.AsyncState
 import com.example.ui.theme.GraduationProjectTheme
-import com.example.ui.theme.IconSizeMedium
+import com.example.ui.theme.IconSize24
 import com.example.ui.theme.color
 
 @Composable
@@ -54,7 +54,7 @@ fun <T> DropdownTextField(
                 when (state) {
                     is AsyncState.Loading -> {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(IconSizeMedium),
+                            modifier = Modifier.size(IconSize24),
                             strokeWidth = 2.dp,
                             color = MaterialTheme.color.primary
                         )

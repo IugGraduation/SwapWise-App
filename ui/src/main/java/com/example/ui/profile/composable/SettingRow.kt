@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import com.example.ui.R
-import com.example.ui.theme.IconSizeMedium
+import com.example.ui.theme.IconSize24
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.RadiusMedium
 import com.example.ui.theme.SettingsRowHeight
@@ -54,7 +54,7 @@ fun SettingsRow(
     ) {
         Row(horizontalArrangement = Arrangement.Start) {
             Icon(
-                modifier = Modifier.size(IconSizeMedium),
+                modifier = Modifier.size(IconSize24),
                 painter = leadingIconResource,
                 contentDescription = title,
                 tint = contentColor
@@ -75,7 +75,7 @@ fun SettingsRow(
 @Composable
 fun ArrowIcon(contentColor: Color) {
     Icon(
-        modifier = Modifier.size(IconSizeMedium),
+        modifier = Modifier.size(IconSize24),
         painter = painterResource(id = R.drawable.ic_arrow_left),
         contentDescription = null,
         tint = contentColor

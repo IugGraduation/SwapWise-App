@@ -29,8 +29,8 @@ import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.theme.BackgroundLight
 import com.example.ui.theme.GraduationProjectTheme
-import com.example.ui.theme.IconSizeLarge
-import com.example.ui.theme.IconSizeSmall
+import com.example.ui.theme.IconSize32
+import com.example.ui.theme.IconSize16
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing4
@@ -48,7 +48,7 @@ fun DetailsScreenUserHeader(user: User, date: String) {
     ) {
         UserHeader(
             user = user,
-            imgSize = IconSizeLarge,
+            imgSize = IconSize32,
             textStyle = TextStyles.headingMedium,
             textColor = MaterialTheme.color.textPrimary
         )
@@ -70,7 +70,7 @@ fun DetailsScreenUserHeader(user: User, date: String) {
 @Composable
 private fun UserHeader(
     user: User,
-    imgSize: Dp = IconSizeSmall,
+    imgSize: Dp = IconSize16,
     textStyle: TextStyle = TextStyles.headingSmall,
     textColor: Color = BackgroundLight
 ) {

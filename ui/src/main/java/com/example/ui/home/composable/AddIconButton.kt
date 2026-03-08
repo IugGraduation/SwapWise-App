@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.ui.R
 import com.example.ui.theme.IconButtonSize60
-import com.example.ui.theme.IconSizeLarge
+import com.example.ui.theme.IconSize32
 import com.example.ui.theme.ZeroDp
 import com.example.ui.theme.color
 
@@ -36,7 +36,7 @@ fun AddIconButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         Icon(
             imageVector = Icons.Default.Add,
             contentDescription = stringResource(R.string.add),
-            modifier = Modifier.size(IconSizeLarge)
+            modifier = Modifier.size(IconSize32)
         )
     }
 }

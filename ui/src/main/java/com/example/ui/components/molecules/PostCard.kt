@@ -36,7 +36,7 @@ import com.example.ui.R
 import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.theme.CardWidth
-import com.example.ui.theme.IconSizeSmall
+import com.example.ui.theme.IconSize16
 import com.example.ui.theme.ImageSize140
 import com.example.ui.theme.ImageSize16
 import com.example.ui.theme.ImageSize200
@@ -195,7 +195,7 @@ private fun PostInfoSection(
                 painter = painterResource(id = R.drawable.ic_location),
                 contentDescription = location,
                 tint = MaterialTheme.color.textTertiary,
-                modifier = Modifier.size(IconSizeSmall)
+                modifier = Modifier.size(IconSize16)
             )
             Text(
                 text = location,

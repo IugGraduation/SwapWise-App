@@ -1,7 +1,6 @@
 package com.example.ui.post_details
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +32,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
-import com.example.domain.model.PostItem
 import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.base.MyUiState
@@ -53,7 +51,7 @@ import com.example.ui.post_details.composable.PhoneRow
 import com.example.ui.profile.composable.EditIconButton
 import com.example.ui.theme.BlackFourth
 import com.example.ui.theme.GraduationProjectTheme
-import com.example.ui.theme.IconSizeSmall
+import com.example.ui.theme.IconSize16
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
@@ -228,7 +226,7 @@ fun LocationRow(location: String) {
                 painter = painterResource(id = R.drawable.ic_location),
                 contentDescription = location,
                 tint = MaterialTheme.color.textTertiary,
-                modifier = Modifier.size(IconSizeSmall)
+                modifier = Modifier.size(IconSize16)
             )
             Text(
                 text = location,

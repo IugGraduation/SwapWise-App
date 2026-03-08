@@ -4,9 +4,10 @@ import androidx.compose.ui.unit.dp
 
 
 //region Icon Sizes
-val IconSizeSmall = 16.dp
-val IconSizeMedium = 24.dp
-val IconSizeLarge = 32.dp
+val IconSize16 = 16.dp
+val IconSize24 = 24.dp
+val IconSize32 = 32.dp
+val IconSize48 = 48.dp
 //endregion
 
 //region Border Radius Sizes

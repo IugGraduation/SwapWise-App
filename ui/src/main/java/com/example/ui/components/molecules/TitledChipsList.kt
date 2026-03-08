@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -29,7 +30,8 @@ import com.example.ui.components.atoms.BoxRounded
 import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.models.AsyncState
 import com.example.ui.models.ChipUiState
-import com.example.ui.theme.IconSizeMedium
+import com.example.ui.theme.IconSize48
+import com.example.ui.theme.IconSize24
 import com.example.ui.theme.RadiusLarge
 import com.example.ui.theme.Secondary
 import com.example.ui.theme.Spacing16
@@ -59,9 +61,14 @@ fun TitledChipsList(
 
     when (state) {
         is AsyncState.Loading, AsyncState.Initial -> {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IconSize48),
+                contentAlignment = Alignment.Center
+            ) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(IconSizeMedium),
+                    modifier = Modifier.size(IconSize24),
                     strokeWidth = Spacing2,
                     color = MaterialTheme.color.primary
                 )
@@ -81,14 +88,21 @@ fun TitledChipsList(
         }
 
         is AsyncState.Error -> {
-            Icon(
-                imageVector = Icons.Default.Refresh,
-                contentDescription = stringResource(R.string.retry),
-                tint = MaterialTheme.color.danger,
+            Box(
                 modifier = Modifier
-                    .size(IconSizeMedium)
-                    .clickable { onRetry() }
-            )
+                    .fillMaxWidth()
+                    .height(IconSize48),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = stringResource(R.string.retry),
+                    tint = MaterialTheme.color.danger,
+                    modifier = Modifier
+                        .size(IconSize24)
+                        .clickable { onRetry() }
+                )
+            }
         }
     }
 }
