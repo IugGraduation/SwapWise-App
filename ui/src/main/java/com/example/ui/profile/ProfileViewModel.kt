@@ -7,6 +7,7 @@ import com.example.domain.exception.InvalidPhoneNumberException
 import com.example.domain.exception.InvalidUsernameException
 import com.example.domain.location.GetLocationsUseCase
 import com.example.domain.model.LocationItem
+import com.example.domain.model.PostItem
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.domain.profile.GetCurrentUserDataUseCase
 import com.example.domain.profile.GetCurrentUserPostsUseCase
@@ -61,6 +62,12 @@ class ProfileViewModel @Inject constructor(
                 updateData { copy(userInformation = infoState) }
                 if (infoState is AsyncState.Success) {
                     originalProfileInformation = infoState.data
+                    
+                    // Try to resolve location name if dropdown data is already available
+                    val currentLocations = _state.value.data.userInformation.data?.locationDropdown
+                    if (currentLocations is AsyncState.Success) {
+                        resolveSelectedLocation(currentLocations.data)
+                    }
                 }
             }
         )
@@ -71,8 +78,18 @@ class ProfileViewModel @Inject constructor(
             call = { getLocationsUseCase() },
             stateUpdater = { newState ->
                 updateProfileInfo { copy(locationDropdown = newState) }
+                if (newState is AsyncState.Success) {
+                    resolveSelectedLocation(newState.data)
+                }
             }
         )
+    }
+
+    private fun resolveSelectedLocation(locations: List<LocationItem>) {
+        updateProfileInfo {
+            val resolved = locations.find { it.id == selectedLocation?.id }
+            copy(selectedLocation = resolved ?: selectedLocation)
+        }
     }
 
     private fun getCurrentUserPosts() {
@@ -151,7 +168,7 @@ class ProfileViewModel @Inject constructor(
     override fun onLogoutClicked() {
         tryToExecute(
             call = logoutUseCase::invoke,
-            onSuccess = { onLogoutSuccess() },
+            onSuccess = ::onLogoutSuccess,
         )
     }
 
