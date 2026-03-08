@@ -39,56 +39,70 @@ fun <T> AsyncContent(
     state: AsyncState<T>,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
+    initialContent: @Composable () -> Unit = { DefaultLoadingContent() },
+    loadingContent: @Composable () -> Unit = { DefaultLoadingContent() },
+    errorContent: @Composable (String) -> Unit = { message -> DefaultErrorContent(message, onRetry) },
+    emptyContent: @Composable () -> Unit = { DefaultEmptyContent() },
     successContent: @Composable (T) -> Unit
 ) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         when (state) {
-            is AsyncState.Loading, AsyncState.Initial -> {
-                CircularProgressIndicator()
-            }
+            AsyncState.Initial -> initialContent()
 
-            is AsyncState.Error -> {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(Spacing16)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Warning,
-                        contentDescription = null,
-                        modifier = Modifier.size(80.dp),
-                        tint = MaterialTheme.color.textTertiary
-                    )
-                    VerticalSpacer(Spacing16)
-                    Text(
-                        text = state.message,
-                        style = TextStyles.bodyLarge,
-                        color = MaterialTheme.color.textPrimary,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(Modifier.height(Spacing8))
-                    SwapWiseFilledButton(
-                        onClick = onRetry,
-                        text = stringResource(R.string.retry),
-                        modifier = Modifier.fillMaxWidth(0.6f)
-                    )
-                }
-            }
+            AsyncState.Loading -> loadingContent()
+
+            is AsyncState.Error -> errorContent(state.message)
 
             is AsyncState.Success -> {
                 val data = state.data
-                // Check if the successful data is a Collection and is empty.
                 if (data is Collection<*> && data.isEmpty()) {
-                    // If the data is an empty list, show a generic message.
-                    Text(
-                        text = stringResource(id = R.string.no_items_found),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+                    emptyContent()
                 } else {
-                    // Otherwise, show the main success content.
                     successContent(data)
                 }
             }
         }
     }
+}
+
+@Composable
+private fun DefaultLoadingContent() {
+    CircularProgressIndicator()
+}
+
+@Composable
+private fun DefaultErrorContent(message: String, onRetry: () -> Unit) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.padding(Spacing16)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Warning,
+            contentDescription = null,
+            modifier = Modifier.size(80.dp),
+            tint = MaterialTheme.color.textTertiary
+        )
+        VerticalSpacer(Spacing16)
+        Text(
+            text = message,
+            style = TextStyles.bodyLarge,
+            color = MaterialTheme.color.textPrimary,
+            textAlign = TextAlign.Center
+        )
+        Spacer(Modifier.height(Spacing8))
+        SwapWiseFilledButton(
+            onClick = onRetry,
+            text = stringResource(R.string.retry),
+            modifier = Modifier.fillMaxWidth(0.6f)
+        )
+    }
+}
+
+@Composable
+private fun DefaultEmptyContent() {
+    Text(
+        text = stringResource(id = R.string.no_items_found),
+        style = MaterialTheme.typography.bodyLarge
+    )
 }
