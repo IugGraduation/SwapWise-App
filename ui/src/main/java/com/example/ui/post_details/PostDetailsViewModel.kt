@@ -9,7 +9,6 @@ import com.example.domain.post.GetPostDetailsUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.models.AsyncState
 import com.example.ui.models.ChipUiState
-import com.example.ui.models.ChipsUiState
 import com.example.ui.models.PostItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -64,8 +63,8 @@ class PostDetailsViewModel @Inject constructor(
 
         updateData {
             copy(
-                categories = ChipsUiState(items = categoryChips),
-                favoriteCategories = ChipsUiState(items = favoriteChips)
+                categories = AsyncState.Success(categoryChips),
+                favoriteCategories = AsyncState.Success(favoriteChips)
             )
         }
         showEditButtonIfNeeded(data)
