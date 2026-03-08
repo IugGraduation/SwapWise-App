@@ -4,13 +4,12 @@ import com.example.domain.model.LocationItem
 import com.example.domain.model.PostItem
 import com.example.domain.model.User
 import com.example.ui.base.BaseUiState
-import com.example.ui.models.DropdownUiState
+import com.example.ui.models.AsyncState
 import com.example.ui.util.empty
 
 data class ProfileUiState(
-    val id: String = String.empty(),
-    val profileInformationUiState: ProfileInformationUiState = ProfileInformationUiState(),
-    val userPosts: List<PostItemUiState> = emptyList(),
+    val userInformation: AsyncState<ProfileInformationUiState> = AsyncState.Initial,
+    val userPosts: AsyncState<List<PostItemUiState>> = AsyncState.Initial,
     val profileSettingsUiState: ProfileSettingsUiState = ProfileSettingsUiState(),
     val profileError: ProfileErrorUiState = ProfileErrorUiState(),
     val baseUiState: BaseUiState = BaseUiState(),
@@ -20,7 +19,8 @@ data class ProfileInformationUiState(
     val imageUri: String = String.empty(),
     val name: String = String.empty(),
     val phone: String = String.empty(),
-    val locationDropdown: DropdownUiState<LocationItem> = DropdownUiState(),
+    val locationDropdown: AsyncState<List<LocationItem>> = AsyncState.Initial,
+    val selectedLocation: LocationItem? = null,
     val bio: String = String.empty(),
     val isUserInfoEditable: Boolean = false,
 )
@@ -54,18 +54,13 @@ data class ProfileErrorUiState(
     val bioErrorMessage: String = String.empty(),
 )
 
-fun User.toProfileUiState(): ProfileUiState {
-    return ProfileUiState(
-        id = this.id,
-        profileInformationUiState = ProfileInformationUiState(
-            imageUri = this.imageLink,
-            name = this.name,
-            phone = this.phone,
-            locationDropdown = DropdownUiState(
-                selectedItem = LocationItem(id = this.locationId),
-            ),
-            bio = this.bio,
-        )
+fun User.toProfileInformationUiState(): ProfileInformationUiState {
+    return ProfileInformationUiState(
+        imageUri = this.imageLink,
+        name = this.name,
+        phone = this.phone,
+        selectedLocation = LocationItem(id = this.locationId),
+        bio = this.bio,
     )
 }
 

@@ -7,7 +7,6 @@ import com.example.domain.exception.InvalidPhoneNumberException
 import com.example.domain.exception.InvalidUsernameException
 import com.example.domain.location.GetLocationsUseCase
 import com.example.domain.model.LocationItem
-import com.example.domain.model.PostItem
 import com.example.domain.profile.CustomizeProfileSettingsUseCase
 import com.example.domain.profile.GetCurrentUserDataUseCase
 import com.example.domain.profile.GetCurrentUserPostsUseCase
@@ -15,6 +14,7 @@ import com.example.domain.profile.LogoutUseCase
 import com.example.domain.profile.UpdateUserInfoUseCase
 import com.example.ui.base.BaseViewModel
 import com.example.ui.base.StringsResource
+import com.example.ui.models.AsyncState
 import com.example.ui.util.empty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +40,7 @@ class ProfileViewModel @Inject constructor(
         getLastSelectedAppLanguage()
         initUserData()
         getCurrentUserPosts()
+        getLocations()
     }
 
     private fun getLastSelectedAppLanguage() {
@@ -53,112 +54,71 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun initUserData() {
-        tryToExecute(
-            call = {
-                val locations = fetchLocations()
-                val userState = getCurrentUserDataUseCase().toProfileUiState()
-
-                // Find the full LocationItem with name using the ID from user data
-                val selectedId =
-                    userState.profileInformationUiState.locationDropdown.selectedItem?.id
-                val fullLocation = locations.find { it.id == selectedId }
-
-                userState.profileInformationUiState.copy(
-                    locationDropdown = userState.profileInformationUiState.locationDropdown.copy(
-                        selectedItem = fullLocation
-                            ?: userState.profileInformationUiState.locationDropdown.selectedItem,
-                        items = locations,
-                    )
-                )
-            },
-            onSuccess = { profileInfo ->
-                updateData { copy(profileInformationUiState = profileInfo) }
-                originalProfileInformation = profileInfo
-            },
-            shouldLoad = true,
-            shouldHideContent = true
+        tryToExecuteAsync(
+            call = { getCurrentUserDataUseCase() },
+            stateUpdater = { newState ->
+                val infoState = newState.mapData { it.toProfileInformationUiState() }
+                updateData { copy(userInformation = infoState) }
+                if (infoState is AsyncState.Success) {
+                    originalProfileInformation = infoState.data
+                }
+            }
         )
     }
 
-    private suspend fun fetchLocations(): List<LocationItem> {
-        updateProfileField {
-            copy(
-                locationDropdown = locationDropdown.copy(
-                    isLoading = true,
-                    error = null
-                )
-            )
-        }
-        return try {
-            val locations = getLocationsUseCase()
-            updateProfileField {
-                copy(
-                    locationDropdown = locationDropdown.copy(
-                        items = locations,
-                        isLoading = false
-                    )
-                )
+    private fun getLocations() {
+        tryToExecuteAsync(
+            call = { getLocationsUseCase() },
+            stateUpdater = { newState ->
+                updateProfileInfo { copy(locationDropdown = newState) }
             }
-            locations
-        } catch (e: Exception) {
-            updateProfileField {
-                copy(
-                    locationDropdown = locationDropdown.copy(
-                        isLoading = false,
-                        error = e.message
-                    )
-                )
-            }
-            emptyList()
-        }
+        )
     }
 
     private fun getCurrentUserPosts() {
-        tryToExecute(
+        tryToExecuteAsync(
             call = { getCurrentUserPostsUseCase() },
-            onSuccess = ::onGetCurrentUserPostsSuccess,
+            stateUpdater = { newState ->
+                updateData { copy(userPosts = newState.mapData { list -> list.map { it.toPostItemUIState() } }) }
+            }
         )
     }
 
-    private fun onGetCurrentUserPostsSuccess(postItems: List<PostItem>) {
-        updateData { copy(userPosts = postItems.map { it.toPostItemUIState() }) }
-    }
-
     override fun onUpdateProfileImage(imageUri: Uri) {
-        updateProfileField { copy(imageUri = imageUri.toString()) }
+        updateProfileInfo { copy(imageUri = imageUri.toString()) }
     }
 
     override fun onEditButtonClicked() = manageUserInfoEdit(isEditable = true)
 
-    override fun onUsernameChange(newName: String) = updateProfileField { copy(name = newName) }
+    override fun onUsernameChange(newName: String) = updateProfileInfo { copy(name = newName) }
 
     override fun onPhoneNumberChange(newNumber: String) =
-        updateProfileField { copy(phone = newNumber) }
+        updateProfileInfo { copy(phone = newNumber) }
 
     override fun onLocationChange(location: LocationItem) {
-        updateProfileField { copy(locationDropdown = locationDropdown.copy(selectedItem = location)) }
+        updateProfileInfo { copy(selectedLocation = location) }
     }
 
-    override fun onBioChange(bio: String) = updateProfileField { copy(bio = bio) }
+    override fun onBioChange(bio: String) = updateProfileInfo { copy(bio = bio) }
 
-    private fun updateProfileField(update: ProfileInformationUiState.() -> ProfileInformationUiState) {
-        updateData { copy(profileInformationUiState = profileInformationUiState.update()) }
+    private fun updateProfileInfo(update: ProfileInformationUiState.() -> ProfileInformationUiState) {
+        updateData { copy(userInformation = userInformation.mapData { it.update() }) }
     }
 
     override fun onCancelButtonClicked() {
         manageUserInfoEdit(isEditable = false)
         makeErrorMessagesEmpty()
-        updateData { copy(profileInformationUiState = originalProfileInformation) }
+        updateData { copy(userInformation = AsyncState.Success(originalProfileInformation)) }
     }
 
     override fun onSaveButtonClicked(imageByteArray: ByteArray?) {
-        val lastUserInfo = _state.value.data.profileInformationUiState
+        val lastUserInfo = _state.value.data.userInformation.data ?: return
         tryToExecute(
             call = {
                 updateUserInfoUseCase(
                     name = lastUserInfo.name,
                     phone = lastUserInfo.phone,
-                    locationId = lastUserInfo.locationDropdown.selectedItem?.id.orEmpty(),
+                    locationId = lastUserInfo.selectedLocation?.id.orEmpty(),
                     imageByteArray = imageByteArray,
                     bio = lastUserInfo.bio
                 )
@@ -197,6 +157,10 @@ class ProfileViewModel @Inject constructor(
 
     private fun onLogoutSuccess() = sendUiEffect(ProfileEffect.NavigateToLoginScreen)
 
+    override fun onLogoutRetry() {
+        onLogoutClicked()
+    }
+
     override fun onResetPasswordClicked() = sendUiEffect(ProfileEffect.NavigateToResetPassword)
 
     override fun updateLanguageDialogState(showDialog: Boolean) {
@@ -229,6 +193,14 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onRetryLocations() {
+        getLocations()
+    }
+
+    override fun onRetryUserPosts() {
+        getCurrentUserPosts()
+    }
+
+    override fun initUserDataRetry() {
         initUserData()
     }
 
@@ -241,7 +213,13 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onUpdateLogoutDialogState(showDialog: Boolean) {
-        updateData { copy(profileSettingsUiState = ProfileSettingsUiState().copy(showLogoutDialog = showDialog)) }
+        updateData {
+            copy(
+                profileSettingsUiState = _state.value.data.profileSettingsUiState.copy(
+                    showLogoutDialog = showDialog
+                )
+            )
+        }
     }
 
     private suspend fun isDarkTheme() {
@@ -253,7 +231,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun manageUserInfoEdit(isEditable: Boolean) {
-        updateProfileField { copy(isUserInfoEditable = isEditable) }
+        updateProfileInfo { copy(isUserInfoEditable = isEditable) }
     }
 
     private fun updateFieldError(

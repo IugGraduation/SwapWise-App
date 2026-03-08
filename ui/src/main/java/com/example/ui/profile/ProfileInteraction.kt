@@ -20,4 +20,7 @@ interface ProfileInteraction {
     fun onUpdateLanguage(language: String)
     fun navigateToPostDetails(postId: String)
     fun onRetryLocations()
+    fun onRetryUserPosts()
+    fun initUserDataRetry()
+    fun onLogoutRetry()
 }

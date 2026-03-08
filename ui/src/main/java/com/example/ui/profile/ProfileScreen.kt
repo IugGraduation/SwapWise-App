@@ -40,6 +40,7 @@ import coil3.compose.rememberAsyncImagePainter
 import com.example.domain.model.LocationItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState
+import com.example.ui.components.AsyncContent
 import com.example.ui.components.atoms.DropdownTextField
 import com.example.ui.components.atoms.MultiChoiceDialog
 import com.example.ui.components.atoms.SwapWiseFilledButton
@@ -52,6 +53,7 @@ import com.example.ui.components.atoms.updateResources
 import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.templates.BottomBarTemplate
 import com.example.ui.login.navigateToLogin
+import com.example.ui.models.AsyncState
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.profile.composable.EditIconButton
@@ -158,23 +160,30 @@ private fun ProfileContent(
                                 style = headingExtraLarge,
                             )
 
-                            AnimatedVisibility(pagerState.currentPage == 0) {
+                            AnimatedVisibility(pagerState.currentPage == 0 && state.data.userInformation is AsyncState.Success) {
                                 EditIconButton(onClick = profileInteraction::onEditButtonClicked)
                             }
                         }
 
-                        ProfileImage(
-                            modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-                            state = state.data,
-                            onImageChangeClick = profileInteraction::onUpdateProfileImage
-                        )
+                        AsyncContent(
+                            state = state.data.userInformation,
+                            onRetry = profileInteraction::initUserDataRetry
+                        ) { info ->
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                ProfileImage(
+                                    modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+                                    state = state.data,
+                                    onImageChangeClick = profileInteraction::onUpdateProfileImage
+                                )
 
-                        VerticalBoldAndLightText(
-                            modifier = Modifier.padding(top = Spacing16),
-                            boldText = state.data.profileInformationUiState.name,
-                            boldStyle = headingExtraLarge,
-                            lightText = state.data.profileInformationUiState.bio
-                        )
+                                VerticalBoldAndLightText(
+                                    modifier = Modifier.padding(top = Spacing16),
+                                    boldText = info.name,
+                                    boldStyle = headingExtraLarge,
+                                    lightText = info.bio
+                                )
+                            }
+                        }
 
                         ProfileToggle(pagerState = pagerState)
 
@@ -246,104 +255,108 @@ private fun UserInformationSection(
     profileInteraction: ProfileInteraction,
     modifier: Modifier = Modifier
 ) {
-    val isUserInfoEditable = state.profileInformationUiState.isUserInfoEditable
+    AsyncContent(
+        state = state.userInformation,
+        onRetry = profileInteraction::initUserDataRetry,
+        modifier = modifier
+    ) { info ->
+        val isUserInfoEditable = info.isUserInfoEditable
 
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(Spacing8)
-    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Spacing8)
+        ) {
 
-        SwapWiseTextField(
-            value = state.profileInformationUiState.name,
-            onValueChange = profileInteraction::onUsernameChange,
-            placeholder = stringResource(R.string.full_name),
-            errorMessage = state.profileError.userNameErrorMessage,
-            isEditable = isUserInfoEditable,
-            enabled = isUserInfoEditable,
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.ic_user),
-                    contentDescription = state.profileInformationUiState.name,
-                    tint = MaterialTheme.color.textTertiary
-                )
-            }
-        )
+            SwapWiseTextField(
+                value = info.name,
+                onValueChange = profileInteraction::onUsernameChange,
+                placeholder = stringResource(R.string.full_name),
+                errorMessage = state.profileError.userNameErrorMessage,
+                isEditable = isUserInfoEditable,
+                enabled = isUserInfoEditable,
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_user),
+                        contentDescription = info.name,
+                        tint = MaterialTheme.color.textTertiary
+                    )
+                }
+            )
 
-        SwapWiseTextField(
-            value = state.profileInformationUiState.phone,
-            onValueChange = profileInteraction::onPhoneNumberChange,
-            isEditable = isUserInfoEditable,
-            enabled = isUserInfoEditable,
-            placeholder = stringResource(R.string.phone_number),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            errorMessage = state.profileError.phoneNumberErrorMessage,
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.ic_phone),
-                    contentDescription = stringResource(R.string.phone_number),
-                    tint = MaterialTheme.color.textTertiary
-                )
-            }
-        )
+            SwapWiseTextField(
+                value = info.phone,
+                onValueChange = profileInteraction::onPhoneNumberChange,
+                isEditable = isUserInfoEditable,
+                enabled = isUserInfoEditable,
+                placeholder = stringResource(R.string.phone_number),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                errorMessage = state.profileError.phoneNumberErrorMessage,
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_phone),
+                        contentDescription = stringResource(R.string.phone_number),
+                        tint = MaterialTheme.color.textTertiary
+                    )
+                }
+            )
 
-        DropdownTextField(
-            state = state.profileInformationUiState.locationDropdown,
-            onValueChange = profileInteraction::onLocationChange,
-            onRetry = profileInteraction::onRetryLocations,
-            placeholder = stringResource(R.string.best_barter_spot),
-            valueToString = { it.name },
-            errorMessage = state.profileError.locationErrorMessage,
-            enabled = isUserInfoEditable,
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.ic_location),
-                    contentDescription = stringResource(R.string.best_barter_spot),
-                    tint = MaterialTheme.color.textTertiary
-                )
-            }
-        )
+            DropdownTextField(
+                state = info.locationDropdown,
+                selectedItem = info.selectedLocation,
+                onValueChange = profileInteraction::onLocationChange,
+                onRetry = profileInteraction::onRetryLocations,
+                placeholder = stringResource(R.string.best_barter_spot),
+                valueToString = { it.name },
+                errorMessage = state.profileError.locationErrorMessage,
+                enabled = isUserInfoEditable,
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_location),
+                        contentDescription = stringResource(R.string.best_barter_spot),
+                        tint = MaterialTheme.color.textTertiary
+                    )
+                }
+            )
 
-        SwapWiseTextField(
-            value = state.profileInformationUiState.bio,
-            onValueChange = profileInteraction::onBioChange,
-            isEditable = isUserInfoEditable,
-            enabled = isUserInfoEditable,
-            placeholder = stringResource(R.string.bio),
-            errorMessage = state.profileError.bioErrorMessage,
-            isMultiline = true,
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.ic_bio),
-                    contentDescription = state.profileInformationUiState.bio,
-                    tint = MaterialTheme.color.textTertiary
-                )
-            }
-        )
+            SwapWiseTextField(
+                value = info.bio,
+                onValueChange = profileInteraction::onBioChange,
+                isEditable = isUserInfoEditable,
+                enabled = isUserInfoEditable,
+                placeholder = stringResource(R.string.bio),
+                errorMessage = state.profileError.bioErrorMessage,
+                isMultiline = true,
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_bio),
+                        contentDescription = info.bio,
+                        tint = MaterialTheme.color.textTertiary
+                    )
+                }
+            )
 
-        VerticalSpacer(height = Spacing16)
+            VerticalSpacer(height = Spacing16)
 
-        AnimatedVisibility(state.profileInformationUiState.isUserInfoEditable) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(Spacing8)
-            ) {
-                VerticalSpacer(Spacing8)
-                val context = LocalContext.current
-                SwapWiseFilledButton(
-                    onClick = {
-                        val imageByteArray =
-                            state.profileInformationUiState.imageUri.toByteArray(context)
-                        profileInteraction.onSaveButtonClicked(imageByteArray)
-                    },
-                    text = stringResource(R.string.save)
-                )
+            AnimatedVisibility(info.isUserInfoEditable) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(Spacing8)
+                ) {
+                    VerticalSpacer(Spacing8)
+                    val context = LocalContext.current
+                    SwapWiseFilledButton(
+                        onClick = {
+                            val imageByteArray = info.imageUri.toByteArray(context)
+                            profileInteraction.onSaveButtonClicked(imageByteArray)
+                        },
+                        text = stringResource(R.string.save)
+                    )
 
-                SwapWiseOutlineButton(
-                    text = stringResource(R.string.cancel),
-                    onClick = profileInteraction::onCancelButtonClicked
-                )
+                    SwapWiseOutlineButton(
+                        text = stringResource(R.string.cancel),
+                        onClick = profileInteraction::onCancelButtonClicked
+                    )
+                }
             }
         }
-
     }
 }
 
@@ -353,23 +366,28 @@ private fun UserPostsSection(
     profileInteraction: ProfileInteraction,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        modifier = modifier.heightIn(max = LocalWindowInfo.current.containerSize.height.dp),
-        verticalArrangement = Arrangement.spacedBy(Spacing8)
-    ) {
-        items(items = state.userPosts) { postItem ->
-            PostCard(
-                username = postItem.username,
-                userImage = rememberAsyncImagePainter(postItem.userImageLink),
-                isOpen = postItem.isThePostOpen,
-                title = postItem.postTitle,
-                details = postItem.postDescription,
-                location = postItem.postLocation.name,
-                postImage = rememberAsyncImagePainter(postItem.postImageLink),
-                onCardClick = { profileInteraction.navigateToPostDetails(postItem.id) },
-                showState = true
-            )
-
+    AsyncContent(
+        state = state.userPosts,
+        onRetry = profileInteraction::onRetryUserPosts,
+        modifier = modifier
+    ) { posts ->
+        LazyColumn(
+            modifier = Modifier.heightIn(max = LocalWindowInfo.current.containerSize.height.dp),
+            verticalArrangement = Arrangement.spacedBy(Spacing8)
+        ) {
+            items(items = posts) { postItem ->
+                PostCard(
+                    username = postItem.username,
+                    userImage = rememberAsyncImagePainter(postItem.userImageLink),
+                    isOpen = postItem.isThePostOpen,
+                    title = postItem.postTitle,
+                    details = postItem.postDescription,
+                    location = postItem.postLocation.name,
+                    postImage = rememberAsyncImagePainter(postItem.postImageLink),
+                    onCardClick = { profileInteraction.navigateToPostDetails(postItem.id) },
+                    showState = true
+                )
+            }
         }
     }
 }
@@ -446,6 +464,9 @@ fun PreviewPostDetailsContent() {
                 override fun onUpdateLanguage(language: String) {}
                 override fun navigateToPostDetails(postId: String) {}
                 override fun onRetryLocations() {}
+                override fun onRetryUserPosts() {}
+                override fun initUserDataRetry() {}
+                override fun onLogoutRetry() {}
             },
             pagerState = pagerState,
             bottomBarState = BottomBarUiState(),
