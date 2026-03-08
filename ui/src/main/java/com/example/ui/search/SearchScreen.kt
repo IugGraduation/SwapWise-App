@@ -3,13 +3,15 @@ package com.example.ui.search
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +32,7 @@ import com.example.domain.category.GetFakeCategoriesUseCase
 import com.example.domain.model.CategoryItem
 import com.example.ui.R
 import com.example.ui.base.MyUiState
+import com.example.ui.components.AsyncContent
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.atoms.HorizontalSpacer
 import com.example.ui.components.atoms.SwapWiseTextButton
@@ -37,9 +41,9 @@ import com.example.ui.components.atoms.VerticalSpacer
 import com.example.ui.components.molecules.TitledChipsList
 import com.example.ui.components.templates.MainTitledScreenTemplate
 import com.example.ui.edit_post.navigateToEditPost
+import com.example.ui.models.AsyncState
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.ChipUiState
-import com.example.ui.models.ChipsUiState
 import com.example.ui.post_details.navigateToPostDetails
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.BlackFourth
@@ -127,13 +131,16 @@ fun SearchContent(
             onRetry = searchInteractions::onRetryLocations
         )
         VerticalSpacer(Spacing16)
-        if (state.baseUiState.isLoading) {
-            LoadingContent()
-        } else if (state.data.emptyResult) {
-            EmptyContent(searchInteractions::onClickTryAgain)
-        } else {
+
+        AsyncContent(
+            state = state.data.topicsList,
+            onRetry = searchInteractions::onClickTryAgain,
+            initialContent = { InitialSearchContent() },
+            loadingContent = { LoadingContent() },
+            emptyContent = { EmptyContent(searchInteractions::onClickTryAgain) }
+        ) { posts ->
             CustomLazyLayout(
-                items = state.data.topicsList,
+                items = posts,
                 isHorizontalLayout = false,
                 onClickGoToDetails = { item -> searchInteractions.navigateToPostDetails(item.id) }
             )
@@ -142,10 +149,33 @@ fun SearchContent(
 }
 
 @Composable
+private fun InitialSearchContent() {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_search),
+            contentDescription = null,
+            modifier = Modifier.size(100.dp),
+            tint = MaterialTheme.color.textTertiary.copy(alpha = 0.3f)
+        )
+        VerticalSpacer(Spacing8)
+        Text(
+            text = stringResource(R.string.start_searching_now),
+            style = TextStyles.hint,
+            color = MaterialTheme.color.textTertiary
+        )
+    }
+}
+
+@Composable
 private fun EmptyContent(onClickTryAgain: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxHeight(0.8f),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_empty_box),
@@ -155,6 +185,7 @@ private fun EmptyContent(onClickTryAgain: () -> Unit) {
         VerticalSpacer(Spacing8)
         Row(
             horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.nothing_found), style = TextStyles.hint)
@@ -166,12 +197,12 @@ private fun EmptyContent(onClickTryAgain: () -> Unit) {
 
 @Composable
 private fun LoadingContent() {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxHeight(0.8f)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
     ) {
         Image(
-            painter =  painterResource(R.drawable.ic_searching),
+            painter = painterResource(R.drawable.ic_searching),
             contentDescription = stringResource(R.string.searching),
             modifier = Modifier.fillMaxWidth(),
         )
@@ -184,13 +215,13 @@ private fun LoadingContent() {
 fun PreviewSearchContent() {
     GraduationProjectTheme {
         val searchUiState = SearchUiState(
-            categoriesFilter = ChipsUiState(
-                items = GetFakeCategoriesUseCase()().map {
+            categoriesFilter = AsyncState.Success(
+                GetFakeCategoriesUseCase()().map {
                     ChipUiState(categoryItem = CategoryItem(name = it.name, id = it.id))
                 }
             ),
-            locationsFilter = ChipsUiState(
-                items = listOf(
+            locationsFilter = AsyncState.Success(
+                listOf(
                     ChipUiState(CategoryItem(name = "Gaza")),
                     ChipUiState(CategoryItem(name = "London"))
                 )

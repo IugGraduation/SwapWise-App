@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.category.GetCategoriesUseCase
 import com.example.domain.location.GetLocationsUseCase
 import com.example.domain.model.CategoryItem
-import com.example.domain.model.PostItem
 import com.example.domain.search.GetSearchResultUseCase
 import com.example.ui.base.BaseViewModel
+import com.example.ui.models.AsyncState
 import com.example.ui.models.ChipUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -35,124 +35,70 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun loadCategoryFilters() {
-        updateData {
-            copy(
-                categoriesFilter = categoriesFilter.copy(
-                    isLoading = true,
-                    error = null
-                )
-            )
-        }
-        tryToExecute(
+        tryToExecuteAsync(
             call = { getCategoriesUseCase() },
-            onSuccess = { categories ->
-                val chips = categories.map { category ->
-                    ChipUiState(
-                        categoryItem = category,
-                        selected = mutableStateOf(false),
-                        onClick = { search() }
-                    )
-                }
-                updateData {
-                    copy(
-                        categoriesFilter = this.categoriesFilter.copy(
-                            items = chips,
-                            isLoading = false
+            stateUpdater = { newState ->
+                val chips = newState.mapData { categories ->
+                    categories.map { category ->
+                        ChipUiState(
+                            categoryItem = category,
+                            selected = mutableStateOf(false),
+                            onClick = { search() }
                         )
-                    )
+                    }
                 }
-            },
-            onError = { throwable ->
-                updateData {
-                    copy(
-                        categoriesFilter = this.categoriesFilter.copy(
-                            isLoading = false,
-                            error = throwable.message
-                        )
-                    )
-                }
-            },
-            shouldLoad = false
+                updateData { copy(categoriesFilter = chips) }
+            }
         )
     }
 
     private fun loadLocationFilters() {
-        updateData { copy(locationsFilter = locationsFilter.copy(isLoading = true, error = null)) }
-        tryToExecute(
+        tryToExecuteAsync(
             call = { getLocationsUseCase() },
-            onSuccess = { locations ->
-                val chips = locations.map { location ->
-                    ChipUiState(
-                        categoryItem = CategoryItem(id = location.id, name = location.name),
-                        selected = mutableStateOf(false),
-                        onClick = { search() }
-                    )
-                }
-                updateData {
-                    copy(
-                        locationsFilter = this.locationsFilter.copy(
-                            items = chips,
-                            isLoading = false
+            stateUpdater = { newState ->
+                val chips = newState.mapData { locations ->
+                    locations.map { location ->
+                        ChipUiState(
+                            categoryItem = CategoryItem(id = location.id, name = location.name),
+                            selected = mutableStateOf(false),
+                            onClick = { search() }
                         )
-                    )
+                    }
                 }
-            },
-            onError = { throwable ->
-                updateData {
-                    copy(
-                        locationsFilter = this.locationsFilter.copy(
-                            isLoading = false,
-                            error = throwable.message
-                        )
-                    )
-                }
-            },
-            shouldLoad = false
+                updateData { copy(locationsFilter = chips) }
+            }
         )
     }
 
     private fun search() {
         val searchVal = _state.value.data.search
-        val categoryIds = _state.value.data.categoriesFilter.items.filter { it.selected.value }
-            .map { it.categoryItem.id }
-        val locationIds = _state.value.data.locationsFilter.items.filter { it.selected.value }
-            .map { it.categoryItem.id }
+        val categoryIds = _state.value.data.categoriesFilter.data?.filter { it.selected.value }
+            ?.map { it.categoryItem.id } ?: emptyList()
+        val locationIds = _state.value.data.locationsFilter.data?.filter { it.selected.value }
+            ?.map { it.categoryItem.id } ?: emptyList()
 
-        if (searchVal.isBlank() && categoryIds.isEmpty() && locationIds.isEmpty()) return
+        if (searchVal.isBlank() && categoryIds.isEmpty() && locationIds.isEmpty()) {
+            updateData { copy(topicsList = AsyncState.Initial) }
+            return
+        }
 
-        tryToExecute(
+        tryToExecuteAsync(
             call = {
-                updateErrorMessage()
-                updateData { copy(topicsList = listOf()) }
                 getSearchResultUseCase(
                     searchValue = searchVal,
                     categoryIdsFilter = categoryIds,
                     locationIdsFilter = locationIds
                 )
             },
-            onSuccess = ::onSearchSuccess,
-            onError = ::onSearchFail
+            stateUpdater = { newState ->
+                updateData { copy(topicsList = newState) }
+            }
         )
-    }
-
-    private fun onSearchSuccess(data: List<PostItem>) {
-        updateData {
-            copy(topicsList = data, emptyResult = data.isEmpty())
-        }
-    }
-
-    private fun onSearchFail(throwable: Throwable) {
-        onActionFail(throwable)
-        updateData {
-            copy(topicsList = listOf(), emptyResult = true)
-        }
     }
 
 
     override fun onSearchChange(newValue: String) {
-        updateData {
-            copy(search = newValue)
-        }
+        updateData { copy(search = newValue) }
     }
 
     override fun onClickTryAgain() {

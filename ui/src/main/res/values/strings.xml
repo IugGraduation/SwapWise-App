@@ -113,4 +113,5 @@
     <string name="location">Location</string>
     <string name="retry">Retry</string>
     <string name="no_items_found">No items found</string>
+    <string name="start_searching_now">Start Searching Now</string>
 </resources>
