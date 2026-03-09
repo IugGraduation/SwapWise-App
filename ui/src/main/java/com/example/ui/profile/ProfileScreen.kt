@@ -68,6 +68,7 @@ import com.example.ui.reset_password.navigateToResetPassword
 import com.example.ui.shared.BottomNavigationViewModel
 import com.example.ui.theme.GradientCircleBackgroundSize
 import com.example.ui.theme.GraduationProjectTheme
+import com.example.ui.theme.IconButtonSize40
 import com.example.ui.theme.Spacing16
 import com.example.ui.theme.Spacing24
 import com.example.ui.theme.Spacing40
@@ -150,7 +151,8 @@ private fun ProfileContent(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = Spacing24),
+                                .padding(top = Spacing24)
+                                .height(IconButtonSize40),
                             verticalAlignment = Alignment.Top,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
