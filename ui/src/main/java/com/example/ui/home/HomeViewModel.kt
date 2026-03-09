@@ -3,11 +3,10 @@ package com.example.ui.home
 import com.example.domain.home.GetHomeDataUseCase
 import com.example.domain.home.GetPostsFromCategoryUseCase
 import com.example.domain.model.CategoryItem
-import com.example.domain.model.Home
 import com.example.domain.model.PostItem
 import com.example.domain.model.TopicItem
 import com.example.ui.base.BaseViewModel
-import com.example.ui.base.MyUiState
+import com.example.ui.models.AsyncState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -18,26 +17,28 @@ class HomeViewModel @Inject constructor(
 ) :
     BaseViewModel<HomeUiState, HomeEffects>(HomeUiState()), IHomeInteractions {
 
-    init {
-        isActionLoading(isLoading = true, shouldHideContent = true)
-    }
-
 
     fun onResume() {
         getHomeData()
     }
 
     private fun getHomeData() {
-        tryToExecute(
-            call = { getHomeDataUseCase() },
-            onSuccess = ::onGetHomeDataSuccess,
-            shouldLoad = _state.value.data.user.name.isBlank(),
-            shouldHideContent = _state.value.data.user.name.isBlank(),
-        )
-    }
+        val currentState = _state.value.data.homeData
 
-    private fun onGetHomeDataSuccess(data: Home) {
-        _state.value = MyUiState(data.toHomeUiState())
+        tryToExecuteAsync(
+            call = { getHomeDataUseCase() },
+            stateUpdater = { newState ->
+                val homeDataState = newState.mapData { it.toHomeDataUI() }
+
+                if (currentState is AsyncState.Success) {
+                    if (homeDataState is AsyncState.Success) {
+                        updateData { copy(homeData = homeDataState) }
+                    }
+                } else {
+                    updateData { copy(homeData = homeDataState) }
+                }
+            }
+        )
     }
 
 
@@ -69,5 +70,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    override fun onRetryHome() {
+        onResume()
+    }
 
 }

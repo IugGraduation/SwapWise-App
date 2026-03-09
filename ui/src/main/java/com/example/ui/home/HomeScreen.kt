@@ -36,6 +36,7 @@ import com.example.domain.post.GetFakePostDetailsUseCase
 import com.example.ui.R
 import com.example.ui.add_post.navigateToAddPost
 import com.example.ui.base.MyUiState
+import com.example.ui.components.AsyncContent
 import com.example.ui.components.atoms.CustomLazyLayout
 import com.example.ui.components.atoms.SwapWiseTextButton
 import com.example.ui.components.atoms.SwapWiseTextField
@@ -44,6 +45,7 @@ import com.example.ui.components.molecules.PostCard
 import com.example.ui.components.templates.HomeTemplate
 import com.example.ui.edit_post.navigateToEditPost
 import com.example.ui.home.composable.AddIconButton
+import com.example.ui.models.AsyncState
 import com.example.ui.models.BottomBarUiState
 import com.example.ui.models.TopicsHolderUiState
 import com.example.ui.post_details.navigateToPostDetails
@@ -64,7 +66,7 @@ fun HomeScreen(
 ) {
     val state by homeViewModel.state.collectAsState()
     val selectedItem by bottomNavigationViewModel.selectedItem.collectAsState()
-    for (topic in state.data.topicsList) {
+    for (topic in state.data.homeData.data?.topicsList ?: emptyList()) {
         topic.onClickSeeAll = { navController.navigateToSeeAllTopics(topic.url, topic.title) }
     }
     val bottomBarState = BottomBarUiState(
@@ -132,35 +134,40 @@ fun HomeContent(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     HomeTemplate(
-        user = state.data.user,
+        user = state.data.homeData.data?.user ?: User(),
         bottomBarState = bottomBarState,
         floatingActionButton = {
             AddIconButton { homeInteractions.navigateToAddPost() }
         },
         baseUiState = state.baseUiState,
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            item {
-                SwapWiseTextField(
-                    value = state.data.newPost,
-                    onValueChange = homeInteractions::onNewPostFieldChange,
-                    placeholder = stringResource(R.string.would_you_like_to_trade_anything),
-                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                            homeInteractions.navigateToAddPost(state.data.newPost)
-                        }
-                    ),
-                    modifier = Modifier.padding(horizontal = Spacing16),
-                )
-                VerticalSpacer(Spacing24)
-            }
-            items(state.data.topicsList) { topic ->
-                if (topic != state.data.topicsList.last()) {
+        AsyncContent(
+            state = state.data.homeData,
+            onRetry = homeInteractions::onRetryHome
+        ) { homeData ->
+            val topics = homeData.topicsList
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                item {
+                    SwapWiseTextField(
+                        value = state.data.newPost,
+                        onValueChange = homeInteractions::onNewPostFieldChange,
+                        placeholder = stringResource(R.string.would_you_like_to_trade_anything),
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                                homeInteractions.navigateToAddPost(state.data.newPost)
+                            }
+                        ),
+                        modifier = Modifier.padding(horizontal = Spacing16),
+                    )
+                    VerticalSpacer(Spacing24)
+                }
+
+                items(topics.dropLast(1)) { topic ->
                     TopicsListHeader(
                         title = topic.title,
                         onClickSeeAll = topic.onClickSeeAll
@@ -172,33 +179,33 @@ fun HomeContent(
                     )
                     VerticalSpacer(Spacing24)
                 }
-            }
 
-            //doing this because CustomLazyLayout returns a lazy column here,
-            //which can't be put inside another lazy column
-            val lastTopic = state.data.topicsList.lastOrNull() ?: TopicsHolderUiState()
-            item {
-                TopicsListHeader(
-                    title = lastTopic.title,
-                    onClickSeeAll = lastTopic.onClickSeeAll
-                )
-            }
-            items(lastTopic.items) { item ->
-                PostCard(
-                    userImage = rememberAsyncImagePainter((item as PostItem).user.imageLink),
-                    postImage = rememberAsyncImagePainter(item.imageUrl),
-                    username = item.user.name,
-                    title = item.name,
-                    details = item.details,
-                    location = item.locationItem.name,
-                    isOpen = item.isOpen,
-                    onCardClick = {
-                        homeInteractions.onClickGoToDetails(item)
-                    },
-                    isHorizontalCard = false,
-                    modifier = Modifier.padding(horizontal = Spacing16)
-                )
-                VerticalSpacer(Spacing8)
+                val lastTopic = topics.lastOrNull()
+                if (lastTopic != null) {
+                    item {
+                        TopicsListHeader(
+                            title = lastTopic.title,
+                            onClickSeeAll = lastTopic.onClickSeeAll
+                        )
+                    }
+                    items(lastTopic.items) { item ->
+                        PostCard(
+                            userImage = rememberAsyncImagePainter((item as PostItem).user.imageLink),
+                            postImage = rememberAsyncImagePainter(item.imageUrl),
+                            username = item.user.name,
+                            title = item.name,
+                            details = item.details,
+                            location = item.locationItem.name,
+                            isOpen = item.isOpen,
+                            onCardClick = {
+                                homeInteractions.onClickGoToDetails(item)
+                            },
+                            isHorizontalCard = false,
+                            modifier = Modifier.padding(horizontal = Spacing16)
+                        )
+                        VerticalSpacer(Spacing8)
+                    }
+                }
             }
         }
     }
@@ -272,8 +279,7 @@ fun PreviewHomeContent() {
         HomeContent(
             state = MyUiState(
                 HomeUiState(
-                user = user,
-                topicsList = topicsList,
+                    homeData = AsyncState.Success(HomeDataUI(user = user, topicsList = topicsList))
                 )
             ),
             bottomBarState = BottomBarUiState(),
@@ -281,6 +287,7 @@ fun PreviewHomeContent() {
                 override fun onNewPostFieldChange(newValue: String) {}
                 override fun navigateToAddPost(postTitle: String) {}
                 override fun onClickGoToDetails(topicItem: TopicItem) {}
+                override fun onRetryHome() {}
             },
         )
     }
