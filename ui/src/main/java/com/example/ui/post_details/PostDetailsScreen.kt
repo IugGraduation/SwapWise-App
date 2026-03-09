@@ -105,9 +105,9 @@ fun PostDetailsScreen(
 
                 PostDetailsEffects.NavigateToWhatsapp -> {
                     state.data.postItem.data?.let { post ->
-                        val intent = Intent(Intent.ACTION_VIEW).apply {
-                            data = "https://wa.me/${post.user.phone}".toUri()
-                        }
+                        val message = context.getString(R.string.whatsapp_message, post.user.name, post.name)
+                        val uri = "https://wa.me/${post.user.phone}?text=${android.net.Uri.encode(message)}".toUri()
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
                         context.startActivity(intent)
                     }
                 }
