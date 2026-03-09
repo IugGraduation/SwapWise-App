@@ -165,25 +165,17 @@ private fun ProfileContent(
                             }
                         }
 
-                        AsyncContent(
-                            state = state.data.userInformation,
-                            onRetry = profileInteraction::initUserDataRetry
-                        ) { info ->
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 ProfileImage(
                                     modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-                                    info = info,
+                                    info = state.data.userInformation.data,
                                     onImageChangeClick = profileInteraction::onUpdateProfileImage
                                 )
 
                                 VerticalBoldAndLightText(
-                                    modifier = Modifier.padding(top = Spacing16),
-                                    boldText = info.name,
+                                    boldText = state.data.userInformation.data?.name.orEmpty(),
                                     boldStyle = headingExtraLarge,
-                                    lightText = info.bio
+                                    lightText = state.data.userInformation.data?.bio.orEmpty()
                                 )
-                            }
-                        }
 
                         ProfileToggle(pagerState = pagerState)
 
@@ -436,38 +428,90 @@ private fun SettingsSection(
     }
 }
 
+private val mockInteraction = object : ProfileInteraction {
+    override fun onUpdateProfileImage(imageUri: Uri) {}
+    override fun onEditButtonClicked() {}
+    override fun onUsernameChange(newName: String) {}
+    override fun onPhoneNumberChange(newNumber: String) {}
+    override fun onLocationChange(location: LocationItem) {}
+    override fun onBioChange(bio: String) {}
+    override fun onCancelButtonClicked() {}
+    override fun onSaveButtonClicked(imageByteArray: ByteArray?) {}
+    override fun onDarkMoodChange(isDarkMood: Boolean) {}
+    override fun onLogoutClicked() {}
+    override fun onResetPasswordClicked() {}
+    override fun onUpdateLogoutDialogState(showDialog: Boolean) {}
+    override fun updateLanguageDialogState(showDialog: Boolean) {}
+    override fun onUpdateLanguage(language: String) {}
+    override fun navigateToPostDetails(postId: String) {}
+    override fun onRetryLocations() {}
+    override fun onRetryUserPosts() {}
+    override fun initUserDataRetry() {}
+    override fun onLogoutRetry() {}
+}
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Profile Success State", showSystemUi = false)
 @Composable
-fun PreviewPostDetailsContent() {
+fun PreviewProfileSuccess() {
     GraduationProjectTheme {
         val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
-
         ProfileContent(
             state = MyUiState(
-                ProfileUiState()
+                ProfileUiState(
+                    userInformation = AsyncState.Success(
+                        ProfileInformationUiState(
+                            name = "Cameron Williamson",
+                            bio = "Passionate barterer & community lover",
+                            phone = "1234567890"
+                        )
+                    ),
+                    userPosts = AsyncState.Success(
+                        listOf(
+                            PostItemUiState(
+                                postTitle = "Vintage Camera",
+                                postDescription = "Excellent condition vintage camera for trade."
+                            )
+                        )
+                    )
+                )
             ),
-            profileInteraction = object : ProfileInteraction {
-                override fun onUpdateProfileImage(imageUri: Uri) {}
-                override fun onEditButtonClicked() {}
-                override fun onUsernameChange(newName: String) {}
-                override fun onPhoneNumberChange(newNumber: String) {}
-                override fun onLocationChange(location: LocationItem) {}
-                override fun onBioChange(bio: String) {}
-                override fun onCancelButtonClicked() {}
-                override fun onSaveButtonClicked(imageByteArray: ByteArray?) {}
-                override fun onDarkMoodChange(isDarkMood: Boolean) {}
-                override fun onLogoutClicked() {}
-                override fun onResetPasswordClicked() {}
-                override fun onUpdateLogoutDialogState(showDialog: Boolean) {}
-                override fun updateLanguageDialogState(showDialog: Boolean) {}
-                override fun onUpdateLanguage(language: String) {}
-                override fun navigateToPostDetails(postId: String) {}
-                override fun onRetryLocations() {}
-                override fun onRetryUserPosts() {}
-                override fun initUserDataRetry() {}
-                override fun onLogoutRetry() {}
-            },
+            profileInteraction = mockInteraction,
+            pagerState = pagerState,
+            bottomBarState = BottomBarUiState(),
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Profile Loading State")
+@Composable
+fun PreviewProfileLoading() {
+    GraduationProjectTheme {
+        val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
+        ProfileContent(
+            state = MyUiState(
+                ProfileUiState(
+                    userInformation = AsyncState.Loading
+                )
+            ),
+            profileInteraction = mockInteraction,
+            pagerState = pagerState,
+            bottomBarState = BottomBarUiState(),
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Profile Error State")
+@Composable
+fun PreviewProfileError() {
+    GraduationProjectTheme {
+        val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
+        ProfileContent(
+            state = MyUiState(
+                ProfileUiState(
+                    userInformation = AsyncState.Error("Failed to load profile information. Please try again.")
+                )
+            ),
+            profileInteraction = mockInteraction,
             pagerState = pagerState,
             bottomBarState = BottomBarUiState(),
         )
