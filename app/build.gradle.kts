@@ -17,13 +17,13 @@ if (secretsPropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.graduationproject"
-    compileSdk = 35
+    namespace = "com.sam.swapwise"
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.graduationproject"
+        applicationId = "com.sam.swapwise"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 

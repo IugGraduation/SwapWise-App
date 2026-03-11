@@ -1,0 +1,35 @@
+package com.sam.domain.post
+
+import com.sam.data.repository.PostRepository
+import com.sam.domain.category.GetFakeCategoriesUseCase
+import com.sam.domain.model.CategoryItem
+import com.sam.domain.model.LocationItem
+import com.sam.domain.model.PostItem
+import com.sam.domain.model.User
+import com.sam.domain.model.toPostItem
+import javax.inject.Inject
+
+class GetPostDetailsUseCase @Inject constructor(private val postRepository: PostRepository) {
+    suspend operator fun invoke(postId: String): PostItem {
+        return postRepository.getPostDetails(postId).toPostItem()
+    }
+}
+
+class GetFakePostDetailsUseCase{
+    operator fun invoke(): PostItem {
+        val postItem = PostItem(
+            user = User(
+                name = "Cameron Williamson",
+                phone = "1231231231"
+            ),
+            name = "10kg of Sugar Up for 10kg of Rice",
+            details = "Looking for a sweet deal? I have 10 kilograms of high-quality sugar that I’d like to exchange for something useful like 10 kilograms of high-quality salt or 10 kilograms of high-quality rice or 10 kilograms of high-quality anything else that I’d like to exchange for something useful",
+            categoryItem = CategoryItem("Category"),
+            date = "Wed, Nov 20",
+            favoriteCategoryItems = GetFakeCategoriesUseCase()().toMutableList(),
+            locationItem = LocationItem(name = "Gaza"),
+            rate = 4.8f,
+        )
+        return postItem
+    }
+}

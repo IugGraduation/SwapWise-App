@@ -1,0 +1,175 @@
+package com.sam.ui.components.atoms
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import coil3.compose.rememberAsyncImagePainter
+import com.sam.domain.model.CategoryItem
+import com.sam.domain.model.PostItem
+import com.sam.domain.model.TopicItem
+import com.sam.ui.components.molecules.PostCard
+import com.sam.ui.theme.CategoryCardHorizontalHeight
+import com.sam.ui.theme.CategoryCardVerticalHeight
+import com.sam.ui.theme.CategoryCardWidth
+import com.sam.ui.theme.GraduationProjectTheme
+import com.sam.ui.theme.PrimaryOverlay
+import com.sam.ui.theme.RadiusLarge
+import com.sam.ui.theme.Spacing16
+import com.sam.ui.theme.Spacing8
+import com.sam.ui.theme.TextStyles
+import com.sam.ui.theme.color
+
+@Composable
+fun CustomLazyLayout(
+    items: List<TopicItem> = listOf(),
+    isHorizontalLayout: Boolean = true,
+    onClickGoToDetails: (topicItem: TopicItem) -> Unit,
+) {
+    val content: LazyListScope.() -> Unit = {
+        items(items) { item ->
+            if (item is CategoryItem) {
+                CategoryCard(
+                    categoryItem = item,
+                    isHorizontal = isHorizontalLayout,
+                    onClickGoShowAllCategoryPosts = onClickGoToDetails,
+                )
+            } else if (item is PostItem) {
+                PostCard(
+                    userImage = rememberAsyncImagePainter(item.user.imageLink),
+                    postImage = rememberAsyncImagePainter(item.imageUrl),
+                    username = item.user.name,
+                    title = item.name,
+                    details = item.details,
+                    location = item.locationItem.name,
+                    isOpen = item.isOpen,
+                    onCardClick = { onClickGoToDetails(item) },
+                    isHorizontalCard = isHorizontalLayout,
+                )
+            }
+        }
+    }
+
+    if (isHorizontalLayout) {
+        CustomLazyRow(content)
+    } else {
+        CustomLazyColumn(content)
+    }
+}
+
+
+@Composable
+fun CategoryCard(
+    categoryItem: CategoryItem,
+    isHorizontal: Boolean = true,
+    modifier: Modifier = if (isHorizontal) {
+        Modifier.size(width = CategoryCardWidth, height = CategoryCardHorizontalHeight)
+    } else {
+        Modifier
+            .fillMaxWidth()
+            .height(height = CategoryCardVerticalHeight)
+    },
+    onClickGoShowAllCategoryPosts: (topicItem: TopicItem) -> Unit,
+) {
+    BoxRounded(modifier = modifier, contentAlignment = Alignment.Center) {
+        Image(
+            painter = rememberAsyncImagePainter(categoryItem.imageUrl),
+            contentDescription = categoryItem.name,
+            contentScale = ContentScale.Crop,
+            modifier = modifier.fillMaxWidth(),
+        )
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(RadiusLarge))
+                .background(color = PrimaryOverlay)
+                .clickable { onClickGoShowAllCategoryPosts(categoryItem) },
+        ) {}
+
+        val textStyle =
+            if (isHorizontal) TextStyles.smallCustomTitle else TextStyles.largeCustomTitle
+        CardText(text = categoryItem.name, textStyle = textStyle)
+    }
+}
+
+@Composable
+fun CardText(
+    text: String,
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        style = textStyle.copy(
+            color = MaterialTheme.color.background,
+            drawStyle = Stroke(width = 5F)
+        ),
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+    )
+
+    Text(
+        modifier = modifier.fillMaxWidth(),
+        text = text,
+        style = textStyle.copy(
+            color = MaterialTheme.color.textPrimary,
+            drawStyle = Stroke(width = 1.2f, join = StrokeJoin.Round),
+        ),
+        textAlign = TextAlign.Center,
+    )
+}
+
+@Composable
+private fun CustomLazyRow(content: LazyListScope.() -> Unit) {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = Spacing16),
+        horizontalArrangement = Arrangement.spacedBy(Spacing8)
+    ) {
+        content()
+    }
+}
+
+@Composable
+private fun CustomLazyColumn(content: LazyListScope.() -> Unit) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Spacing16),
+        verticalArrangement = Arrangement.spacedBy(Spacing8)
+    ) {
+        content()
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewCategoryCard() {
+    GraduationProjectTheme {
+        CategoryCard(categoryItem = CategoryItem(name = "Category")) { }
+    }
+}

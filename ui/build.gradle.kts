@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.ui"
+    namespace = "com.sam.ui"
     compileSdk = 35
 
     defaultConfig {

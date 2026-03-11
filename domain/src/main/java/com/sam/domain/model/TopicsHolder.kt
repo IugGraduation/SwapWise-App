@@ -1,0 +1,27 @@
+package com.sam.domain.model
+
+import com.sam.data.model.response.TopicDto
+
+
+data class TopicsHolder(
+    val title: String = "",
+    val items: List<TopicItem> = listOf(),
+    val url: String = ""
+)
+
+
+fun TopicDto.toTopicsHolder(): TopicsHolder {
+    val items = topicItemDtos?.map { topicItemDto ->
+        if (url == "Categories") {
+            CategoryItem.fromPostItemDto(topicItemDto)
+        } else {
+            topicItemDto.toPostItem()
+        }
+
+    }
+    return TopicsHolder(
+        title = title.toString(),
+        items = items ?: listOf(),
+        url = url.toString()
+    )
+}

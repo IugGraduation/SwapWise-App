@@ -1,0 +1,24 @@
+package com.sam.data.model.response.profile
+
+import com.sam.data.util.Constants
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ProfileDto(
+    val id: String = "",
+    val name: String? = null,
+    @SerialName(Constants.Supabase.Columns.imageUrl) val imageUrl: String? = null,
+    val email: String? = null,
+    var phone: String? = null,
+    @SerialName("location_id")
+    var locationId: String? = null,
+    val bio: String? = null,
+    // val role: String = "member",
+
+    @SerialName("created_at") val createdAt: String? = null,
+//    var lastLoginAt: Date? = null,
+
+
+    val posts: Int? = null,
+)

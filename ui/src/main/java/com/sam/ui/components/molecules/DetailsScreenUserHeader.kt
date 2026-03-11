@@ -1,0 +1,126 @@
+package com.sam.ui.components.molecules
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import coil3.compose.rememberAsyncImagePainter
+import com.sam.domain.model.User
+import com.sam.ui.R
+import com.sam.ui.components.atoms.BoxRounded
+import com.sam.ui.components.atoms.HorizontalSpacer
+import com.sam.ui.theme.BackgroundLight
+import com.sam.ui.theme.GraduationProjectTheme
+import com.sam.ui.theme.IconSize32
+import com.sam.ui.theme.IconSize16
+import com.sam.ui.theme.RadiusLarge
+import com.sam.ui.theme.Spacing16
+import com.sam.ui.theme.Spacing4
+import com.sam.ui.theme.TextStyles
+import com.sam.ui.theme.color
+
+@Composable
+fun DetailsScreenUserHeader(user: User, date: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Spacing16),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        UserHeader(
+            user = user,
+            imgSize = IconSize32,
+            textStyle = TextStyles.headingMedium,
+            textColor = MaterialTheme.color.textPrimary
+        )
+        OverlayBoxWithImage(
+            overlayColor = MaterialTheme.color.onBackground,
+            imgResId = R.drawable.ic_calendar,
+            text = date,
+            modifier = Modifier.padding(Spacing4),
+            boxModifier = Modifier.shadow(
+                elevation = 10.dp,
+                shape = RoundedCornerShape(RadiusLarge),
+                spotColor = Color.Black.copy(alpha = 0.2f),
+                ambientColor = Color.Black.copy(alpha = 0.2f)
+            )
+        )
+    }
+}
+
+@Composable
+private fun UserHeader(
+    user: User,
+    imgSize: Dp = IconSize16,
+    textStyle: TextStyle = TextStyles.headingSmall,
+    textColor: Color = BackgroundLight
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Image(
+            painter = rememberAsyncImagePainter(user.imageLink),
+            contentDescription = stringResource(R.string.user_image),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(imgSize)
+        )
+        HorizontalSpacer(Spacing4)
+        Text(
+            text = user.name,
+            style = textStyle,
+            color = textColor
+        )
+    }
+}
+
+@Composable
+private fun OverlayBoxWithImage(overlayColor: Color, imgResId: Int, text: String, modifier: Modifier = Modifier, boxModifier: Modifier = Modifier) {
+    BoxRounded(color = overlayColor, modifier = boxModifier) {
+        Row(
+            modifier = modifier,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(imgResId),
+                contentDescription = "",
+                modifier = Modifier.size(12.dp),
+                tint = MaterialTheme.color.textSecondary
+            )
+            HorizontalSpacer(Spacing4)
+            Text(text, style = TextStyles.captionSmall)
+        }
+    }
+}
+
+
+
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewDetailsScreenUserHeader() {
+    GraduationProjectTheme {
+        DetailsScreenUserHeader(
+            user = User(
+                name = "User",
+                phone = "1213124"
+            ),
+            date = "11/11/11"
+        )
+    }
+}
