@@ -42,6 +42,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            //to get better crash logs from google store:
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
         }
     }
 
