@@ -17,6 +17,7 @@ import com.sam.domain.post.AddPostUseCase
 import com.sam.ui.base.BaseViewModel
 import com.sam.ui.base.NavigateUpEffect
 import com.sam.ui.base.StringsResource
+import com.sam.ui.models.AsyncState
 import com.sam.ui.models.ChipUiState
 import com.sam.ui.models.PostErrorUiState
 import com.sam.ui.models.PostItemUiState
@@ -36,7 +37,10 @@ class AddPostViewModel @Inject constructor(
     private val args = AddPostArgs(savedStateHandle)
 
     init {
-        updatePostItem { copy(name = args.postTitle) }
+        // Initialize postItem as Success so the screen shows the form immediately
+        updateData {
+            copy(postItem = AsyncState.Success(PostItem(name = args.postTitle)))
+        }
         getLocations()
         getCategories()
     }
