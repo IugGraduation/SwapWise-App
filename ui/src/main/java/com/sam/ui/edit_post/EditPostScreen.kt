@@ -42,7 +42,6 @@ import com.sam.domain.model.LocationItem
 import com.sam.domain.post.GetFakePostDetailsUseCase
 import com.sam.ui.R
 import com.sam.ui.base.MyUiState
-import com.sam.ui.base.NavigateUpEffect
 import com.sam.ui.components.AsyncContent
 import com.sam.ui.components.atoms.DropdownTextField
 import com.sam.ui.components.atoms.SwapWiseFilledButton
@@ -52,6 +51,7 @@ import com.sam.ui.components.atoms.VerticalSpacer
 import com.sam.ui.components.molecules.ProductImage
 import com.sam.ui.components.molecules.TitledChipsList
 import com.sam.ui.components.templates.TitledScreenTemplate
+import com.sam.ui.home.navigateToHome
 import com.sam.ui.models.AsyncState
 import com.sam.ui.models.PostItemUiState
 import com.sam.ui.theme.GraduationProjectTheme
@@ -62,6 +62,7 @@ import com.sam.ui.theme.Spacing24
 import com.sam.ui.theme.Spacing8
 import com.sam.ui.theme.TextStyles
 import com.sam.ui.theme.color
+import com.sam.ui.util.Screen
 import com.sam.ui.util.toByteArray
 
 @Composable
@@ -71,7 +72,14 @@ fun EditPostScreen(navController: NavController, viewModel: EditPostViewModel = 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is NavigateUpEffect.NavigateUp -> navController.navigateUp()
+                is EditPostEffects.NavigateUp -> navController.navigateUp()
+                is EditPostEffects.NavigateToHome -> {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                }
             }
         }
     }

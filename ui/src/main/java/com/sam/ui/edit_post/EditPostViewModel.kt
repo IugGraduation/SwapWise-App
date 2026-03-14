@@ -15,7 +15,6 @@ import com.sam.domain.post.DeletePostUseCase
 import com.sam.domain.post.EditPostUseCase
 import com.sam.domain.post.GetPostDetailsUseCase
 import com.sam.ui.base.BaseViewModel
-import com.sam.ui.base.NavigateUpEffect
 import com.sam.ui.base.StringsResource
 import com.sam.ui.models.AsyncState
 import com.sam.ui.models.ChipUiState
@@ -34,7 +33,7 @@ class EditPostViewModel @Inject constructor(
     private val editPostUseCase: EditPostUseCase,
     private val deletePostUseCase: DeletePostUseCase,
     private val getLocationsUseCase: GetLocationsUseCase,
-) : BaseViewModel<PostItemUiState, NavigateUpEffect>(PostItemUiState()), IEditPostInteractions {
+) : BaseViewModel<PostItemUiState, EditPostEffects>(PostItemUiState()), IEditPostInteractions {
     private val args = EditPostArgs(savedStateHandle)
 
     init {
@@ -189,7 +188,7 @@ class EditPostViewModel @Inject constructor(
                     imageByteArray = imageByteArray
                 )
             },
-            onSuccess = { navigateUp() },
+            onSuccess = { sendUiEffect(EditPostEffects.NavigateUp) },
             onError = ::onSavePostFail
         )
     }
@@ -225,13 +224,13 @@ class EditPostViewModel @Inject constructor(
         val postId = state.value.data.postItem.data?.id ?: return
         tryToExecute(
             call = { deletePostUseCase(postId) },
-            onSuccess = { navigateUp() },
+            onSuccess = { sendUiEffect(EditPostEffects.NavigateToHome) },
         )
     }
 
 
     override fun navigateUp() {
-        sendUiEffect(NavigateUpEffect.NavigateUp)
+        sendUiEffect(EditPostEffects.NavigateUp)
     }
 
 
